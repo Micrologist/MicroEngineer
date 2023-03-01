@@ -1,4 +1,4 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -7,11 +7,14 @@
     <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="..\external_dlls\SpaceWarp.dll"/>
-    <Reference Include="..\external_dlls\UnityEngine.dll"/>
-    <Reference Include="..\external_dlls\UnityEngine.CoreModule.dll"/>
-    <Reference Include="..\external_dlls\Assembly-CSharp.dll"/>
-    <Reference Include="..\external_dlls\NewtonSoft.Json.dll"/>
-    <Reference Include="..\external_dlls\NewtonSoft.Json.dll"/>
+    <Reference Include="..\external_dlls\SpaceWarp.dll" />
+    <Reference Include="..\external_dlls\UnityEngine.dll" />
+    <Reference Include="..\external_dlls\UnityEngine.CoreModule.dll" />
+    <Reference Include="..\external_dlls\Assembly-CSharp.dll" />
+    <Reference Include="..\external_dlls\NewtonSoft.Json.dll" />
+    <Reference Include="..\external_dlls\NewtonSoft.Json.dll" />
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>..\external_dlls\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
