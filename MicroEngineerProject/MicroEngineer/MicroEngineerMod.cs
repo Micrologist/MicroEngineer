@@ -23,8 +23,8 @@ namespace MicroMod
 		private bool showMan = true;
 		private bool showTgt = true;
 		private int spacingAfterHeader = -8;
-		private int spacingAfterEntry = -8;
-		private int spacingAfterSection = 0;
+		private int spacingAfterEntry = -10;
+		private int spacingAfterSection = -3;
 
 
 		public override void OnInitialized()
@@ -56,19 +56,27 @@ namespace MicroMod
 
 		private void FillGUI(int windowID)
 		{
+			if (GUI.Button(new Rect(windowWidth - 23, 6, 16, 16), "x", new GUIStyle(GUI.skin.button) { fontSize = 8 }))
+			{
+				CloseWindow();
+			}
+
+			
+
+
 			GUILayout.BeginHorizontal();
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
-			showVes = GUILayout.Toggle(showVes, "<b> VES</b>", GUILayout.Width(windowWidth / 6));
-			GUILayout.FlexibleSpace();
-			showOrb = GUILayout.Toggle(showOrb, "<b> ORB</b>", GUILayout.Width(windowWidth / 6));
-			GUILayout.FlexibleSpace();
-			showSur = GUILayout.Toggle(showSur, "<b> SUR</b>", GUILayout.Width(windowWidth / 6));
-			GUILayout.FlexibleSpace();
-			showTgt = GUILayout.Toggle(showTgt, "<b> TGT</b>", GUILayout.Width(windowWidth / 6));
-			GUILayout.FlexibleSpace();
-			showMan = GUILayout.Toggle(showMan, "<b> MAN</b>", GUILayout.Width(windowWidth / 6));
+			showVes = GUILayout.Toggle(showVes, "<b>VES</b>");
+			GUILayout.Space(2);
+			showOrb = GUILayout.Toggle(showOrb, "<b>ORB</b>");
+			GUILayout.Space(2);
+			showSur = GUILayout.Toggle(showSur, "<b>SUR</b>");
+			GUILayout.Space(2);
+			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>");
+			GUILayout.Space(2);
+			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>");
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
@@ -134,7 +142,7 @@ namespace MicroMod
 				GUILayout.BeginHorizontal();
 				GUILayout.Label($"Apoapsis Height: ");
 				GUILayout.FlexibleSpace();
-				GUILayout.Label($"{activeVessel.Orbit.ApoapsisArl:N0} m");
+				GUILayout.Label($"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}");
 				GUILayout.EndHorizontal();
 
 				GUILayout.Space(spacingAfterEntry);
@@ -142,7 +150,7 @@ namespace MicroMod
 				GUILayout.BeginHorizontal();
 				GUILayout.Label($"Periapsis Height: ");
 				GUILayout.FlexibleSpace();
-				GUILayout.Label($"{activeVessel.Orbit.PeriapsisArl:N0} m");
+				GUILayout.Label($"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}");
 				GUILayout.EndHorizontal();
 
 				GUILayout.Space(spacingAfterEntry);
@@ -216,7 +224,7 @@ namespace MicroMod
 				GUILayout.BeginHorizontal();
 				GUILayout.Label($"Altitude (Terrain): ");
 				GUILayout.FlexibleSpace();
-				GUILayout.Label($"{activeVessel.AltitudeFromScenery:N1} m");
+				GUILayout.Label($"{MetersToDistanceString(activeVessel.AltitudeFromScenery)}");
 				GUILayout.EndHorizontal();
 
 				GUILayout.Space(spacingAfterEntry);
@@ -249,7 +257,7 @@ namespace MicroMod
 				GUILayout.Space(spacingAfterHeader);
 
 				GUILayout.BeginHorizontal();
-				GUILayout.Label($"Target Name:");
+				GUILayout.Label($"Name:");
 				GUILayout.FlexibleSpace();
 				GUILayout.Label($"{tgtObject.DisplayName}");
 				GUILayout.EndHorizontal();
@@ -258,14 +266,13 @@ namespace MicroMod
 
 				if (activeVessel.Orbit.referenceBody == tgtObject.Orbit.referenceBody)
 				{
-
 					GUILayout.Space(spacingAfterEntry);
 					double distanceToTarget = (activeVessel.Orbit.Position - tgtObject.Orbit.Position).magnitude;
 
 					GUILayout.BeginHorizontal();
-					GUILayout.Label($"Target Distance:");
+					GUILayout.Label($"Distance:");
 					GUILayout.FlexibleSpace();
-					GUILayout.Label($"{distanceToTarget:N0} m");
+					GUILayout.Label($"{MetersToDistanceString(distanceToTarget)}");
 					GUILayout.EndHorizontal();
 
 					GUILayout.Space(spacingAfterEntry);
@@ -323,15 +330,28 @@ namespace MicroMod
 				GUILayout.Label($"{SecondsToTimeString(nodeData.BurnDuration)}");
 				GUILayout.EndHorizontal();
 
+				GUILayout.Space(spacingAfterEntry);
+
+				PatchedConicsOrbit newOrbit = activeVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault();
+
+				GUILayout.BeginHorizontal();
+				GUILayout.Label($"Projected Ap:");
+				GUILayout.FlexibleSpace();
+				GUILayout.Label($"{MetersToDistanceString(newOrbit.ApoapsisArl)}");
+				GUILayout.EndHorizontal();
+
+				GUILayout.Space(spacingAfterEntry);
+
+				GUILayout.BeginHorizontal();
+				GUILayout.Label($"Projected Pe:");
+				GUILayout.FlexibleSpace();
+				GUILayout.Label($"{MetersToDistanceString(newOrbit.PeriapsisArl)}");
+				GUILayout.EndHorizontal();
+
+
 				GUILayout.Space(spacingAfterSection);
 			}
-			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("Close"))
-			{
-				GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(false);
-				showGUI = false;
-			}
-			GUILayout.EndHorizontal();
+			
 			GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
 		}
 
@@ -356,6 +376,12 @@ namespace MicroMod
 				default:
 					return "UNNOWN";
 			}
+		}
+
+		private void CloseWindow()
+		{
+			GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(false);
+			showGUI = false;
 		}
 
 		private string SecondsToTimeString(double seconds)
@@ -385,6 +411,11 @@ namespace MicroMod
 			{
 				return "N/A";
 			}
+		}
+
+		private string MetersToDistanceString(double heightInMeters)
+		{
+				return $"{heightInMeters:N1} m";
 		}
 	}
 }
