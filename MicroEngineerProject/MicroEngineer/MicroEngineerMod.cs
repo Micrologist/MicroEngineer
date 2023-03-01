@@ -61,9 +61,6 @@ namespace MicroMod
 				CloseWindow();
 			}
 
-			
-
-
 			GUILayout.BeginHorizontal();
 			GUILayout.EndHorizontal();
 
