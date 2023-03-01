@@ -4,7 +4,7 @@
     "name": "Micro Engineer",
     "description": "Get in-flight information about your current vessel",
     "source": "https://github.com/Micrologist/MicroEngineer",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "dependencies": [],
     "ksp2_version": {
         "min": "0.1.0",

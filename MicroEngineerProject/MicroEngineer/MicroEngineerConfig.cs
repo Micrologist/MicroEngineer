@@ -7,6 +7,5 @@ namespace MicroEngineer
     [ModConfig]
     public class MicroEngineerConfig
     {
-         [ConfigField("pi")] [ConfigDefaultValue(3.14159)] public double pi;
     }
 }
