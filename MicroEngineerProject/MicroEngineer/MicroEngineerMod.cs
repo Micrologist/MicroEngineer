@@ -22,10 +22,12 @@ namespace MicroMod
         private bool showSur = true;
         private bool showMan = true;
         private bool showTgt = true;
+        private int spacingAfterHeader = -8;
+        private int spacingAfterEntry = -8;
+		private int spacingAfterSection = 0;
 
-        public void Awake() => guiRect = new Rect((Screen.width * 0.8632f) - (windowWidth / 2), (Screen.height / 2) - (windowHeight / 2), 0, 0);
 
-        public override void OnInitialized()
+		public override void OnInitialized()
         {
             _spaceWarpUISkin = SpaceWarpManager.Skin;
 
@@ -41,6 +43,7 @@ namespace MicroMod
             activeVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
             if (!showGUI || activeVessel == null) return;
             GUI.skin = _spaceWarpUISkin;
+            
             guiRect = GUILayout.Window(
                 GUIUtility.GetControlID(FocusType.Passive),
                 guiRect,
@@ -57,15 +60,15 @@ namespace MicroMod
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            showVes = GUILayout.Toggle(showVes, "<b> VES</b>", GUILayout.Width(windowWidth / 5));
+            showVes = GUILayout.Toggle(showVes, "<b> VES</b>", GUILayout.Width(windowWidth / 6));
             GUILayout.FlexibleSpace();
-            showOrb = GUILayout.Toggle(showOrb, "<b> ORB</b>", GUILayout.Width(windowWidth / 5));
+            showOrb = GUILayout.Toggle(showOrb, "<b> ORB</b>", GUILayout.Width(windowWidth / 6));
             GUILayout.FlexibleSpace();
-            showSur = GUILayout.Toggle(showSur, "<b> SUR</b>", GUILayout.Width(windowWidth / 5));
+            showSur = GUILayout.Toggle(showSur, "<b> SUR</b>", GUILayout.Width(windowWidth / 6));
             GUILayout.FlexibleSpace();
-            showTgt = GUILayout.Toggle(showTgt, "<b> TGT</b>", GUILayout.Width(windowWidth / 5));
+            showTgt = GUILayout.Toggle(showTgt, "<b> TGT</b>", GUILayout.Width(windowWidth / 6));
             GUILayout.FlexibleSpace();
-            showMan = GUILayout.Toggle(showMan, "<b> MAN</b>");
+            showMan = GUILayout.Toggle(showMan, "<b> MAN</b>", GUILayout.Width(windowWidth / 6));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -77,11 +80,15 @@ namespace MicroMod
                 GUILayout.Label("<b>Vessel</b>");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterHeader);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Name: ");
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{activeVessel.DisplayName}");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterEntry);
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"∆v: ");
@@ -89,11 +96,15 @@ namespace MicroMod
                 GUILayout.Label($"{activeVessel.VesselDeltaV.TotalDeltaVActual:0.} m/s");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterEntry);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Mass: ");
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{activeVessel.totalMass:0.000} t");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterEntry);
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Thrust: ");
@@ -101,11 +112,15 @@ namespace MicroMod
                 GUILayout.Label($"{activeVessel.VesselDeltaV.StageInfo.FirstOrDefault().ThrustActual:0.} kN");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterEntry);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"TWR: ");
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{activeVessel.VesselDeltaV.StageInfo.FirstOrDefault().TWRActual:0.00}");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterSection);
             }
 
             if (showOrb)
@@ -114,11 +129,15 @@ namespace MicroMod
                 GUILayout.Label("<b>Orbital</b>");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterHeader);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Apoapsis Height: ");
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{activeVessel.Orbit.ApoapsisArl:N0} m");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterEntry);
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Periapsis Height: ");
@@ -126,11 +145,15 @@ namespace MicroMod
                 GUILayout.Label($"{activeVessel.Orbit.PeriapsisArl:N0} m");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterEntry);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Time to Apoapsis: ");
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{SecondsToTimeString(activeVessel.Orbit.TimeToAp)}");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterEntry);
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Time to Periapsis: ");
@@ -138,11 +161,15 @@ namespace MicroMod
                 GUILayout.Label($"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterEntry);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Inclination: ");
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{activeVessel.Orbit.inclination:0.00}°");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterEntry);
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Eccentricity: ");
@@ -150,11 +177,15 @@ namespace MicroMod
                 GUILayout.Label($"{activeVessel.Orbit.eccentricity:0.0000}");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterEntry);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Orbital Period: ");
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{SecondsToTimeString(activeVessel.Orbit.period)}");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterSection);
 
             }
 
@@ -164,11 +195,15 @@ namespace MicroMod
                 GUILayout.Label("<b>Surface</b>");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterHeader);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Reference Body: ");
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{activeVessel.mainBody.bodyName}");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterEntry);
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Situation: ");
@@ -176,11 +211,15 @@ namespace MicroMod
                 GUILayout.Label($"{SituationToString(activeVessel.Situation)}");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterEntry);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Altitude (Terrain): ");
                 GUILayout.FlexibleSpace();
-                GUILayout.Label($"{activeVessel.AltitudeFromTerrain:N1} m");
+                GUILayout.Label($"{activeVessel.AltitudeFromScenery:N1} m");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterEntry);
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Horizontal Speed: ");
@@ -188,11 +227,15 @@ namespace MicroMod
                 GUILayout.Label($"{activeVessel.HorizontalSrfSpeed:0.0} m/s");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterEntry);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Vertical Speed: ");
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{activeVessel.VerticalSrfSpeed:0.0} m/s");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterSection);
             }
 
             SimulationObjectModel tgtObject = activeVessel.TargetObject;
@@ -202,6 +245,8 @@ namespace MicroMod
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("<b>Target</b>");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterHeader);
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Target Name:");
@@ -213,7 +258,8 @@ namespace MicroMod
 
 				if (activeVessel.Orbit.referenceBody == tgtObject.Orbit.referenceBody)
 				{
-                    
+
+                    GUILayout.Space(spacingAfterEntry);
                     double distanceToTarget = (activeVessel.Orbit.Position - tgtObject.Orbit.Position).magnitude;
                     
                     GUILayout.BeginHorizontal();
@@ -222,13 +268,17 @@ namespace MicroMod
                     GUILayout.Label($"{distanceToTarget:N0} m");
                     GUILayout.EndHorizontal();
 
-					double relativeVelocity = (activeVessel.Orbit.relativeVelocity - tgtObject.Orbit.relativeVelocity).magnitude;
+                    GUILayout.Space(spacingAfterEntry);
+
+                    double relativeVelocity = (activeVessel.Orbit.relativeVelocity - tgtObject.Orbit.relativeVelocity).magnitude;
 					GUILayout.BeginHorizontal();
                     GUILayout.Label($"Relative Speed:");
                     GUILayout.FlexibleSpace();
                     GUILayout.Label($"{relativeVelocity:0.0} m/s");
                     GUILayout.EndHorizontal();
-                    
+
+                    GUILayout.Space(spacingAfterEntry);
+
                     GUILayout.BeginHorizontal();
                     GUILayout.Label($"Relative Inclination:");
                     GUILayout.FlexibleSpace();
@@ -236,7 +286,7 @@ namespace MicroMod
                     GUILayout.EndHorizontal();
                 }
 
-
+                GUILayout.Space(spacingAfterSection);
             }
 
 
@@ -248,6 +298,8 @@ namespace MicroMod
                 GUILayout.Label("<b>Maneuver</b>");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterHeader);
+
                 double timeUntilNode = nodeData.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Time until Maneuver:");
@@ -255,11 +307,15 @@ namespace MicroMod
                 GUILayout.Label($"{SecondsToTimeString(timeUntilNode)}");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterEntry);
+
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Maneuver ∆v:");
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{nodeData.BurnRequiredDV:0.0} m/s");
                 GUILayout.EndHorizontal();
+
+                GUILayout.Space(spacingAfterEntry);
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Burn Time:");
@@ -267,6 +323,7 @@ namespace MicroMod
                 GUILayout.Label($"{SecondsToTimeString(nodeData.BurnDuration)}");
                 GUILayout.EndHorizontal();
 
+                GUILayout.Space(spacingAfterSection);
             }
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Close"))
