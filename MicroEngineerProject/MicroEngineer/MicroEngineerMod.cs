@@ -21,6 +21,7 @@ namespace MicroMod
         private bool showOrb = true;
         private bool showSur = true;
         private bool showMan = true;
+        private bool showTgt = true;
 
         public void Awake() => guiRect = new Rect((Screen.width * 0.8632f) - (windowWidth / 2), (Screen.height / 2) - (windowHeight / 2), 0, 0);
 
@@ -56,10 +57,15 @@ namespace MicroMod
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            showVes = GUILayout.Toggle(showVes, "<b> VES</b>", GUILayout.Width(windowWidth / 4));
-            showOrb = GUILayout.Toggle(showOrb, "<b> ORB</b>", GUILayout.Width(windowWidth / 4));
-            showSur = GUILayout.Toggle(showSur, "<b> SUR</b>", GUILayout.Width(windowWidth / 4));
-            showMan = GUILayout.Toggle(showMan, "<b> MAN</b>", GUILayout.Width(windowWidth / 4));
+            showVes = GUILayout.Toggle(showVes, "<b> VES</b>", GUILayout.Width(windowWidth / 5));
+            GUILayout.FlexibleSpace();
+            showOrb = GUILayout.Toggle(showOrb, "<b> ORB</b>", GUILayout.Width(windowWidth / 5));
+            GUILayout.FlexibleSpace();
+            showSur = GUILayout.Toggle(showSur, "<b> SUR</b>", GUILayout.Width(windowWidth / 5));
+            GUILayout.FlexibleSpace();
+            showTgt = GUILayout.Toggle(showTgt, "<b> TGT</b>", GUILayout.Width(windowWidth / 5));
+            GUILayout.FlexibleSpace();
+            showMan = GUILayout.Toggle(showMan, "<b> MAN</b>");
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -143,6 +149,13 @@ namespace MicroMod
                 GUILayout.FlexibleSpace();
                 GUILayout.Label($"{activeVessel.Orbit.eccentricity:0.0000}");
                 GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"Orbital Period: ");
+                GUILayout.FlexibleSpace();
+                GUILayout.Label($"{SecondsToTimeString(activeVessel.Orbit.period)}");
+                GUILayout.EndHorizontal();
+
             }
 
             if (showSur)
@@ -181,6 +194,51 @@ namespace MicroMod
                 GUILayout.Label($"{activeVessel.VerticalSrfSpeed:0.0} m/s");
                 GUILayout.EndHorizontal();
             }
+
+            SimulationObjectModel tgtObject = activeVessel.TargetObject;
+
+            if(showTgt && tgtObject != null)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("<b>Target</b>");
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"Target Name:");
+                GUILayout.FlexibleSpace();
+                GUILayout.Label($"{tgtObject.DisplayName}");
+                GUILayout.EndHorizontal();
+
+                OrbitTargeter targeter = activeVessel.Orbiter.OrbitTargeter;
+
+				if (activeVessel.Orbit.referenceBody == tgtObject.Orbit.referenceBody)
+				{
+                    
+                    double distanceToTarget = (activeVessel.Orbit.Position - tgtObject.Orbit.Position).magnitude;
+                    
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label($"Target Distance:");
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Label($"{distanceToTarget:N0} m");
+                    GUILayout.EndHorizontal();
+
+					double relativeVelocity = (activeVessel.Orbit.relativeVelocity - tgtObject.Orbit.relativeVelocity).magnitude;
+					GUILayout.BeginHorizontal();
+                    GUILayout.Label($"Relative Speed:");
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Label($"{relativeVelocity:0.0} m/s");
+                    GUILayout.EndHorizontal();
+                    
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label($"Relative Inclination:");
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Label($"{targeter.AscendingNodeTarget.Inclination:0.00}°");
+                    GUILayout.EndHorizontal();
+                }
+
+
+            }
+
 
             ManeuverNodeData nodeData = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(GameManager.Instance.Game.ViewController.GetActiveVehicle(true).Guid).FirstOrDefault();
 
