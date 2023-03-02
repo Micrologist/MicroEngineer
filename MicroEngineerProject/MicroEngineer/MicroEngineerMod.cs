@@ -35,6 +35,9 @@ namespace MicroMod
 		private GUIStyle mainWindowStyle;
 		private GUIStyle popoutWindowStyle;
 
+		private SimulationObjectModel tgtObject;
+		ManeuverNodeData nodeData;
+
 
 
 		public override void OnInitialized()
@@ -101,12 +104,16 @@ namespace MicroMod
 				fltGuiRect = GeneratePopoutWindow(fltGuiRect, FillFlight);
 			}
 			
-			if (showTgt && popoutTgt)
+			tgtObject = activeVessel.TargetObject;
+
+			if (showTgt && popoutTgt && tgtObject != null)
 			{
 				tgtGuiRect = GeneratePopoutWindow(tgtGuiRect, FillTarget);
 			}
 
-			if (showMan && popoutMan)
+			nodeData = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(GameManager.Instance.Game.ViewController.GetActiveVehicle(true).Guid).FirstOrDefault();
+
+			if (showMan && popoutMan && nodeData != null)
 			{
 				manGuiRect = GeneratePopoutWindow(manGuiRect, FillManeuver);
 			}
@@ -474,7 +481,7 @@ namespace MicroMod
 
 		private void FillTarget(int _ = 0)
 		{
-			SimulationObjectModel tgtObject = activeVessel.TargetObject;
+			tgtObject = activeVessel.TargetObject;
 
 			if (tgtObject == null)
 				return;
@@ -545,7 +552,7 @@ namespace MicroMod
 		
 		private void FillManeuver(int _ = 0)
 		{
-			ManeuverNodeData nodeData = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(GameManager.Instance.Game.ViewController.GetActiveVehicle(true).Guid).FirstOrDefault();
+			nodeData = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(GameManager.Instance.Game.ViewController.GetActiveVehicle(true).Guid).FirstOrDefault();
 
 			if (nodeData == null)
 				return;
