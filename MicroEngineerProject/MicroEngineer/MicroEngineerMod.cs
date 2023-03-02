@@ -9,15 +9,29 @@ using KSP.UI.Binding;
 namespace MicroMod
 {
 	[MainMod]
-	public class MicroModMod : Mod
+	public class MicroEngineerMod : Mod
 	{
-		private GUISkin _spaceWarpUISkin;
 		private bool showGUI = false;
-		private readonly int windowWidth = 350;
+		
+		private readonly int windowWidth = 290;
 		private readonly int windowHeight = 700;
 		private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect;
-		
-		private VesselComponent activeVessel;
+		private Rect closeBtnRect;
+
+		private GUISkin _spaceWarpUISkin;
+		private GUIStyle popoutBtnStyle;
+		private GUIStyle mainWindowStyle;
+		private GUIStyle popoutWindowStyle;
+		private GUIStyle sectionToggleStyle;
+		private GUIStyle closeBtnStyle;
+		private GUIStyle nameLabelStyle;
+		private GUIStyle valueLabelStyle;
+
+		private int spacingAfterHeader = -12;
+		private int spacingAfterEntry = -12;
+		private int spacingAfterSection = 5;
+		private float spacingBelowPopout = 10;
+
 		private bool showVes = true;
 		private bool showOrb = true;
 		private bool showSur = true;
@@ -25,28 +39,25 @@ namespace MicroMod
 		private bool showMan = true;
 		private bool showTgt = false;
 
-		
 		private bool popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt;
-		private int spacingAfterHeader = -8;
-		private int spacingAfterEntry = -10;
-		private int spacingAfterSection = -3;
 
-		private GUIStyle popoutBtnStyle;
-		private GUIStyle mainWindowStyle;
-		private GUIStyle popoutWindowStyle;
-
-		private SimulationObjectModel tgtObject;
-		ManeuverNodeData nodeData;
-
-
+		private VesselComponent activeVessel;
+		private SimulationObjectModel currentTarget;
+		private ManeuverNodeData currentManeuver;
 
 		public override void OnInitialized()
 		{
 			_spaceWarpUISkin = SpaceWarpManager.Skin;
-			mainWindowStyle = _spaceWarpUISkin.window;
+			mainWindowStyle = new GUIStyle(_spaceWarpUISkin.window) { padding = new RectOffset(8, 8, 20, 8), contentOffset = new Vector2(0, -22) };
 			popoutWindowStyle = new GUIStyle(mainWindowStyle) { padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5) };
 			popoutBtnStyle = new GUIStyle(_spaceWarpUISkin.button) { alignment = TextAnchor.UpperLeft, contentOffset = new Vector2(0, -3), fixedHeight = 20, fixedWidth = 20 };
-
+			sectionToggleStyle = new GUIStyle(_spaceWarpUISkin.toggle) { padding = new RectOffset(17, 0, 3, 0)};
+			nameLabelStyle = new GUIStyle(_spaceWarpUISkin.label);
+			nameLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
+			valueLabelStyle = new GUIStyle(_spaceWarpUISkin.label);
+			closeBtnStyle = new GUIStyle(_spaceWarpUISkin.button) { fontSize = 8 };
+			closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
+			
 			SpaceWarpManager.RegisterAppButton(
 				"Micro Engineer",
 				"BTN-MicroEngineerBtn",
@@ -70,6 +81,9 @@ namespace MicroMod
 		{
 			activeVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
 			if (!showGUI || activeVessel == null) return;
+
+			currentTarget = activeVessel.TargetObject;
+			currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(GameManager.Instance.Game.ViewController.GetActiveVehicle(true).Guid).FirstOrDefault();
 			GUI.skin = _spaceWarpUISkin;
 			
 			mainGuiRect = GUILayout.Window(
@@ -83,7 +97,6 @@ namespace MicroMod
 			);
 			mainGuiRect.position = ClampToScreen(mainGuiRect.position, mainGuiRect.size);
 
-			
 			if (showVes && popoutVes)
 			{
 				vesGuiRect = GeneratePopoutWindow(vesGuiRect, FillVessel);
@@ -104,16 +117,12 @@ namespace MicroMod
 				fltGuiRect = GeneratePopoutWindow(fltGuiRect, FillFlight);
 			}
 			
-			tgtObject = activeVessel.TargetObject;
-
-			if (showTgt && popoutTgt && tgtObject != null)
+			if (showTgt && popoutTgt && currentTarget != null)
 			{
 				tgtGuiRect = GeneratePopoutWindow(tgtGuiRect, FillTarget);
 			}
 
-			nodeData = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(GameManager.Instance.Game.ViewController.GetActiveVehicle(true).Guid).FirstOrDefault();
-
-			if (showMan && popoutMan && nodeData != null)
+			if (showMan && popoutMan && currentManeuver != null)
 			{
 				manGuiRect = GeneratePopoutWindow(manGuiRect, FillManeuver);
 			}
@@ -143,7 +152,7 @@ namespace MicroMod
 
 		private void FillMainGUI(int windowID)
 		{
-			if (GUI.Button(new Rect(windowWidth - 23, 6, 16, 16), "x", new GUIStyle(GUI.skin.button) { fontSize = 8 }))
+			if (CloseButton())
 			{
 				CloseWindow();
 			}
@@ -152,19 +161,14 @@ namespace MicroMod
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
-			showVes = GUILayout.Toggle(showVes, "<b>VES</b>");
-			GUILayout.Space(2);
-			showOrb = GUILayout.Toggle(showOrb, "<b>ORB</b>");
-			GUILayout.Space(2);
-			showSur = GUILayout.Toggle(showSur, "<b>SUR</b>");
-			GUILayout.Space(2);
-			showFlt = GUILayout.Toggle(showFlt, "<b>FLT</b>");
-			GUILayout.Space(2);
-			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>");
-			GUILayout.Space(2);
-			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>");
+			showVes = GUILayout.Toggle(showVes, "<b>VES</b>", sectionToggleStyle);
+			showOrb = GUILayout.Toggle(showOrb, "<b>ORB</b>", sectionToggleStyle);
+			showSur = GUILayout.Toggle(showSur, "<b>SUR</b>", sectionToggleStyle);
+			showFlt = GUILayout.Toggle(showFlt, "<b>FLT</b>", sectionToggleStyle);
+			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>", sectionToggleStyle);
+			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>", sectionToggleStyle);
 			GUILayout.EndHorizontal();
-
+			GUILayout.Space(-5);
 			GUILayout.BeginHorizontal();
 			GUILayout.EndHorizontal();
 
@@ -188,12 +192,12 @@ namespace MicroMod
 				FillFlight();
 			}
 
-			if (showTgt && !popoutTgt)
+			if (showTgt && !popoutTgt && currentTarget != null)
 			{
 				FillTarget();
 			}
 
-			if (showMan && !popoutMan)
+			if (showMan && !popoutMan && currentManeuver != null)
 			{
 				FillManeuver();
 			}
@@ -203,426 +207,138 @@ namespace MicroMod
 
 		private void FillVessel(int _ = 0)
 		{
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("<b>Vessel</b>");
-			if (popoutVes)
-			{
-				popoutVes = !GUI.Button(new Rect(windowWidth - 23, 6, 16, 16), "x", new GUIStyle(GUI.skin.button) { fontSize = 8 });
-			}
-			else
-			{
-				GUILayout.FlexibleSpace();
-				popoutVes = GUILayout.Button("⇗", popoutBtnStyle);
-			}
-			GUILayout.EndHorizontal();
+			DrawSectionHeader("Vessel", ref popoutVes);
 
-			GUILayout.Space(spacingAfterHeader);
+			DrawEntry("Name", activeVessel.DisplayName);
+			DrawEntry("∆v", $"{activeVessel.VesselDeltaV.TotalDeltaVActual:0.} m/s");
+			DrawEntry("Mass", $"{activeVessel.totalMass:0.000} t");
+			DrawEntry("Thrust", $"{activeVessel.VesselDeltaV.StageInfo.FirstOrDefault().ThrustActual:0.} kN");
+			DrawEntry("TWR", $"{activeVessel.VesselDeltaV.StageInfo.FirstOrDefault().TWRActual:0.00}");
 
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Name: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.DisplayName}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"∆v: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.VesselDeltaV.TotalDeltaVActual:0.} m/s");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Mass: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.totalMass:0.000} t");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Thrust: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.VesselDeltaV.StageInfo.FirstOrDefault().ThrustActual:0.} kN");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"TWR: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.VesselDeltaV.StageInfo.FirstOrDefault().TWRActual:0.00}");
-			GUILayout.EndHorizontal();
-
-			if (popoutVes)
-			{
-				GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
-			}
-			else
-			{
-				GUILayout.Space(spacingAfterSection);
-			}
+			DrawSectionEnd(popoutVes);
 		}
 		
 		private void FillOrbital(int _ = 0)
 		{
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("<b>Orbital</b>");
-			if (popoutOrb)
-			{
-				popoutOrb = !GUI.Button(new Rect(windowWidth - 23, 6, 16, 16), "x", new GUIStyle(GUI.skin.button) { fontSize = 8 });
-			}
-			else
-			{
-				GUILayout.FlexibleSpace();
-				popoutOrb = GUILayout.Button("⇗", popoutBtnStyle);
-			}
-			GUILayout.EndHorizontal();
+			DrawSectionHeader("Orbital", ref popoutOrb);
 
-			GUILayout.Space(spacingAfterHeader);
+			DrawEntry("Ap. Height", $"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}");
+			DrawEntry("Pe. Height", $"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}");
+			DrawEntry("Time to Ap.", $"{SecondsToTimeString((activeVessel.Situation == VesselSituations.Landed || activeVessel.Situation == VesselSituations.PreLaunch) ? 0f : activeVessel.Orbit.TimeToAp)}");
+			DrawEntry("Time to Pe.", $"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}");
+			DrawEntry("Inclination", $"{activeVessel.Orbit.inclination:0.00}°");
+			DrawEntry("Eccentricity", $"{activeVessel.Orbit.eccentricity:0.0000}");
+			DrawEntry("Period", $"{SecondsToTimeString(activeVessel.Orbit.period)}");
 
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Apoapsis Height: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Periapsis Height: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Time to Apoapsis: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{SecondsToTimeString((activeVessel.Situation == VesselSituations.Landed || activeVessel.Situation == VesselSituations.PreLaunch) ? 0f : activeVessel.Orbit.TimeToAp)}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Time to Periapsis: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Inclination: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.Orbit.inclination:0.00}°");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Eccentricity: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.Orbit.eccentricity:0.0000}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Orbital Period: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{SecondsToTimeString(activeVessel.Orbit.period)}");
-			GUILayout.EndHorizontal();
-
-			if (popoutOrb)
-			{
-				GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
-			}
-			else
-			{
-				GUILayout.Space(spacingAfterSection);
-			}
+			DrawSectionEnd(popoutOrb);
 		}
 		
 		private void FillSurface(int _ = 0)
 		{
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("<b>Surface</b>");
-			if (popoutSur)
-			{
-				popoutSur = !GUI.Button(new Rect(windowWidth - 23, 6, 16, 16), "x", new GUIStyle(GUI.skin.button) { fontSize = 8 });
-				GUILayout.Space(-30);
-			}
-			else
-			{
-				GUILayout.FlexibleSpace();
-				popoutSur = GUILayout.Button("⇗", popoutBtnStyle);
-			}
-			GUILayout.EndHorizontal();
+			DrawSectionHeader("Surface", ref popoutSur);
 
-			GUILayout.Space(spacingAfterHeader);
+			DrawEntry("Ref. Body", activeVessel.mainBody.bodyName);
+			DrawEntry("Situation: ", SituationToString(activeVessel.Situation));
+			DrawEntry("Altitude", MetersToDistanceString(activeVessel.AltitudeFromScenery));
+			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:0.0} m/s");
+			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:0.0} m/s");
 
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Reference Body: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.mainBody.bodyName}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Situation: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{SituationToString(activeVessel.Situation)}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Altitude (Terrain): ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{MetersToDistanceString(activeVessel.AltitudeFromScenery)}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Horizontal Speed: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.HorizontalSrfSpeed:0.0} m/s");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Vertical Speed: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.VerticalSrfSpeed:0.0} m/s");
-			GUILayout.EndHorizontal();
-
-			if (popoutSur)
-			{
-				GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
-			}
-			else
-			{
-				GUILayout.Space(spacingAfterSection);
-			}
+			DrawSectionEnd(popoutSur);
 		}
 
 		private void FillFlight(int _ = 0)
 		{
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("<b>Flight</b>");
-			if (popoutFlt)
-			{
-				popoutFlt = !GUI.Button(new Rect(windowWidth - 23, 6, 16, 16), "x", new GUIStyle(GUI.skin.button) { fontSize = 8 });
-				GUILayout.Space(-30);
-			}
-			else
-			{
-				GUILayout.FlexibleSpace();
-				popoutFlt = GUILayout.Button("⇗", popoutBtnStyle);
-			}
-			GUILayout.EndHorizontal();
+			DrawSectionHeader("Flight", ref popoutFlt);
 
-			GUILayout.Space(spacingAfterHeader);
+			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:0.0} m/s");
+			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N2}");
+			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N2} kg/m³");
+			DrawEntry("Stat. Pressure", $"{(activeVessel.SimulationObject.Telemetry.StaticPressure_kPa * 1000):N1} Pa");
+			DrawEntry("Dyn. Pressure", $"{(activeVessel.SimulationObject.Telemetry.DynamicPressure_kPa * 1000):N1} Pa");
 
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Speed: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.SurfaceVelocity.magnitude:0.0} m/s");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Mach Number: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.SimulationObject.Telemetry.MachNumber:N2}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Atmospheric Density: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N2} kg/m³");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Static Pressure: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{(activeVessel.SimulationObject.Telemetry.StaticPressure_kPa*1000):N1} Pa");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Dynamic Pressure: ");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{(activeVessel.SimulationObject.Telemetry.DynamicPressure_kPa * 1000):N1} Pa");
-			GUILayout.EndHorizontal();
-
-			if (popoutFlt)
-			{
-				GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
-			}
-			else
-			{
-				GUILayout.Space(spacingAfterSection);
-			}
+			DrawSectionEnd(popoutFlt);
 		}
 
 		private void FillTarget(int _ = 0)
 		{
-			tgtObject = activeVessel.TargetObject;
+			DrawSectionHeader("Target", ref popoutTgt);
 
-			if (tgtObject == null)
-				return;
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("<b>Target</b>");
-			if (popoutTgt)
+			DrawEntry("Name", currentTarget.DisplayName);
+			DrawEntry("Target Ap.", MetersToDistanceString(currentTarget.Orbit.ApoapsisArl));
+			DrawEntry("Target Pe.", MetersToDistanceString(currentTarget.Orbit.PeriapsisArl));
+			
+			if (activeVessel.Orbit.referenceBody == currentTarget.Orbit.referenceBody)
 			{
-				popoutTgt = !GUI.Button(new Rect(windowWidth - 23, 6, 16, 16), "x", new GUIStyle(GUI.skin.button) { fontSize = 8 });
-				GUILayout.Space(-30);
+				double distanceToTarget = (activeVessel.Orbit.Position - currentTarget.Orbit.Position).magnitude;
+				DrawEntry("Distance", MetersToDistanceString(distanceToTarget));
+				double relativeVelocity = (activeVessel.Orbit.relativeVelocity - currentTarget.Orbit.relativeVelocity).magnitude;
+				DrawEntry("Rel. Speed", $"{relativeVelocity:0.0} m/s");
+				OrbitTargeter targeter = activeVessel.Orbiter.OrbitTargeter;
+				DrawEntry("Rel. Incl.", $"{targeter.AscendingNodeTarget.Inclination:0.00}°");
+			}
+
+			DrawSectionEnd(popoutTgt);
+		}
+		
+		private void FillManeuver(int _ = 0)
+		{
+			DrawSectionHeader("Maneuver", ref popoutMan);
+
+			double timeUntilNode = currentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
+			DrawEntry("Time until:", SecondsToTimeString(timeUntilNode));
+			DrawEntry("∆v required", $"{currentManeuver.BurnRequiredDV:0.0} m/s");
+			DrawEntry("Burn Time", SecondsToTimeString(currentManeuver.BurnDuration));
+			PatchedConicsOrbit newOrbit = activeVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault();
+			DrawEntry("Projected Ap.", MetersToDistanceString(newOrbit.ApoapsisArl));
+			DrawEntry("Projected Pe.", MetersToDistanceString(newOrbit.PeriapsisArl));
+
+			DrawSectionEnd(popoutMan);
+		}
+
+		private void DrawSectionHeader(string name, ref bool isPopout)
+		{
+			GUILayout.BeginHorizontal();
+			GUILayout.Label($"<b>{name}</b>");
+			if (isPopout)
+			{
+				isPopout = !CloseButton();
 			}
 			else
 			{
 				GUILayout.FlexibleSpace();
-				popoutTgt = GUILayout.Button("⇗", popoutBtnStyle);
+				isPopout = GUILayout.Button("⇗", popoutBtnStyle);
 			}
 			GUILayout.EndHorizontal();
-
 			GUILayout.Space(spacingAfterHeader);
+		}
 
+
+		private void DrawEntry(string name, string value)
+		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Name:");
+			GUILayout.Label(name, nameLabelStyle);
 			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{tgtObject.DisplayName}");
+			GUILayout.Label(value, valueLabelStyle);
 			GUILayout.EndHorizontal();
+			GUILayout.Space(spacingAfterEntry);
+		}
 
-			OrbitTargeter targeter = activeVessel.Orbiter.OrbitTargeter;
-
-			if (activeVessel.Orbit.referenceBody == tgtObject.Orbit.referenceBody)
-			{
-				GUILayout.Space(spacingAfterEntry);
-				double distanceToTarget = (activeVessel.Orbit.Position - tgtObject.Orbit.Position).magnitude;
-
-				GUILayout.BeginHorizontal();
-				GUILayout.Label($"Distance:");
-				GUILayout.FlexibleSpace();
-				GUILayout.Label($"{MetersToDistanceString(distanceToTarget)}");
-				GUILayout.EndHorizontal();
-
-				GUILayout.Space(spacingAfterEntry);
-
-				double relativeVelocity = (activeVessel.Orbit.relativeVelocity - tgtObject.Orbit.relativeVelocity).magnitude;
-				GUILayout.BeginHorizontal();
-				GUILayout.Label($"Relative Speed:");
-				GUILayout.FlexibleSpace();
-				GUILayout.Label($"{relativeVelocity:0.0} m/s");
-				GUILayout.EndHorizontal();
-
-				GUILayout.Space(spacingAfterEntry);
-
-				GUILayout.BeginHorizontal();
-				GUILayout.Label($"Relative Inclination:");
-				GUILayout.FlexibleSpace();
-				GUILayout.Label($"{targeter.AscendingNodeTarget.Inclination:0.00}°");
-				GUILayout.EndHorizontal();
-
-			}
-
-			if (popoutTgt)
+		private void DrawSectionEnd(bool isPopout)
+		{
+			if (isPopout)
 			{
 				GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
+				GUILayout.Space(spacingBelowPopout);
 			}
 			else
 			{
 				GUILayout.Space(spacingAfterSection);
 			}
 		}
-		
-		private void FillManeuver(int _ = 0)
+
+		private bool CloseButton()
 		{
-			nodeData = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(GameManager.Instance.Game.ViewController.GetActiveVehicle(true).Guid).FirstOrDefault();
-
-			if (nodeData == null)
-				return;
-				
-			GUILayout.BeginHorizontal();
-			GUILayout.Label("<b>Maneuver</b>");
-			if (popoutMan)
-			{
-				popoutMan = !GUI.Button(new Rect(windowWidth - 23, 6, 16, 16), "x", new GUIStyle(GUI.skin.button) { fontSize = 8 });
-				GUILayout.Space(-30);
-			}
-			else
-			{
-				GUILayout.FlexibleSpace();
-				popoutMan = GUILayout.Button("⇗", popoutBtnStyle);
-			}
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterHeader);
-
-			double timeUntilNode = nodeData.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Time until Maneuver:");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{SecondsToTimeString(timeUntilNode)}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Maneuver ∆v:");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{nodeData.BurnRequiredDV:0.0} m/s");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Burn Time:");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{SecondsToTimeString(nodeData.BurnDuration)}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			PatchedConicsOrbit newOrbit = activeVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault();
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Projected Ap:");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{MetersToDistanceString(newOrbit.ApoapsisArl)}");
-			GUILayout.EndHorizontal();
-
-			GUILayout.Space(spacingAfterEntry);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Label($"Projected Pe:");
-			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{MetersToDistanceString(newOrbit.PeriapsisArl)}");
-			GUILayout.EndHorizontal();
-
-			if (popoutMan)
-			{
-				GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
-
-			}
-			else
-			{
-				GUILayout.Space(spacingAfterSection);
-			}
+			return GUI.Button(closeBtnRect, "x", closeBtnStyle);
 		}
 
 		private string SituationToString(VesselSituations situation)
