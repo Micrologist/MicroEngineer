@@ -16,5 +16,8 @@
     <Reference Include="UnityEngine.IMGUIModule">
       <HintPath>..\external_dlls\UnityEngine.IMGUIModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>..\external_dlls\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
