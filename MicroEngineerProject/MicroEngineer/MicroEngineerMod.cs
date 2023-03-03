@@ -5,6 +5,7 @@ using SpaceWarp.API.Mods;
 using SpaceWarp.API;
 using KSP.Sim.Maneuver;
 using KSP.UI.Binding;
+using KSP.Sim.DeltaV;
 
 namespace MicroMod
 {
@@ -12,7 +13,7 @@ namespace MicroMod
 	public class MicroEngineerMod : Mod
 	{
 		private bool showGUI = false;
-		
+
 		private readonly int windowWidth = 290;
 		private readonly int windowHeight = 700;
 		private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect;
@@ -26,6 +27,10 @@ namespace MicroMod
 		private GUIStyle closeBtnStyle;
 		private GUIStyle nameLabelStyle;
 		private GUIStyle valueLabelStyle;
+		private GUIStyle unitLabelStyle;
+
+		private string unitColorHex;
+
 
 		private int spacingAfterHeader = -12;
 		private int spacingAfterEntry = -12;
@@ -48,16 +53,60 @@ namespace MicroMod
 		public override void OnInitialized()
 		{
 			_spaceWarpUISkin = SpaceWarpManager.Skin;
-			mainWindowStyle = new GUIStyle(_spaceWarpUISkin.window) { padding = new RectOffset(8, 8, 20, 8), contentOffset = new Vector2(0, -22) };
-			popoutWindowStyle = new GUIStyle(mainWindowStyle) { padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5) };
-			popoutBtnStyle = new GUIStyle(_spaceWarpUISkin.button) { alignment = TextAnchor.UpperLeft, contentOffset = new Vector2(0, -3), fixedHeight = 20, fixedWidth = 20 };
-			sectionToggleStyle = new GUIStyle(_spaceWarpUISkin.toggle) { padding = new RectOffset(17, 0, 3, 0)};
+
+			mainWindowStyle = new GUIStyle(_spaceWarpUISkin.window)
+			{
+				padding = new RectOffset(8, 8, 20, 8),
+				contentOffset = new Vector2(0, -22)
+			};
+
+			popoutWindowStyle = new GUIStyle(mainWindowStyle)
+			{
+				padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5)
+			};
+
+			popoutBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
+			{
+				alignment = TextAnchor.MiddleCenter,
+				contentOffset = new Vector2(0, 2),
+				fixedHeight = 15,
+				fixedWidth = 15,
+				fontSize = 28,
+				clipping = TextClipping.Overflow,
+				margin = new RectOffset(0, 0, 10, 0)
+			};
+
+			sectionToggleStyle = new GUIStyle(_spaceWarpUISkin.toggle)
+			{
+				padding = new RectOffset(17, 0, 3, 0)
+			};
+
 			nameLabelStyle = new GUIStyle(_spaceWarpUISkin.label);
 			nameLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
-			valueLabelStyle = new GUIStyle(_spaceWarpUISkin.label);
-			closeBtnStyle = new GUIStyle(_spaceWarpUISkin.button) { fontSize = 8 };
+
+			valueLabelStyle = new GUIStyle(_spaceWarpUISkin.label)
+			{
+				alignment = TextAnchor.MiddleRight
+			};
+			valueLabelStyle.normal.textColor = new Color(.6f, .7f, 1, 1);
+			
+			unitLabelStyle = new GUIStyle(valueLabelStyle)
+			{
+				fixedWidth = 24,
+				alignment = TextAnchor.MiddleLeft
+			};
+			unitLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
+
+			unitColorHex = ColorUtility.ToHtmlStringRGBA(unitLabelStyle.normal.textColor);
+
+			closeBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
+			{
+				fontSize = 8
+			};
+
 			closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
 			
+
 			SpaceWarpManager.RegisterAppButton(
 				"Micro Engineer",
 				"BTN-MicroEngineerBtn",
@@ -85,7 +134,7 @@ namespace MicroMod
 			currentTarget = activeVessel.TargetObject;
 			currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
 			GUI.skin = _spaceWarpUISkin;
-			
+
 			mainGuiRect = GUILayout.Window(
 				GUIUtility.GetControlID(FocusType.Passive),
 				mainGuiRect,
@@ -116,7 +165,7 @@ namespace MicroMod
 			{
 				fltGuiRect = GeneratePopoutWindow(fltGuiRect, FillFlight);
 			}
-			
+
 			if (showTgt && popoutTgt && currentTarget != null)
 			{
 				tgtGuiRect = GeneratePopoutWindow(tgtGuiRect, FillTarget);
@@ -142,7 +191,7 @@ namespace MicroMod
 			guiRect.position = ClampToScreen(guiRect.position, guiRect.size);
 			return guiRect;
 		}
-		
+
 		private Vector2 ClampToScreen(Vector2 position, Vector2 size)
 		{
 			float x = Mathf.Clamp(position.x, 0, Screen.width - size.x);
@@ -207,41 +256,41 @@ namespace MicroMod
 
 		private void FillVessel(int _ = 0)
 		{
-			DrawSectionHeader("Vessel", ref popoutVes);
-
-			DrawEntry("Name", activeVessel.DisplayName);
-			DrawEntry("∆v", $"{activeVessel.VesselDeltaV.TotalDeltaVActual:0.} m/s");
-			DrawEntry("Mass", $"{activeVessel.totalMass:0.000} t");
-			DrawEntry("Thrust", $"{activeVessel.VesselDeltaV.StageInfo.FirstOrDefault().ThrustActual:0.} kN");
-			DrawEntry("TWR", $"{activeVessel.VesselDeltaV.StageInfo.FirstOrDefault().TWRActual:0.00}");
+			DrawSectionHeader("Vessel", ref popoutVes, activeVessel.DisplayName);
+			DrawEntry("Mass", $"{activeVessel.totalMass:N3}", "t");
+			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
+			if (deltaVComponent != null)
+			{
+				DrawEntry("∆v", $"{deltaVComponent.TotalDeltaVActual:N3}", "m/s");
+				DrawEntry("Thrust", $"{deltaVComponent.StageInfo.FirstOrDefault()?.ThrustActual:N3}", "kN");
+				DrawEntry("TWR", $"{deltaVComponent.StageInfo.FirstOrDefault()?.TWRActual:N3}");
+			}
 
 			DrawSectionEnd(popoutVes);
 		}
-		
+
 		private void FillOrbital(int _ = 0)
 		{
 			DrawSectionHeader("Orbital", ref popoutOrb);
 
-			DrawEntry("Ap. Height", $"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}");
-			DrawEntry("Pe. Height", $"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}");
-			DrawEntry("Time to Ap.", $"{SecondsToTimeString((activeVessel.Situation == VesselSituations.Landed || activeVessel.Situation == VesselSituations.PreLaunch) ? 0f : activeVessel.Orbit.TimeToAp)}");
-			DrawEntry("Time to Pe.", $"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}");
-			DrawEntry("Inclination", $"{activeVessel.Orbit.inclination:0.00}°");
-			DrawEntry("Eccentricity", $"{activeVessel.Orbit.eccentricity:0.0000}");
-			DrawEntry("Period", $"{SecondsToTimeString(activeVessel.Orbit.period)}");
-
+			DrawEntry("Ap. Height", $"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}", "km");
+			DrawEntry("Pe. Height", $"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}", "km");
+			DrawEntry("Inclination", $"{activeVessel.Orbit.inclination:N3}", "°");
+			DrawEntry("Eccentricity", $"{activeVessel.Orbit.eccentricity:N3}");
+			DrawEntry("Time to Ap.", $"{SecondsToTimeString((activeVessel.Situation == VesselSituations.Landed || activeVessel.Situation == VesselSituations.PreLaunch) ? 0f : activeVessel.Orbit.TimeToAp)}", "s");
+			DrawEntry("Time to Pe.", $"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}", "s");
+			DrawEntry("Period", $"{SecondsToTimeString(activeVessel.Orbit.period)}", "s");
 			DrawSectionEnd(popoutOrb);
 		}
-		
+
 		private void FillSurface(int _ = 0)
 		{
-			DrawSectionHeader("Surface", ref popoutSur);
+			DrawSectionHeader("Surface", ref popoutSur, activeVessel.mainBody.bodyName);
 
-			DrawEntry("Ref. Body", activeVessel.mainBody.bodyName);
-			DrawEntry("Situation: ", SituationToString(activeVessel.Situation));
-			DrawEntry("Altitude", MetersToDistanceString(activeVessel.AltitudeFromScenery));
-			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:0.0} m/s");
-			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:0.0} m/s");
+			DrawEntry("Situation", SituationToString(activeVessel.Situation));
+			DrawEntry("Altitude", MetersToDistanceString(activeVessel.AltitudeFromScenery), "km");
+			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:N3}", "m/s");
+			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:N3}", "m/s");
 
 			DrawSectionEnd(popoutSur);
 		}
@@ -250,75 +299,78 @@ namespace MicroMod
 		{
 			DrawSectionHeader("Flight", ref popoutFlt);
 
-			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:0.0} m/s");
-			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N2}");
-			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N2} kg/m³");
-			DrawEntry("Stat. Pressure", $"{(activeVessel.SimulationObject.Telemetry.StaticPressure_kPa * 1000):N1} Pa");
-			DrawEntry("Dyn. Pressure", $"{(activeVessel.SimulationObject.Telemetry.DynamicPressure_kPa * 1000):N1} Pa");
+			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N3}", "m/s");
+			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N3}");
+			DrawEntry("Stat. Pressure", $"{(activeVessel.SimulationObject.Telemetry.StaticPressure_kPa):N3}", "KPa");
+			DrawEntry("Dyn. Pressure", $"{(activeVessel.SimulationObject.Telemetry.DynamicPressure_kPa):N3}", "KPa");
 
 			DrawSectionEnd(popoutFlt);
 		}
 
 		private void FillTarget(int _ = 0)
 		{
-			DrawSectionHeader("Target", ref popoutTgt);
+			DrawSectionHeader("Target", ref popoutTgt, currentTarget.DisplayName);
 
-			DrawEntry("Name", currentTarget.DisplayName);
 			DrawEntry("Target Ap.", MetersToDistanceString(currentTarget.Orbit.ApoapsisArl));
 			DrawEntry("Target Pe.", MetersToDistanceString(currentTarget.Orbit.PeriapsisArl));
-			
+
 			if (activeVessel.Orbit.referenceBody == currentTarget.Orbit.referenceBody)
 			{
 				double distanceToTarget = (activeVessel.Orbit.Position - currentTarget.Orbit.Position).magnitude;
-				DrawEntry("Distance", MetersToDistanceString(distanceToTarget));
+				DrawEntry("Distance", MetersToDistanceString(distanceToTarget), "km");
 				double relativeVelocity = (activeVessel.Orbit.relativeVelocity - currentTarget.Orbit.relativeVelocity).magnitude;
-				DrawEntry("Rel. Speed", $"{relativeVelocity:0.0} m/s");
+				DrawEntry("Rel. Speed", $"{relativeVelocity:N3}", "m/s");
 				OrbitTargeter targeter = activeVessel.Orbiter.OrbitTargeter;
-				DrawEntry("Rel. Incl.", $"{targeter.AscendingNodeTarget.Inclination:0.00}°");
+				DrawEntry("Rel. Incl.", $"{targeter.AscendingNodeTarget.Inclination:N3}", "°");
 			}
 
 			DrawSectionEnd(popoutTgt);
 		}
-		
+
 		private void FillManeuver(int _ = 0)
 		{
 			DrawSectionHeader("Maneuver", ref popoutMan);
-
-			double timeUntilNode = currentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
-			DrawEntry("Time until:", SecondsToTimeString(timeUntilNode));
-			DrawEntry("∆v required", $"{currentManeuver.BurnRequiredDV:0.0} m/s");
-			DrawEntry("Burn Time", SecondsToTimeString(currentManeuver.BurnDuration));
 			PatchedConicsOrbit newOrbit = activeVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault();
-			DrawEntry("Projected Ap.", MetersToDistanceString(newOrbit.ApoapsisArl));
-			DrawEntry("Projected Pe.", MetersToDistanceString(newOrbit.PeriapsisArl));
+			DrawEntry("Projected Ap.", MetersToDistanceString(newOrbit.ApoapsisArl), "km");
+			DrawEntry("Projected Pe.", MetersToDistanceString(newOrbit.PeriapsisArl), "km");
+			DrawEntry("∆v required", $"{currentManeuver.BurnRequiredDV:N3}", "m/s");
+			double timeUntilNode = currentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
+			DrawEntry("Time to", SecondsToTimeString(timeUntilNode), "s");
+			DrawEntry("Burn Time", SecondsToTimeString(currentManeuver.BurnDuration), "s");
 
 			DrawSectionEnd(popoutMan);
 		}
 
-		private void DrawSectionHeader(string name, ref bool isPopout)
+		private void DrawSectionHeader(string name, ref bool isPopout, string value = "")
 		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Label($"<b>{name}</b>");
 			if (isPopout)
 			{
 				isPopout = !CloseButton();
 			}
 			else
 			{
-				GUILayout.FlexibleSpace();
-				isPopout = GUILayout.Button("⇗", popoutBtnStyle);
+				isPopout = GUILayout.Button("⇖", popoutBtnStyle);
 			}
+
+			GUILayout.Label($"<b>{name}</b>");
+			GUILayout.FlexibleSpace();
+			GUILayout.Label(value, valueLabelStyle);
+			GUILayout.Space(5);
+			GUILayout.Label("", unitLabelStyle);
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spacingAfterHeader);
 		}
 
 
-		private void DrawEntry(string name, string value)
+		private void DrawEntry(string name, string value, string unit = "")
 		{
 			GUILayout.BeginHorizontal();
 			GUILayout.Label(name, nameLabelStyle);
 			GUILayout.FlexibleSpace();
 			GUILayout.Label(value, valueLabelStyle);
+			GUILayout.Space(5);
+			GUILayout.Label(unit, unitLabelStyle);
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spacingAfterEntry);
 		}
@@ -366,36 +418,67 @@ namespace MicroMod
 
 		private string SecondsToTimeString(double seconds)
 		{
-			if (seconds > 0 && seconds < TimeSpan.MaxValue.TotalSeconds)
+			if (seconds == Double.PositiveInfinity)
 			{
-				TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
-				string result = "";
-				double h = Math.Floor(timeSpan.TotalHours);
-				if (h > 0)
+				return "∞";
+			}
+			else if (seconds == Double.NegativeInfinity)
+			{
+				return "-∞";
+			}
+
+			string result = "";
+			if (seconds < 0)
+			{
+				result += "-";
+				seconds = Math.Abs(seconds);
+			}
+
+			int days = (int)(seconds / 21600);
+			int hours = (int)((seconds - (days * 21600)) / 3600);
+			int minutes = (int)((seconds - (hours * 3600) - (days * 21600)) / 60);
+			int secs = (int)(seconds - (days * 21600) - (hours * 3600) - (minutes * 60));
+
+			if (days > 0)
+			{
+				result += $"{days} <color=#{unitColorHex}>d</color> ";
+			}
+
+			if (hours > 0 || days > 0)
+			{
 				{
-					result += $"{h}h ";
+					result += $"{hours} <color=#{unitColorHex}>h</color> ";
 				}
-				double m = timeSpan.Minutes;
-				if (m > 0)
+			}
+
+			if (minutes > 0 || hours > 0 || days > 0)
+			{
+				if (hours > 0 || days > 0)
 				{
-					result += $"{m}m ";
+					result += $"{minutes:00.} <color=#{unitColorHex}>m</color> ";
 				}
-				double s = timeSpan.Seconds;
-				if (s > 0)
+				else
 				{
-					result += $"{s}s";
+					result += $"{minutes} <color=#{unitColorHex}>m</color> ";
 				}
-				return result.Trim();
+			}
+
+			if (minutes > 0 || hours > 0 || days > 0)
+			{
+				result += $"{secs:00.}";
 			}
 			else
 			{
-				return "N/A";
+				result += secs;
 			}
+
+			return result;
+
 		}
 
 		private string MetersToDistanceString(double heightInMeters)
 		{
-				return $"{heightInMeters:N1} m";
+			return $"{heightInMeters / 1000:N3}";
 		}
 
 		private void CloseWindow()
