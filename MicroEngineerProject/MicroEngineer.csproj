@@ -7,6 +7,7 @@
     <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
+	<PackageReference Include="BepInEx.BaseLib" Version="5.4.21" Publicize="true" />
     <Reference Include="..\external_dlls\SpaceWarp.dll" />
     <Reference Include="..\external_dlls\UnityEngine.dll" />
     <Reference Include="..\external_dlls\UnityEngine.CoreModule.dll" />

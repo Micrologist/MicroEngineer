@@ -1,10 +1,10 @@
-using SpaceWarp.API.Configuration;
+using SpaceWarp.API;
 using Newtonsoft.Json;
 
 namespace MicroEngineer
 {
     [JsonObject(MemberSerialization.OptOut)]
-    [ModConfig]
+    
     public class MicroEngineerConfig
     {
     }

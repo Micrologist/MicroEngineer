@@ -3,22 +3,28 @@ using KSP.Sim.impl;
 using UnityEngine;
 using SpaceWarp.API.Mods;
 using SpaceWarp.API;
-using KSP.Sim.Maneuver;
+using SpaceWarp.API.Assets;
 using KSP.UI.Binding;
+using SpaceWarp.API.UI;
+using SpaceWarp.API.UI.Toolbar;
+using KSP.Sim.Maneuver;
+using BepInEx;
+using SpaceWarp;
 
 namespace MicroMod
 {
-	[MainMod]
-	public class MicroEngineerMod : Mod
+    [BepInPlugin("com.Micro.MicroMod", "MicroMOd", "0.4.0")]
+    [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
+    public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
 		private bool showGUI = false;
-		
-		private readonly int windowWidth = 290;
+        private static MicroEngineerMod Instance { get; set; }
+
+        private readonly int windowWidth = 290;
 		private readonly int windowHeight = 700;
 		private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect;
 		private Rect closeBtnRect;
 
-		private GUISkin _spaceWarpUISkin;
 		private GUIStyle popoutBtnStyle;
 		private GUIStyle mainWindowStyle;
 		private GUIStyle popoutWindowStyle;
@@ -47,26 +53,24 @@ namespace MicroMod
 
 		public override void OnInitialized()
 		{
-			_spaceWarpUISkin = SpaceWarpManager.Skin;
-			mainWindowStyle = new GUIStyle(_spaceWarpUISkin.window) { padding = new RectOffset(8, 8, 20, 8), contentOffset = new Vector2(0, -22) };
-			popoutWindowStyle = new GUIStyle(mainWindowStyle) { padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5) };
-			popoutBtnStyle = new GUIStyle(_spaceWarpUISkin.button) { alignment = TextAnchor.UpperLeft, contentOffset = new Vector2(0, -3), fixedHeight = 20, fixedWidth = 20 };
-			sectionToggleStyle = new GUIStyle(_spaceWarpUISkin.toggle) { padding = new RectOffset(17, 0, 3, 0)};
-			nameLabelStyle = new GUIStyle(_spaceWarpUISkin.label);
-			nameLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
-			valueLabelStyle = new GUIStyle(_spaceWarpUISkin.label);
-			closeBtnStyle = new GUIStyle(_spaceWarpUISkin.button) { fontSize = 8 };
-			closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
+			base.OnInitialized();
+			Instance = this;
 			
-			SpaceWarpManager.RegisterAppButton(
+			Toolbar.RegisterAppButton(
 				"Micro Engineer",
 				"BTN-MicroEngineerBtn",
-				SpaceWarpManager.LoadIcon(),
-				delegate { showGUI = !showGUI; }
-			);
-		}
+                AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
+                ToggleButton
+            ); ; ;
+        }
+        private void ToggleButton(bool toggle)
+        {
+            showGUI = toggle;
+            GameObject.Find("BTN-MircroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(toggle);
 
-		void Awake()
+        }
+
+        void Awake()
 		{
 			mainGuiRect = new Rect(Screen.width * 0.8f, Screen.height * 0.3f, 0, 0);
 			vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
@@ -82,9 +86,28 @@ namespace MicroMod
 			activeVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
 			if (!showGUI || activeVessel == null) return;
 
-			currentTarget = activeVessel.TargetObject;
+            mainGuiRect = new Rect(windowWidth, windowHeight, 0, 0);
+            vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+            orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+            surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+            fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+            manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+            tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+
+            GUI.skin = Skins.ConsoleSkin;
+            mainWindowStyle = new GUIStyle(GUI.skin.window) { padding = new RectOffset(8, 8, 20, 8), contentOffset = new Vector2(0, -22) };
+            popoutWindowStyle = new GUIStyle(mainWindowStyle) { padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5) };
+            popoutBtnStyle = new GUIStyle(GUI.skin.button) { alignment = TextAnchor.UpperLeft, contentOffset = new Vector2(0, -3), fixedHeight = 20, fixedWidth = 20 };
+            sectionToggleStyle = new GUIStyle(GUI.skin.toggle) { padding = new RectOffset(17, 0, 3, 0) };
+            nameLabelStyle = new GUIStyle(GUI.skin.label);
+            nameLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
+            valueLabelStyle = new GUIStyle(GUI.skin.label);
+            closeBtnStyle = new GUIStyle(GUI.skin.button) { fontSize = 8 };
+            closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
+
+            currentTarget = activeVessel.TargetObject;
 			currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
-			GUI.skin = _spaceWarpUISkin;
+			GUI.skin = GUI.skin;
 			
 			mainGuiRect = GUILayout.Window(
 				GUIUtility.GetControlID(FocusType.Passive),
