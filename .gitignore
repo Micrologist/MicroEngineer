@@ -18,10 +18,8 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
-/MicroEngineerProject/.vs/MicroEngineer/FileContentIndex
-/MicroEngineerProject/.vs/ProjectEvaluation/microengineer.metadata.v2
-/MicroEngineerProject/.vs/ProjectEvaluation/microengineer.projects.v2
-/micro_engineer_0.3.1.zip
-/Staging
+/MicroEngineerProject/.vs
+/Staging/*.dll
+/Staging/*.pdb
+/Staging/*.zip
 /MicroEngineerProject/.vs/*
-MicroEngineerProject/external_dlls/SpaceWarp.pdb
