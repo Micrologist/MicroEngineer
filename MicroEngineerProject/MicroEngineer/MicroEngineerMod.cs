@@ -13,7 +13,6 @@ using SpaceWarp.UI;
 using SpaceWarp.API;
 using SpaceWarp.API.Mods;
 using SpaceWarp.API.Assets;
-using SpaceWarp.API.Assets;
 using SpaceWarp.API.UI;
 using SpaceWarp.API.UI.Appbar;
 
