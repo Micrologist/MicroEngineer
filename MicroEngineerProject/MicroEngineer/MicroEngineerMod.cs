@@ -74,12 +74,14 @@ namespace MicroMod
 			mainWindowStyle = new GUIStyle(_spaceWarpUISkin.window)
 			{
 				padding = new RectOffset(8, 8, 20, 8),
-				contentOffset = new Vector2(0, -22)
+				contentOffset = new Vector2(0, -22),
+				fixedWidth = windowWidth
 			};
 
 			popoutWindowStyle = new GUIStyle(mainWindowStyle)
 			{
-				padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5)
+				padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5),
+				fixedWidth = windowWidth
 			};
 
 			popoutBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
@@ -158,8 +160,7 @@ namespace MicroMod
 				FillMainGUI,
 				"<color=#696DFF>// MICRO ENGINEER</color>",
 				mainWindowStyle,
-				GUILayout.Height(0),
-				GUILayout.Width(windowWidth)
+				GUILayout.Height(0)
 			);
 			mainGuiRect.position = ClampToScreen(mainGuiRect.position, mainGuiRect.size);
 
@@ -233,12 +234,19 @@ namespace MicroMod
 
 			GUILayout.BeginHorizontal();
 			showVes = GUILayout.Toggle(showVes, "<b>VES</b>", sectionToggleStyle);
+			showStg = GUILayout.Toggle(showStg, "<b>STG</b>", sectionToggleStyle);
 			showOrb = GUILayout.Toggle(showOrb, "<b>ORB</b>", sectionToggleStyle);
 			showSur = GUILayout.Toggle(showSur, "<b>SUR</b>", sectionToggleStyle);
 			showFlt = GUILayout.Toggle(showFlt, "<b>FLT</b>", sectionToggleStyle);
 			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>", sectionToggleStyle);
+			GUILayout.EndHorizontal();
+
+			GUILayout.Space(-10);
+			
+			GUILayout.BeginHorizontal();
 			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>", sectionToggleStyle);
 			GUILayout.EndHorizontal();
+			
 			GUILayout.Space(-5);
 			GUILayout.BeginHorizontal();
 			GUILayout.EndHorizontal();
@@ -301,20 +309,19 @@ namespace MicroMod
 
 		private void FillStages(int _ = 0)
 		{
-			DrawSectionHeader("Stages", ref popoutStg);
+			DrawSectionHeader("Stage", ref popoutStg);
 
 			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
 			int stageCount = deltaVComponent?.StageInfo.Count ?? 0;
 			if (deltaVComponent != null && stageCount > 0)
 			{
-				for (int i = 0; i < deltaVComponent.StageInfo.Count; i++)
+				for (int i = deltaVComponent.StageInfo.Count - 1; i >= 0; i--)
 				{
 					DeltaVStageInfo stageInfo = deltaVComponent.StageInfo[i];
 					if (stageInfo.DeltaVinVac > 0.0001 || stageInfo.DeltaVatASL > 0.0001)
 					{
 						int stageNum = stageCount - stageInfo.Stage;
-						DrawEntry($"S{stageNum:00} ∆v", $"{stageInfo.DeltaVActual:N3}", "m/s");
-						DrawEntry($"S{stageNum:00} TWR", $"{stageInfo.TWRActual:N3}");
+						DrawStageEntry(stageNum, stageInfo);
 					}
 				}
 			}
@@ -341,8 +348,8 @@ namespace MicroMod
 			DrawSectionHeader("Surface", ref popoutSur, activeVessel.mainBody.bodyName);
 
 			DrawEntry("Situation", SituationToString(activeVessel.Situation));
-			DrawEntry("Alt. (MSL)", MetersToDistanceString(activeVessel.AltitudeFromSeaLevel), "km");
-			DrawEntry("Alt. (AGL)", MetersToDistanceString(activeVessel.AltitudeFromScenery), "km");
+			DrawEntry("Alt. MSL", MetersToDistanceString(activeVessel.AltitudeFromSeaLevel), "km");
+			DrawEntry("Alt. AGL", MetersToDistanceString(activeVessel.AltitudeFromScenery), "km");
 			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:N3}", "m/s");
 			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:N3}", "m/s");
 
@@ -432,6 +439,20 @@ namespace MicroMod
 			GUILayout.Space(spacingAfterEntry);
 		}
 
+		private void DrawStageEntry(int stageID, DeltaVStageInfo stageInfo)
+		{
+			GUILayout.BeginHorizontal();
+			GUILayout.Label($"{stageID:00.}", nameLabelStyle, GUILayout.Width(24));
+			GUILayout.FlexibleSpace();
+			GUILayout.Label($"{stageInfo.DeltaVActual:N0} <color=#{unitColorHex}>m/s</color>", valueLabelStyle);
+			GUILayout.Space(15);
+			GUILayout.Label($"{stageInfo.TWRActual:N2}", valueLabelStyle, GUILayout.Width(32));
+			GUILayout.Space(2);
+			GUILayout.Label($"{SecondsToTimeString(Math.Min(stageInfo.StageBurnTime, 3599), false)}<color=#{unitColorHex}>s</color>", valueLabelStyle, GUILayout.Width(70));
+			GUILayout.EndHorizontal();
+			GUILayout.Space(spacingAfterEntry);
+		}
+
 		private void DrawSectionEnd(bool isPopout)
 		{
 			if (isPopout)
@@ -444,7 +465,7 @@ namespace MicroMod
 				GUILayout.Space(spacingAfterSection);
 			}
 		}
-
+		
 		private bool CloseButton()
 		{
 			return GUI.Button(closeBtnRect, "x", closeBtnStyle);
@@ -473,7 +494,7 @@ namespace MicroMod
 			}
 		}
 
-		private string SecondsToTimeString(double seconds)
+		private string SecondsToTimeString(double seconds, bool addSpacing = true)
 		{
 			if (seconds == Double.PositiveInfinity)
 			{
@@ -485,12 +506,18 @@ namespace MicroMod
 			}
 
 			string result = "";
+			string spacing = "";
+			if (addSpacing)
+			{
+				spacing = " ";
+			}
+			
 			if (seconds < 0)
 			{
 				result += "-";
 				seconds = Math.Abs(seconds);
 			}
-
+			
 			int days = (int)(seconds / 21600);
 			int hours = (int)((seconds - (days * 21600)) / 3600);
 			int minutes = (int)((seconds - (hours * 3600) - (days * 21600)) / 60);
@@ -498,13 +525,13 @@ namespace MicroMod
 
 			if (days > 0)
 			{
-				result += $"{days} <color=#{unitColorHex}>d</color> ";
+				result += $"{days}{spacing}<color=#{unitColorHex}>d</color> ";
 			}
-
+			
 			if (hours > 0 || days > 0)
 			{
 				{
-					result += $"{hours} <color=#{unitColorHex}>h</color> ";
+					result += $"{hours}{spacing}<color=#{unitColorHex}>h</color> ";
 				}
 			}
 
@@ -512,11 +539,11 @@ namespace MicroMod
 			{
 				if (hours > 0 || days > 0)
 				{
-					result += $"{minutes:00.} <color=#{unitColorHex}>m</color> ";
+					result += $"{minutes:00.}{spacing}<color=#{unitColorHex}>m</color> ";
 				}
 				else
 				{
-					result += $"{minutes} <color=#{unitColorHex}>m</color> ";
+					result += $"{minutes}{spacing}<color=#{unitColorHex}>m</color> ";
 				}
 			}
 
