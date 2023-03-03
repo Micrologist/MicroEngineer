@@ -157,7 +157,7 @@ namespace MicroEngineerMod
                 fontSize = 8
             };
 
-            closeBtnRect = new Rect(400 - 23, 6, 16, 16);
+            closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
 
 
             currentTarget = activeVessel.TargetObject;
@@ -176,7 +176,7 @@ namespace MicroEngineerMod
                 "<color=#696DFF>// MICRO ENGINEER</color>",
                 mainWindowStyle,
                 GUILayout.Height(Screen.height*0.6f),
-                GUILayout.Width(400)
+                GUILayout.Width(windowWidth)
             );
             }
 
@@ -188,8 +188,8 @@ namespace MicroEngineerMod
                 FillVessel,
                 "",
                 popoutWindowStyle,
-                GUILayout.Height(Screen.height*0.6f),
-                GUILayout.Width(400)
+                GUILayout.Height(200),
+                GUILayout.Width(windowWidth)
                 );
             }
 
@@ -201,8 +201,8 @@ namespace MicroEngineerMod
                 FillVessel,
                 "",
                 popoutWindowStyle,
-                GUILayout.Height(Screen.height * 0.6f),
-                GUILayout.Width(400)
+                GUILayout.Height(200),
+                GUILayout.Width(windowWidth)
                 );
             }
 
@@ -214,8 +214,8 @@ namespace MicroEngineerMod
                 FillVessel,
                 "",
                 popoutWindowStyle,
-                GUILayout.Height(Screen.height * 0.6f),
-                GUILayout.Width(400)
+                GUILayout.Height(200),
+                GUILayout.Width(windowWidth)
                 );
             }
 
@@ -227,8 +227,8 @@ namespace MicroEngineerMod
                 FillVessel,
                 "",
                 popoutWindowStyle,
-                GUILayout.Height(Screen.height * 0.6f),
-                GUILayout.Width(400)
+                GUILayout.Height(200),
+                GUILayout.Width(windowWidth)
                 );
             }
 
@@ -240,8 +240,8 @@ namespace MicroEngineerMod
                 FillVessel,
                 "",
                 popoutWindowStyle,
-                GUILayout.Height(Screen.height * 0.6f),
-                GUILayout.Width(400)
+                GUILayout.Height(200),
+                GUILayout.Width(windowWidth)
                 );
             }
 
@@ -253,8 +253,8 @@ namespace MicroEngineerMod
                 FillVessel,
                 "",
                 popoutWindowStyle,
-                GUILayout.Height(Screen.height * 0.6f),
-                GUILayout.Width(400)
+                GUILayout.Height(200),
+                GUILayout.Width(windowWidth)
                 );
             }
 
@@ -266,8 +266,8 @@ namespace MicroEngineerMod
                 FillVessel,
                 "",
                 popoutWindowStyle,
-                GUILayout.Height(Screen.height * 0.3f),
-                GUILayout.Width(400)
+                GUILayout.Height(200),
+                GUILayout.Width(windowWidth)
                 );
             }
         }
@@ -280,8 +280,8 @@ namespace MicroEngineerMod
                 fillAction,
                 "",
                 popoutWindowStyle,
-                GUILayout.Height(Screen.height * 0.3f),
-                GUILayout.Width(400)
+                GUILayout.Height(200),
+                GUILayout.Width(windowWidth)
             );
             return guiRect;
         }
