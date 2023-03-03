@@ -1,17 +1,8 @@
-﻿using KSP.Game;
+using KSP.Game;
 using KSP.Sim.impl;
 using UnityEngine;
 using SpaceWarp.API.Mods;
 using SpaceWarp.API;
-<<<<<<< Updated upstream
-using SpaceWarp.API.Assets;
-using KSP.UI.Binding;
-using SpaceWarp.API.UI;
-using SpaceWarp.API.UI.Toolbar;
-using KSP.Sim.Maneuver;
-using BepInEx;
-using SpaceWarp;
-=======
 using KSP.Sim.Maneuver;
 using SpaceWarp.API.Assets;
 using KSP.UI.Binding;
@@ -23,15 +14,10 @@ using KSP.Sim.DeltaV;
 using KSP.Sim;
 using KSP.UI.Flight;
 using BepInEx;
->>>>>>> Stashed changes
 
 namespace MicroEngineerMod
 {
-<<<<<<< Updated upstream
-    [BepInPlugin("com.Micro.MicroMod", "MicroMOd", "0.4.0")]
-=======
     [BepInPlugin("com.Micro.MicroEngineerMod", "MicroEngineerMod", "0.4.0")]
->>>>>>> Stashed changes
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
@@ -40,12 +26,7 @@ namespace MicroEngineerMod
 
         private readonly int windowWidth = 290;
 		private readonly int windowHeight = 700;
-<<<<<<< Updated upstream
-		private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect;
-		private Rect closeBtnRect;
-=======
 		private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect, stgGuiRect, closeBtnRect;
->>>>>>> Stashed changes
 
 		private GUIStyle popoutBtnStyle;
 		private GUIStyle mainWindowStyle;
@@ -54,6 +35,10 @@ namespace MicroEngineerMod
 		private GUIStyle closeBtnStyle;
 		private GUIStyle nameLabelStyle;
 		private GUIStyle valueLabelStyle;
+		private GUIStyle unitLabelStyle;
+		
+		private string unitColorHex;
+
 
 		private int spacingAfterHeader = -12;
 		private int spacingAfterEntry = -12;
@@ -66,43 +51,33 @@ namespace MicroEngineerMod
 		private bool showFlt = false;
 		private bool showMan = true;
 		private bool showTgt = false;
+		private bool showStg = true;
 
-		private bool popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt;
+		private bool popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt, popoutStg;
 
 		private VesselComponent activeVessel;
 		private SimulationObjectModel currentTarget;
 		private ManeuverNodeData currentManeuver;
 
+		private double totalDrag, totalLift, liftToDragRatio;
+
+		private static readonly List<Type> liftForces = new()
+		{
+			PhysicsForceDisplaySystem.MODULE_DRAG_BODY_LIFT_TYPE,
+			PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_LIFT_TYPE
+		};
+
+		private static readonly List<Type> dragForces = new()
+		{
+			PhysicsForceDisplaySystem.MODULE_DRAG_DRAG_TYPE,
+			PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_DRAG_TYPE
+		};
+		
 		public override void OnInitialized()
 		{
 			base.OnInitialized();
 			Instance = this;
 			
-<<<<<<< Updated upstream
-			Toolbar.RegisterAppButton(
-				"Micro Engineer",
-				"BTN-MicroEngineerBtn",
-                AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
-                ToggleButton
-            ); ; ;
-        }
-        private void ToggleButton(bool toggle)
-        {
-            showGUI = toggle;
-            GameObject.Find("BTN-MircroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(toggle);
-
-        }
-
-        void Awake()
-		{
-			mainGuiRect = new Rect(Screen.width * 0.8f, Screen.height * 0.3f, 0, 0);
-			vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-=======
 			Appbar.RegisterAppButton(
 				"Micro Engineer",
 				"BTN-MicroEngineerBtn",
@@ -120,7 +95,6 @@ namespace MicroEngineerMod
 		void Awake()
 		{
 				return;
->>>>>>> Stashed changes
 		}
 
 		private void OnGUI()
@@ -135,35 +109,6 @@ namespace MicroEngineerMod
             fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
             manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
             tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-<<<<<<< Updated upstream
-
-            GUI.skin = Skins.ConsoleSkin;
-            mainWindowStyle = new GUIStyle(GUI.skin.window) { padding = new RectOffset(8, 8, 20, 8), contentOffset = new Vector2(0, -22) };
-            popoutWindowStyle = new GUIStyle(mainWindowStyle) { padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5) };
-            popoutBtnStyle = new GUIStyle(GUI.skin.button) { alignment = TextAnchor.UpperLeft, contentOffset = new Vector2(0, -3), fixedHeight = 20, fixedWidth = 20 };
-            sectionToggleStyle = new GUIStyle(GUI.skin.toggle) { padding = new RectOffset(17, 0, 3, 0) };
-            nameLabelStyle = new GUIStyle(GUI.skin.label);
-            nameLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
-            valueLabelStyle = new GUIStyle(GUI.skin.label);
-            closeBtnStyle = new GUIStyle(GUI.skin.button) { fontSize = 8 };
-            closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
-
-            currentTarget = activeVessel.TargetObject;
-			currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
-			GUI.skin = GUI.skin;
-			
-			mainGuiRect = GUILayout.Window(
-				GUIUtility.GetControlID(FocusType.Passive),
-				mainGuiRect,
-				FillMainGUI,
-				"<color=#696DFF>// MICRO ENGINEER</color>",
-				mainWindowStyle,
-				GUILayout.Height(0),
-				GUILayout.Width(windowWidth)
-			);
-			mainGuiRect.position = ClampToScreen(mainGuiRect.position, mainGuiRect.size);
-
-=======
             stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 
             GUI.skin = Skins.ConsoleSkin;
@@ -239,7 +184,6 @@ namespace MicroEngineerMod
             );
             }
 			
->>>>>>> Stashed changes
 			if (showVes && popoutVes)
 			{
 				vesGuiRect = GeneratePopoutWindow(vesGuiRect, FillVessel);
@@ -259,7 +203,7 @@ namespace MicroEngineerMod
 			{
 				fltGuiRect = GeneratePopoutWindow(fltGuiRect, FillFlight);
 			}
-			
+
 			if (showTgt && popoutTgt && currentTarget != null)
 			{
 				tgtGuiRect = GeneratePopoutWindow(tgtGuiRect, FillTarget);
@@ -268,6 +212,11 @@ namespace MicroEngineerMod
 			if (showMan && popoutMan && currentManeuver != null)
 			{
 				manGuiRect = GeneratePopoutWindow(manGuiRect, FillManeuver);
+			}
+
+			if (showStg && popoutStg)
+			{
+				stgGuiRect = GeneratePopoutWindow(stgGuiRect, FillStages);
 			}
 		}
 
@@ -285,7 +234,7 @@ namespace MicroEngineerMod
 			guiRect.position = ClampToScreen(guiRect.position, guiRect.size);
 			return guiRect;
 		}
-		
+
 		private Vector2 ClampToScreen(Vector2 position, Vector2 size)
 		{
 			float x = Mathf.Clamp(position.x, 0, Screen.width - size.x);
@@ -320,6 +269,11 @@ namespace MicroEngineerMod
 				FillVessel();
 			}
 
+			if (showStg && !popoutStg)
+			{
+				FillStages();
+			}
+
 			if (showOrb && !popoutOrb)
 			{
 				FillOrbital();
@@ -350,41 +304,68 @@ namespace MicroEngineerMod
 
 		private void FillVessel(int _ = 0)
 		{
-			DrawSectionHeader("Vessel", ref popoutVes);
-
-			DrawEntry("Name", activeVessel.DisplayName);
-			DrawEntry("∆v", $"{activeVessel.VesselDeltaV.TotalDeltaVActual:0.} m/s");
-			DrawEntry("Mass", $"{activeVessel.totalMass:0.000} t");
-			DrawEntry("Thrust", $"{activeVessel.VesselDeltaV.StageInfo.FirstOrDefault().ThrustActual:0.} kN");
-			DrawEntry("TWR", $"{activeVessel.VesselDeltaV.StageInfo.FirstOrDefault().TWRActual:0.00}");
+			DrawSectionHeader("Vessel", ref popoutVes, activeVessel.DisplayName);
+			DrawEntry("Mass", $"{activeVessel.totalMass:N3}", "t");
+			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
+			if (deltaVComponent != null)
+			{
+				DrawEntry("∆v", $"{deltaVComponent.TotalDeltaVActual:N3}", "m/s");
+				if (deltaVComponent.StageInfo.FirstOrDefault()?.DeltaVinVac > 0.0001 || deltaVComponent.StageInfo.FirstOrDefault()?.DeltaVatASL > 0.0001)
+				{
+					DrawEntry("Thrust", $"{deltaVComponent.StageInfo.FirstOrDefault()?.ThrustActual:N3}", "kN");
+					DrawEntry("TWR", $"{deltaVComponent.StageInfo.FirstOrDefault()?.TWRActual:N3}");
+				}
+			}
 
 			DrawSectionEnd(popoutVes);
 		}
-		
+
+		private void FillStages(int _ = 0)
+		{
+			DrawSectionHeader("Stages", ref popoutStg);
+
+			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
+			int stageCount = deltaVComponent?.StageInfo.Count ?? 0;
+			if (deltaVComponent != null && stageCount > 0)
+			{
+				for (int i = 0; i < deltaVComponent.StageInfo.Count; i++)
+				{
+					DeltaVStageInfo stageInfo = deltaVComponent.StageInfo[i];
+					if (stageInfo.DeltaVinVac > 0.0001 || stageInfo.DeltaVatASL > 0.0001)
+					{
+						int stageNum = stageCount - stageInfo.Stage;
+						DrawEntry($"S{stageNum:00} ∆v", $"{stageInfo.DeltaVActual:N3}", "m/s");
+						DrawEntry($"S{stageNum:00} TWR", $"{stageInfo.TWRActual:N3}");
+					}
+				}
+			}
+			
+			DrawSectionEnd(popoutStg);
+		}
+
 		private void FillOrbital(int _ = 0)
 		{
 			DrawSectionHeader("Orbital", ref popoutOrb);
 
-			DrawEntry("Ap. Height", $"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}");
-			DrawEntry("Pe. Height", $"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}");
-			DrawEntry("Time to Ap.", $"{SecondsToTimeString((activeVessel.Situation == VesselSituations.Landed || activeVessel.Situation == VesselSituations.PreLaunch) ? 0f : activeVessel.Orbit.TimeToAp)}");
-			DrawEntry("Time to Pe.", $"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}");
-			DrawEntry("Inclination", $"{activeVessel.Orbit.inclination:0.00}°");
-			DrawEntry("Eccentricity", $"{activeVessel.Orbit.eccentricity:0.0000}");
-			DrawEntry("Period", $"{SecondsToTimeString(activeVessel.Orbit.period)}");
-
+			DrawEntry("Apoapsis", $"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}", "km");
+			DrawEntry("Time to Ap.", $"{SecondsToTimeString((activeVessel.Situation == VesselSituations.Landed || activeVessel.Situation == VesselSituations.PreLaunch) ? 0f : activeVessel.Orbit.TimeToAp)}", "s");
+			DrawEntry("Periapsis", $"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}", "km");
+			DrawEntry("Time to Pe.", $"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}", "s");
+			DrawEntry("Inclination", $"{activeVessel.Orbit.inclination:N3}", "°");
+			DrawEntry("Eccentricity", $"{activeVessel.Orbit.eccentricity:N3}");
+			DrawEntry("Period", $"{SecondsToTimeString(activeVessel.Orbit.period)}", "s");
 			DrawSectionEnd(popoutOrb);
 		}
-		
+
 		private void FillSurface(int _ = 0)
 		{
-			DrawSectionHeader("Surface", ref popoutSur);
+			DrawSectionHeader("Surface", ref popoutSur, activeVessel.mainBody.bodyName);
 
-			DrawEntry("Ref. Body", activeVessel.mainBody.bodyName);
-			DrawEntry("Situation: ", SituationToString(activeVessel.Situation));
-			DrawEntry("Altitude", MetersToDistanceString(activeVessel.AltitudeFromScenery));
-			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:0.0} m/s");
-			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:0.0} m/s");
+			DrawEntry("Situation", SituationToString(activeVessel.Situation));
+			DrawEntry("Alt. (MSL)", MetersToDistanceString(activeVessel.AltitudeFromSeaLevel), "km");
+			DrawEntry("Alt. (AGL)", MetersToDistanceString(activeVessel.AltitudeFromScenery), "km");
+			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:N3}", "m/s");
+			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:N3}", "m/s");
 
 			DrawSectionEnd(popoutSur);
 		}
@@ -393,75 +374,81 @@ namespace MicroEngineerMod
 		{
 			DrawSectionHeader("Flight", ref popoutFlt);
 
-			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:0.0} m/s");
-			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N2}");
-			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N2} kg/m³");
-			DrawEntry("Stat. Pressure", $"{(activeVessel.SimulationObject.Telemetry.StaticPressure_kPa * 1000):N1} Pa");
-			DrawEntry("Dyn. Pressure", $"{(activeVessel.SimulationObject.Telemetry.DynamicPressure_kPa * 1000):N1} Pa");
+			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N3}", "m/s");
+			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N3}");
+			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N3}", "g/L");
+			GetAeroStats();
+			DrawEntry("Total Lift", $"{totalLift:N3}", "kN");
+			DrawEntry("Total Drag", $"{totalDrag:N3}", "kN");
+			DrawEntry("Lift / Drag", $"{totalLift / totalDrag:N3}");
 
 			DrawSectionEnd(popoutFlt);
 		}
 
 		private void FillTarget(int _ = 0)
 		{
-			DrawSectionHeader("Target", ref popoutTgt);
+			DrawSectionHeader("Target", ref popoutTgt, currentTarget.DisplayName);
 
-			DrawEntry("Name", currentTarget.DisplayName);
 			DrawEntry("Target Ap.", MetersToDistanceString(currentTarget.Orbit.ApoapsisArl));
 			DrawEntry("Target Pe.", MetersToDistanceString(currentTarget.Orbit.PeriapsisArl));
-			
+
 			if (activeVessel.Orbit.referenceBody == currentTarget.Orbit.referenceBody)
 			{
 				double distanceToTarget = (activeVessel.Orbit.Position - currentTarget.Orbit.Position).magnitude;
-				DrawEntry("Distance", MetersToDistanceString(distanceToTarget));
+				DrawEntry("Distance", MetersToDistanceString(distanceToTarget), "km");
 				double relativeVelocity = (activeVessel.Orbit.relativeVelocity - currentTarget.Orbit.relativeVelocity).magnitude;
-				DrawEntry("Rel. Speed", $"{relativeVelocity:0.0} m/s");
+				DrawEntry("Rel. Speed", $"{relativeVelocity:N3}", "m/s");
 				OrbitTargeter targeter = activeVessel.Orbiter.OrbitTargeter;
-				DrawEntry("Rel. Incl.", $"{targeter.AscendingNodeTarget.Inclination:0.00}°");
+				DrawEntry("Rel. Incl.", $"{targeter.AscendingNodeTarget.Inclination:N3}", "°");
 			}
 
 			DrawSectionEnd(popoutTgt);
 		}
-		
+
 		private void FillManeuver(int _ = 0)
 		{
 			DrawSectionHeader("Maneuver", ref popoutMan);
-
-			double timeUntilNode = currentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
-			DrawEntry("Time until:", SecondsToTimeString(timeUntilNode));
-			DrawEntry("∆v required", $"{currentManeuver.BurnRequiredDV:0.0} m/s");
-			DrawEntry("Burn Time", SecondsToTimeString(currentManeuver.BurnDuration));
 			PatchedConicsOrbit newOrbit = activeVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault();
-			DrawEntry("Projected Ap.", MetersToDistanceString(newOrbit.ApoapsisArl));
-			DrawEntry("Projected Pe.", MetersToDistanceString(newOrbit.PeriapsisArl));
+			DrawEntry("Projected Ap.", MetersToDistanceString(newOrbit.ApoapsisArl), "km");
+			DrawEntry("Projected Pe.", MetersToDistanceString(newOrbit.PeriapsisArl), "km");
+			DrawEntry("∆v required", $"{currentManeuver.BurnRequiredDV:N3}", "m/s");
+			double timeUntilNode = currentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
+			DrawEntry("Time to", SecondsToTimeString(timeUntilNode), "s");
+			DrawEntry("Burn Time", SecondsToTimeString(currentManeuver.BurnDuration), "s");
 
 			DrawSectionEnd(popoutMan);
 		}
 
-		private void DrawSectionHeader(string name, ref bool isPopout)
+		private void DrawSectionHeader(string name, ref bool isPopout, string value = "")
 		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Label($"<b>{name}</b>");
 			if (isPopout)
 			{
 				isPopout = !CloseButton();
 			}
 			else
 			{
-				GUILayout.FlexibleSpace();
-				isPopout = GUILayout.Button("⇗", popoutBtnStyle);
+				isPopout = GUILayout.Button("⇖", popoutBtnStyle);
 			}
+
+			GUILayout.Label($"<b>{name}</b>");
+			GUILayout.FlexibleSpace();
+			GUILayout.Label(value, valueLabelStyle);
+			GUILayout.Space(5);
+			GUILayout.Label("", unitLabelStyle);
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spacingAfterHeader);
 		}
 
 
-		private void DrawEntry(string name, string value)
+		private void DrawEntry(string name, string value, string unit = "")
 		{
 			GUILayout.BeginHorizontal();
 			GUILayout.Label(name, nameLabelStyle);
 			GUILayout.FlexibleSpace();
 			GUILayout.Label(value, valueLabelStyle);
+			GUILayout.Space(5);
+			GUILayout.Label(unit, unitLabelStyle);
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spacingAfterEntry);
 		}
@@ -509,42 +496,102 @@ namespace MicroEngineerMod
 
 		private string SecondsToTimeString(double seconds)
 		{
-			if (seconds > 0 && seconds < TimeSpan.MaxValue.TotalSeconds)
+			if (seconds == Double.PositiveInfinity)
 			{
-				TimeSpan timeSpan = TimeSpan.FromSeconds(seconds);
-				string result = "";
-				double h = Math.Floor(timeSpan.TotalHours);
-				if (h > 0)
+				return "∞";
+			}
+			else if (seconds == Double.NegativeInfinity)
+			{
+				return "-∞";
+			}
+
+			string result = "";
+			if (seconds < 0)
+			{
+				result += "-";
+				seconds = Math.Abs(seconds);
+			}
+
+			int days = (int)(seconds / 21600);
+			int hours = (int)((seconds - (days * 21600)) / 3600);
+			int minutes = (int)((seconds - (hours * 3600) - (days * 21600)) / 60);
+			int secs = (int)(seconds - (days * 21600) - (hours * 3600) - (minutes * 60));
+
+			if (days > 0)
+			{
+				result += $"{days} <color=#{unitColorHex}>d</color> ";
+			}
+
+			if (hours > 0 || days > 0)
+			{
 				{
-					result += $"{h}h ";
+					result += $"{hours} <color=#{unitColorHex}>h</color> ";
 				}
-				double m = timeSpan.Minutes;
-				if (m > 0)
+			}
+
+			if (minutes > 0 || hours > 0 || days > 0)
+			{
+				if (hours > 0 || days > 0)
 				{
-					result += $"{m}m ";
+					result += $"{minutes:00.} <color=#{unitColorHex}>m</color> ";
 				}
-				double s = timeSpan.Seconds;
-				if (s > 0)
+				else
 				{
-					result += $"{s}s";
+					result += $"{minutes} <color=#{unitColorHex}>m</color> ";
 				}
-				return result.Trim();
+			}
+
+			if (minutes > 0 || hours > 0 || days > 0)
+			{
+				result += $"{secs:00.}";
 			}
 			else
 			{
-				return "N/A";
+				result += secs;
 			}
+
+			return result;
+
 		}
 
 		private string MetersToDistanceString(double heightInMeters)
 		{
-				return $"{heightInMeters:N1} m";
+			return $"{heightInMeters / 1000:N3}";
 		}
 
 		private void CloseWindow()
 		{
 			GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(false);
 			showGUI = false;
+		}
+
+		private void GetAeroStats()
+		{
+			totalDrag = 0.0;
+			totalLift = 0.0;
+			liftToDragRatio = 0;
+			
+			IEnumerable<PartComponent> parts = activeVessel?.SimulationObject?.PartOwner?.Parts;
+			if (parts == null)
+			{
+				return;
+			}
+			
+			foreach (PartComponent part in parts)
+			{
+				foreach (IForce force in part.SimulationObject.Rigidbody.Forces)
+				{
+					if (dragForces.Contains(force.GetType()))
+					{
+						totalDrag += force.RelativeForce.magnitude;
+					}
+					if (liftForces.Contains(force.GetType()))
+					{
+						totalLift += force.RelativeForce.magnitude;
+					}
+				}
+			}
+			liftToDragRatio = totalLift / totalDrag;
 		}
 	}
 }
