@@ -6,6 +6,8 @@ using SpaceWarp.API;
 using KSP.Sim.Maneuver;
 using KSP.UI.Binding;
 using KSP.Sim.DeltaV;
+using KSP.Sim;
+using KSP.UI.Flight;
 
 namespace MicroMod
 {
@@ -16,7 +18,7 @@ namespace MicroMod
 
 		private readonly int windowWidth = 290;
 		private readonly int windowHeight = 700;
-		private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect;
+		private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect, stgGuiRect;
 		private Rect closeBtnRect;
 
 		private GUISkin _spaceWarpUISkin;
@@ -28,7 +30,7 @@ namespace MicroMod
 		private GUIStyle nameLabelStyle;
 		private GUIStyle valueLabelStyle;
 		private GUIStyle unitLabelStyle;
-
+		
 		private string unitColorHex;
 
 
@@ -43,13 +45,28 @@ namespace MicroMod
 		private bool showFlt = false;
 		private bool showMan = true;
 		private bool showTgt = false;
+		private bool showStg = true;
 
-		private bool popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt;
+		private bool popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt, popoutStg;
 
 		private VesselComponent activeVessel;
 		private SimulationObjectModel currentTarget;
 		private ManeuverNodeData currentManeuver;
 
+		private double totalDrag, totalLift, liftToDragRatio;
+
+		private static readonly List<Type> liftForces = new()
+		{
+			PhysicsForceDisplaySystem.MODULE_DRAG_BODY_LIFT_TYPE,
+			PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_LIFT_TYPE
+		};
+
+		private static readonly List<Type> dragForces = new()
+		{
+			PhysicsForceDisplaySystem.MODULE_DRAG_DRAG_TYPE,
+			PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_DRAG_TYPE
+		};
+		
 		public override void OnInitialized()
 		{
 			_spaceWarpUISkin = SpaceWarpManager.Skin;
@@ -89,7 +106,7 @@ namespace MicroMod
 				alignment = TextAnchor.MiddleRight
 			};
 			valueLabelStyle.normal.textColor = new Color(.6f, .7f, 1, 1);
-			
+
 			unitLabelStyle = new GUIStyle(valueLabelStyle)
 			{
 				fixedWidth = 24,
@@ -105,7 +122,6 @@ namespace MicroMod
 			};
 
 			closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
-			
 
 			SpaceWarpManager.RegisterAppButton(
 				"Micro Engineer",
@@ -124,6 +140,7 @@ namespace MicroMod
 			fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 			manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 			tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 		}
 
 		private void OnGUI()
@@ -174,6 +191,11 @@ namespace MicroMod
 			if (showMan && popoutMan && currentManeuver != null)
 			{
 				manGuiRect = GeneratePopoutWindow(manGuiRect, FillManeuver);
+			}
+
+			if (showStg && popoutStg)
+			{
+				stgGuiRect = GeneratePopoutWindow(stgGuiRect, FillStages);
 			}
 		}
 
@@ -226,6 +248,11 @@ namespace MicroMod
 				FillVessel();
 			}
 
+			if (showStg && !popoutStg)
+			{
+				FillStages();
+			}
+
 			if (showOrb && !popoutOrb)
 			{
 				FillOrbital();
@@ -262,23 +289,49 @@ namespace MicroMod
 			if (deltaVComponent != null)
 			{
 				DrawEntry("∆v", $"{deltaVComponent.TotalDeltaVActual:N3}", "m/s");
-				DrawEntry("Thrust", $"{deltaVComponent.StageInfo.FirstOrDefault()?.ThrustActual:N3}", "kN");
-				DrawEntry("TWR", $"{deltaVComponent.StageInfo.FirstOrDefault()?.TWRActual:N3}");
+				if (deltaVComponent.StageInfo.FirstOrDefault()?.DeltaVinVac > 0.0001 || deltaVComponent.StageInfo.FirstOrDefault()?.DeltaVatASL > 0.0001)
+				{
+					DrawEntry("Thrust", $"{deltaVComponent.StageInfo.FirstOrDefault()?.ThrustActual:N3}", "kN");
+					DrawEntry("TWR", $"{deltaVComponent.StageInfo.FirstOrDefault()?.TWRActual:N3}");
+				}
 			}
 
 			DrawSectionEnd(popoutVes);
+		}
+
+		private void FillStages(int _ = 0)
+		{
+			DrawSectionHeader("Stages", ref popoutStg);
+
+			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
+			int stageCount = deltaVComponent?.StageInfo.Count ?? 0;
+			if (deltaVComponent != null && stageCount > 0)
+			{
+				for (int i = 0; i < deltaVComponent.StageInfo.Count; i++)
+				{
+					DeltaVStageInfo stageInfo = deltaVComponent.StageInfo[i];
+					if (stageInfo.DeltaVinVac > 0.0001 || stageInfo.DeltaVatASL > 0.0001)
+					{
+						int stageNum = stageCount - stageInfo.Stage;
+						DrawEntry($"S{stageNum:00} ∆v", $"{stageInfo.DeltaVActual:N3}", "m/s");
+						DrawEntry($"S{stageNum:00} TWR", $"{stageInfo.TWRActual:N3}");
+					}
+				}
+			}
+			
+			DrawSectionEnd(popoutStg);
 		}
 
 		private void FillOrbital(int _ = 0)
 		{
 			DrawSectionHeader("Orbital", ref popoutOrb);
 
-			DrawEntry("Ap. Height", $"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}", "km");
-			DrawEntry("Pe. Height", $"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}", "km");
+			DrawEntry("Apoapsis", $"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}", "km");
+			DrawEntry("Time to Ap.", $"{SecondsToTimeString((activeVessel.Situation == VesselSituations.Landed || activeVessel.Situation == VesselSituations.PreLaunch) ? 0f : activeVessel.Orbit.TimeToAp)}", "s");
+			DrawEntry("Periapsis", $"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}", "km");
+			DrawEntry("Time to Pe.", $"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}", "s");
 			DrawEntry("Inclination", $"{activeVessel.Orbit.inclination:N3}", "°");
 			DrawEntry("Eccentricity", $"{activeVessel.Orbit.eccentricity:N3}");
-			DrawEntry("Time to Ap.", $"{SecondsToTimeString((activeVessel.Situation == VesselSituations.Landed || activeVessel.Situation == VesselSituations.PreLaunch) ? 0f : activeVessel.Orbit.TimeToAp)}", "s");
-			DrawEntry("Time to Pe.", $"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}", "s");
 			DrawEntry("Period", $"{SecondsToTimeString(activeVessel.Orbit.period)}", "s");
 			DrawSectionEnd(popoutOrb);
 		}
@@ -288,7 +341,8 @@ namespace MicroMod
 			DrawSectionHeader("Surface", ref popoutSur, activeVessel.mainBody.bodyName);
 
 			DrawEntry("Situation", SituationToString(activeVessel.Situation));
-			DrawEntry("Altitude", MetersToDistanceString(activeVessel.AltitudeFromScenery), "km");
+			DrawEntry("Alt. (MSL)", MetersToDistanceString(activeVessel.AltitudeFromSeaLevel), "km");
+			DrawEntry("Alt. (AGL)", MetersToDistanceString(activeVessel.AltitudeFromScenery), "km");
 			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:N3}", "m/s");
 			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:N3}", "m/s");
 
@@ -301,8 +355,11 @@ namespace MicroMod
 
 			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N3}", "m/s");
 			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N3}");
-			DrawEntry("Stat. Pressure", $"{(activeVessel.SimulationObject.Telemetry.StaticPressure_kPa):N3}", "KPa");
-			DrawEntry("Dyn. Pressure", $"{(activeVessel.SimulationObject.Telemetry.DynamicPressure_kPa):N3}", "KPa");
+			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N3}", "g/L");
+			GetAeroStats();
+			DrawEntry("Total Lift", $"{totalLift:N3}", "kN");
+			DrawEntry("Total Drag", $"{totalDrag:N3}", "kN");
+			DrawEntry("Lift / Drag", $"{totalLift / totalDrag:N3}");
 
 			DrawSectionEnd(popoutFlt);
 		}
@@ -485,6 +542,35 @@ namespace MicroMod
 		{
 			GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(false);
 			showGUI = false;
+		}
+
+		private void GetAeroStats()
+		{
+			totalDrag = 0.0;
+			totalLift = 0.0;
+			liftToDragRatio = 0;
+			
+			IEnumerable<PartComponent> parts = activeVessel?.SimulationObject?.PartOwner?.Parts;
+			if (parts == null)
+			{
+				return;
+			}
+			
+			foreach (PartComponent part in parts)
+			{
+				foreach (IForce force in part.SimulationObject.Rigidbody.Forces)
+				{
+					if (dragForces.Contains(force.GetType()))
+					{
+						totalDrag += force.RelativeForce.magnitude;
+					}
+					if (liftForces.Contains(force.GetType()))
+					{
+						totalLift += force.RelativeForce.magnitude;
+					}
+				}
+			}
+			liftToDragRatio = totalLift / totalDrag;
 		}
 	}
 }
