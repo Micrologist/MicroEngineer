@@ -106,18 +106,9 @@ namespace MicroEngineerMod
             activeVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
             if (!showGUI || activeVessel == null) return;
 
-            vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-
             GUI.skin = Skins.ConsoleSkin;
             nameLabelStyle = new GUIStyle(GUI.skin.label);
             nameLabelStyle.normal.textColor = new UnityEngine.Color(.7f, .75f, .75f, 1);
-
 
             mainWindowStyle = new GUIStyle(GUI.skin.window)
             {
@@ -127,7 +118,7 @@ namespace MicroEngineerMod
 
             popoutWindowStyle = new GUIStyle(mainWindowStyle)
             {
-                padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5)
+                padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 20, mainWindowStyle.padding.bottom - 5)
             };
 
             popoutBtnStyle = new GUIStyle(GUI.skin.button)
@@ -166,7 +157,7 @@ namespace MicroEngineerMod
                 fontSize = 8
             };
 
-            closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
+            closeBtnRect = new Rect(400 - 23, 6, 16, 16);
 
 
             currentTarget = activeVessel.TargetObject;
@@ -184,44 +175,100 @@ namespace MicroEngineerMod
                 FillMainGUI,
                 "<color=#696DFF>// MICRO ENGINEER</color>",
                 mainWindowStyle,
-                GUILayout.Height(windowHeight),
-                GUILayout.Width(windowWidth)
+                GUILayout.Height(Screen.height*0.6f),
+                GUILayout.Width(400)
             );
             }
 
             if (showVes && popoutVes)
             {
-                vesGuiRect = GeneratePopoutWindow(vesGuiRect, FillVessel);
+                vesGuiRect = GUILayout.Window(
+                GUIUtility.GetControlID(FocusType.Passive), 
+                vesGuiRect, 
+                FillVessel,
+                "",
+                popoutWindowStyle,
+                GUILayout.Height(Screen.height*0.6f),
+                GUILayout.Width(400)
+                );
             }
 
             if (showOrb && popoutOrb)
             {
-                orbGuiRect = GeneratePopoutWindow(orbGuiRect, FillOrbital);
+                orbGuiRect = GUILayout.Window(
+                GUIUtility.GetControlID(FocusType.Passive),
+                orbGuiRect,
+                FillVessel,
+                "",
+                popoutWindowStyle,
+                GUILayout.Height(Screen.height * 0.6f),
+                GUILayout.Width(400)
+                );
             }
 
             if (showSur && popoutSur)
             {
-                surGuiRect = GeneratePopoutWindow(surGuiRect, FillSurface);
+                surGuiRect = GUILayout.Window(
+                GUIUtility.GetControlID(FocusType.Passive),
+                surGuiRect,
+                FillVessel,
+                "",
+                popoutWindowStyle,
+                GUILayout.Height(Screen.height * 0.6f),
+                GUILayout.Width(400)
+                );
             }
 
             if (showFlt && popoutFlt)
             {
-                fltGuiRect = GeneratePopoutWindow(fltGuiRect, FillFlight);
+                fltGuiRect = GUILayout.Window(
+                GUIUtility.GetControlID(FocusType.Passive),
+                fltGuiRect,
+                FillVessel,
+                "",
+                popoutWindowStyle,
+                GUILayout.Height(Screen.height * 0.6f),
+                GUILayout.Width(400)
+                );
             }
 
             if (showTgt && popoutTgt && currentTarget != null)
             {
-                tgtGuiRect = GeneratePopoutWindow(tgtGuiRect, FillTarget);
+                tgtGuiRect = GUILayout.Window(
+                GUIUtility.GetControlID(FocusType.Passive),
+                tgtGuiRect,
+                FillVessel,
+                "",
+                popoutWindowStyle,
+                GUILayout.Height(Screen.height * 0.6f),
+                GUILayout.Width(400)
+                );
             }
 
             if (showMan && popoutMan && currentManeuver != null)
             {
-                manGuiRect = GeneratePopoutWindow(manGuiRect, FillManeuver);
+                manGuiRect = GUILayout.Window(
+                GUIUtility.GetControlID(FocusType.Passive),
+                manGuiRect,
+                FillVessel,
+                "",
+                popoutWindowStyle,
+                GUILayout.Height(Screen.height * 0.6f),
+                GUILayout.Width(400)
+                );
             }
 
             if (showStg && popoutStg)
             {
-                stgGuiRect = GeneratePopoutWindow(stgGuiRect, FillStages);
+                stgGuiRect = GUILayout.Window(
+                GUIUtility.GetControlID(FocusType.Passive),
+                stgGuiRect,
+                FillVessel,
+                "",
+                popoutWindowStyle,
+                GUILayout.Height(Screen.height * 0.3f),
+                GUILayout.Width(400)
+                );
             }
         }
 
@@ -233,8 +280,8 @@ namespace MicroEngineerMod
                 fillAction,
                 "",
                 popoutWindowStyle,
-                GUILayout.Height(0),
-                GUILayout.Width(windowWidth)
+                GUILayout.Height(Screen.height * 0.3f),
+                GUILayout.Width(400)
             );
             return guiRect;
         }

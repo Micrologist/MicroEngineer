@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-	<PackageReference Include="BepInEx.BaseLib" Version="5.4.21" Publicize="true" />
+	 <PackageReference Include="BepInEx.BaseLib" Version="5.4.21" Publicize="true"/>
     <Reference Include="external_dlls\SpaceWarp.dll" />
     <Reference Include="external_dlls\UnityEngine.dll" />
     <Reference Include="external_dlls\UnityEngine.CoreModule.dll" />
