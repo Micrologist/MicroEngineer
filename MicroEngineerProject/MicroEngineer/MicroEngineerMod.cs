@@ -104,7 +104,6 @@ namespace MicroEngineerMod
 			activeVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
 			if (!showGUI || activeVessel == null) return;
 
-            mainGuiRect = new Rect(windowWidth, windowHeight, 0, 0);
             vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
             orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
             surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
@@ -175,13 +174,14 @@ namespace MicroEngineerMod
 			{
                 currentTarget = activeVessel.TargetObject;
                 currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
+
                 mainGuiRect = GUILayout.Window(
                 GUIUtility.GetControlID(FocusType.Passive),
                 mainGuiRect,
                 FillMainGUI,
                 "<color=#696DFF>// MICRO ENGINEER</color>",
                 mainWindowStyle,
-                GUILayout.Height(0),
+                GUILayout.Height(windowHeight),
                 GUILayout.Width(windowWidth)
             );
             }
@@ -233,7 +233,6 @@ namespace MicroEngineerMod
 				GUILayout.Height(0),
 				GUILayout.Width(windowWidth)
 			);
-			guiRect.position = ClampToScreen(guiRect.position, guiRect.size);
 			return guiRect;
 		}
 
