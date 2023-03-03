@@ -15,7 +15,6 @@ using SpaceWarp.API.Mods;
 using SpaceWarp.API.Assets;
 using SpaceWarp.API.UI;
 using SpaceWarp.API.UI.Appbar;
-
 using BepInEx;
 
 namespace MicroEngineerMod
@@ -84,7 +83,7 @@ namespace MicroEngineerMod
 			Appbar.RegisterAppButton(
 				"Micro Engineer",
 				"BTN-MicroEngineerBtn",
-                AssetManager.GetAsset<Texture2D>("MicroEngineer/images/icon.png"),
+                AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
                 ToggleButton
             ); ; ;
         }
@@ -114,7 +113,7 @@ namespace MicroEngineerMod
             tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
             stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 
-            GUI.skin = Skins.ConsoleSkin;
+			GUI.skin = Skins.ConsoleSkin;
             nameLabelStyle = new GUIStyle(GUI.skin.label);
             nameLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
 
