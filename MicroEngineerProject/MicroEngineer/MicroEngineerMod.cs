@@ -3,6 +3,7 @@ using KSP.Sim.impl;
 using UnityEngine;
 using SpaceWarp.API.Mods;
 using SpaceWarp.API;
+<<<<<<< Updated upstream
 using SpaceWarp.API.Assets;
 using KSP.UI.Binding;
 using SpaceWarp.API.UI;
@@ -10,10 +11,27 @@ using SpaceWarp.API.UI.Toolbar;
 using KSP.Sim.Maneuver;
 using BepInEx;
 using SpaceWarp;
+=======
+using KSP.Sim.Maneuver;
+using SpaceWarp.API.Assets;
+using KSP.UI.Binding;
+using SpaceWarp.API.UI;
+using SpaceWarp.UI;
+using SpaceWarp;
+using SpaceWarp.API.UI.Appbar;
+using KSP.Sim.DeltaV;
+using KSP.Sim;
+using KSP.UI.Flight;
+using BepInEx;
+>>>>>>> Stashed changes
 
-namespace MicroMod
+namespace MicroEngineerMod
 {
+<<<<<<< Updated upstream
     [BepInPlugin("com.Micro.MicroMod", "MicroMOd", "0.4.0")]
+=======
+    [BepInPlugin("com.Micro.MicroEngineerMod", "MicroEngineerMod", "0.4.0")]
+>>>>>>> Stashed changes
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
@@ -22,8 +40,12 @@ namespace MicroMod
 
         private readonly int windowWidth = 290;
 		private readonly int windowHeight = 700;
+<<<<<<< Updated upstream
 		private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect;
 		private Rect closeBtnRect;
+=======
+		private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect, stgGuiRect, closeBtnRect;
+>>>>>>> Stashed changes
 
 		private GUIStyle popoutBtnStyle;
 		private GUIStyle mainWindowStyle;
@@ -56,6 +78,7 @@ namespace MicroMod
 			base.OnInitialized();
 			Instance = this;
 			
+<<<<<<< Updated upstream
 			Toolbar.RegisterAppButton(
 				"Micro Engineer",
 				"BTN-MicroEngineerBtn",
@@ -79,6 +102,25 @@ namespace MicroMod
 			fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 			manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 			tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+=======
+			Appbar.RegisterAppButton(
+				"Micro Engineer",
+				"BTN-MicroEngineerBtn",
+                AssetManager.GetAsset<Texture2D>("MicroEngineer/images/icon.png"),
+                ToggleButton
+            ); ; ;
+        }
+
+		private void ToggleButton(bool toggle)
+		{
+			showGUI = toggle;
+			GameObject.Find("BTN-MircroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(toggle);
+
+		}
+		void Awake()
+		{
+				return;
+>>>>>>> Stashed changes
 		}
 
 		private void OnGUI()
@@ -93,6 +135,7 @@ namespace MicroMod
             fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
             manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
             tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+<<<<<<< Updated upstream
 
             GUI.skin = Skins.ConsoleSkin;
             mainWindowStyle = new GUIStyle(GUI.skin.window) { padding = new RectOffset(8, 8, 20, 8), contentOffset = new Vector2(0, -22) };
@@ -120,6 +163,83 @@ namespace MicroMod
 			);
 			mainGuiRect.position = ClampToScreen(mainGuiRect.position, mainGuiRect.size);
 
+=======
+            stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+
+            GUI.skin = Skins.ConsoleSkin;
+            nameLabelStyle = new GUIStyle(GUI.skin.label);
+            nameLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
+
+
+            mainWindowStyle = new GUIStyle(GUI.skin.window)
+            {
+                padding = new RectOffset(8, 8, 20, 8),
+                contentOffset = new Vector2(0, -22)
+            };
+
+            popoutWindowStyle = new GUIStyle(mainWindowStyle)
+            {
+                padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5)
+            };
+
+            popoutBtnStyle = new GUIStyle(GUI.skin.button)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                contentOffset = new Vector2(0, 2),
+                fixedHeight = 15,
+                fixedWidth = 15,
+                fontSize = 28,
+                clipping = TextClipping.Overflow,
+                margin = new RectOffset(0, 0, 10, 0)
+            };
+
+            sectionToggleStyle = new GUIStyle(GUI.skin.toggle)
+            {
+                padding = new RectOffset(17, 0, 3, 0)
+            };
+
+            valueLabelStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleRight
+            };
+            valueLabelStyle.normal.textColor = new Color(.6f, .7f, 1, 1);
+
+            unitLabelStyle = new GUIStyle(valueLabelStyle)
+            {
+                fixedWidth = 24,
+                alignment = TextAnchor.MiddleLeft
+            };
+            unitLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
+
+            unitColorHex = ColorUtility.ToHtmlStringRGBA(unitLabelStyle.normal.textColor);
+
+            closeBtnStyle = new GUIStyle(GUI.skin.button)
+            {
+                fontSize = 8
+            };
+
+            closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
+
+
+            currentTarget = activeVessel.TargetObject;
+			currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
+			
+			if (showGUI)
+			{
+                currentTarget = activeVessel.TargetObject;
+                currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
+                mainGuiRect = GUILayout.Window(
+                GUIUtility.GetControlID(FocusType.Passive),
+                mainGuiRect,
+                FillMainGUI,
+                "<color=#696DFF>// MICRO ENGINEER</color>",
+                mainWindowStyle,
+                GUILayout.Height(0),
+                GUILayout.Width(windowWidth)
+            );
+            }
+			
+>>>>>>> Stashed changes
 			if (showVes && popoutVes)
 			{
 				vesGuiRect = GeneratePopoutWindow(vesGuiRect, FillVessel);

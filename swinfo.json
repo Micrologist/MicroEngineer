@@ -1,5 +1,9 @@
 {
+<<<<<<< Updated upstream
     "mod_id": "micro_engineer",
+=======
+    "mod_id": "MicroEngineer",
+>>>>>>> Stashed changes
     "author": "Micrologist",
     "name": "Micro Engineer",
     "description": "Get in-flight information about your current vessel",
@@ -10,4 +14,8 @@
         "min": "0.1.0",
         "max": "0.1.0"
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
