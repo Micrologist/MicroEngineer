@@ -83,7 +83,7 @@ namespace MicroMod
 			if (!showGUI || activeVessel == null) return;
 
 			currentTarget = activeVessel.TargetObject;
-			currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(GameManager.Instance.Game.ViewController.GetActiveVehicle(true).Guid).FirstOrDefault();
+			currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
 			GUI.skin = _spaceWarpUISkin;
 			
 			mainGuiRect = GUILayout.Window(
