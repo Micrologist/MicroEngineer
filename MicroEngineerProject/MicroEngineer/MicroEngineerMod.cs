@@ -195,32 +195,32 @@ namespace MicroEngineerMod
 
             if (showOrb && popoutOrb)
             {
-                orbGuiRect = GeneratePopoutWindow(orbGuiRect, FillVessel);
+                orbGuiRect = GeneratePopoutWindow(orbGuiRect, FillOrbital);
             }
 
             if (showSur && popoutSur)
             {
-                surGuiRect = GeneratePopoutWindow(surGuiRect, FillVessel);
+                surGuiRect = GeneratePopoutWindow(surGuiRect, FillSurface);
             }
 
             if (showFlt && popoutFlt)
             {
-                fltGuiRect = GeneratePopoutWindow(fltGuiRect, FillVessel);
+                fltGuiRect = GeneratePopoutWindow(fltGuiRect, FillFlight);
             }
 
             if (showTgt && popoutTgt && currentTarget != null)
             {
-                tgtGuiRect = GeneratePopoutWindow(tgtGuiRect, FillVessel);
+                tgtGuiRect = GeneratePopoutWindow(tgtGuiRect, FillTarget);
             }
 
             if (showMan && popoutMan && currentManeuver != null)
             {
-                manGuiRect = GeneratePopoutWindow(manGuiRect, FillVessel);
+                manGuiRect = GeneratePopoutWindow(manGuiRect, FillManeuver);
             }
 
             if (showStg && popoutStg)
             {
-                stgGuiRect = GeneratePopoutWindow(stgGuiRect, FillVessel);
+                stgGuiRect = GeneratePopoutWindow(stgGuiRect, FillStages);
             }
         }
 
