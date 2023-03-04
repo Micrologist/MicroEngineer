@@ -320,7 +320,6 @@ namespace MicroMod
 			{
 				float highestTwr = Mathf.Floor(stages.Max(stage => stage.TWRActual));
 				int preDecimalDigits = Mathf.FloorToInt(Mathf.Log10(highestTwr)) + 1;
-				
 				string twrFormatString = "N2";
 
 				if (preDecimalDigits == 3)
@@ -556,6 +555,8 @@ namespace MicroMod
 				result += "-";
 				seconds = Math.Abs(seconds);
 			}
+
+			seconds = Math.Ceiling(seconds);
 
 			int days = (int)(seconds / 21600);
 			int hours = (int)((seconds - (days * 21600)) / 3600);
