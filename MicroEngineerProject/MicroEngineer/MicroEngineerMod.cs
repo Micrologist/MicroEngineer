@@ -30,7 +30,7 @@ namespace MicroMod
 		private GUIStyle nameLabelStyle;
 		private GUIStyle valueLabelStyle;
 		private GUIStyle unitLabelStyle;
-		
+
 		private string unitColorHex;
 
 
@@ -66,7 +66,7 @@ namespace MicroMod
 			PhysicsForceDisplaySystem.MODULE_DRAG_DRAG_TYPE,
 			PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_DRAG_TYPE
 		};
-		
+
 		public override void OnInitialized()
 		{
 			_spaceWarpUISkin = SpaceWarpManager.Skin;
@@ -241,11 +241,11 @@ namespace MicroMod
 			GUILayout.EndHorizontal();
 
 			GUILayout.Space(-10);
-			
+
 			GUILayout.BeginHorizontal();
 			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>", sectionToggleStyle);
 			GUILayout.EndHorizontal();
-			
+
 			GUILayout.Space(-5);
 			GUILayout.BeginHorizontal();
 			GUILayout.EndHorizontal();
@@ -324,7 +324,7 @@ namespace MicroMod
 					}
 				}
 			}
-			
+
 			DrawSectionEnd(popoutStg);
 		}
 
@@ -457,7 +457,7 @@ namespace MicroMod
 				GUILayout.Space(spacingAfterSection);
 			}
 		}
-		
+
 		private bool CloseButton()
 		{
 			return GUI.Button(closeBtnRect, "x", closeBtnStyle);
@@ -495,13 +495,13 @@ namespace MicroMod
 			{
 				spacing = " ";
 			}
-			
+
 			if (seconds < 0)
 			{
 				result += "-";
 				seconds = Math.Abs(seconds);
 			}
-			
+
 			int days = (int)(seconds / 21600);
 			int hours = (int)((seconds - (days * 21600)) / 3600);
 			int minutes = (int)((seconds - (hours * 3600) - (days * 21600)) / 60);
@@ -511,7 +511,7 @@ namespace MicroMod
 			{
 				result += $"{days}{spacing}<color=#{unitColorHex}>d</color> ";
 			}
-			
+
 			if (hours > 0 || days > 0)
 			{
 				{
@@ -559,13 +559,13 @@ namespace MicroMod
 		{
 			totalDrag = 0.0;
 			totalLift = 0.0;
-			
+
 			IEnumerable<PartComponent> parts = activeVessel?.SimulationObject?.PartOwner?.Parts;
 			if (parts == null)
 			{
 				return;
 			}
-			
+
 			foreach (PartComponent part in parts)
 			{
 				foreach (IForce force in part.SimulationObject.Rigidbody.Forces)
