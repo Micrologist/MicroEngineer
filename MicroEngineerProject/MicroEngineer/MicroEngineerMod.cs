@@ -548,6 +548,8 @@ namespace MicroMod
 				return "-∞";
 			}
 
+			seconds = Math.Ceiling(seconds);
+
 			string result = "";
 			string spacing = "";
 			if (addSpacing)
@@ -560,8 +562,6 @@ namespace MicroMod
 				result += "-";
 				seconds = Math.Abs(seconds);
 			}
-
-			seconds = Math.Ceiling(seconds);
 
 			int days = (int)(seconds / 21600);
 			int hours = (int)((seconds - (days * 21600)) / 3600);
