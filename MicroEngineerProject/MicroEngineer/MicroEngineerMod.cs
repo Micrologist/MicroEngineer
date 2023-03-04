@@ -60,7 +60,7 @@ namespace MicroEngineerMod
 		private SimulationObjectModel currentTarget;
 		private ManeuverNodeData currentManeuver;
 
-		private double totalDrag, totalLift, liftToDragRatio;
+		private double totalDrag, totalLift;
 
 		private static readonly List<Type> liftForces = new()
 		{
@@ -431,14 +431,7 @@ namespace MicroEngineerMod
 		private void DrawSectionHeader(string name, ref bool isPopout, string value = "")
 		{
 			GUILayout.BeginHorizontal();
-			if (isPopout)
-			{
-				isPopout = !CloseButton();
-			}
-			else
-			{
-				isPopout = GUILayout.Button("⇖", popoutBtnStyle);
-			}
+			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", popoutBtnStyle);
 
 			GUILayout.Label($"<b>{name}</b>");
 			GUILayout.FlexibleSpace();
@@ -496,25 +489,17 @@ namespace MicroEngineerMod
 
 		private string SituationToString(VesselSituations situation)
 		{
-			switch (situation)
+			return situation switch
 			{
-				case VesselSituations.PreLaunch:
-					return "Pre-Launch";
-				case VesselSituations.Landed:
-					return "Landed";
-				case VesselSituations.Splashed:
-					return "Splashed down";
-				case VesselSituations.Flying:
-					return "Flying";
-				case VesselSituations.SubOrbital:
-					return "Suborbital";
-				case VesselSituations.Orbiting:
-					return "Orbiting";
-				case VesselSituations.Escaping:
-					return "Escaping";
-				default:
-					return "UNNOWN";
-			}
+				VesselSituations.PreLaunch => "Pre-Launch",
+				VesselSituations.Landed => "Landed",
+				VesselSituations.Splashed => "Splashed down",
+				VesselSituations.Flying => "Flying",
+				VesselSituations.SubOrbital => "Suborbital",
+				VesselSituations.Orbiting => "Orbiting",
+				VesselSituations.Escaping => "Escaping",
+				_ => "UNNOWN",
+			};
 		}
 
 		private string SecondsToTimeString(double seconds, bool addSpacing = true)
@@ -598,7 +583,6 @@ namespace MicroEngineerMod
 		{
 			totalDrag = 0.0;
 			totalLift = 0.0;
-			liftToDragRatio = 0;
 
 			IEnumerable<PartComponent> parts = activeVessel?.SimulationObject?.PartOwner?.Parts;
 			if (parts == null)
@@ -620,7 +604,6 @@ namespace MicroEngineerMod
 					}
 				}
 			}
-			liftToDragRatio = totalLift / totalDrag;
 		}
 	}
 }
