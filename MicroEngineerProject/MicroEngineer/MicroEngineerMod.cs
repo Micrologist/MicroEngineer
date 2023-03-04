@@ -8,6 +8,8 @@ using KSP.UI.Binding;
 using KSP.Sim.DeltaV;
 using KSP.Sim;
 using KSP.UI.Flight;
+using static KSP.Rendering.Planets.PQSData;
+using static VehiclePhysics.EnergyProvider;
 
 namespace MicroMod
 {
@@ -298,11 +300,11 @@ namespace MicroMod
 			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
 			if (deltaVComponent != null)
 			{
-				DrawEntry("∆v", $"{deltaVComponent.TotalDeltaVActual:N3}", "m/s");
+				DrawEntry("∆v", $"{deltaVComponent.TotalDeltaVActual:N1}", "m/s");
 				if (deltaVComponent.StageInfo.FirstOrDefault()?.DeltaVinVac > 0.0001 || deltaVComponent.StageInfo.FirstOrDefault()?.DeltaVatASL > 0.0001)
 				{
 					DrawEntry("Thrust", $"{deltaVComponent.StageInfo.FirstOrDefault()?.ThrustActual:N3}", "kN");
-					DrawEntry("TWR", $"{deltaVComponent.StageInfo.FirstOrDefault()?.TWRActual:N3}");
+					DrawEntry("TWR", $"{deltaVComponent.StageInfo.FirstOrDefault()?.TWRActual:N2}");
 				}
 			}
 
@@ -365,10 +367,11 @@ namespace MicroMod
 			DrawSectionHeader("Surface", ref popoutSur, activeVessel.mainBody.bodyName);
 
 			DrawEntry("Situation", SituationToString(activeVessel.Situation));
+			DrawEntry("Biome", BiomeToString(activeVessel.SimulationObject.Telemetry.SurfaceBiome));
 			DrawEntry("Alt. MSL", MetersToDistanceString(activeVessel.AltitudeFromSeaLevel), "m");
 			DrawEntry("Alt. AGL", MetersToDistanceString(activeVessel.AltitudeFromScenery), "m");
-			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:N3}", "m/s");
-			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:N3}", "m/s");
+			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:N1}", "m/s");
+			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:N1}", "m/s");
 
 			DrawSectionEnd(popoutSur);
 		}
@@ -377,7 +380,7 @@ namespace MicroMod
 		{
 			DrawSectionHeader("Flight", ref popoutFlt);
 
-			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N3}", "m/s");
+			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N1}", "m/s");
 			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N3}");
 			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N3}", "g/L");
 			GetAeroStats();
@@ -392,19 +395,21 @@ namespace MicroMod
 		{
 			DrawSectionHeader("Target", ref popoutTgt, currentTarget.DisplayName);
 
-			DrawEntry("Target Ap.", MetersToDistanceString(currentTarget.Orbit.ApoapsisArl), "m");
-			DrawEntry("Target Pe.", MetersToDistanceString(currentTarget.Orbit.PeriapsisArl), "m");
-
-			if (activeVessel.Orbit.referenceBody == currentTarget.Orbit.referenceBody)
+			if (currentTarget.Orbit != null)
 			{
-				double distanceToTarget = (activeVessel.Orbit.Position - currentTarget.Orbit.Position).magnitude;
-				DrawEntry("Distance", MetersToDistanceString(distanceToTarget), "m");
-				double relativeVelocity = (activeVessel.Orbit.relativeVelocity - currentTarget.Orbit.relativeVelocity).magnitude;
-				DrawEntry("Rel. Speed", $"{relativeVelocity:N3}", "m/s");
-				OrbitTargeter targeter = activeVessel.Orbiter.OrbitTargeter;
-				DrawEntry("Rel. Incl.", $"{targeter.AscendingNodeTarget.Inclination:N3}", "°");
-			}
+				DrawEntry("Target Ap.", MetersToDistanceString(currentTarget.Orbit.ApoapsisArl), "m");
+				DrawEntry("Target Pe.", MetersToDistanceString(currentTarget.Orbit.PeriapsisArl), "m");
 
+				if (activeVessel.Orbit.referenceBody == currentTarget.Orbit.referenceBody)
+				{
+					double distanceToTarget = (activeVessel.Orbit.Position - currentTarget.Orbit.Position).magnitude;
+					DrawEntry("Distance", MetersToDistanceString(distanceToTarget), "m");
+					double relativeVelocity = (activeVessel.Orbit.relativeVelocity - currentTarget.Orbit.relativeVelocity).magnitude;
+					DrawEntry("Rel. Speed", $"{relativeVelocity:N1}", "m/s");
+					OrbitTargeter targeter = activeVessel.Orbiter.OrbitTargeter;
+					DrawEntry("Rel. Incl.", $"{targeter.AscendingNodeTarget.Inclination:N3}", "°");
+				}
+			}
 			DrawSectionEnd(popoutTgt);
 		}
 
@@ -414,7 +419,7 @@ namespace MicroMod
 			PatchedConicsOrbit newOrbit = activeVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault();
 			DrawEntry("Projected Ap.", MetersToDistanceString(newOrbit.ApoapsisArl), "m");
 			DrawEntry("Projected Pe.", MetersToDistanceString(newOrbit.PeriapsisArl), "m");
-			DrawEntry("∆v required", $"{currentManeuver.BurnRequiredDV:N3}", "m/s");
+			DrawEntry("∆v required", $"{currentManeuver.BurnRequiredDV:N1}", "m/s");
 			double timeUntilNode = currentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
 			DrawEntry("Time to", SecondsToTimeString(timeUntilNode), "s");
 			DrawEntry("Burn Time", SecondsToTimeString(currentManeuver.BurnDuration), "s");
@@ -603,6 +608,12 @@ namespace MicroMod
 		private string MetersToDistanceString(double heightInMeters)
 		{
 			return $"{heightInMeters:N0}";
+		}
+
+		private string BiomeToString(BiomeSurfaceData biome)
+		{
+			string result = biome.type.ToString().ToLower().Replace('_', ' ');
+			return result.Substring(0, 1).ToUpper() + result.Substring(1);
 		}
 
 		private void CloseWindow()
