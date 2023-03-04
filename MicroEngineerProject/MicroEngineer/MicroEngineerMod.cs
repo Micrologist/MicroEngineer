@@ -187,67 +187,67 @@ namespace MicroEngineerMod
                 GUILayout.Width(windowWidth)
             );
             }
-            mainGuiRect.position = ClampToScreen(mainGuiRect.position, mainGuiRect.size);
+            ClampRectToScreen(ref mainGuiRect);
 
             if (showVes && popoutVes)
             {
-                vesGuiRect = GeneratePopoutWindow(vesGuiRect, FillVessel);
+                DrawPopoutWindow(ref vesGuiRect, FillVessel);
             }
 
             if (showOrb && popoutOrb)
             {
-                orbGuiRect = GeneratePopoutWindow(orbGuiRect, FillOrbital);
+                DrawPopoutWindow(ref orbGuiRect, FillOrbital);
             }
 
             if (showSur && popoutSur)
             {
-                surGuiRect = GeneratePopoutWindow(surGuiRect, FillSurface);
+                DrawPopoutWindow(ref surGuiRect, FillSurface);
             }
 
             if (showFlt && popoutFlt)
             {
-                fltGuiRect = GeneratePopoutWindow(fltGuiRect, FillFlight);
+                DrawPopoutWindow(ref fltGuiRect, FillFlight);
             }
 
             if (showTgt && popoutTgt && currentTarget != null)
             {
-                tgtGuiRect = GeneratePopoutWindow(tgtGuiRect, FillTarget);
+                DrawPopoutWindow(ref tgtGuiRect, FillTarget);
             }
 
             if (showMan && popoutMan && currentManeuver != null)
             {
-                manGuiRect = GeneratePopoutWindow(manGuiRect, FillManeuver);
+                DrawPopoutWindow(ref manGuiRect, FillManeuver);
             }
 
             if (showStg && popoutStg)
             {
-                stgGuiRect = GeneratePopoutWindow(stgGuiRect, FillStages);
+                DrawPopoutWindow(ref stgGuiRect, FillStages);
             }
         }
 
-        private Rect GeneratePopoutWindow(Rect guiRect, UnityEngine.GUI.WindowFunction fillAction)
-        {
-            guiRect = GUILayout.Window(
-                GUIUtility.GetControlID(FocusType.Passive),
-                guiRect,
-                fillAction,
-                "",
-                popoutWindowStyle,
-                GUILayout.Height(0),
-                GUILayout.Width(windowWidth)
-            );
-            guiRect.position = ClampToScreen(guiRect.position, guiRect.size);
-            return guiRect;
-        }
+		private void DrawPopoutWindow(ref Rect guiRect, UnityEngine.GUI.WindowFunction fillAction)
+		{
+			guiRect = GUILayout.Window(
+				GUIUtility.GetControlID(FocusType.Passive),
+				guiRect,
+				fillAction,
+				"",
+				popoutWindowStyle,
+				GUILayout.Height(0),
+				GUILayout.Width(windowWidth)
+			);
+			ClampRectToScreen(ref guiRect);
+		}
 
-        private Vector2 ClampToScreen(Vector2 position, Vector2 size)
-        {
-            float x = Mathf.Clamp(position.x, 0, Screen.width - size.x);
-            float y = Mathf.Clamp(position.y, 0, Screen.height - size.y);
-            return new Vector2(x, y);
-        }
+		private void ClampRectToScreen(ref Rect rect)
+		{
+			float x = Mathf.Clamp(rect.position.x, 0, Screen.width - rect.size.x);
+			float y = Mathf.Clamp(rect.position.y, 0, Screen.height - rect.size.y);
+			rect.position = new Vector2(x, y);
+		}
 
-        private void FillMainGUI(int windowID)
+
+		private void FillMainGUI(int windowID)
         {
             if (CloseButton())
             {
