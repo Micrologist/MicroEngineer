@@ -127,7 +127,7 @@ namespace MicroEngineerMod
 
             popoutWindowStyle = new GUIStyle(mainWindowStyle)
             {
-                padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 20, mainWindowStyle.padding.bottom - 5)
+                padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5)
             };
 
             popoutBtnStyle = new GUIStyle(GUI.skin.button)
