@@ -82,7 +82,15 @@ namespace MicroEngineerMod
             base.OnInitialized();
             Instance = this;
 
-            Appbar.RegisterAppButton(
+			vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+
+			Appbar.RegisterAppButton(
                 "Micro Engineer",
                 "BTN-MicroEngineerBtn",
                 AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
@@ -105,14 +113,6 @@ namespace MicroEngineerMod
         {
             activeVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
             if (!showGUI || activeVessel == null) return;
-
-            vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 
             GUI.skin = Skins.ConsoleSkin;
             nameLabelStyle = new GUIStyle(GUI.skin.label);
@@ -184,7 +184,7 @@ namespace MicroEngineerMod
                 FillMainGUI,
                 "<color=#696DFF>// MICRO ENGINEER</color>",
                 mainWindowStyle,
-                GUILayout.Height(windowHeight),
+                GUILayout.Height(0),
                 GUILayout.Width(windowWidth)
             );
             }
