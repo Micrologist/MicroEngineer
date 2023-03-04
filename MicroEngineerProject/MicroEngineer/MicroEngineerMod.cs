@@ -17,6 +17,7 @@ using SpaceWarp.API.UI;
 using SpaceWarp.API.UI.Appbar;
 using BepInEx;
 using System.Drawing;
+using Color = UnityEngine.Color;
 
 namespace MicroEngineerMod
 {
@@ -30,6 +31,8 @@ namespace MicroEngineerMod
         private readonly int windowWidth = 290;
         private readonly int windowHeight = 700;
         private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect, stgGuiRect, closeBtnRect;
+
+        private GUISkin spaceWarpSkin;
 
         private GUIStyle popoutBtnStyle;
         private GUIStyle mainWindowStyle;
@@ -91,6 +94,62 @@ namespace MicroEngineerMod
 			tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 			stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 
+			spaceWarpSkin = Skins.ConsoleSkin;
+
+			mainWindowStyle = new GUIStyle(spaceWarpSkin.window)
+			{
+				padding = new RectOffset(8, 8, 20, 8),
+				contentOffset = new Vector2(0, -22),
+				fixedWidth = windowWidth
+			};
+
+			popoutWindowStyle = new GUIStyle(mainWindowStyle)
+			{
+				padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5),
+				fixedWidth = windowWidth
+			};
+
+			popoutBtnStyle = new GUIStyle(spaceWarpSkin.button)
+			{
+				alignment = TextAnchor.MiddleCenter,
+				contentOffset = new Vector2(0, 2),
+				fixedHeight = 15,
+				fixedWidth = 15,
+				fontSize = 28,
+				clipping = TextClipping.Overflow,
+				margin = new RectOffset(0, 0, 10, 0)
+			};
+
+			sectionToggleStyle = new GUIStyle(spaceWarpSkin.toggle)
+			{
+				padding = new RectOffset(17, 0, 3, 0)
+			};
+
+			nameLabelStyle = new GUIStyle(spaceWarpSkin.label);
+			nameLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
+
+			valueLabelStyle = new GUIStyle(spaceWarpSkin.label)
+			{
+				alignment = TextAnchor.MiddleRight
+			};
+			valueLabelStyle.normal.textColor = new Color(.6f, .7f, 1, 1);
+
+			unitLabelStyle = new GUIStyle(valueLabelStyle)
+			{
+				fixedWidth = 24,
+				alignment = TextAnchor.MiddleLeft
+			};
+			unitLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
+
+			unitColorHex = ColorUtility.ToHtmlStringRGBA(unitLabelStyle.normal.textColor);
+
+			closeBtnStyle = new GUIStyle(spaceWarpSkin.button)
+			{
+				fontSize = 8
+			};
+
+			closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
+
 			Appbar.RegisterAppButton(
                 "Micro Engineer",
                 "BTN-MicroEngineerBtn",
@@ -111,63 +170,10 @@ namespace MicroEngineerMod
             activeVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
             if (!showGUI || activeVessel == null) return;
 
-            GUI.skin = Skins.ConsoleSkin;
-            nameLabelStyle = new GUIStyle(GUI.skin.label);
-            nameLabelStyle.normal.textColor = new UnityEngine.Color(.7f, .75f, .75f, 1);
-
-            mainWindowStyle = new GUIStyle(GUI.skin.window)
-            {
-                padding = new RectOffset(8, 8, 20, 8),
-                contentOffset = new Vector2(0, -22)
-            };
-
-            popoutWindowStyle = new GUIStyle(mainWindowStyle)
-            {
-                padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5)
-            };
-
-            popoutBtnStyle = new GUIStyle(GUI.skin.button)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                contentOffset = new Vector2(0, 2),
-                fixedHeight = 15,
-                fixedWidth = 15,
-                fontSize = 28,
-                clipping = TextClipping.Overflow,
-                margin = new RectOffset(0, 0, 10, 0)
-            };
-
-            sectionToggleStyle = new GUIStyle(GUI.skin.toggle)
-            {
-                padding = new RectOffset(17, 0, 3, 0)
-            };
-
-            valueLabelStyle = new GUIStyle(GUI.skin.label)
-            {
-                alignment = TextAnchor.MiddleRight
-            };
-            valueLabelStyle.normal.textColor = new UnityEngine.Color(.6f, .7f, 1, 1);
-
-            unitLabelStyle = new GUIStyle(valueLabelStyle)
-            {
-                fixedWidth = 24,
-                alignment = TextAnchor.MiddleLeft
-            };
-            unitLabelStyle.normal.textColor = new UnityEngine.Color(.7f, .75f, .75f, 1);
-
-            unitColorHex = ColorUtility.ToHtmlStringRGBA(unitLabelStyle.normal.textColor);
-
-            closeBtnStyle = new GUIStyle(GUI.skin.button)
-            {
-                fontSize = 8
-            };
-
-            closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
-
+            GUI.skin = spaceWarpSkin;
 
             currentTarget = activeVessel.TargetObject;
             currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
-
 
             if (showGUI)
             {
