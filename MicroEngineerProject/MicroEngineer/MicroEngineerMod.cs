@@ -474,7 +474,7 @@ namespace MicroMod
 				VesselSituations.SubOrbital => "Suborbital",
 				VesselSituations.Orbiting => "Orbiting",
 				VesselSituations.Escaping => "Escaping",
-				_ => "UNNOWN",
+				_ => "UNKNOWN",
 			};
 		}
 
