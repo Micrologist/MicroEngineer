@@ -82,6 +82,7 @@ namespace MicroEngineerMod
             base.OnInitialized();
             Instance = this;
 
+            mainGuiRect = new Rect(Screen.width * 0.7f, Screen.height * 0.3f, 0, 0);
 			vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 			orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
 			surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
