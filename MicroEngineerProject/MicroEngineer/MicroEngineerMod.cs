@@ -359,6 +359,11 @@ namespace MicroMod
 			DrawEntry("Inclination", $"{activeVessel.Orbit.inclination:N3}", "°");
 			DrawEntry("Eccentricity", $"{activeVessel.Orbit.eccentricity:N3}");
 			DrawEntry("Period", $"{SecondsToTimeString(activeVessel.Orbit.period)}", "s");
+			double secondsToSoiTransition = activeVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime;
+			if (secondsToSoiTransition >= 0)
+			{
+				DrawEntry("SOI Trans.", SecondsToTimeString(secondsToSoiTransition), "s");
+			}
 			DrawSectionEnd(popoutOrb);
 		}
 
