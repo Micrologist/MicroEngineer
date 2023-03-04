@@ -445,8 +445,8 @@ namespace MicroMod
 			GUILayout.Label($"{stageID:00.}", nameLabelStyle, GUILayout.Width(24));
 			GUILayout.FlexibleSpace();
 			GUILayout.Label($"{stageInfo.DeltaVActual:N0} <color=#{unitColorHex}>m/s</color>", valueLabelStyle);
-			GUILayout.Space(15);
-			GUILayout.Label($"{stageInfo.TWRActual:N2}", valueLabelStyle, GUILayout.Width(32));
+			GUILayout.Space(10);
+			GUILayout.Label($"{stageInfo.TWRActual:N2}", valueLabelStyle, GUILayout.Width(40));
 			GUILayout.Space(2);
 			GUILayout.Label($"{SecondsToTimeString(Math.Min(stageInfo.StageBurnTime, 3599), false)}<color=#{unitColorHex}>s</color>", valueLabelStyle, GUILayout.Width(70));
 			GUILayout.EndHorizontal();
