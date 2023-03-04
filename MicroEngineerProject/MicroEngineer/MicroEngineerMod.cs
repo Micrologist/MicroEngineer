@@ -408,14 +408,7 @@ namespace MicroMod
 		private void DrawSectionHeader(string name, ref bool isPopout, string value = "")
 		{
 			GUILayout.BeginHorizontal();
-			if (isPopout)
-			{
-				isPopout = !CloseButton();
-			}
-			else
-			{
-				isPopout = GUILayout.Button("⇖", popoutBtnStyle);
-			}
+			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", popoutBtnStyle);
 
 			GUILayout.Label($"<b>{name}</b>");
 			GUILayout.FlexibleSpace();
