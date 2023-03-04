@@ -187,6 +187,7 @@ namespace MicroEngineerMod
                 GUILayout.Width(windowWidth)
             );
             }
+            mainGuiRect.position = ClampToScreen(mainGuiRect.position, mainGuiRect.size);
 
             if (showVes && popoutVes)
             {
@@ -235,6 +236,7 @@ namespace MicroEngineerMod
                 GUILayout.Height(0),
                 GUILayout.Width(windowWidth)
             );
+            guiRect.position = ClampToScreen(guiRect.position, guiRect.size);
             return guiRect;
         }
 
