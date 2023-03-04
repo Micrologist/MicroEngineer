@@ -53,7 +53,7 @@ namespace MicroMod
 		private SimulationObjectModel currentTarget;
 		private ManeuverNodeData currentManeuver;
 
-		private double totalDrag, totalLift, liftToDragRatio;
+		private double totalDrag, totalLift;
 
 		private static readonly List<Type> liftForces = new()
 		{
@@ -560,7 +560,6 @@ namespace MicroMod
 		{
 			totalDrag = 0.0;
 			totalLift = 0.0;
-			liftToDragRatio = 0;
 			
 			IEnumerable<PartComponent> parts = activeVessel?.SimulationObject?.PartOwner?.Parts;
 			if (parts == null)
@@ -582,7 +581,6 @@ namespace MicroMod
 					}
 				}
 			}
-			liftToDragRatio = totalLift / totalDrag;
 		}
 	}
 }
