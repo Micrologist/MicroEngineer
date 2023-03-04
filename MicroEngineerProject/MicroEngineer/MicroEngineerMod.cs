@@ -466,25 +466,17 @@ namespace MicroMod
 
 		private string SituationToString(VesselSituations situation)
 		{
-			switch (situation)
+			return situation switch
 			{
-				case VesselSituations.PreLaunch:
-					return "Pre-Launch";
-				case VesselSituations.Landed:
-					return "Landed";
-				case VesselSituations.Splashed:
-					return "Splashed down";
-				case VesselSituations.Flying:
-					return "Flying";
-				case VesselSituations.SubOrbital:
-					return "Suborbital";
-				case VesselSituations.Orbiting:
-					return "Orbiting";
-				case VesselSituations.Escaping:
-					return "Escaping";
-				default:
-					return "UNNOWN";
-			}
+				VesselSituations.PreLaunch => "Pre-Launch",
+				VesselSituations.Landed => "Landed",
+				VesselSituations.Splashed => "Splashed down",
+				VesselSituations.Flying => "Flying",
+				VesselSituations.SubOrbital => "Suborbital",
+				VesselSituations.Orbiting => "Orbiting",
+				VesselSituations.Escaping => "Escaping",
+				_ => "UNNOWN",
+			};
 		}
 
 		private string SecondsToTimeString(double seconds, bool addSpacing = true)
