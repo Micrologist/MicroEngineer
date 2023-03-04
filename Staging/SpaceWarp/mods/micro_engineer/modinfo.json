@@ -1,0 +1,13 @@
+{
+    "mod_id": "micro_engineer",
+    "author": "Micrologist",
+    "name": "Micro Engineer",
+    "description": "Get in-flight information about your current vessel",
+    "source": "https://github.com/Micrologist/MicroEngineer",
+    "version": "0.4.1",
+    "dependencies": [],
+    "ksp2_version": {
+        "min": "0.1.0",
+        "max": "0.1.0"
+    }
+}
