@@ -166,41 +166,41 @@ namespace MicroMod
 
 			if (showVes && popoutVes)
 			{
-				vesGuiRect = GeneratePopoutWindow(vesGuiRect, FillVessel);
+				DrawPopoutWindow(ref vesGuiRect, FillVessel);
 			}
 
 			if (showOrb && popoutOrb)
 			{
-				orbGuiRect = GeneratePopoutWindow(orbGuiRect, FillOrbital);
+				DrawPopoutWindow(ref orbGuiRect, FillOrbital);
 			}
 
 			if (showSur && popoutSur)
 			{
-				surGuiRect = GeneratePopoutWindow(surGuiRect, FillSurface);
+				DrawPopoutWindow(ref surGuiRect, FillSurface);
 			}
 
 			if (showFlt && popoutFlt)
 			{
-				fltGuiRect = GeneratePopoutWindow(fltGuiRect, FillFlight);
+				DrawPopoutWindow(ref fltGuiRect, FillFlight);
 			}
 
 			if (showTgt && popoutTgt && currentTarget != null)
 			{
-				tgtGuiRect = GeneratePopoutWindow(tgtGuiRect, FillTarget);
+				DrawPopoutWindow(ref tgtGuiRect, FillTarget);
 			}
 
 			if (showMan && popoutMan && currentManeuver != null)
 			{
-				manGuiRect = GeneratePopoutWindow(manGuiRect, FillManeuver);
+				DrawPopoutWindow(ref manGuiRect, FillManeuver);
 			}
 
 			if (showStg && popoutStg)
 			{
-				stgGuiRect = GeneratePopoutWindow(stgGuiRect, FillStages);
+				DrawPopoutWindow(ref stgGuiRect, FillStages);
 			}
 		}
 
-		private Rect GeneratePopoutWindow(Rect guiRect, UnityEngine.GUI.WindowFunction fillAction)
+		private void DrawPopoutWindow(ref Rect guiRect, UnityEngine.GUI.WindowFunction fillAction)
 		{
 			guiRect = GUILayout.Window(
 				GUIUtility.GetControlID(FocusType.Passive),
@@ -212,7 +212,6 @@ namespace MicroMod
 				GUILayout.Width(windowWidth)
 			);
 			guiRect.position = ClampToScreen(guiRect.position, guiRect.size);
-			return guiRect;
 		}
 
 		private Vector2 ClampToScreen(Vector2 position, Vector2 size)
