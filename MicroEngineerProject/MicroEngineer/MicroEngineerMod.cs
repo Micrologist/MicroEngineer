@@ -105,10 +105,6 @@ namespace MicroEngineerMod
             GameObject.Find("BTN-MircroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(toggle);
 
         }
-        void Awake()
-        { 
-          return;
-        }
 
         private void OnGUI()
         {
