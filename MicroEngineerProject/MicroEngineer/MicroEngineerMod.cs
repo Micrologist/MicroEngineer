@@ -385,7 +385,7 @@ namespace MicroMod
 		{
 			DrawSectionHeader("Flight", ref popoutFlt);
 
-			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N0}", "m/s");
+			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N1}", "m/s");
 			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N2}");
 			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N3}", "g/L");
 			GetAeroStats();
