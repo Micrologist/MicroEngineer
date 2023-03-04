@@ -82,7 +82,15 @@ namespace MicroEngineerMod
             base.OnInitialized();
             Instance = this;
 
-            Appbar.RegisterAppButton(
+			vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+
+			Appbar.RegisterAppButton(
                 "Micro Engineer",
                 "BTN-MicroEngineerBtn",
                 AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
@@ -97,15 +105,8 @@ namespace MicroEngineerMod
 
         }
         void Awake()
-        {
-            mainGuiRect = new Rect(Screen.width * 0.8f, Screen.height * 0.3f, 0, 0);
-            vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-            stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+        { 
+          return;
         }
 
         private void OnGUI()
