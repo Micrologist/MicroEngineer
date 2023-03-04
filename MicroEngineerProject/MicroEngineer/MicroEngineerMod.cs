@@ -30,6 +30,7 @@ namespace MicroMod
 		private GUIStyle nameLabelStyle;
 		private GUIStyle valueLabelStyle;
 		private GUIStyle unitLabelStyle;
+		private GUIStyle tableHeaderLabelStyle;
 
 		private string unitColorHex;
 
@@ -124,6 +125,8 @@ namespace MicroMod
 			};
 
 			closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
+
+			tableHeaderLabelStyle = new GUIStyle(nameLabelStyle) { alignment = TextAnchor.MiddleRight };
 
 			SpaceWarpManager.RegisterAppButton(
 				"Micro Engineer",
@@ -308,7 +311,7 @@ namespace MicroMod
 
 		private void FillStages(int _ = 0)
 		{
-			DrawSectionHeader("Stage", ref popoutStg);
+			DrawStagesHeader(ref popoutStg);
 
 			List<DeltaVStageInfo> stages = activeVessel.VesselDeltaV?.StageInfo;
 
@@ -420,12 +423,12 @@ namespace MicroMod
 			DrawSectionEnd(popoutMan);
 		}
 
-		private void DrawSectionHeader(string name, ref bool isPopout, string value = "")
+		private void DrawSectionHeader(string sectionName, ref bool isPopout, string value = "")
 		{
 			GUILayout.BeginHorizontal();
 			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", popoutBtnStyle);
 
-			GUILayout.Label($"<b>{name}</b>");
+			GUILayout.Label($"<b>{sectionName}</b>");
 			GUILayout.FlexibleSpace();
 			GUILayout.Label(value, valueLabelStyle);
 			GUILayout.Space(5);
@@ -434,11 +437,34 @@ namespace MicroMod
 			GUILayout.Space(spacingAfterHeader);
 		}
 
-
-		private void DrawEntry(string name, string value, string unit = "")
+		private void DrawStagesHeader(ref bool isPopout)
 		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Label(name, nameLabelStyle);
+			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", popoutBtnStyle);
+
+			GUILayout.Label("<b>Stage</b>");
+			GUILayout.FlexibleSpace();
+			GUILayout.Label("∆v", tableHeaderLabelStyle);
+			GUILayout.Space(16);
+			GUILayout.Label($"TWR", tableHeaderLabelStyle, GUILayout.Width(40));
+			GUILayout.Space(16);
+			if (isPopout)
+			{
+				GUILayout.Label($"<color=#{unitColorHex}>Burn</color>", GUILayout.Width(56));
+			}
+			else
+			{
+				GUILayout.Label($"Burn", tableHeaderLabelStyle, GUILayout.Width(56));
+			}
+			GUILayout.EndHorizontal();
+			GUILayout.Space(spacingAfterHeader);
+		}
+
+
+		private void DrawEntry(string entryName, string value, string unit = "")
+		{
+			GUILayout.BeginHorizontal();
+			GUILayout.Label(entryName, nameLabelStyle);
 			GUILayout.FlexibleSpace();
 			GUILayout.Label(value, valueLabelStyle);
 			GUILayout.Space(5);
@@ -453,10 +479,23 @@ namespace MicroMod
 			GUILayout.Label($"{stageID:00.}", nameLabelStyle, GUILayout.Width(24));
 			GUILayout.FlexibleSpace();
 			GUILayout.Label($"{stageInfo.DeltaVActual:N0} <color=#{unitColorHex}>m/s</color>", valueLabelStyle);
-			GUILayout.Space(10);
+			GUILayout.Space(16);
 			GUILayout.Label($"{stageInfo.TWRActual.ToString(twrFormatString)}", valueLabelStyle, GUILayout.Width(40));
-			GUILayout.Space(10);
-			GUILayout.Label($"{SecondsToTimeString(Math.Min(stageInfo.StageBurnTime, 3599), false)}<color=#{unitColorHex}>s</color>", valueLabelStyle, GUILayout.Width(56));
+			GUILayout.Space(16);
+			string burnTime = SecondsToTimeString(stageInfo.StageBurnTime, false);
+			string lastUnit = "s";
+			if (burnTime.Contains('h'))
+			{
+				burnTime = burnTime.Remove(burnTime.LastIndexOf("<color"));
+				lastUnit = "m";
+			}
+			if (burnTime.Contains('d'))
+			{
+				burnTime = burnTime.Remove(burnTime.LastIndexOf("<color"));
+				lastUnit = "h";
+			}
+
+			GUILayout.Label($"{burnTime}<color=#{unitColorHex}>{lastUnit}</color>", valueLabelStyle, GUILayout.Width(56));
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spacingAfterEntry);
 		}
