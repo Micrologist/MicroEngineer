@@ -190,93 +190,37 @@ namespace MicroEngineerMod
 
             if (showVes && popoutVes)
             {
-                vesGuiRect = GUILayout.Window(
-                GUIUtility.GetControlID(FocusType.Passive), 
-                vesGuiRect, 
-                FillVessel,
-                "",
-                popoutWindowStyle,
-                GUILayout.Height(0),
-                GUILayout.Width(windowWidth)
-                );
+                vesGuiRect = GeneratePopoutWindow(vesGuiRect, FillVessel);
             }
 
             if (showOrb && popoutOrb)
             {
-                orbGuiRect = GUILayout.Window(
-                GUIUtility.GetControlID(FocusType.Passive),
-                orbGuiRect,
-                FillVessel,
-                "",
-                popoutWindowStyle,
-                GUILayout.Height(0),
-                GUILayout.Width(windowWidth)
-                );
+                orbGuiRect = GeneratePopoutWindow(orbGuiRect, FillVessel);
             }
 
             if (showSur && popoutSur)
             {
-                surGuiRect = GUILayout.Window(
-                GUIUtility.GetControlID(FocusType.Passive),
-                surGuiRect,
-                FillVessel,
-                "",
-                popoutWindowStyle,
-                GUILayout.Height(0),
-                GUILayout.Width(windowWidth)
-                );
+                surGuiRect = GeneratePopoutWindow(surGuiRect, FillVessel);
             }
 
             if (showFlt && popoutFlt)
             {
-                fltGuiRect = GUILayout.Window(
-                GUIUtility.GetControlID(FocusType.Passive),
-                fltGuiRect,
-                FillVessel,
-                "",
-                popoutWindowStyle,
-                GUILayout.Height(0),
-                GUILayout.Width(windowWidth)
-                );
+                fltGuiRect = GeneratePopoutWindow(fltGuiRect, FillVessel);
             }
 
             if (showTgt && popoutTgt && currentTarget != null)
             {
-                tgtGuiRect = GUILayout.Window(
-                GUIUtility.GetControlID(FocusType.Passive),
-                tgtGuiRect,
-                FillVessel,
-                "",
-                popoutWindowStyle,
-                GUILayout.Height(0),
-                GUILayout.Width(windowWidth)
-                );
+                tgtGuiRect = GeneratePopoutWindow(tgtGuiRect, FillVessel);
             }
 
             if (showMan && popoutMan && currentManeuver != null)
             {
-                manGuiRect = GUILayout.Window(
-                GUIUtility.GetControlID(FocusType.Passive),
-                manGuiRect,
-                FillVessel,
-                "",
-                popoutWindowStyle,
-                GUILayout.Height(0),
-                GUILayout.Width(windowWidth)
-                );
+                manGuiRect = GeneratePopoutWindow(manGuiRect, FillVessel);
             }
 
             if (showStg && popoutStg)
             {
-                stgGuiRect = GUILayout.Window(
-                GUIUtility.GetControlID(FocusType.Passive),
-                stgGuiRect,
-                FillVessel,
-                "",
-                popoutWindowStyle,
-                GUILayout.Height(0),
-                GUILayout.Width(windowWidth)
-                );
+                stgGuiRect = GeneratePopoutWindow(stgGuiRect, FillVessel);
             }
         }
 
