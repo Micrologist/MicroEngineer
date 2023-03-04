@@ -1,22 +1,17 @@
+using BepInEx;
 using KSP.Game;
-using KSP.Sim.impl;
 using KSP.Sim;
+using KSP.Sim.DeltaV;
+using KSP.Sim.impl;
 using KSP.Sim.Maneuver;
 using KSP.UI.Binding;
-using KSP.Sim.DeltaV;
 using KSP.UI.Flight;
-
-using UnityEngine;
-
 using SpaceWarp;
-using SpaceWarp.UI;
-using SpaceWarp.API;
-using SpaceWarp.API.Mods;
 using SpaceWarp.API.Assets;
+using SpaceWarp.API.Mods;
 using SpaceWarp.API.UI;
 using SpaceWarp.API.UI.Appbar;
-using BepInEx;
-using System.Drawing;
+using UnityEngine;
 using Color = UnityEngine.Color;
 
 namespace MicroEngineerMod
@@ -46,10 +41,10 @@ namespace MicroEngineerMod
 		private string unitColorHex;
 
 
-		private int spacingAfterHeader = -12;
-		private int spacingAfterEntry = -12;
-		private int spacingAfterSection = 5;
-		private float spacingBelowPopout = 10;
+		private readonly int spacingAfterHeader = -12;
+		private readonly int spacingAfterEntry = -12;
+		private readonly int spacingAfterSection = 5;
+		private readonly float spacingBelowPopout = 10;
 
 		private bool showVes = true;
 		private bool showOrb = true;
