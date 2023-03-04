@@ -296,15 +296,15 @@ namespace MicroMod
 		private void FillVessel(int _ = 0)
 		{
 			DrawSectionHeader("Vessel", ref popoutVes, activeVessel.DisplayName);
-			DrawEntry("Mass", $"{activeVessel.totalMass:N3}", "t");
+			DrawEntry("Mass", $"{activeVessel.totalMass*1000:N0}", "kg");
 			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
 			if (deltaVComponent != null)
 			{
-				DrawEntry("∆v", $"{deltaVComponent.TotalDeltaVActual:N1}", "m/s");
+				DrawEntry("∆v", $"{deltaVComponent.TotalDeltaVActual:N0}", "m/s");
 				if (deltaVComponent.StageInfo.FirstOrDefault()?.DeltaVinVac > 0.0001 || deltaVComponent.StageInfo.FirstOrDefault()?.DeltaVatASL > 0.0001)
 				{
-					DrawEntry("Thrust", $"{deltaVComponent.StageInfo.FirstOrDefault()?.ThrustActual:N3}", "kN");
-					DrawEntry("TWR", $"{deltaVComponent.StageInfo.FirstOrDefault()?.TWRActual:N2}");
+					DrawEntry("Thrust", $"{deltaVComponent.StageInfo.FirstOrDefault()?.ThrustActual * 1000:N0}", "N");
+					DrawEntry("TWR", $"{deltaVComponent.StageInfo.FirstOrDefault()?.TWRActual:N3}");
 				}
 			}
 
@@ -328,7 +328,7 @@ namespace MicroMod
 				{
 					twrFormatString = "N1";
 				}
-				if (preDecimalDigits == 4)
+				else if (preDecimalDigits == 4)
 				{
 					twrFormatString = "N0";
 				}
@@ -380,12 +380,12 @@ namespace MicroMod
 		{
 			DrawSectionHeader("Flight", ref popoutFlt);
 
-			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N1}", "m/s");
+			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N0}", "m/s");
 			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N3}");
 			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N3}", "g/L");
 			GetAeroStats();
-			DrawEntry("Total Lift", $"{totalLift:N3}", "kN");
-			DrawEntry("Total Drag", $"{totalDrag:N3}", "kN");
+			DrawEntry("Total Lift", $"{totalLift*1000:N0}", "N");
+			DrawEntry("Total Drag", $"{totalDrag*1000:N0}", "N");
 			DrawEntry("Lift / Drag", $"{totalLift / totalDrag:N3}");
 
 			DrawSectionEnd(popoutFlt);
@@ -628,7 +628,7 @@ namespace MicroMod
 			totalLift = 0.0;
 
 			IEnumerable<PartComponent> parts = activeVessel?.SimulationObject?.PartOwner?.Parts;
-			if (parts == null)
+			if (parts == null || !activeVessel.IsInAtmosphere)
 			{
 				return;
 			}
