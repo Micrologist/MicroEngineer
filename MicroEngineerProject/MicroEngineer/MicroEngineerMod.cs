@@ -310,17 +310,33 @@ namespace MicroMod
 		{
 			DrawSectionHeader("Stage", ref popoutStg);
 
-			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
-			int stageCount = deltaVComponent?.StageInfo.Count ?? 0;
-			if (deltaVComponent != null && stageCount > 0)
+			List<DeltaVStageInfo> stages = activeVessel.VesselDeltaV?.StageInfo;
+
+			int stageCount = stages?.Count ?? 0;
+			if (stages != null && stageCount > 0)
 			{
-				for (int i = deltaVComponent.StageInfo.Count - 1; i >= 0; i--)
+				float highestTwr = Mathf.Floor(stages.Max(stage => stage.TWRActual));
+				int preDecimalDigits = Mathf.FloorToInt(Mathf.Log10(highestTwr)) + 1;
+				
+				string twrFormatString = "N2";
+
+				if (preDecimalDigits == 3)
 				{
-					DeltaVStageInfo stageInfo = deltaVComponent.StageInfo[i];
+					twrFormatString = "N1";
+				}
+				if (preDecimalDigits == 4)
+				{
+					twrFormatString = "N0";
+				}
+
+
+				for (int i = stages.Count - 1; i >= 0; i--)
+				{
+					DeltaVStageInfo stageInfo = stages[i];
 					if (stageInfo.DeltaVinVac > 0.0001 || stageInfo.DeltaVatASL > 0.0001)
 					{
 						int stageNum = stageCount - stageInfo.Stage;
-						DrawStageEntry(stageNum, stageInfo);
+						DrawStageEntry(stageNum, stageInfo, twrFormatString);
 					}
 				}
 			}
@@ -431,16 +447,16 @@ namespace MicroMod
 			GUILayout.Space(spacingAfterEntry);
 		}
 
-		private void DrawStageEntry(int stageID, DeltaVStageInfo stageInfo)
+		private void DrawStageEntry(int stageID, DeltaVStageInfo stageInfo, string twrFormatString)
 		{
 			GUILayout.BeginHorizontal();
 			GUILayout.Label($"{stageID:00.}", nameLabelStyle, GUILayout.Width(24));
 			GUILayout.FlexibleSpace();
 			GUILayout.Label($"{stageInfo.DeltaVActual:N0} <color=#{unitColorHex}>m/s</color>", valueLabelStyle);
 			GUILayout.Space(10);
-			GUILayout.Label($"{stageInfo.TWRActual:N2}", valueLabelStyle, GUILayout.Width(40));
-			GUILayout.Space(2);
-			GUILayout.Label($"{SecondsToTimeString(Math.Min(stageInfo.StageBurnTime, 3599), false)}<color=#{unitColorHex}>s</color>", valueLabelStyle, GUILayout.Width(70));
+			GUILayout.Label($"{stageInfo.TWRActual.ToString(twrFormatString)}", valueLabelStyle, GUILayout.Width(40));
+			GUILayout.Space(10);
+			GUILayout.Label($"{SecondsToTimeString(Math.Min(stageInfo.StageBurnTime, 3599), false)}<color=#{unitColorHex}>s</color>", valueLabelStyle, GUILayout.Width(56));
 			GUILayout.EndHorizontal();
 			GUILayout.Space(spacingAfterEntry);
 		}
