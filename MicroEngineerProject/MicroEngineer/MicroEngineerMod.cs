@@ -79,6 +79,7 @@ namespace MicroEngineerMod
 
 			base.OnInitialized();
 			Instance = this;
+			this.hideFlags = HideFlags.HideAndDontSave;
 
 			mainGuiRect = new Rect(Screen.width * 0.8f, Screen.height * 0.3f, 0, 0);
 			vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
