@@ -13,8 +13,6 @@ using KSP.Sim.DeltaV;
 using KSP.Sim;
 using KSP.UI.Flight;
 using static KSP.Rendering.Planets.PQSData;
-using static VehiclePhysics.EnergyProvider;
-using KSP.Modding;
 
 namespace MicroMod
 {
@@ -436,6 +434,8 @@ namespace MicroMod
 			DrawSectionHeader("Surface", ref popoutSur, activeVessel.mainBody.bodyName);
 
 			DrawEntry("Situation", SituationToString(activeVessel.Situation));
+			DrawEntry("Latitude", $"{DegreesToDMS(activeVessel.Latitude)}", activeVessel.Latitude < 0 ? "S" : "N");
+			DrawEntry("Longitude", $"{DegreesToDMS(activeVessel.Longitude)}", activeVessel.Longitude < 0 ? "W" : "E");
 			DrawEntry("Biome", BiomeToString(activeVessel.SimulationObject.Telemetry.SurfaceBiome));
 			DrawEntry("Alt. MSL", MetersToDistanceString(activeVessel.AltitudeFromSeaLevel), "m");
 			DrawEntry("Alt. AGL", MetersToDistanceString(activeVessel.AltitudeFromScenery), "m");
@@ -685,6 +685,18 @@ namespace MicroMod
 		{
 			string result = biome.type.ToString().ToLower().Replace('_', ' ');
 			return result.Substring(0, 1).ToUpper() + result.Substring(1);
+		}
+
+		private string DegreesToDMS(double degreeD)
+		{
+			var ts = TimeSpan.FromHours(Math.Abs(degreeD));
+			int degrees = (int)Math.Floor(ts.TotalHours);
+			int minutes = ts.Minutes;
+			int seconds = ts.Seconds;
+
+			string result = $"{degrees:N0}<color={unitColorHex}>°</color> {minutes:00}<color={unitColorHex}>'</color> {seconds:00}<color={unitColorHex}>\"</color>";
+
+			return result;
 		}
 
 		private void CloseWindow()
