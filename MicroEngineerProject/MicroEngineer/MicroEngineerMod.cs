@@ -44,7 +44,6 @@ namespace MicroMod
 
 		private string unitColorHex;
 
-
 		private int spacingAfterHeader = -12;
 		private int spacingAfterEntry = -12;
 		private int spacingAfterSection = 5;
@@ -151,9 +150,10 @@ namespace MicroMod
 					delegate { showGUI = !showGUI; }
 			);
 
-			// load window positions and states from disk, if file exists
+
 			InitializeRects();
 			ResetLayout();
+			// load window positions and states from disk, if file exists
 			LoadLayoutState();
 		}
 
@@ -732,32 +732,32 @@ namespace MicroMod
 
 			if (state != null)
 			{
-                showSettings = false;
-                showVes = state.ShowVes;
-                showOrb = state.ShowOrb;
-                showSur = state.ShowSur;
-                showFlt = state.ShowFlt;
-                showMan = state.ShowMan;
-                showTgt = state.ShowTgt;
-                showStg = state.ShowStg;
-                popoutSettings = state.IsPopoutSettings;
-                popoutVes = state.IsPopoutVes;
-                popoutOrb = state.IsPopoutOrb;
-                popoutSur = state.IsPopoutSur;
-                popoutFlt = state.IsPopOutFlt;
-                popoutMan = state.IsPopOutMan;
-                popoutTgt = state.IsPopOutTgt;
-                popoutStg = state.IsPopOutStg;
-                mainGuiRect.position = state.MainGuiPosition;
-                settingsGuiRect.position = state.SettingsPosition;
-                vesGuiRect.position = state.VesPosition;
-                orbGuiRect.position = state.OrbPosition;
-                surGuiRect.position = state.SurPosition;
-                fltGuiRect.position = state.FltPosition;
-                manGuiRect.position = state.ManPosition;
-                tgtGuiRect.position = state.TgtPosition;
-                stgGuiRect.position = state.StgPosition;
-            }
-        }
+				showSettings = false;
+				showVes = state.ShowVes;
+				showOrb = state.ShowOrb;
+				showSur = state.ShowSur;
+				showFlt = state.ShowFlt;
+				showMan = state.ShowMan;
+				showTgt = state.ShowTgt;
+				showStg = state.ShowStg;
+				popoutSettings = state.IsPopoutSettings;
+				popoutVes = state.IsPopoutVes;
+				popoutOrb = state.IsPopoutOrb;
+				popoutSur = state.IsPopoutSur;
+				popoutFlt = state.IsPopOutFlt;
+				popoutMan = state.IsPopOutMan;
+				popoutTgt = state.IsPopOutTgt;
+				popoutStg = state.IsPopOutStg;
+				mainGuiRect.position = state.MainGuiPosition;
+				settingsGuiRect.position = state.SettingsPosition;
+				vesGuiRect.position = state.VesPosition;
+				orbGuiRect.position = state.OrbPosition;
+				surGuiRect.position = state.SurPosition;
+				fltGuiRect.position = state.FltPosition;
+				manGuiRect.position = state.ManPosition;
+				tgtGuiRect.position = state.TgtPosition;
+				stgGuiRect.position = state.StgPosition;
+			}
+		}
 	}
 }
