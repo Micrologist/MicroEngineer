@@ -165,8 +165,8 @@ namespace MicroMod
 		private void ResetLayout()
 		{
 			popoutVes = popoutStg = popoutOrb = popoutSur = popoutFlt = popoutTgt = popoutMan = popoutSettings = false;
-			mainGuiRect.position = new(Screen.width * 0.8f, Screen.height * 0.3f);
-			Vector2 popoutWindowPosition = new(Screen.width * 0.6f, Screen.height * 0.3f);
+			mainGuiRect.position = new(Screen.width * 0.8f, Screen.height * 0.2f);
+			Vector2 popoutWindowPosition = new(Screen.width * 0.6f, Screen.height * 0.2f);
 			vesGuiRect.position = popoutWindowPosition;
 			stgGuiRect.position = popoutWindowPosition;
 			orbGuiRect.position = popoutWindowPosition;
