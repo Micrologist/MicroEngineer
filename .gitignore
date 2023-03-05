@@ -18,5 +18,7 @@ MicroEngineerProject/[Bb]in/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+/MicroEngineerProject/.vs
 /MicroEngineerProject/.vs/*
+/Staging/CopyStagingToGame.bat
 *.bat
