@@ -1,8 +1,12 @@
-﻿using KSP.Game;
+using BepInEx;
+using KSP.Game;
 using KSP.Sim.impl;
 using UnityEngine;
+using SpaceWarp;
+using SpaceWarp.API.Assets;
 using SpaceWarp.API.Mods;
-using SpaceWarp.API;
+using SpaceWarp.API.UI;
+using SpaceWarp.API.UI.Appbar;
 using KSP.Sim.Maneuver;
 using KSP.UI.Binding;
 using KSP.Sim.DeltaV;
@@ -10,11 +14,13 @@ using KSP.Sim;
 using KSP.UI.Flight;
 using static KSP.Rendering.Planets.PQSData;
 using static VehiclePhysics.EnergyProvider;
+using KSP.Modding;
 
 namespace MicroMod
 {
-	[MainMod]
-	public class MicroEngineerMod : Mod
+	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.5.0")]
+	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
+	public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
 		private bool showGUI = false;
 
@@ -72,7 +78,7 @@ namespace MicroMod
 
 		public override void OnInitialized()
 		{
-			_spaceWarpUISkin = SpaceWarpManager.Skin;
+			_spaceWarpUISkin = Skins.ConsoleSkin;
 
 			mainWindowStyle = new GUIStyle(_spaceWarpUISkin.window)
 			{
@@ -100,7 +106,7 @@ namespace MicroMod
 
 			sectionToggleStyle = new GUIStyle(_spaceWarpUISkin.toggle)
 			{
-				padding = new RectOffset(17, 0, 3, 0)
+				padding = new RectOffset(14, 0, 3, 3)
 			};
 
 			nameLabelStyle = new GUIStyle(_spaceWarpUISkin.label);
@@ -130,11 +136,12 @@ namespace MicroMod
 
 			tableHeaderLabelStyle = new GUIStyle(nameLabelStyle) { alignment = TextAnchor.MiddleRight };
 
-			SpaceWarpManager.RegisterAppButton(
-				"Micro Engineer",
-				"BTN-MicroEngineerBtn",
-				SpaceWarpManager.LoadIcon(),
-				delegate { showGUI = !showGUI; }
+			Appbar.RegisterAppButton(
+					"Micro Engineer",
+					"BTN-MicroEngineerBtn",
+					AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
+					delegate { showGUI = !showGUI; }
+
 			);
 		}
 
@@ -233,17 +240,22 @@ namespace MicroMod
 				CloseWindow();
 			}
 
-			GUILayout.BeginHorizontal();
-			GUILayout.EndHorizontal();
+			GUILayout.Space(10);
 
 			GUILayout.BeginHorizontal();
 			showVes = GUILayout.Toggle(showVes, "<b>VES</b>", sectionToggleStyle);
+			GUILayout.Space(26);
 			showStg = GUILayout.Toggle(showStg, "<b>STG</b>", sectionToggleStyle);
+			GUILayout.Space(26);
 			showOrb = GUILayout.Toggle(showOrb, "<b>ORB</b>", sectionToggleStyle);
+			GUILayout.Space(26);
 			showSur = GUILayout.Toggle(showSur, "<b>SUR</b>", sectionToggleStyle);
+			GUILayout.Space(26);
 			showFlt = GUILayout.Toggle(showFlt, "<b>FLT</b>", sectionToggleStyle);
+			GUILayout.Space(26);
 			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>", sectionToggleStyle);
 			GUILayout.EndHorizontal();
+
 
 			GUILayout.Space(-10);
 
@@ -251,7 +263,9 @@ namespace MicroMod
 			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>", sectionToggleStyle);
 			GUILayout.EndHorizontal();
 
-			GUILayout.Space(-5);
+
+			GUILayout.Space(-3);
+
 			GUILayout.BeginHorizontal();
 			GUILayout.EndHorizontal();
 
@@ -296,7 +310,9 @@ namespace MicroMod
 		private void FillVessel(int _ = 0)
 		{
 			DrawSectionHeader("Vessel", ref popoutVes, activeVessel.DisplayName);
-			DrawEntry("Mass", $"{activeVessel.totalMass*1000:N0}", "kg");
+
+			DrawEntry("Mass", $"{activeVessel.totalMass * 1000:N0}", "kg");
+
 			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
 			if (deltaVComponent != null)
 			{
@@ -333,9 +349,9 @@ namespace MicroMod
 					twrFormatString = "N0";
 				}
 
-
 				for (int i = stages.Count - 1; i >= 0; i--)
 				{
+
 					DeltaVStageInfo stageInfo = stages[i];
 					if (stageInfo.DeltaVinVac > 0.0001 || stageInfo.DeltaVatASL > 0.0001)
 					{
@@ -389,8 +405,10 @@ namespace MicroMod
 			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N2}");
 			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N3}", "g/L");
 			GetAeroStats();
-			DrawEntry("Total Lift", $"{totalLift*1000:N0}", "N");
-			DrawEntry("Total Drag", $"{totalDrag*1000:N0}", "N");
+
+			DrawEntry("Total Lift", $"{totalLift * 1000:N0}", "N");
+			DrawEntry("Total Drag", $"{totalDrag * 1000:N0}", "N");
+
 			DrawEntry("Lift / Drag", $"{totalLift / totalDrag:N3}");
 
 			DrawSectionEnd(popoutFlt);
