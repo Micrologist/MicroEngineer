@@ -35,7 +35,7 @@ namespace MicroMod
 		private GUIStyle popoutWindowStyle;
 		private GUIStyle sectionToggleStyle;
 		private GUIStyle closeBtnStyle;
-		private GUIStyle saveBtnStyle;
+		private GUIStyle saveLoadBtnStyle;
 		private GUIStyle loadBtnStyle;
 		private GUIStyle nameLabelStyle;
 		private GUIStyle valueLabelStyle;
@@ -135,18 +135,11 @@ namespace MicroMod
 				fontSize = 8
 			};
 
-			saveBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
+			saveLoadBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
 			{
-				alignment = TextAnchor.MiddleCenter,
-				fixedHeight = 16
+				alignment = TextAnchor.MiddleCenter
 			};
 
-			loadBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
-			{
-				alignment = TextAnchor.MiddleCenter,
-				fixedHeight = 16
-			};
-			
 			closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
 
 			tableHeaderLabelStyle = new GUIStyle(nameLabelStyle) { alignment = TextAnchor.MiddleRight };
@@ -156,6 +149,7 @@ namespace MicroMod
 					"BTN-MicroEngineerBtn",
 					AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
 					delegate { showGUI = !showGUI; }
+			);
 
 			// load window positions and states from disk, if file exists
 			LoadLayoutState();
@@ -278,9 +272,6 @@ namespace MicroMod
 			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>", sectionToggleStyle);
 			GUILayout.EndHorizontal();
 
-
-			GUILayout.Space(-10);
-
 			GUILayout.BeginHorizontal();
 			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>", sectionToggleStyle);
 			GUILayout.Space(26);
@@ -342,10 +333,10 @@ namespace MicroMod
 
 			GUILayout.Space(10);
 			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("SAVE LAYOUT", saveBtnStyle))
+			if (GUILayout.Button("SAVE LAYOUT", saveLoadBtnStyle))
 				SaveLayoutState();
-			GUILayout.Space(20);
-			if (GUILayout.Button("LOAD LAYOUT", loadBtnStyle))
+			GUILayout.Space(10);
+			if (GUILayout.Button("LOAD LAYOUT", saveLoadBtnStyle))
 				LoadLayoutState();
 			GUILayout.EndHorizontal();
 
