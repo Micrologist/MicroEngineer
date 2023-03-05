@@ -152,20 +152,29 @@ namespace MicroMod
 			);
 
 			// load window positions and states from disk, if file exists
+			InitializeRects();
+			ResetLayout();
 			LoadLayoutState();
 		}
 
-		void Awake()
+		private void InitializeRects()
 		{
-			mainGuiRect = new Rect(Screen.width * 0.8f, Screen.height * 0.3f, 0, 0);
-			settingsGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			mainGuiRect = settingsGuiRect = vesGuiRect = orbGuiRect = surGuiRect = fltGuiRect = manGuiRect = tgtGuiRect = stgGuiRect = new();
+		}
+
+		private void ResetLayout()
+		{
+			popoutVes = popoutStg = popoutOrb = popoutSur = popoutFlt = popoutTgt = popoutMan = popoutSettings = false;
+			mainGuiRect.position = new(Screen.width * 0.8f, Screen.height * 0.3f);
+			Vector2 popoutWindowPosition = new(Screen.width * 0.6f, Screen.height * 0.3f);
+			vesGuiRect.position = popoutWindowPosition;
+			stgGuiRect.position = popoutWindowPosition;
+			orbGuiRect.position = popoutWindowPosition;
+			surGuiRect.position = popoutWindowPosition;
+			fltGuiRect.position = popoutWindowPosition;
+			tgtGuiRect.position = popoutWindowPosition;
+			manGuiRect.position = popoutWindowPosition;
+			settingsGuiRect.position = popoutWindowPosition;
 		}
 
 		private void OnGUI()
@@ -335,9 +344,12 @@ namespace MicroMod
 			GUILayout.BeginHorizontal();
 			if (GUILayout.Button("SAVE LAYOUT", saveLoadBtnStyle))
 				SaveLayoutState();
-			GUILayout.Space(10);
+			GUILayout.Space(5);
 			if (GUILayout.Button("LOAD LAYOUT", saveLoadBtnStyle))
 				LoadLayoutState();
+			GUILayout.Space(5);
+			if (GUILayout.Button("RESET", saveLoadBtnStyle))
+				ResetLayout();
 			GUILayout.EndHorizontal();
 
 			DrawSectionEnd(popoutSettings);

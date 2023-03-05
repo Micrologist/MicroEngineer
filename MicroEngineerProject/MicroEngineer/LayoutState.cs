@@ -42,10 +42,10 @@ namespace MicroMod
         public Vector2 StgPosition { get; set; }
 
         private static string _assemblyFolder;
-        public static string AssemblyFolder => _assemblyFolder ?? (_assemblyFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
+        public static string AssemblyFolder => _assemblyFolder ??= Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         private static string _settingsPath;
-        public static string SettingsPath => _settingsPath ?? (_settingsPath = Path.Combine(AssemblyFolder, "LayoutState.json"));
+        public static string SettingsPath => _settingsPath ??= Path.Combine(AssemblyFolder, "LayoutState.json");
 
         public LayoutState()
         { }
