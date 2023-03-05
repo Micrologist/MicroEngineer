@@ -20,3 +20,5 @@ bld/
 [Ll]ogs/
 /MicroEngineerProject/.vs
 /MicroEngineerProject/.vs/*
+/Staging/CopyStagingToGame.bat
+*.bat

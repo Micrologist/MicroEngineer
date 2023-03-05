@@ -5,6 +5,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>true</ImplicitUsings>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
 	 <PackageReference Include="BepInEx.BaseLib" Version="5.4.21" Publicize="true" />
@@ -22,6 +23,6 @@
     </Reference>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(ProjectDir)..\Staging\BepInEx\plugins\micro_engineer\&quot;" />
+    <Exec Command="copy &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(ProjectDir)..\Staging\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;powershell start-process &quot;$(ProjectDir)..\Staging\CopyToGameAndRun.bat&quot;" />
   </Target>
 </Project>
