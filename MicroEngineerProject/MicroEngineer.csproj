@@ -7,7 +7,7 @@
     <ImplicitUsings>true</ImplicitUsings>
   </PropertyGroup>
   <ItemGroup>
-	 <PackageReference Include="BepInEx.BaseLib" Version="5.4.21" Publicize="true"/>
+	 <PackageReference Include="BepInEx.BaseLib" Version="5.4.21" Publicize="true" />
     <Reference Include="external_dlls\SpaceWarp.dll" />
     <Reference Include="external_dlls\UnityEngine.dll" />
     <Reference Include="external_dlls\UnityEngine.CoreModule.dll" />
@@ -21,4 +21,7 @@
       <HintPath>external_dlls\UnityEngine.TextRenderingModule.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="copy &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(ProjectDir)..\Staging\BepInEx\plugins\micro_engineer\&quot;" />
+  </Target>
 </Project>
