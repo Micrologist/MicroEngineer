@@ -19,8 +19,4 @@ bld/
 [Ll]og/
 [Ll]ogs/
 /MicroEngineerProject/.vs
-/Staging/*.dll
-/Staging/*.pdb
-/Staging/*.zip
 /MicroEngineerProject/.vs/*
-MicroEngineerProject/external_dlls/SpaceWarp.pdb
