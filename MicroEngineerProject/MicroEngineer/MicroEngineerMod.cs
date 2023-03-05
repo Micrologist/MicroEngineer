@@ -26,7 +26,7 @@ namespace MicroMod
 
 		private readonly int windowWidth = 290;
 		private readonly int windowHeight = 700;
-		private Rect mainGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect, stgGuiRect;
+		public Rect mainGuiRect, settingsGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect, stgGuiRect;
 		private Rect closeBtnRect;
 
 		private GUISkin _spaceWarpUISkin;
@@ -35,6 +35,8 @@ namespace MicroMod
 		private GUIStyle popoutWindowStyle;
 		private GUIStyle sectionToggleStyle;
 		private GUIStyle closeBtnStyle;
+		private GUIStyle saveLoadBtnStyle;
+		private GUIStyle loadBtnStyle;
 		private GUIStyle nameLabelStyle;
 		private GUIStyle valueLabelStyle;
 		private GUIStyle unitLabelStyle;
@@ -42,21 +44,21 @@ namespace MicroMod
 
 		private string unitColorHex;
 
-
 		private int spacingAfterHeader = -12;
 		private int spacingAfterEntry = -12;
 		private int spacingAfterSection = 5;
 		private float spacingBelowPopout = 10;
 
-		private bool showVes = true;
-		private bool showOrb = true;
-		private bool showSur = true;
-		private bool showFlt = false;
-		private bool showMan = true;
-		private bool showTgt = false;
-		private bool showStg = true;
+		public bool showSettings = false;
+		public bool showVes = true;
+		public bool showOrb = true;
+		public bool showSur = true;
+		public bool showFlt = false;
+		public bool showMan = true;
+		public bool showTgt = false;
+		public bool showStg = true;
 
-		private bool popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt, popoutStg;
+		public bool popoutSettings, popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt, popoutStg;
 
 		private VesselComponent activeVessel;
 		private SimulationObjectModel currentTarget;
@@ -132,6 +134,11 @@ namespace MicroMod
 				fontSize = 8
 			};
 
+			saveLoadBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
+			{
+				alignment = TextAnchor.MiddleCenter
+			};
+
 			closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
 
 			tableHeaderLabelStyle = new GUIStyle(nameLabelStyle) { alignment = TextAnchor.MiddleRight };
@@ -141,20 +148,33 @@ namespace MicroMod
 					"BTN-MicroEngineerBtn",
 					AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
 					delegate { showGUI = !showGUI; }
-
 			);
+
+
+			InitializeRects();
+			ResetLayout();
+			// load window positions and states from disk, if file exists
+			LoadLayoutState();
 		}
 
-		void Awake()
+		private void InitializeRects()
 		{
-			mainGuiRect = new Rect(Screen.width * 0.8f, Screen.height * 0.3f, 0, 0);
-			vesGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			orbGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			surGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			fltGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			manGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			tgtGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
-			stgGuiRect = new Rect(Screen.width * 0.6f, Screen.height * 0.3f, 0, 0);
+			mainGuiRect = settingsGuiRect = vesGuiRect = orbGuiRect = surGuiRect = fltGuiRect = manGuiRect = tgtGuiRect = stgGuiRect = new();
+		}
+
+		private void ResetLayout()
+		{
+			popoutVes = popoutStg = popoutOrb = popoutSur = popoutFlt = popoutTgt = popoutMan = popoutSettings = false;
+			mainGuiRect.position = new(Screen.width * 0.8f, Screen.height * 0.2f);
+			Vector2 popoutWindowPosition = new(Screen.width * 0.6f, Screen.height * 0.2f);
+			vesGuiRect.position = popoutWindowPosition;
+			stgGuiRect.position = popoutWindowPosition;
+			orbGuiRect.position = popoutWindowPosition;
+			surGuiRect.position = popoutWindowPosition;
+			fltGuiRect.position = popoutWindowPosition;
+			tgtGuiRect.position = popoutWindowPosition;
+			manGuiRect.position = popoutWindowPosition;
+			settingsGuiRect.position = popoutWindowPosition;
 		}
 
 		private void OnGUI()
@@ -175,6 +195,11 @@ namespace MicroMod
 				GUILayout.Height(0)
 			);
 			mainGuiRect.position = ClampToScreen(mainGuiRect.position, mainGuiRect.size);
+
+			if (showSettings && popoutSettings)
+			{
+				DrawPopoutWindow(ref settingsGuiRect, FillSettings);
+			}
 
 			if (showVes && popoutVes)
 			{
@@ -256,11 +281,10 @@ namespace MicroMod
 			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>", sectionToggleStyle);
 			GUILayout.EndHorizontal();
 
-
-			GUILayout.Space(-10);
-
 			GUILayout.BeginHorizontal();
 			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>", sectionToggleStyle);
+			GUILayout.Space(26);
+			showSettings = GUILayout.Toggle(showSettings, "<b>SET</b>", sectionToggleStyle);
 			GUILayout.EndHorizontal();
 
 
@@ -268,6 +292,11 @@ namespace MicroMod
 
 			GUILayout.BeginHorizontal();
 			GUILayout.EndHorizontal();
+
+			if (showSettings && !popoutSettings)
+			{
+				FillSettings();
+			}
 
 			if (showVes && !popoutVes)
 			{
@@ -305,6 +334,25 @@ namespace MicroMod
 			}
 
 			GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
+		}
+
+		private void FillSettings(int _ = 0)
+		{
+			DrawSectionHeader("Settings", ref popoutSettings);
+
+			GUILayout.Space(10);
+			GUILayout.BeginHorizontal();
+			if (GUILayout.Button("SAVE LAYOUT", saveLoadBtnStyle))
+				SaveLayoutState();
+			GUILayout.Space(5);
+			if (GUILayout.Button("LOAD LAYOUT", saveLoadBtnStyle))
+				LoadLayoutState();
+			GUILayout.Space(5);
+			if (GUILayout.Button("RESET", saveLoadBtnStyle))
+				ResetLayout();
+			GUILayout.EndHorizontal();
+
+			DrawSectionEnd(popoutSettings);
 		}
 
 		private void FillVessel(int _ = 0)
@@ -556,7 +604,7 @@ namespace MicroMod
 				VesselSituations.SubOrbital => "Suborbital",
 				VesselSituations.Orbiting => "Orbiting",
 				VesselSituations.Escaping => "Escaping",
-				_ => "UNNOWN",
+				_ => "UNKNOWN",
 			};
 		}
 
@@ -669,6 +717,46 @@ namespace MicroMod
 						totalLift += force.RelativeForce.magnitude;
 					}
 				}
+			}
+		}
+
+		private void SaveLayoutState()
+		{
+			LayoutState state = new(this);
+			state.Save();
+		}
+
+		private void LoadLayoutState()
+		{
+			LayoutState state = LayoutState.Load();
+
+			if (state != null)
+			{
+				showSettings = false;
+				showVes = state.ShowVes;
+				showOrb = state.ShowOrb;
+				showSur = state.ShowSur;
+				showFlt = state.ShowFlt;
+				showMan = state.ShowMan;
+				showTgt = state.ShowTgt;
+				showStg = state.ShowStg;
+				popoutSettings = state.IsPopoutSettings;
+				popoutVes = state.IsPopoutVes;
+				popoutOrb = state.IsPopoutOrb;
+				popoutSur = state.IsPopoutSur;
+				popoutFlt = state.IsPopOutFlt;
+				popoutMan = state.IsPopOutMan;
+				popoutTgt = state.IsPopOutTgt;
+				popoutStg = state.IsPopOutStg;
+				mainGuiRect.position = state.MainGuiPosition;
+				settingsGuiRect.position = state.SettingsPosition;
+				vesGuiRect.position = state.VesPosition;
+				orbGuiRect.position = state.OrbPosition;
+				surGuiRect.position = state.SurPosition;
+				fltGuiRect.position = state.FltPosition;
+				manGuiRect.position = state.ManPosition;
+				tgtGuiRect.position = state.TgtPosition;
+				stgGuiRect.position = state.StgPosition;
 			}
 		}
 	}
