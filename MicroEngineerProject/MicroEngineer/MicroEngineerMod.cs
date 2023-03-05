@@ -141,6 +141,7 @@ namespace MicroMod
 					"BTN-MicroEngineerBtn",
 					AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
 					delegate { showGUI = !showGUI; }
+
 			);
 		}
 
@@ -255,11 +256,16 @@ namespace MicroMod
 			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>", sectionToggleStyle);
 			GUILayout.EndHorizontal();
 
+
+			GUILayout.Space(-10);
+
 			GUILayout.BeginHorizontal();
 			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>", sectionToggleStyle);
 			GUILayout.EndHorizontal();
 
+
 			GUILayout.Space(-3);
+
 			GUILayout.BeginHorizontal();
 			GUILayout.EndHorizontal();
 
@@ -304,7 +310,9 @@ namespace MicroMod
 		private void FillVessel(int _ = 0)
 		{
 			DrawSectionHeader("Vessel", ref popoutVes, activeVessel.DisplayName);
+
 			DrawEntry("Mass", $"{activeVessel.totalMass * 1000:N0}", "kg");
+
 			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
 			if (deltaVComponent != null)
 			{
@@ -341,9 +349,9 @@ namespace MicroMod
 					twrFormatString = "N0";
 				}
 
-
 				for (int i = stages.Count - 1; i >= 0; i--)
 				{
+
 					DeltaVStageInfo stageInfo = stages[i];
 					if (stageInfo.DeltaVinVac > 0.0001 || stageInfo.DeltaVatASL > 0.0001)
 					{
@@ -397,8 +405,10 @@ namespace MicroMod
 			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N2}");
 			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N3}", "g/L");
 			GetAeroStats();
+
 			DrawEntry("Total Lift", $"{totalLift * 1000:N0}", "N");
 			DrawEntry("Total Drag", $"{totalDrag * 1000:N0}", "N");
+
 			DrawEntry("Lift / Drag", $"{totalLift / totalDrag:N3}");
 
 			DrawSectionEnd(popoutFlt);
