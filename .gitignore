@@ -19,3 +19,4 @@ MicroEngineerProject/[Bb]in/
 [Ll]og/
 [Ll]ogs/
 /MicroEngineerProject/.vs/*
+*.bat
