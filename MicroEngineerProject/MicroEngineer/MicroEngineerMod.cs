@@ -56,6 +56,9 @@ namespace MicroMod
 		public bool showTgt = false;
 		public bool showStg = true;
 
+		private bool showTestWindow = false; // TEMP - TO DELETE
+		private Rect testWindow = new Rect(100, 100, 300, 300); // TEMP - TO DELETE
+
 		public bool popoutSettings, popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt, popoutStg;
 
 		private VesselComponent activeVessel;
@@ -233,6 +236,14 @@ namespace MicroMod
 			{
 				DrawPopoutWindow(ref stgGuiRect, FillStages);
 			}
+
+            //TEMP - TO DELETE
+            if (showTestWindow)
+			{
+                testWindow = GUILayout.Window(0, testWindow, DrawTestWindow, "Test Window");
+            }
+			//TEMP - END
+
 		}
 
 		private void DrawPopoutWindow(ref Rect guiRect, UnityEngine.GUI.WindowFunction fillAction)
@@ -350,10 +361,98 @@ namespace MicroMod
 				ResetLayout();
 			GUILayout.EndHorizontal();
 
-			DrawSectionEnd(popoutSettings);
+			// TEMP START - TO BE DELETED
+			GUILayout.BeginHorizontal();
+
+			if (GUILayout.Button("EntriesTest", saveLoadBtnStyle))
+			{
+				showTestWindow = !showTestWindow;
+            }
+
+			GUILayout.EndHorizontal();
+            // TEMP END
+
+
+            DrawSectionEnd(popoutSettings);
 		}
 
-		private void FillVessel(int _ = 0)
+
+		// TEMP START - TO DELETE
+		public void DrawTestWindow(int windowID)
+		{
+            MicroWindow w = new MicroWindow();
+            w.Name = "MyWindow";
+            w.Description = "MyTestDescription";
+            w.IsFlightActive = true;
+            w.MainWindow = MainWindow.None;
+            w.Entries = new List<MicroEntry>();
+
+            MicroEntry e = new MicroEntry();
+			e.Name = "Vessel name";
+			e.Category = MicroEntryCategory.Vessel;
+            e.Description = "This is the name of the vessel";
+            e.EntryValue = activeVessel.DisplayName;
+            e.Unit = null;
+            w.AddEntry(e);
+
+            MicroEntry e2 = new MicroEntry();
+			e2.Name = "Apoapsis";
+			e2.Category = MicroEntryCategory.Orbital;
+            e2.Description = "Vessel's Apoapsis";
+            e2.EntryValue = activeVessel.Orbit.ApoapsisArl;
+            e2.Formatting = "{0:F1}";
+            e2.Unit = "m";
+            w.AddEntry(e2);
+
+            MicroEntry e3 = new MicroEntry();
+			e3.Name = "Inclination";
+			e3.Category = MicroEntryCategory.Orbital;
+            e3.Description = "Vessel's Inclination";
+            e3.EntryValue = activeVessel.Orbit.inclination;
+            e3.Formatting = "{0:N1}";
+            e3.Unit = "°";
+            w.AddEntry(e3);
+
+            MicroEntry e4 = new MicroEntry();
+			e4.Name = "Horizontal Vel.";
+			e4.Category = MicroEntryCategory.Surface;
+            e4.Description = "Horizontal Velocity";
+            e4.EntryValue = activeVessel.HorizontalSrfSpeed;
+            e4.Formatting = "{0:F2}";
+            e4.Unit = "m/s";
+            w.AddEntry(e4);
+
+            try
+            {
+                string s1 = w.Entries[0].EntryValue.ToString();
+                string s2 = w.Entries[1].EntryValue.ToString();
+                string s3 = w.Entries[2].EntryValue.ToString();
+                string s4 = w.Entries[3].EntryValue.ToString();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+            }
+
+			
+			foreach (MicroEntry entry in w.Entries)
+			{
+                GUILayout.BeginHorizontal();
+				GUILayout.Label(entry.Name);
+                GUILayout.Space(5);
+                GUILayout.Label(entry.EntryValue.ToString());
+				GUILayout.Space(5);
+				GUILayout.Label(entry.Unit);
+                GUILayout.EndHorizontal();
+            }
+
+            GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
+
+        }
+
+		// TEMP END
+
+        private void FillVessel(int _ = 0)
 		{
 			DrawSectionHeader("Vessel", ref popoutVes, activeVessel.DisplayName);
 
