@@ -34,7 +34,6 @@ namespace MicroMod
 		private GUIStyle sectionToggleStyle;
 		private GUIStyle closeBtnStyle;
 		private GUIStyle saveLoadBtnStyle;
-		private GUIStyle loadBtnStyle;
 		private GUIStyle nameLabelStyle;
 		private GUIStyle valueLabelStyle;
 		private GUIStyle unitLabelStyle;
