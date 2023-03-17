@@ -1,8 +1,14 @@
-﻿using SpaceWarp.API.Mods;
+﻿using KSP.Messages.PropertyWatchers;
+using SpaceWarp.API.Mods;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using KSP.Sim.impl;
+using static KSP.Rendering.Planets.PQSData;
+using KSP.Sim;
+using static KSP.Modules.Data_LiftingSurface;
+using KSP.UI.Flight;
 
 namespace MicroMod
 {
@@ -10,6 +16,10 @@ namespace MicroMod
     // THINK ABOUT
     // unlock windows button - enables 'X', unables undocking, enables drag - maybe?
     // stage info window - editable? defined as a MicroWindow?
+    
+    // TODO
+    // Add separator
+
 
 
     public class MicroWindow
@@ -108,19 +118,30 @@ namespace MicroMod
     }
 
     public class MicroEntry
-    {
-        public MicroEntryCategory Category;
+    {        
         public string Name;
         public string Description;
+        public MicroEntryCategory Category;
         public string Unit;
         public string Formatting;
 
-        private object entryValue;
-        public object EntryValue
+        public virtual object EntryValue { get; set; }
+
+
+        /// <summary>
+        /// Gets the value of the property. Inheritet class needs to define how to get the value.
+        /// </summary>
+        public virtual object GetEntryValue() { return new object(); }
+
+        /// <summary>
+        /// Controls how the value should be displayed. Should be overriden in a inheritet class for a concrete implementation.
+        /// </summary>
+        public virtual string ValueDisplay
         {
-            get => String.IsNullOrEmpty(Formatting) ? entryValue : String.Format(Formatting, entryValue);
-            set => this.entryValue = value;
+            get => String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
         }
+
+        
     }
 
     /// <summary>
@@ -151,4 +172,117 @@ namespace MicroMod
         Maneuver,
         Settings
     }
+
+    public class Latitude : MicroEntry
+    {
+        // TODO - maybe I don't need this override
+        public override object GetEntryValue()
+        {
+            return MicroUtility.ActiveVessel.Latitude;
+        }
+        public override string ValueDisplay { get => MicroUtility.DegreesToDMS((double)base.EntryValue); }        
+    }
+
+    public class Longitude : MicroEntry
+    {
+        // TODO - maybe I don't need this override
+        public override object GetEntryValue()
+        {
+            return MicroUtility.ActiveVessel.Longitude;
+        }
+
+        public override string ValueDisplay { get => MicroUtility.DegreesToDMS((double)base.EntryValue); }
+    }
+
+    public class Apoapsis : MicroEntry
+    {
+        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)base.EntryValue); }
+    }
+
+    public class TimeToApoapsis : MicroEntry
+    {
+        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)base.EntryValue); }
+    }
+
+    public class Periapsis : MicroEntry
+    {
+        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)base.EntryValue); }
+    }
+
+    public class TimeToPeriapsis : MicroEntry
+    {
+        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)base.EntryValue); }
+    }
+
+    public class Period : MicroEntry
+    {
+        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)base.EntryValue); }
+    }
+
+    public class SoiTransition : MicroEntry
+    {
+        public override string ValueDisplay { get => (double)base.EntryValue >= 0 ? MicroUtility.SecondsToTimeString((double)base.EntryValue) : "-"; }
+    }
+
+    public class Situation : MicroEntry
+    {
+        public override string ValueDisplay { get => MicroUtility.SituationToString((VesselSituations)base.EntryValue); }
+    }
+
+    public class Biome : MicroEntry
+    {
+        public override string ValueDisplay { get => MicroUtility.BiomeToString((BiomeSurfaceData)base.EntryValue); }
+    }
+
+    public class AltitudeAsl : MicroEntry
+    {
+        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)base.EntryValue); }
+    }
+
+    public class AltitudeAgl : MicroEntry
+    {
+        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)base.EntryValue); }
+    }
+
+    public class TotalLift : MicroEntry
+    {
+        public override object EntryValue { get => AeroForces.TotalLift; }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                double toReturn = (double)EntryValue * 1000;
+                return String.IsNullOrEmpty(base.Formatting) ? toReturn.ToString() : String.Format(base.Formatting, toReturn);
+            }
+        }
+    }
+
+    public class TotalDrag : MicroEntry
+    {
+        public override object EntryValue { get => AeroForces.TotalDrag; }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                double toReturn = (double)EntryValue * 1000;
+                return String.IsNullOrEmpty(base.Formatting) ? toReturn.ToString() : String.Format(base.Formatting, toReturn);
+            }
+        }
+    }
+
+    public class LiftDivDrag: MicroEntry
+    {
+        public override object EntryValue { get => AeroForces.TotalLift / AeroForces.TotalDrag; }
+        public override string ValueDisplay
+        {
+            get
+            {
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
+            }
+        }
+    }
+
+    
 }
