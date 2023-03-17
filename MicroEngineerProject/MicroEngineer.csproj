@@ -8,6 +8,11 @@
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="external_dlls\**" />
+    <EmbeddedResource Remove="external_dlls\**" />
+    <None Remove="external_dlls\**" />
+  </ItemGroup>
+  <ItemGroup>
 	 <PackageReference Include="BepInEx.BaseLib" Version="5.4.21" Publicize="true" />
     <Reference Include="external_dlls\SpaceWarp.dll" />
     <Reference Include="external_dlls\UnityEngine.dll" />
@@ -23,6 +28,6 @@
     </Reference>
   </ItemGroup>
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="echo Killing task KSP2_x64.exe&#xD;&#xA;taskkill /f /fi &quot;pid gt 0&quot; /im KSP2_x64.exe&#xD;&#xA;&#xD;&#xA;echo Copying output .dll to &quot;..Kerbal Space Program 2 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;D:\Steam\steamapps\common\Kerbal Space Program 2 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;&#xD;&#xA;echo Copying output .pdb to &quot;..Kerbal Space Program 2 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)$(ProjectName).pdb&quot; &quot;D:\Steam\steamapps\common\Kerbal Space Program 2 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;&#xD;&#xA;echo Starting KSP2_x64.exe&#xD;&#xA;powershell &quot;start-process &quot;&quot;D:\Steam\steamapps\common\Kerbal Space Program 2 DEV\KSP2_x64.exe&quot;&quot;&quot;" />
+    <Exec Command="echo Killing task KSP2_x64.exe&#xD;&#xA;taskkill /f /fi &quot;pid gt 0&quot; /im KSP2_x64.exe&#xD;&#xA;&#xD;&#xA;echo Copying output .dll to &quot;..Kerbal Space Program 2 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;D:\Steam\steamapps\common\Kerbal Space Program 2 0.1.1.0 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;&#xD;&#xA;echo Copying output .pdb to &quot;..Kerbal Space Program 2 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)$(ProjectName).pdb&quot; &quot;D:\Steam\steamapps\common\Kerbal Space Program 2 0.1.1.0 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;&#xD;&#xA;echo Starting KSP2_x64.exe&#xD;&#xA;powershell &quot;start-process &quot;&quot;D:\Steam\steamapps\common\Kerbal Space Program 2 0.1.1.0 DEV\KSP2_x64.exe&quot;&quot;&quot;" />
   </Target>  
 </Project>
