@@ -128,18 +128,18 @@ namespace MicroMod
 
         public virtual object EntryValue { get; set; }
 
-
-        /// <summary>
-        /// Gets the value of the property. Inheritet class needs to define how to get the value.
-        /// </summary>
-        public virtual object GetEntryValue() { return new object(); }
-
         /// <summary>
         /// Controls how the value should be displayed. Should be overriden in a inheritet class for a concrete implementation.
         /// </summary>
         public virtual string ValueDisplay
         {
-            get => String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
         }
 
         
@@ -176,22 +176,11 @@ namespace MicroMod
 
     public class Latitude : MicroEntry
     {
-        // TODO - maybe I don't need this override
-        public override object GetEntryValue()
-        {
-            return MicroUtility.ActiveVessel.Latitude;
-        }
         public override string ValueDisplay { get => MicroUtility.DegreesToDMS((double)EntryValue); }        
     }
 
     public class Longitude : MicroEntry
     {
-        // TODO - maybe I don't need this override
-        public override object GetEntryValue()
-        {
-            return MicroUtility.ActiveVessel.Longitude;
-        }
-
         public override string ValueDisplay { get => MicroUtility.DegreesToDMS((double)EntryValue); }
     }
 

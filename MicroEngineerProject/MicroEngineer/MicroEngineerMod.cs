@@ -826,7 +826,9 @@ namespace MicroMod
 
 		private void InitializeEntries()
 		{
-			MicroUtility.Refresh();
+            // Refresh ActiveVessel and CurrentManeuver
+            MicroUtility.Refresh();
+			
 			MicroEntries = new List<MicroEntry>();
 
 			InitializeVesselEntries();
@@ -1219,7 +1221,7 @@ namespace MicroMod
 				Formatting = null
 			});
 
-            MicroEntries.Add(new TimeToNode
+            MicroEntries.Add(new BurnTime
             {
                 Name = "Burn Time",
                 Description = "TODO",
