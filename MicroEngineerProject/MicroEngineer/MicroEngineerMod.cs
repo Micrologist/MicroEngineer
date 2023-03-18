@@ -13,6 +13,7 @@ using KSP.Sim.DeltaV;
 using KSP.Sim;
 using KSP.UI.Flight;
 using static KSP.Rendering.Planets.PQSData;
+using KSP.Messages.PropertyWatchers;
 
 namespace MicroMod
 {
@@ -384,79 +385,6 @@ namespace MicroMod
 		// TEMP START - TO DELETE
 		public void DrawTestWindow(int windowID)
 		{
-            MicroWindow w = new MicroWindow();
-            w.Name = "MyWindow";
-            w.Description = "MyTestDescription";
-            w.IsFlightActive = true;
-            w.MainWindow = MainWindow.None;
-            w.Entries = new List<MicroEntry>();
-
-            MicroEntry e = new MicroEntry();
-			e.Name = "Vessel name";
-			e.Category = MicroEntryCategory.Vessel;
-            e.Description = "This is the name of the vessel";
-            e.EntryValue = activeVessel.DisplayName;
-            e.Unit = null;
-            w.AddEntry(e);
-
-            MicroEntry e2 = new MicroEntry();
-			e2.Name = "Apoapsis";
-			e2.Category = MicroEntryCategory.Orbital;
-            e2.Description = "Vessel's Apoapsis";
-            e2.EntryValue = activeVessel.Orbit.ApoapsisArl;
-            e2.Formatting = "{0:F1}";
-            e2.Unit = "m";
-            w.AddEntry(e2);
-
-            MicroEntry e3 = new MicroEntry();
-			e3.Name = "Inclination";
-			e3.Category = MicroEntryCategory.Orbital;
-            e3.Description = "Vessel's Inclination";
-            e3.EntryValue = activeVessel.Orbit.inclination;
-            e3.Formatting = "{0:N1}";
-            e3.Unit = "°";
-            w.AddEntry(e3);
-
-            MicroEntry e4 = new MicroEntry();
-			e4.Name = "Horizontal Vel.";
-			e4.Category = MicroEntryCategory.Surface;
-            e4.Description = "Horizontal Velocity";
-            e4.EntryValue = activeVessel.HorizontalSrfSpeed;
-            e4.Formatting = "{0:F2}";
-            e4.Unit = "m/s";
-            w.AddEntry(e4);
-
-            //DrawEntry("Latitude", $"{DegreesToDMS(activeVessel.Latitude)}", activeVessel.Latitude < 0 ? "S" : "N");
-            //DrawEntry("Longitude", $"{DegreesToDMS(activeVessel.Longitude)}", activeVessel.Longitude < 0 ? "W" : "E");
-
-			Latitude e5 = new Latitude(); ;
-			e5.Name = "Latitude";
-			e5.Category = MicroEntryCategory.Surface;
-			e5.EntryValue = e5.GetEntryValue();
-			e5.Unit = (double)e5.EntryValue < 0 ? "S" : "N";
-			w.AddEntry(e5);
-
-            Longitude e6 = new Longitude();
-            e6.Name = "Longitude";
-            e6.Category = MicroEntryCategory.Surface;
-            e6.EntryValue = e6.GetEntryValue();
-            e6.Unit = (double)e6.EntryValue < 0 ? "W" : "E";
-            w.AddEntry(e6);
-
-
-
-            try
-            {
-                string s1 = w.Entries[0].EntryValue.ToString();
-                string s2 = w.Entries[1].EntryValue.ToString();
-                string s3 = w.Entries[2].EntryValue.ToString();
-                string s4 = w.Entries[3].EntryValue.ToString();
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError(ex);
-            }
-
 			InitializeEntries();
 			
 			foreach (MicroEntry entry in MicroEntries)
@@ -898,6 +826,7 @@ namespace MicroMod
 
 		private void InitializeEntries()
 		{
+			MicroUtility.Refresh();
 			MicroEntries = new List<MicroEntry>();
 
 			InitializeVesselEntries();
@@ -905,7 +834,7 @@ namespace MicroMod
 			InitializeSurfaceEntries();
 			InitializeFlightEntries();
 			InitializeTargetEntries();
-
+			InitializeManeuverEntries();
         }
 
 		private void InitializeVesselEntries()
@@ -1243,6 +1172,61 @@ namespace MicroMod
                 EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.AscendingNodeTarget.Inclination,
                 Unit = "°",
                 Formatting = "{0:N3}"
+            });
+        }
+
+		private void InitializeManeuverEntries()
+		{
+            //MicroUtility.ActiveVessel.Orbiter.HasActiveManeuver
+
+            MicroEntries.Add(new ProjectedAp
+            {
+                Name = "Projected Ap.",
+                Description = "TODO",
+                Category = MicroEntryCategory.Maneuver,
+                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault().ApoapsisArl,
+                Unit = "m",
+                Formatting = null
+            });
+
+            MicroEntries.Add(new ProjectedPe
+            {
+                Name = "Projected Pe.",
+                Description = "TODO",
+                Category = MicroEntryCategory.Maneuver,
+                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault().PeriapsisArl,
+                Unit = "m",
+                Formatting = null
+            });
+
+			MicroEntries.Add(new MicroEntry
+			{
+                Name = "∆v required",
+                Description = "TODO",
+                Category = MicroEntryCategory.Maneuver,
+                EntryValue = MicroUtility.CurrentManeuver?.BurnRequiredDV,
+                Unit = "m/s",
+                Formatting = "{0:N1}"
+            });
+
+			MicroEntries.Add(new TimeToNode
+			{
+				Name = "Time to Node",
+				Description = "TODO",
+				Category = MicroEntryCategory.Maneuver,
+				EntryValue = MicroUtility.CurrentManeuver != null ? MicroUtility.CurrentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime: null,
+				Unit = "s",
+				Formatting = null
+			});
+
+            MicroEntries.Add(new TimeToNode
+            {
+                Name = "Burn Time",
+                Description = "TODO",
+                Category = MicroEntryCategory.Maneuver,
+                EntryValue = MicroUtility.CurrentManeuver?.BurnDuration,
+                Unit = "s",
+                Formatting = null
             });
         }
     }

@@ -341,5 +341,25 @@ namespace MicroMod
         }
     }
 
+    public class ProjectedAp : MicroEntry
+    {
+        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.MetersToDistanceString((double)EntryValue) : "-"; }
+    }
+
+    public class ProjectedPe : MicroEntry
+    {
+        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.MetersToDistanceString((double)EntryValue) : "-"; }
+    }
+
+    public class TimeToNode : MicroEntry
+    {
+        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.SecondsToTimeString((double)EntryValue) : "-"; }
+    }
+
+    public class BurnTime : MicroEntry
+    {
+        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.SecondsToTimeString((double)EntryValue) : "-"; }
+    }
+
 
 }

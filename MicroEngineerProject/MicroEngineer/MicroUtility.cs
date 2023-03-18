@@ -5,6 +5,7 @@ using KSP.Game;
 using KSP.Messages.PropertyWatchers;
 using KSP.Sim;
 using KSP.Sim.impl;
+using KSP.Sim.Maneuver;
 using KSP.UI.Flight;
 using SpaceWarp.API.UI;
 using UnityEngine;
@@ -15,7 +16,18 @@ namespace MicroMod
 {
     public static class MicroUtility
     {
-        public static VesselComponent ActiveVessel { get => GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true); }
+        public static VesselComponent ActiveVessel;
+        public static ManeuverNodeData CurrentManeuver;
+
+        /// <summary>
+        /// Refreshes the ActiveVessel and CurrentManeuver
+        /// </summary>
+        public static void Refresh()
+        {
+            ActiveVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
+            CurrentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(ActiveVessel.GlobalId).FirstOrDefault();
+        }
+
 
         public static string DegreesToDMS(double degreeD)
         {
