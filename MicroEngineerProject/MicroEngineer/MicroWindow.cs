@@ -9,6 +9,7 @@ using static KSP.Rendering.Planets.PQSData;
 using KSP.Sim;
 using static KSP.Modules.Data_LiftingSurface;
 using KSP.UI.Flight;
+using KSP.UI.Binding;
 
 namespace MicroMod
 {
@@ -180,7 +181,7 @@ namespace MicroMod
         {
             return MicroUtility.ActiveVessel.Latitude;
         }
-        public override string ValueDisplay { get => MicroUtility.DegreesToDMS((double)base.EntryValue); }        
+        public override string ValueDisplay { get => MicroUtility.DegreesToDMS((double)EntryValue); }        
     }
 
     public class Longitude : MicroEntry
@@ -191,57 +192,57 @@ namespace MicroMod
             return MicroUtility.ActiveVessel.Longitude;
         }
 
-        public override string ValueDisplay { get => MicroUtility.DegreesToDMS((double)base.EntryValue); }
+        public override string ValueDisplay { get => MicroUtility.DegreesToDMS((double)EntryValue); }
     }
 
     public class Apoapsis : MicroEntry
     {
-        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)base.EntryValue); }
+        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)EntryValue); }
     }
 
     public class TimeToApoapsis : MicroEntry
     {
-        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)base.EntryValue); }
+        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)EntryValue); }
     }
 
     public class Periapsis : MicroEntry
     {
-        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)base.EntryValue); }
+        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)EntryValue); }
     }
 
     public class TimeToPeriapsis : MicroEntry
     {
-        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)base.EntryValue); }
+        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)EntryValue); }
     }
 
     public class Period : MicroEntry
     {
-        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)base.EntryValue); }
+        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)EntryValue); }
     }
 
     public class SoiTransition : MicroEntry
     {
-        public override string ValueDisplay { get => (double)base.EntryValue >= 0 ? MicroUtility.SecondsToTimeString((double)base.EntryValue) : "-"; }
+        public override string ValueDisplay { get => (double)EntryValue >= 0 ? MicroUtility.SecondsToTimeString((double)EntryValue) : "-"; }
     }
 
     public class Situation : MicroEntry
     {
-        public override string ValueDisplay { get => MicroUtility.SituationToString((VesselSituations)base.EntryValue); }
+        public override string ValueDisplay { get => MicroUtility.SituationToString((VesselSituations)EntryValue); }
     }
 
     public class Biome : MicroEntry
     {
-        public override string ValueDisplay { get => MicroUtility.BiomeToString((BiomeSurfaceData)base.EntryValue); }
+        public override string ValueDisplay { get => MicroUtility.BiomeToString((BiomeSurfaceData)EntryValue); }
     }
 
     public class AltitudeAsl : MicroEntry
     {
-        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)base.EntryValue); }
+        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)EntryValue); }
     }
 
     public class AltitudeAgl : MicroEntry
     {
-        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)base.EntryValue); }
+        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)EntryValue); }
     }
 
     public class TotalLift : MicroEntry
@@ -284,5 +285,61 @@ namespace MicroMod
         }
     }
 
-    
+    public class TargetApoapsis : MicroEntry
+    {
+        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.MetersToDistanceString((double)EntryValue) : "-"; }
+    }
+
+    public class TargetPeriapsis : MicroEntry
+    {
+        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.MetersToDistanceString((double)EntryValue): "-"; }
+    }
+
+    public class DistanceToTarget : MicroEntry
+    {
+        public override string ValueDisplay
+        {
+            // return value only if vessel and target are in the same SOI
+            get => EntryValue != null && MicroUtility.ActiveVessel.Orbit.referenceBody == MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody ?
+                MicroUtility.MetersToDistanceString((double)EntryValue) : "-";
+        }
+    }
+
+    public class RelativeSpeed : MicroEntry
+    {
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                // return value only if vessel and target are in the same SOI
+                if (MicroUtility.ActiveVessel.Orbit.referenceBody != MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
+            }
+        }
+    }
+
+    public class RelativeInclination : MicroEntry
+    {
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                // return value only if vessel and target are in the same SOI
+                if (MicroUtility.ActiveVessel.Orbit.referenceBody != MicroUtility.ActiveVessel.TargetObject?.Orbit.referenceBody)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
+            }
+        }
+    }
+
+
 }

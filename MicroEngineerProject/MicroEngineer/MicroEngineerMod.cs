@@ -459,7 +459,6 @@ namespace MicroMod
 
 			InitializeEntries();
 			
-			//foreach (MicroEntry entry in w.Entries)
 			foreach (MicroEntry entry in MicroEntries)
 			{
 				DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
@@ -474,7 +473,6 @@ namespace MicroMod
             }
 
             GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
-
         }
 
 		// TEMP END
@@ -905,9 +903,10 @@ namespace MicroMod
 			InitializeVesselEntries();
 			InitializeOrbitalEntries();
 			InitializeSurfaceEntries();
-			InitializeFlightData();
-			
-		}
+			InitializeFlightEntries();
+			InitializeTargetEntries();
+
+        }
 
 		private void InitializeVesselEntries()
 		{
@@ -1099,13 +1098,12 @@ namespace MicroMod
             });
 
 
-            // TODO check if AltitudeFromTerrain would be better
             MicroEntries.Add(new AltitudeAgl
             {
                 Name = "Altitude (AGL)",
                 Description = "Altitude Above Ground Level",
-                Category = MicroEntryCategory.Surface,
-                EntryValue = MicroUtility.ActiveVessel.AltitudeFromScenery,
+                Category = MicroEntryCategory.Surface,                
+                EntryValue = MicroUtility.ActiveVessel.AltitudeFromTerrain,
                 Unit = "m",
                 Formatting = null
             });
@@ -1131,7 +1129,7 @@ namespace MicroMod
             });
         }
 
-		private void InitializeFlightData()
+		private void InitializeFlightEntries()
 		{
             MicroEntries.Add(new MicroEntry
             {
@@ -1190,6 +1188,60 @@ namespace MicroMod
                 Category = MicroEntryCategory.Flight,
                 // EntryValue => is calculated in the class
                 Unit = null,
+                Formatting = "{0:N3}"
+            });
+        }
+
+		private void InitializeTargetEntries()
+		{
+            MicroEntries.Add(new TargetApoapsis
+            {
+                Name = "Target Ap.",
+                Description = "TODO",
+                Category = MicroEntryCategory.Target,
+                EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit.ApoapsisArl,
+                Unit = "m",
+                Formatting = null
+            });
+
+            MicroEntries.Add(new TargetPeriapsis
+            {
+                Name = "Target Pe.",
+                Description = "TODO",
+                Category = MicroEntryCategory.Target,
+                EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit.PeriapsisArl,
+                Unit = "m",
+                Formatting = null
+            });
+
+
+			MicroEntries.Add(new DistanceToTarget
+			{
+				Name = "Distance to Target",
+				Description = "TODO",
+				Category = MicroEntryCategory.Target,
+				EntryValue = MicroUtility.ActiveVessel.TargetObject != null ? (MicroUtility.ActiveVessel.Orbit.Position - MicroUtility.ActiveVessel.TargetObject.Orbit.Position).magnitude : null,
+				Unit = "m",
+				Formatting = null
+			});
+
+			MicroEntries.Add(new RelativeSpeed
+            {
+                Name = "Rel. Speed",
+                Description = "TODO",
+                Category = MicroEntryCategory.Target,
+                EntryValue = MicroUtility.ActiveVessel.TargetObject != null ? (MicroUtility.ActiveVessel.Orbit.relativeVelocity - MicroUtility.ActiveVessel.TargetObject.Orbit.relativeVelocity).magnitude : null,
+                Unit = "m/s",
+                Formatting = "{0:N1}"
+            });
+
+            MicroEntries.Add(new RelativeInclination
+            {
+                Name = "Rel. Inclination",
+                Description = "TODO",
+                Category = MicroEntryCategory.Target,
+                EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.AscendingNodeTarget.Inclination,
+                Unit = "°",
                 Formatting = "{0:N3}"
             });
         }
