@@ -837,6 +837,7 @@ namespace MicroMod
 			InitializeFlightEntries();
 			InitializeTargetEntries();
 			InitializeManeuverEntries();
+			InitializeStageEntries();
         }
 
 		private void InitializeVesselEntries()
@@ -1179,7 +1180,7 @@ namespace MicroMod
 
 		private void InitializeManeuverEntries()
 		{
-            //MicroUtility.ActiveVessel.Orbiter.HasActiveManeuver
+            //TODO: MicroUtility.ActiveVessel.Orbiter.HasActiveManeuver
 
             MicroEntries.Add(new ProjectedAp
             {
@@ -1230,6 +1231,52 @@ namespace MicroMod
                 Unit = "s",
                 Formatting = null
             });
+        }
+
+		private void InitializeStageEntries()
+		{
+            MicroEntries.Add(new MicroEntry
+            {
+                Name = "Total ∆v Vac",
+                Description = "TODO",
+                Category = MicroEntryCategory.Stage,
+                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalDeltaVVac,
+                Unit = "m/s",
+                Formatting = "{0:N0}"
+            });
+
+            MicroEntries.Add(new MicroEntry
+            {
+                Name = "Total ∆v ASL",
+                Description = "TODO",
+                Category = MicroEntryCategory.Stage,
+                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalDeltaVASL,
+                Unit = "m/s",
+                Formatting = "{0:N0}"
+            });
+
+            MicroEntries.Add(new MicroEntry
+            {
+                Name = "Total ∆v Actual",
+                Description = "TODO",
+                Category = MicroEntryCategory.Stage,
+                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalDeltaVActual,
+                Unit = "m/s",
+                Formatting = "{0:N0}"
+            });
+
+            MicroEntries.Add(new StageInfo
+            {
+                Name = "Stage Info",
+                Description = "TODO",
+                Category = MicroEntryCategory.Stage,
+                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo,
+                Unit = null,
+                Formatting = null
+            });
+
+
+
         }
     }
 }

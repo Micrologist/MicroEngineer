@@ -155,7 +155,8 @@ namespace MicroMod
         Surface,
         Flight,
         Target,
-        Maneuver
+        Maneuver,
+        Stage
     }
 
     /// <summary>
@@ -348,6 +349,11 @@ namespace MicroMod
     public class BurnTime : MicroEntry
     {
         public override string ValueDisplay { get => EntryValue != null ? MicroUtility.SecondsToTimeString((double)EntryValue) : "-"; }
+    }
+
+    public class StageInfo : MicroEntry
+    {
+        //TODO: stageinfo display
     }
 
 
