@@ -79,12 +79,12 @@ namespace MicroMod
 			PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_DRAG_TYPE
 		};
 
-		/// <summary>
-		/// Holds all entries we can have in any window
-		/// </summary>
-		private List<MicroEntry> MicroEntries;
+        /// <summary>
+        /// Holds all entries we can have in any window
+        /// </summary>
+        private List<MicroEntry> MicroEntries;
 
-		public override void OnInitialized()
+        public override void OnInitialized()
 		{
 			_spaceWarpUISkin = Skins.ConsoleSkin;
 
@@ -156,7 +156,7 @@ namespace MicroMod
 					delegate { showGUI = !showGUI; }
 			);
 
-
+			InitializeEntries();
 			InitializeRects();
 			ResetLayout();
 			// load window positions and states from disk, if file exists
@@ -385,19 +385,15 @@ namespace MicroMod
 		// TEMP START - TO DELETE
 		public void DrawTestWindow(int windowID)
 		{
-			InitializeEntries();
+			// Refresh ActiveVessel and CurrentManeuver refrences
+			MicroUtility.Refresh();
 			
 			foreach (MicroEntry entry in MicroEntries)
 			{
+				// grab new data and draw it
+				entry.RefreshData();
+				
 				DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
-                
-				//GUILayout.BeginHorizontal();
-				//GUILayout.Label(entry.Name);
-				//GUILayout.Space(5);
-				//GUILayout.Label(entry.ValueDisplay);
-				//GUILayout.Space(5);
-				//GUILayout.Label(entry.Unit);
-				//GUILayout.EndHorizontal();
             }
 
             GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
@@ -824,11 +820,11 @@ namespace MicroMod
 			}
 		}
 
+		/// <summary>
+		/// Builds the initial list of all Entries
+		/// </summary>
 		private void InitializeEntries()
 		{
-            // Refresh ActiveVessel and CurrentManeuver
-            MicroUtility.Refresh();
-			
 			MicroEntries = new List<MicroEntry>();
 
 			InitializeVesselEntries();
@@ -842,441 +838,71 @@ namespace MicroMod
 
 		private void InitializeVesselEntries()
 		{
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Vessel",
-                Description = "Name of the vessel",
-                Category = MicroEntryCategory.Vessel,
-                EntryValue = MicroUtility.ActiveVessel.DisplayName,
-                Unit = null,
-                Formatting = null
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Mass",
-                Description = "Current mass of the vessel",
-				Category = MicroEntryCategory.Vessel,
-                EntryValue = MicroUtility.ActiveVessel.totalMass * 1000,
-                Unit = "kg",
-                Formatting = "{0:N0}"
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "∆v",
-                Description = "Current vessel's delta v",
-                Category = MicroEntryCategory.Vessel,
-                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalDeltaVActual,
-                Unit = "m/s",
-                Formatting = "{0:N0}"
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Thrust",
-                Description = "Current vessel's thrust in Newtons",
-                Category = MicroEntryCategory.Vessel,
-                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo.FirstOrDefault()?.ThrustActual * 1000,
-                Unit = "N",
-                Formatting = "{0:N0}"
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "TWR",
-                Description = "Current vessel's Thrust to Weight Ratio",
-                Category = MicroEntryCategory.Vessel,
-                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo.FirstOrDefault()?.TWRActual,
-                Unit = null,
-                Formatting = "{0:N2}"
-            });
+			MicroEntries.Add(new Vessel());
+			MicroEntries.Add(new Mass());
+            MicroEntries.Add(new DeltaV());
+            MicroEntries.Add(new Thrust());
+            MicroEntries.Add(new TWR());
         }
 
         private void InitializeOrbitalEntries()
         {
-            MicroEntries.Add(new Apoapsis
-            {
-                Name = "Apoapsis",
-                Description = "TODO",
-                Category = MicroEntryCategory.Orbital,
-                EntryValue = MicroUtility.ActiveVessel.Orbit.ApoapsisArl,
-                Unit = "m",
-                Formatting = null
-            });
-
-            MicroEntries.Add(new TimeToApoapsis
-            {
-                Name = "Time to Ap.",
-                Description = "TODO",
-                Category = MicroEntryCategory.Orbital,
-                EntryValue = (MicroUtility.ActiveVessel.Situation == VesselSituations.Landed || MicroUtility.ActiveVessel.Situation == VesselSituations.PreLaunch) ? 0f : MicroUtility.ActiveVessel.Orbit.TimeToAp,
-                Unit = "s",
-                Formatting = null
-            });
-
-            MicroEntries.Add(new Periapsis
-            {
-                Name = "Periapsis",
-                Description = "TODO",
-                Category = MicroEntryCategory.Orbital,
-                EntryValue = MicroUtility.ActiveVessel.Orbit.PeriapsisArl,
-                Unit = "m",
-                Formatting = null
-            });
-
-            MicroEntries.Add(new TimeToPeriapsis
-            {
-                Name = "Time to Pe.",
-                Description = "TODO",
-                Category = MicroEntryCategory.Orbital,
-                EntryValue = MicroUtility.ActiveVessel.Orbit.TimeToPe,
-                Unit = "s",
-                Formatting = null
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Inclination",
-                Description = "TODO",
-				Category = MicroEntryCategory.Orbital,
-                EntryValue = MicroUtility.ActiveVessel.Orbit.inclination,
-                Unit = "°",
-                Formatting = "{0:N3}"
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Eccentricity",
-                Description = "TODO",
-                Category = MicroEntryCategory.Orbital,
-                EntryValue = MicroUtility.ActiveVessel.Orbit.eccentricity,
-                Unit = null,
-                Formatting = "{0:N3}"
-            });
-
-            MicroEntries.Add(new Period
-            {
-                Name = "Period",
-                Description = "TODO",
-                Category = MicroEntryCategory.Orbital,
-                EntryValue = MicroUtility.ActiveVessel.Orbit.period,
-                Unit = "s",
-                Formatting = null
-            });
-
-            MicroEntries.Add(new SoiTransition
-            {
-                Name = "SOI Trans.",
-                Description = "TODO",
-                Category = MicroEntryCategory.Orbital,
-                EntryValue = MicroUtility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime,
-                Unit = "s",
-                Formatting = null
-            });
+			MicroEntries.Add(new Apoapsis());
+			MicroEntries.Add(new TimeToApoapsis());
+			MicroEntries.Add(new Periapsis());
+			MicroEntries.Add(new TimeToPeriapsis());
+			MicroEntries.Add(new Inclination());
+			MicroEntries.Add(new Eccentricity());
+			MicroEntries.Add(new Period());
+			MicroEntries.Add(new SoiTransition());
         }
 
 		private void InitializeSurfaceEntries()
 		{
-            MicroEntries.Add(new Situation
-            {
-                Name = "Situation",
-                Description = "TODO",
-                Category = MicroEntryCategory.Surface,
-                EntryValue = MicroUtility.ActiveVessel.Situation,
-                Unit = null,
-                Formatting = null
-            });
-
-            
-            MicroEntries.Add(new Latitude
-            {
-                Name = "Latitude",
-                Description = "TODO",
-                Category = MicroEntryCategory.Surface,
-                EntryValue = MicroUtility.ActiveVessel.Latitude,
-                Unit = MicroUtility.ActiveVessel.Latitude < 0 ? "S" : "N",
-                Formatting = null
-            });
-
-            MicroEntries.Add(new Longitude
-            {
-                Name = "Longitude",
-                Description = "TODO",
-                Category = MicroEntryCategory.Surface,
-                EntryValue = MicroUtility.ActiveVessel.Longitude,
-                Unit = MicroUtility.ActiveVessel.Longitude < 0 ? "W" : "E",
-                Formatting = null
-            });
-
-            MicroEntries.Add(new Biome
-            {
-                Name = "Biome",
-                Description = "TODO",
-                Category = MicroEntryCategory.Surface,
-                EntryValue = MicroUtility.ActiveVessel.SimulationObject.Telemetry.SurfaceBiome,
-                Unit = null,
-                Formatting = null
-            });
-
-            MicroEntries.Add(new AltitudeAsl
-            {
-                Name = "Altitude (ASL)",
-                Description = "Altitude Above Sea Level",
-                Category = MicroEntryCategory.Surface,
-                EntryValue = MicroUtility.ActiveVessel.AltitudeFromSeaLevel,
-                Unit = "m",
-                Formatting = null
-            });
-
-
-            MicroEntries.Add(new AltitudeAgl
-            {
-                Name = "Altitude (AGL)",
-                Description = "Altitude Above Ground Level",
-                Category = MicroEntryCategory.Surface,                
-                EntryValue = MicroUtility.ActiveVessel.AltitudeFromTerrain,
-                Unit = "m",
-                Formatting = null
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Horizontal Vel.",
-                Description = "Horizontal velocity",
-                Category = MicroEntryCategory.Surface,
-                EntryValue = MicroUtility.ActiveVessel.HorizontalSrfSpeed,
-                Unit = "m/s",
-                Formatting = "{0:N1}"
-            });
-            
-			MicroEntries.Add(new MicroEntry
-            {
-                Name = "Vertical Vel.",
-                Description = "Vertical velocity",
-                Category = MicroEntryCategory.Surface,
-                EntryValue = MicroUtility.ActiveVessel.VerticalSrfSpeed,
-                Unit = "m/s",
-                Formatting = "{0:N1}"
-            });
+			MicroEntries.Add(new Situation());
+			MicroEntries.Add(new Latitude());
+			MicroEntries.Add(new Longitude());
+			MicroEntries.Add(new Biome());
+			MicroEntries.Add(new AltitudeAsl());
+			MicroEntries.Add(new AltitudeAgl());
+			MicroEntries.Add(new HorizontalVelocity());
+			MicroEntries.Add(new VerticalVelocity());
         }
 
 		private void InitializeFlightEntries()
 		{
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Speed",
-                Description = "TODO",
-                Category = MicroEntryCategory.Flight,
-                EntryValue = MicroUtility.ActiveVessel.SurfaceVelocity.magnitude,
-                Unit = "m/s",
-                Formatting = "{0:N1}"
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Mach Number",
-                Description = "TODO",
-                Category = MicroEntryCategory.Flight,
-                EntryValue = MicroUtility.ActiveVessel.SimulationObject.Telemetry.MachNumber,
-                Unit = null,
-                Formatting = "{0:N2}"
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Atm. Density",
-                Description = "TODO",
-                Category = MicroEntryCategory.Flight,
-                EntryValue = MicroUtility.ActiveVessel.SimulationObject.Telemetry.AtmosphericDensity,
-                Unit = "g/L",
-                Formatting = "{0:N3}"
-            });
-
-            MicroEntries.Add(new TotalLift
-            {
-                Name = "Total Lift",
-                Description = "TODO",
-                Category = MicroEntryCategory.Flight,
-				// EntryValue => is calculated in the class
-                Unit = "N",
-                Formatting = "{0:N0}"
-            });
-
-            MicroEntries.Add(new TotalDrag
-            {
-                Name = "Total Drag",
-                Description = "TODO",
-                Category = MicroEntryCategory.Flight,
-                // EntryValue => is calculated in the class
-                Unit = "N",
-                Formatting = "{0:N0}"
-            });
-
-            MicroEntries.Add(new LiftDivDrag
-            {
-                Name = "Lift / Drag",
-                Description = "TODO",
-                Category = MicroEntryCategory.Flight,
-                // EntryValue => is calculated in the class
-                Unit = null,
-                Formatting = "{0:N3}"
-            });
+			MicroEntries.Add(new Speed());
+			MicroEntries.Add(new MachNumber());
+			MicroEntries.Add(new AtmosphericDensity());
+			MicroEntries.Add(new TotalLift());
+			MicroEntries.Add(new TotalDrag());
+			MicroEntries.Add(new LiftDivDrag());
         }
 
 		private void InitializeTargetEntries()
 		{
-            MicroEntries.Add(new TargetApoapsis
-            {
-                Name = "Target Ap.",
-                Description = "TODO",
-                Category = MicroEntryCategory.Target,
-                EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit.ApoapsisArl,
-                Unit = "m",
-                Formatting = null
-            });
-
-            MicroEntries.Add(new TargetPeriapsis
-            {
-                Name = "Target Pe.",
-                Description = "TODO",
-                Category = MicroEntryCategory.Target,
-                EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit.PeriapsisArl,
-                Unit = "m",
-                Formatting = null
-            });
-
-
-			MicroEntries.Add(new DistanceToTarget
-			{
-				Name = "Distance to Target",
-				Description = "TODO",
-				Category = MicroEntryCategory.Target,
-				EntryValue = MicroUtility.ActiveVessel.TargetObject != null ? (MicroUtility.ActiveVessel.Orbit.Position - MicroUtility.ActiveVessel.TargetObject.Orbit.Position).magnitude : null,
-				Unit = "m",
-				Formatting = null
-			});
-
-			MicroEntries.Add(new RelativeSpeed
-            {
-                Name = "Rel. Speed",
-                Description = "TODO",
-                Category = MicroEntryCategory.Target,
-                EntryValue = MicroUtility.ActiveVessel.TargetObject != null ? (MicroUtility.ActiveVessel.Orbit.relativeVelocity - MicroUtility.ActiveVessel.TargetObject.Orbit.relativeVelocity).magnitude : null,
-                Unit = "m/s",
-                Formatting = "{0:N1}"
-            });
-
-            MicroEntries.Add(new RelativeInclination
-            {
-                Name = "Rel. Inclination",
-                Description = "TODO",
-                Category = MicroEntryCategory.Target,
-                EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.AscendingNodeTarget.Inclination,
-                Unit = "°",
-                Formatting = "{0:N3}"
-            });
+			MicroEntries.Add(new TargetApoapsis());
+			MicroEntries.Add(new TargetPeriapsis());
+			MicroEntries.Add(new DistanceToTarget());
+			MicroEntries.Add(new RelativeSpeed());
+			MicroEntries.Add(new RelativeInclination());
         }
 
 		private void InitializeManeuverEntries()
 		{
-            //TODO: MicroUtility.ActiveVessel.Orbiter.HasActiveManeuver
-
-            MicroEntries.Add(new ProjectedAp
-            {
-                Name = "Projected Ap.",
-                Description = "TODO",
-                Category = MicroEntryCategory.Maneuver,
-                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault().ApoapsisArl,
-                Unit = "m",
-                Formatting = null
-            });
-
-            MicroEntries.Add(new ProjectedPe
-            {
-                Name = "Projected Pe.",
-                Description = "TODO",
-                Category = MicroEntryCategory.Maneuver,
-                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault().PeriapsisArl,
-                Unit = "m",
-                Formatting = null
-            });
-
-			MicroEntries.Add(new MicroEntry
-			{
-                Name = "∆v required",
-                Description = "TODO",
-                Category = MicroEntryCategory.Maneuver,
-                EntryValue = MicroUtility.CurrentManeuver?.BurnRequiredDV,
-                Unit = "m/s",
-                Formatting = "{0:N1}"
-            });
-
-			MicroEntries.Add(new TimeToNode
-			{
-				Name = "Time to Node",
-				Description = "TODO",
-				Category = MicroEntryCategory.Maneuver,
-				EntryValue = MicroUtility.CurrentManeuver != null ? MicroUtility.CurrentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime: null,
-				Unit = "s",
-				Formatting = null
-			});
-
-            MicroEntries.Add(new BurnTime
-            {
-                Name = "Burn Time",
-                Description = "TODO",
-                Category = MicroEntryCategory.Maneuver,
-                EntryValue = MicroUtility.CurrentManeuver?.BurnDuration,
-                Unit = "s",
-                Formatting = null
-            });
+			MicroEntries.Add(new ProjectedAp());
+			MicroEntries.Add(new ProjectedPe());
+			MicroEntries.Add(new DeltaVRequired());
+			MicroEntries.Add(new TimeToNode());
+			MicroEntries.Add(new BurnTime());
         }
 
 		private void InitializeStageEntries()
 		{
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Total ∆v Vac",
-                Description = "TODO",
-                Category = MicroEntryCategory.Stage,
-                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalDeltaVVac,
-                Unit = "m/s",
-                Formatting = "{0:N0}"
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Total ∆v ASL",
-                Description = "TODO",
-                Category = MicroEntryCategory.Stage,
-                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalDeltaVASL,
-                Unit = "m/s",
-                Formatting = "{0:N0}"
-            });
-
-            MicroEntries.Add(new MicroEntry
-            {
-                Name = "Total ∆v Actual",
-                Description = "TODO",
-                Category = MicroEntryCategory.Stage,
-                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalDeltaVActual,
-                Unit = "m/s",
-                Formatting = "{0:N0}"
-            });
-
-            MicroEntries.Add(new StageInfo
-            {
-                Name = "Stage Info",
-                Description = "TODO",
-                Category = MicroEntryCategory.Stage,
-                EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo,
-                Unit = null,
-                Formatting = null
-            });
-
-
-
+			MicroEntries.Add(new TotalDeltaVVac());
+			MicroEntries.Add(new TotalDeltaVAsl());
+			MicroEntries.Add(new TotalDeltaVActual());
+			MicroEntries.Add(new StageInfo());
         }
     }
 }

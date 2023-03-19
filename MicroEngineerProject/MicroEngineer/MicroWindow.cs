@@ -21,8 +21,16 @@ namespace MicroMod
     // TODO
     // Add separator
 
+    // TODO: how to check for scene
+    //GameStateConfiguration gameStateConfiguration = GameManager.Instance.Game.GlobalGameState.GetGameState();
+    //        if (gameStateConfiguration.IsFlightMode)
+
+    //TODO: MicroUtility.ActiveVessel.Orbiter.HasActiveManeuver
 
 
+    /// <summary>
+    /// Window that can hold a list of Entries
+    /// </summary>
     public class MicroWindow
     {
         public int Index;
@@ -118,33 +126,6 @@ namespace MicroMod
 
     }
 
-    public class MicroEntry
-    {        
-        public string Name;
-        public string Description;
-        public MicroEntryCategory Category;
-        public string Unit;
-        public string Formatting;
-
-        public virtual object EntryValue { get; set; }
-
-        /// <summary>
-        /// Controls how the value should be displayed. Should be overriden in a inheritet class for a concrete implementation.
-        /// </summary>
-        public virtual string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
-
-        
-    }
-
     /// <summary>
     /// Each entry has a category we assign to it depending on where it fits best
     /// </summary>
@@ -174,187 +155,4 @@ namespace MicroMod
         Maneuver,
         Settings
     }
-
-    public class Latitude : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.DegreesToDMS((double)EntryValue); }        
-    }
-
-    public class Longitude : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.DegreesToDMS((double)EntryValue); }
-    }
-
-    public class Apoapsis : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)EntryValue); }
-    }
-
-    public class TimeToApoapsis : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)EntryValue); }
-    }
-
-    public class Periapsis : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)EntryValue); }
-    }
-
-    public class TimeToPeriapsis : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)EntryValue); }
-    }
-
-    public class Period : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.SecondsToTimeString((double)EntryValue); }
-    }
-
-    public class SoiTransition : MicroEntry
-    {
-        public override string ValueDisplay { get => (double)EntryValue >= 0 ? MicroUtility.SecondsToTimeString((double)EntryValue) : "-"; }
-    }
-
-    public class Situation : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.SituationToString((VesselSituations)EntryValue); }
-    }
-
-    public class Biome : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.BiomeToString((BiomeSurfaceData)EntryValue); }
-    }
-
-    public class AltitudeAsl : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)EntryValue); }
-    }
-
-    public class AltitudeAgl : MicroEntry
-    {
-        public override string ValueDisplay { get => MicroUtility.MetersToDistanceString((double)EntryValue); }
-    }
-
-    public class TotalLift : MicroEntry
-    {
-        public override object EntryValue { get => AeroForces.TotalLift; }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                double toReturn = (double)EntryValue * 1000;
-                return String.IsNullOrEmpty(base.Formatting) ? toReturn.ToString() : String.Format(base.Formatting, toReturn);
-            }
-        }
-    }
-
-    public class TotalDrag : MicroEntry
-    {
-        public override object EntryValue { get => AeroForces.TotalDrag; }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                double toReturn = (double)EntryValue * 1000;
-                return String.IsNullOrEmpty(base.Formatting) ? toReturn.ToString() : String.Format(base.Formatting, toReturn);
-            }
-        }
-    }
-
-    public class LiftDivDrag: MicroEntry
-    {
-        public override object EntryValue { get => AeroForces.TotalLift / AeroForces.TotalDrag; }
-        public override string ValueDisplay
-        {
-            get
-            {
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
-            }
-        }
-    }
-
-    public class TargetApoapsis : MicroEntry
-    {
-        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.MetersToDistanceString((double)EntryValue) : "-"; }
-    }
-
-    public class TargetPeriapsis : MicroEntry
-    {
-        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.MetersToDistanceString((double)EntryValue): "-"; }
-    }
-
-    public class DistanceToTarget : MicroEntry
-    {
-        public override string ValueDisplay
-        {
-            // return value only if vessel and target are in the same SOI
-            get => EntryValue != null && MicroUtility.ActiveVessel.Orbit.referenceBody == MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody ?
-                MicroUtility.MetersToDistanceString((double)EntryValue) : "-";
-        }
-    }
-
-    public class RelativeSpeed : MicroEntry
-    {
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                // return value only if vessel and target are in the same SOI
-                if (MicroUtility.ActiveVessel.Orbit.referenceBody != MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
-            }
-        }
-    }
-
-    public class RelativeInclination : MicroEntry
-    {
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                // return value only if vessel and target are in the same SOI
-                if (MicroUtility.ActiveVessel.Orbit.referenceBody != MicroUtility.ActiveVessel.TargetObject?.Orbit.referenceBody)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
-            }
-        }
-    }
-
-    public class ProjectedAp : MicroEntry
-    {
-        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.MetersToDistanceString((double)EntryValue) : "-"; }
-    }
-
-    public class ProjectedPe : MicroEntry
-    {
-        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.MetersToDistanceString((double)EntryValue) : "-"; }
-    }
-
-    public class TimeToNode : MicroEntry
-    {
-        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.SecondsToTimeString((double)EntryValue) : "-"; }
-    }
-
-    public class BurnTime : MicroEntry
-    {
-        public override string ValueDisplay { get => EntryValue != null ? MicroUtility.SecondsToTimeString((double)EntryValue) : "-"; }
-    }
-
-    public class StageInfo : MicroEntry
-    {
-        //TODO: stageinfo display
-    }
-
-
 }

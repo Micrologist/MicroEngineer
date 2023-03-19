@@ -28,7 +28,6 @@ namespace MicroMod
             CurrentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(ActiveVessel.GlobalId).FirstOrDefault();
         }
 
-
         public static string DegreesToDMS(double degreeD)
         {
             var ts = TimeSpan.FromHours(Math.Abs(degreeD));
@@ -189,31 +188,6 @@ namespace MicroMod
             PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_DRAG_TYPE
         };
 
-        public static double TotalDrag
-        {
-            get
-            {
-                double toReturn = 0.0;
-
-                IEnumerable<PartComponent> parts = MicroUtility.ActiveVessel?.SimulationObject?.PartOwner?.Parts;
-                if (parts == null || !MicroUtility.ActiveVessel.IsInAtmosphere)
-                    return toReturn;
-
-                foreach (PartComponent part in parts)
-                {
-                    foreach (IForce force in part.SimulationObject.Rigidbody.Forces)
-                    {
-                        if (dragForces.Contains(force.GetType()))
-                        {
-                            toReturn += force.RelativeForce.magnitude;
-                        }
-                    }
-                }
-
-                return toReturn;
-            }
-        }
-        
         public static double TotalLift
         {
             get
@@ -231,6 +205,31 @@ namespace MicroMod
                     foreach (IForce force in part.SimulationObject.Rigidbody.Forces)
                     {
                         if (liftForces.Contains(force.GetType()))
+                        {
+                            toReturn += force.RelativeForce.magnitude;
+                        }
+                    }
+                }
+
+                return toReturn;
+            }
+        }
+
+        public static double TotalDrag
+        {
+            get
+            {
+                double toReturn = 0.0;
+
+                IEnumerable<PartComponent> parts = MicroUtility.ActiveVessel?.SimulationObject?.PartOwner?.Parts;
+                if (parts == null || !MicroUtility.ActiveVessel.IsInAtmosphere)
+                    return toReturn;
+
+                foreach (PartComponent part in parts)
+                {
+                    foreach (IForce force in part.SimulationObject.Rigidbody.Forces)
+                    {
+                        if (dragForces.Contains(force.GetType()))
                         {
                             toReturn += force.RelativeForce.magnitude;
                         }
