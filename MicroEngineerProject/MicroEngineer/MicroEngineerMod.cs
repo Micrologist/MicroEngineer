@@ -13,7 +13,6 @@ using KSP.Sim.DeltaV;
 using KSP.Sim;
 using KSP.UI.Flight;
 using static KSP.Rendering.Planets.PQSData;
-using KSP.Messages.PropertyWatchers;
 
 namespace MicroMod
 {
@@ -57,8 +56,10 @@ namespace MicroMod
 		public bool showStg = true;
 
 		private bool showTestWindow = false; // TEMP - TO DELETE
-		private Rect testWindow = new Rect(100, 100, 300, 300); // TEMP - TO DELETE
-
+		private bool showTestWindow2 = false;  // TEMP - TO DELETE
+        private Rect testWindow = new Rect(100, 100, 300, 300); // TEMP - TO DELETE
+		private List<Rect> microWindowRects = new List<Rect>(); // TEMP - TO DELETE
+		
 		public bool popoutSettings, popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt, popoutStg;
 
 		private VesselComponent activeVessel;
@@ -83,6 +84,11 @@ namespace MicroMod
         /// Holds all entries we can have in any window
         /// </summary>
         private List<MicroEntry> MicroEntries;
+		
+		/// <summary>
+		/// All windows that can be rendered
+		/// </summary>
+		private List<MicroWindow> MicroWindows;
 
         public override void OnInitialized()
 		{
@@ -157,6 +163,7 @@ namespace MicroMod
 			);
 
 			InitializeEntries();
+			InitializeWindows();
 			InitializeRects();
 			ResetLayout();
 			// load window positions and states from disk, if file exists
@@ -166,7 +173,12 @@ namespace MicroMod
 		private void InitializeRects()
 		{
 			mainGuiRect = settingsGuiRect = vesGuiRect = orbGuiRect = surGuiRect = fltGuiRect = manGuiRect = tgtGuiRect = stgGuiRect = new();
-		}
+
+            foreach (var (window, index) in MicroWindows.Select((window, index) => (window, index)))
+            {
+                microWindowRects.Add(new Rect(20 + index * 290, index * 100, 290, 100));
+            }
+        }
 
 		private void ResetLayout()
 		{
@@ -247,11 +259,21 @@ namespace MicroMod
 			{
                 testWindow = GUILayout.Window(0, testWindow, DrawTestWindow, "Test Window");
             }
-			//TEMP - END
 
-		}
+            if (showTestWindow2)
+            {
+				MicroUtility.Refresh();
 
-		private void DrawPopoutWindow(ref Rect guiRect, UnityEngine.GUI.WindowFunction fillAction)
+				foreach (var (window, index) in MicroWindows.Select((window, index) => (window, index)))
+				{
+					microWindowRects[index] = GUILayout.Window(index, microWindowRects[index], DrawMicroWindow, $"{window.Name}");
+				}
+			}
+            //TEMP - END
+
+        }
+
+        private void DrawPopoutWindow(ref Rect guiRect, UnityEngine.GUI.WindowFunction fillAction)
 		{
 			guiRect = GUILayout.Window(
 				GUIUtility.GetControlID(FocusType.Passive),
@@ -374,7 +396,12 @@ namespace MicroMod
 				showTestWindow = !showTestWindow;
             }
 
-			GUILayout.EndHorizontal();
+            if (GUILayout.Button("EntriesTest2", saveLoadBtnStyle))
+            {
+                showTestWindow2 = !showTestWindow2;
+            }
+
+            GUILayout.EndHorizontal();
             // TEMP END
 
 
@@ -395,11 +422,26 @@ namespace MicroMod
 				
 				DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
             }
+			
+            GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
+        }
+
+        public void DrawMicroWindow(int windowIndex)
+        {
+			MicroWindow windowToDraw = MicroWindows[windowIndex];
+
+            foreach (MicroEntry entry in windowToDraw.Entries)
+            {
+                // grab new data and draw it
+                entry.RefreshData();
+
+                DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
+            }
 
             GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
         }
 
-		// TEMP END
+        // TEMP END
 
         private void FillVessel(int _ = 0)
 		{
@@ -904,5 +946,143 @@ namespace MicroMod
 			MicroEntries.Add(new TotalDeltaVActual());
 			MicroEntries.Add(new StageInfo());
         }
+
+		private void InitializeWindows()
+		{
+			MicroWindows = new List<MicroWindow>();
+
+			try
+			{
+				MicroWindows.Add(new MicroWindow
+				{
+					Name = "Vessel",
+					Description = "Vessel entries",
+					IsEditorActive = false,
+					IsFlightActive = true,
+					IsMapActive = false,
+					IsEditorPoppedOut = false,
+					IsFlightPoppedOut = false,
+					IsMapPoppedOut = false,
+					IsLocked = false,
+					IsEditable = true,
+					MainWindow = MainWindow.Flight,
+					EditorPosition = null,
+					FlightPosition = null,
+					Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Vessel).ToList()
+				});
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Orbital",
+                    Description = "Orbital entries",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    IsEditable = true,
+                    MainWindow = MainWindow.Orbital,
+                    EditorPosition = null,
+                    FlightPosition = null,
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Orbital).ToList()
+                });
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Surface",
+                    Description = "Surface entries",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    IsEditable = true,
+                    MainWindow = MainWindow.Surface,
+                    EditorPosition = null,
+                    FlightPosition = null,
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Surface).ToList()
+                });
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Flight",
+                    Description = "Flight entries",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    IsEditable = true,
+                    MainWindow = MainWindow.Flight,
+                    EditorPosition = null,
+                    FlightPosition = null,
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Flight).ToList()
+                });
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Target",
+                    Description = "Flight entries",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    IsEditable = true,
+                    MainWindow = MainWindow.Target,
+                    EditorPosition = null,
+                    FlightPosition = null,
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Target).ToList()
+                });
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Maneuver",
+                    Description = "Maneuver entries",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    IsEditable = true,
+                    MainWindow = MainWindow.Maneuver,
+                    EditorPosition = null,
+                    FlightPosition = null,
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Maneuver).ToList()
+                });
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Stage",
+                    Description = "Stage entries",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    IsEditable = true,
+                    MainWindow = MainWindow.Maneuver,
+                    EditorPosition = null,
+                    FlightPosition = null,
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Stage).ToList()
+                });
+            }
+			catch (Exception ex)
+			{
+				Logger.LogError(ex.Message);
+			}
+		}
     }
 }

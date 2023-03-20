@@ -1,6 +1,5 @@
 ﻿using KSP.Game;
 using KSP.Sim.impl;
-using MicroMod;
 using static KSP.Rendering.Planets.PQSData;
 
 namespace MicroMod

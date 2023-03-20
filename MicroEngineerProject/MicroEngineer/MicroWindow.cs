@@ -33,7 +33,6 @@ namespace MicroMod
     /// </summary>
     public class MicroWindow
     {
-        public int Index;
         public string Name;
         public string Description; // not used?
         public bool IsEditorActive;
@@ -63,8 +62,8 @@ namespace MicroMod
 
         public MainWindow MainWindow;
 
-        public Vector2 EditorPosition;
-        public Vector2 FlightPosition;
+        public Vector2? EditorPosition;
+        public Vector2? FlightPosition;
         public List<MicroEntry> Entries;
 
         /// <summary>
@@ -141,7 +140,7 @@ namespace MicroMod
     }
 
     /// <summary>
-    /// Main windows cannot be deleted
+    /// Main windows cannot be deleted. Value None indicated that the window is not a main window
     /// </summary>
     public enum MainWindow
     {
