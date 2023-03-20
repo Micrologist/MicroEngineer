@@ -580,7 +580,8 @@ namespace MicroMod
 			PatchedConicsOrbit newOrbit = activeVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault();
 			DrawEntry("Projected Ap.", MetersToDistanceString(newOrbit.ApoapsisArl), "m");
 			DrawEntry("Projected Pe.", MetersToDistanceString(newOrbit.PeriapsisArl), "m");
-			DrawEntry("∆v required", $"{currentManeuver.BurnRequiredDV:N1}", "m/s");
+            double requiredDVremaining = (activeVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - activeVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude;
+            DrawEntry("∆v required", $"{requiredDVremaining:N1}", "m/s");
 			double timeUntilNode = currentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
 			DrawEntry("Time to", SecondsToTimeString(timeUntilNode), "s");
 			DrawEntry("Burn Time", SecondsToTimeString(currentManeuver.BurnDuration), "s");
