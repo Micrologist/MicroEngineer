@@ -22,29 +22,8 @@ namespace MicroMod
 	{
 		private bool showGUI = false;
 
-		private readonly int windowWidth = 290;
-		private readonly int windowHeight = 700;
 		public Rect mainGuiRect, settingsGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect, stgGuiRect;
-		private Rect closeBtnRect;
-
-		private GUISkin _spaceWarpUISkin;
-		private GUIStyle popoutBtnStyle;
-		private GUIStyle mainWindowStyle;
-		private GUIStyle popoutWindowStyle;
-		private GUIStyle sectionToggleStyle;
-		private GUIStyle closeBtnStyle;
-		private GUIStyle saveLoadBtnStyle;
-		private GUIStyle nameLabelStyle;
-		private GUIStyle valueLabelStyle;
-		private GUIStyle unitLabelStyle;
-		private GUIStyle tableHeaderLabelStyle;
-
-		private string unitColorHex;
-
-		private int spacingAfterHeader = -12;
-		private int spacingAfterEntry = -12;
-		private int spacingAfterSection = 5;
-		private float spacingBelowPopout = 10;
+		private Rect closeBtnRect;		
 
 		public bool showSettings = false;
 		public bool showVes = true;
@@ -92,69 +71,6 @@ namespace MicroMod
 
         public override void OnInitialized()
 		{
-			_spaceWarpUISkin = Skins.ConsoleSkin;
-
-			mainWindowStyle = new GUIStyle(_spaceWarpUISkin.window)
-			{
-				padding = new RectOffset(8, 8, 20, 8),
-				contentOffset = new Vector2(0, -22),
-				fixedWidth = windowWidth
-			};
-
-			popoutWindowStyle = new GUIStyle(mainWindowStyle)
-			{
-				padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5),
-				fixedWidth = windowWidth
-			};
-
-			popoutBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
-			{
-				alignment = TextAnchor.MiddleCenter,
-				contentOffset = new Vector2(0, 2),
-				fixedHeight = 15,
-				fixedWidth = 15,
-				fontSize = 28,
-				clipping = TextClipping.Overflow,
-				margin = new RectOffset(0, 0, 10, 0)
-			};
-
-			sectionToggleStyle = new GUIStyle(_spaceWarpUISkin.toggle)
-			{
-				padding = new RectOffset(14, 0, 3, 3)
-			};
-
-			nameLabelStyle = new GUIStyle(_spaceWarpUISkin.label);
-			nameLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
-
-			valueLabelStyle = new GUIStyle(_spaceWarpUISkin.label)
-			{
-				alignment = TextAnchor.MiddleRight
-			};
-			valueLabelStyle.normal.textColor = new Color(.6f, .7f, 1, 1);
-
-			unitLabelStyle = new GUIStyle(valueLabelStyle)
-			{
-				fixedWidth = 24,
-				alignment = TextAnchor.MiddleLeft
-			};
-			unitLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
-
-			unitColorHex = ColorUtility.ToHtmlStringRGBA(unitLabelStyle.normal.textColor);
-
-			closeBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
-			{
-				fontSize = 8
-			};
-
-			saveLoadBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
-			{
-				alignment = TextAnchor.MiddleCenter
-			};
-
-			closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
-
-			tableHeaderLabelStyle = new GUIStyle(nameLabelStyle) { alignment = TextAnchor.MiddleRight };
-
 			Appbar.RegisterAppButton(
 					"Micro Engineer",
 					"BTN-MicroEngineerBtn",
@@ -162,6 +78,7 @@ namespace MicroMod
 					delegate { showGUI = !showGUI; }
 			);
 
+			MicroStyles.InitializeStyles();
 			InitializeEntries();
 			InitializeWindows();
 			InitializeRects();
@@ -173,6 +90,8 @@ namespace MicroMod
 		private void InitializeRects()
 		{
 			mainGuiRect = settingsGuiRect = vesGuiRect = orbGuiRect = surGuiRect = fltGuiRect = manGuiRect = tgtGuiRect = stgGuiRect = new();
+
+            closeBtnRect = new Rect(MicroStyles.WindowWidth - 23, 6, 16, 16);
 
             foreach (var (window, index) in MicroWindows.Select((window, index) => (window, index)))
             {
@@ -202,14 +121,14 @@ namespace MicroMod
 
 			currentTarget = activeVessel.TargetObject;
 			currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
-			GUI.skin = _spaceWarpUISkin;
+			GUI.skin = MicroStyles.SpaceWarpUISkin;
 
 			mainGuiRect = GUILayout.Window(
 				GUIUtility.GetControlID(FocusType.Passive),
 				mainGuiRect,
 				FillMainGUI,
 				"<color=#696DFF>// MICRO ENGINEER</color>",
-				mainWindowStyle,
+                MicroStyles.MainWindowStyle,
 				GUILayout.Height(0)
 			);
 			mainGuiRect.position = ClampToScreen(mainGuiRect.position, mainGuiRect.size);
@@ -280,9 +199,9 @@ namespace MicroMod
 				guiRect,
 				fillAction,
 				"",
-				popoutWindowStyle,
+                MicroStyles.PopoutWindowStyle,
 				GUILayout.Height(0),
-				GUILayout.Width(windowWidth)
+				GUILayout.Width(MicroStyles.WindowWidth)
 			);
 			guiRect.position = ClampToScreen(guiRect.position, guiRect.size);
 		}
@@ -304,23 +223,23 @@ namespace MicroMod
 			GUILayout.Space(10);
 
 			GUILayout.BeginHorizontal();
-			showVes = GUILayout.Toggle(showVes, "<b>VES</b>", sectionToggleStyle);
+			showVes = GUILayout.Toggle(showVes, "<b>VES</b>", MicroStyles.SectionToggleStyle);
 			GUILayout.Space(26);
-			showStg = GUILayout.Toggle(showStg, "<b>STG</b>", sectionToggleStyle);
+			showStg = GUILayout.Toggle(showStg, "<b>STG</b>", MicroStyles.SectionToggleStyle);
 			GUILayout.Space(26);
-			showOrb = GUILayout.Toggle(showOrb, "<b>ORB</b>", sectionToggleStyle);
+			showOrb = GUILayout.Toggle(showOrb, "<b>ORB</b>", MicroStyles.SectionToggleStyle);
 			GUILayout.Space(26);
-			showSur = GUILayout.Toggle(showSur, "<b>SUR</b>", sectionToggleStyle);
+			showSur = GUILayout.Toggle(showSur, "<b>SUR</b>", MicroStyles.SectionToggleStyle);
 			GUILayout.Space(26);
-			showFlt = GUILayout.Toggle(showFlt, "<b>FLT</b>", sectionToggleStyle);
+			showFlt = GUILayout.Toggle(showFlt, "<b>FLT</b>", MicroStyles.SectionToggleStyle);
 			GUILayout.Space(26);
-			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>", sectionToggleStyle);
+			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>", MicroStyles.SectionToggleStyle);
 			GUILayout.EndHorizontal();
 
 			GUILayout.BeginHorizontal();
-			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>", sectionToggleStyle);
+			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>", MicroStyles.SectionToggleStyle);
 			GUILayout.Space(26);
-			showSettings = GUILayout.Toggle(showSettings, "<b>SET</b>", sectionToggleStyle);
+			showSettings = GUILayout.Toggle(showSettings, "<b>SET</b>", MicroStyles.SectionToggleStyle);
 			GUILayout.EndHorizontal();
 
 
@@ -369,7 +288,7 @@ namespace MicroMod
 				FillManeuver();
 			}
 
-			GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
+			GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
 		}
 
 		private void FillSettings(int _ = 0)
@@ -378,25 +297,25 @@ namespace MicroMod
 
 			GUILayout.Space(10);
 			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("SAVE LAYOUT", saveLoadBtnStyle))
+			if (GUILayout.Button("SAVE LAYOUT", MicroStyles.SaveLoadBtnStyle))
 				SaveLayoutState();
 			GUILayout.Space(5);
-			if (GUILayout.Button("LOAD LAYOUT", saveLoadBtnStyle))
+			if (GUILayout.Button("LOAD LAYOUT", MicroStyles.SaveLoadBtnStyle))
 				LoadLayoutState();
 			GUILayout.Space(5);
-			if (GUILayout.Button("RESET", saveLoadBtnStyle))
+			if (GUILayout.Button("RESET", MicroStyles.SaveLoadBtnStyle))
 				ResetLayout();
 			GUILayout.EndHorizontal();
 
 			// TEMP START - TO BE DELETED
 			GUILayout.BeginHorizontal();
 
-			if (GUILayout.Button("EntriesTest", saveLoadBtnStyle))
+			if (GUILayout.Button("EntriesTest", MicroStyles.SaveLoadBtnStyle))
 			{
 				showTestWindow = !showTestWindow;
             }
 
-            if (GUILayout.Button("EntriesTest2", saveLoadBtnStyle))
+            if (GUILayout.Button("EntriesTest2", MicroStyles.SaveLoadBtnStyle))
             {
                 showTestWindow2 = !showTestWindow2;
             }
@@ -423,7 +342,7 @@ namespace MicroMod
 				DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
             }
 			
-            GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
+            GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
         }
 
         public void DrawMicroWindow(int windowIndex)
@@ -438,7 +357,7 @@ namespace MicroMod
                 DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
             }
 
-            GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
+            GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
         }
 
         // TEMP END
@@ -592,61 +511,61 @@ namespace MicroMod
 		private void DrawSectionHeader(string sectionName, ref bool isPopout, string value = "")
 		{
 			GUILayout.BeginHorizontal();
-			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", popoutBtnStyle);
+			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", MicroStyles.PopoutBtnStyle);
 
 			GUILayout.Label($"<b>{sectionName}</b>");
 			GUILayout.FlexibleSpace();
-			GUILayout.Label(value, valueLabelStyle);
+			GUILayout.Label(value, MicroStyles.ValueLabelStyle);
 			GUILayout.Space(5);
-			GUILayout.Label("", unitLabelStyle);
+			GUILayout.Label("", MicroStyles.UnitLabelStyle);
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spacingAfterHeader);
+			GUILayout.Space(MicroStyles.SpacingAfterHeader);
 		}
 
 		private void DrawStagesHeader(ref bool isPopout)
 		{
 			GUILayout.BeginHorizontal();
-			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", popoutBtnStyle);
+			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", MicroStyles.PopoutBtnStyle);
 
 			GUILayout.Label("<b>Stage</b>");
 			GUILayout.FlexibleSpace();
-			GUILayout.Label("∆v", tableHeaderLabelStyle);
+			GUILayout.Label("∆v", MicroStyles.TableHeaderLabelStyle);
 			GUILayout.Space(16);
-			GUILayout.Label($"TWR", tableHeaderLabelStyle, GUILayout.Width(40));
+			GUILayout.Label($"TWR", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(40));
 			GUILayout.Space(16);
 			if (isPopout)
 			{
-				GUILayout.Label($"<color=#{unitColorHex}>Burn</color>", GUILayout.Width(56));
+				GUILayout.Label($"<color=#{MicroStyles.UnitColorHex}>Burn</color>", GUILayout.Width(56));
 			}
 			else
 			{
-				GUILayout.Label($"Burn", tableHeaderLabelStyle, GUILayout.Width(56));
+				GUILayout.Label($"Burn", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(56));
 			}
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spacingAfterHeader);
+			GUILayout.Space(MicroStyles.SpacingAfterHeader);
 		}
 
 
 		private void DrawEntry(string entryName, string value, string unit = "")
 		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Label(entryName, nameLabelStyle);
+			GUILayout.Label(entryName, MicroStyles.NameLabelStyle);
 			GUILayout.FlexibleSpace();
-			GUILayout.Label(value, valueLabelStyle);
+			GUILayout.Label(value, MicroStyles.ValueLabelStyle);
 			GUILayout.Space(5);
-			GUILayout.Label(unit, unitLabelStyle);
+			GUILayout.Label(unit, MicroStyles.UnitLabelStyle);
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spacingAfterEntry);
+			GUILayout.Space(MicroStyles.SpacingAfterEntry);
 		}
 
 		private void DrawStageEntry(int stageID, DeltaVStageInfo stageInfo, string twrFormatString)
 		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Label($"{stageID:00.}", nameLabelStyle, GUILayout.Width(24));
+			GUILayout.Label($"{stageID:00.}", MicroStyles.NameLabelStyle, GUILayout.Width(24));
 			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{stageInfo.DeltaVActual:N0} <color=#{unitColorHex}>m/s</color>", valueLabelStyle);
+			GUILayout.Label($"{stageInfo.DeltaVActual:N0} <color=#{MicroStyles.UnitColorHex}>m/s</color>", MicroStyles.ValueLabelStyle);
 			GUILayout.Space(16);
-			GUILayout.Label($"{stageInfo.TWRActual.ToString(twrFormatString)}", valueLabelStyle, GUILayout.Width(40));
+			GUILayout.Label($"{stageInfo.TWRActual.ToString(twrFormatString)}", MicroStyles.ValueLabelStyle, GUILayout.Width(40));
 			GUILayout.Space(16);
 			string burnTime = SecondsToTimeString(stageInfo.StageBurnTime, false);
 			string lastUnit = "s";
@@ -661,27 +580,27 @@ namespace MicroMod
 				lastUnit = "h";
 			}
 
-			GUILayout.Label($"{burnTime}<color=#{unitColorHex}>{lastUnit}</color>", valueLabelStyle, GUILayout.Width(56));
+			GUILayout.Label($"{burnTime}<color=#{MicroStyles.UnitColorHex}>{lastUnit}</color>", MicroStyles.ValueLabelStyle, GUILayout.Width(56));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spacingAfterEntry);
+			GUILayout.Space(MicroStyles.SpacingAfterEntry);
 		}
 
 		private void DrawSectionEnd(bool isPopout)
 		{
 			if (isPopout)
 			{
-				GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
-				GUILayout.Space(spacingBelowPopout);
+				GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
+				GUILayout.Space(MicroStyles.SpacingBelowPopout);
 			}
 			else
 			{
-				GUILayout.Space(spacingAfterSection);
+				GUILayout.Space(MicroStyles.SpacingAfterSection);
 			}
 		}
 
 		private bool CloseButton()
 		{
-			return GUI.Button(closeBtnRect, "x", closeBtnStyle);
+			return GUI.Button(closeBtnRect, "x", MicroStyles.CloseBtnStyle);
 		}
 
 		private string SituationToString(VesselSituations situation)
@@ -732,13 +651,13 @@ namespace MicroMod
 
 			if (days > 0)
 			{
-				result += $"{days}{spacing}<color=#{unitColorHex}>d</color> ";
+				result += $"{days}{spacing}<color=#{MicroStyles.UnitColorHex}>d</color> ";
 			}
 
 			if (hours > 0 || days > 0)
 			{
 				{
-					result += $"{hours}{spacing}<color=#{unitColorHex}>h</color> ";
+					result += $"{hours}{spacing}<color=#{MicroStyles.UnitColorHex}>h</color> ";
 				}
 			}
 
@@ -746,11 +665,11 @@ namespace MicroMod
 			{
 				if (hours > 0 || days > 0)
 				{
-					result += $"{minutes:00.}{spacing}<color=#{unitColorHex}>m</color> ";
+					result += $"{minutes:00.}{spacing}<color=#{MicroStyles.UnitColorHex}>m</color> ";
 				}
 				else
 				{
-					result += $"{minutes}{spacing}<color=#{unitColorHex}>m</color> ";
+					result += $"{minutes}{spacing}<color=#{MicroStyles.UnitColorHex}>m</color> ";
 				}
 			}
 
@@ -785,7 +704,7 @@ namespace MicroMod
 			int minutes = ts.Minutes;
 			int seconds = ts.Seconds;
 
-			string result = $"{degrees:N0}<color={unitColorHex}>°</color> {minutes:00}<color={unitColorHex}>'</color> {seconds:00}<color={unitColorHex}>\"</color>";
+			string result = $"{degrees:N0}<color={MicroStyles.UnitColorHex}>°</color> {minutes:00}<color={MicroStyles.UnitColorHex}>'</color> {seconds:00}<color={MicroStyles.UnitColorHex}>\"</color>";
 
 			return result;
 		}
@@ -1082,7 +1001,7 @@ namespace MicroMod
             }
 			catch (Exception ex)
 			{
-				Logger.LogError(ex.Message);
+				Logger.LogError(ex);
 			}
 		}
     }

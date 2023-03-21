@@ -132,47 +132,7 @@ namespace MicroMod
             string result = biome.type.ToString().ToLower().Replace('_', ' ');
             return result.Substring(0, 1).ToUpper() + result.Substring(1);
         }
-    }
-
-    public static class MicroStyles
-    {
-        public static GUISkin SpaceWarpUISkin = Skins.ConsoleSkin;
-
-        public static GUIStyle NameLabelStyle
-        {
-            get
-            {
-                GUIStyle style = SpaceWarpUISkin.label;
-                style.normal.textColor = new Color(.7f, .75f, .75f, 1);
-                return style;
-            }
-        }
-
-        public static GUIStyle ValueLabelStyle
-        {
-            get
-            {
-                GUIStyle style = new GUIStyle(SpaceWarpUISkin.label);
-                style.alignment = TextAnchor.MiddleRight;
-                style.normal.textColor = new Color(.6f, .7f, 1, 1);
-                return style;
-            }
-        }
-
-        public static GUIStyle UnitLabelStyle
-        {
-            get
-            {
-                GUIStyle style = new GUIStyle(SpaceWarpUISkin.label);
-                style.fixedWidth = 24;
-                style.alignment = TextAnchor.MiddleLeft;
-                style.normal.textColor = new Color(.7f, .75f, .75f, 1);
-                return style;
-            }
-        }
-
-        public static string UnitColorHex { get => ColorUtility.ToHtmlStringRGBA(UnitLabelStyle.normal.textColor); }
-    }
+    }    
 
     public static class AeroForces
     {
