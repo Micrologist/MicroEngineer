@@ -389,6 +389,34 @@ namespace MicroMod
         }
     }
 
+    public class Body : MicroEntry
+    {
+        public Body()
+        {
+            Name = "Body";
+            Description = "TODO";
+            Category = MicroEntryCategory.Surface;
+            Unit = null;
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.mainBody.bodyName;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
     public class Situation : MicroEntry
     {
         public Situation()

@@ -710,6 +710,7 @@ namespace MicroMod
 
 		private void InitializeSurfaceEntries()
 		{
+			MicroEntries.Add(new Body());
 			MicroEntries.Add(new Situation());
 			MicroEntries.Add(new Latitude());
 			MicroEntries.Add(new Longitude());
