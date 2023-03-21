@@ -65,7 +65,7 @@ namespace MicroMod
         public MainWindow MainWindow;
 
         public Vector2? EditorPosition;
-        public Vector2? FlightPosition;
+        public Vector2 FlightPosition;
         public List<MicroEntry> Entries;
 
         /// <summary>
@@ -113,6 +113,15 @@ namespace MicroMod
         /// </summary>
         /// <param name="entry"></param>
         public void AddEntry(MicroEntry entry) => Entries.Add(entry);
+
+        /// <summary>
+        /// Grabs new data for each entry in the window
+        /// </summary>
+        public void RefreshEntryData()
+        {
+            foreach (MicroEntry entry in Entries)
+                entry.RefreshData();
+        }
 
         // TODO
         // windowBackgroundColor

@@ -6,7 +6,7 @@ namespace MicroMod
     public static class MicroStyles
     {
         public static int WindowWidth = 290;
-        public static int WindowHeight = 700;
+        public static int WindowHeight = 1440;
 
         public static GUISkin SpaceWarpUISkin;
         public static GUIStyle MainWindowStyle;
