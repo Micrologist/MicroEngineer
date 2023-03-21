@@ -22,10 +22,11 @@ namespace MicroMod
         /// <summary>
         /// Refreshes the ActiveVessel and CurrentManeuver
         /// </summary>
-        public static void Refresh()
+        public static void RefreshActiveVesselAndCurrentManeuver()
         {
             ActiveVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
-            CurrentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(ActiveVessel.GlobalId).FirstOrDefault();
+            CurrentManeuver = ActiveVessel != null ? GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(ActiveVessel.GlobalId).FirstOrDefault(): null;
+
         }
 
         public static string DegreesToDMS(double degreeD)

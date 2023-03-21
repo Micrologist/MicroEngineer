@@ -41,10 +41,6 @@ namespace MicroMod
 		
 		public bool popoutSettings, popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt, popoutStg;
 
-		private VesselComponent activeVessel;
-		private SimulationObjectModel currentTarget;
-		private ManeuverNodeData currentManeuver;
-
 		private double totalDrag, totalLift;
 
 		private static readonly List<Type> liftForces = new()
@@ -116,12 +112,11 @@ namespace MicroMod
 
 		private void OnGUI()
 		{
-			activeVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
-			if (!showGUI || activeVessel == null) return;
+            GUI.skin = MicroStyles.SpaceWarpUISkin;
 
-			currentTarget = activeVessel.TargetObject;
-			currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
-			GUI.skin = MicroStyles.SpaceWarpUISkin;
+            MicroUtility.RefreshActiveVesselAndCurrentManeuver();
+
+			if (!showGUI || MicroUtility.ActiveVessel == null) return;			
 
 			mainGuiRect = GUILayout.Window(
 				GUIUtility.GetControlID(FocusType.Passive),
@@ -158,12 +153,12 @@ namespace MicroMod
 				DrawPopoutWindow(ref fltGuiRect, FillFlight);
 			}
 
-			if (showTgt && popoutTgt && currentTarget != null)
+			if (showTgt && popoutTgt && MicroUtility.ActiveVessel.TargetObject != null)
 			{
 				DrawPopoutWindow(ref tgtGuiRect, FillTarget);
 			}
 
-			if (showMan && popoutMan && currentManeuver != null)
+			if (showMan && popoutMan && MicroUtility.CurrentManeuver != null)
 			{
 				DrawPopoutWindow(ref manGuiRect, FillManeuver);
 			}
@@ -181,7 +176,7 @@ namespace MicroMod
 
             if (showTestWindow2)
             {
-				MicroUtility.Refresh();
+				MicroUtility.RefreshActiveVesselAndCurrentManeuver();
 
 				foreach (var (window, index) in MicroWindows.Select((window, index) => (window, index)))
 				{
@@ -278,12 +273,12 @@ namespace MicroMod
 				FillFlight();
 			}
 
-			if (showTgt && !popoutTgt && currentTarget != null)
+			if (showTgt && !popoutTgt && MicroUtility.ActiveVessel.TargetObject != null)
 			{
 				FillTarget();
 			}
 
-			if (showMan && !popoutMan && currentManeuver != null)
+			if (showMan && !popoutMan && MicroUtility.CurrentManeuver != null)
 			{
 				FillManeuver();
 			}
@@ -332,7 +327,7 @@ namespace MicroMod
 		public void DrawTestWindow(int windowID)
 		{
 			// Refresh ActiveVessel and CurrentManeuver refrences
-			MicroUtility.Refresh();
+			MicroUtility.RefreshActiveVesselAndCurrentManeuver();
 			
 			foreach (MicroEntry entry in MicroEntries)
 			{
@@ -364,11 +359,11 @@ namespace MicroMod
 
         private void FillVessel(int _ = 0)
 		{
-			DrawSectionHeader("Vessel", ref popoutVes, activeVessel.DisplayName);
+			DrawSectionHeader("Vessel", ref popoutVes, MicroUtility.ActiveVessel.DisplayName);
 
-			DrawEntry("Mass", $"{activeVessel.totalMass * 1000:N0}", "kg");
+			DrawEntry("Mass", $"{MicroUtility.ActiveVessel.totalMass * 1000:N0}", "kg");
 
-			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
+			VesselDeltaVComponent deltaVComponent = MicroUtility.ActiveVessel.VesselDeltaV;
 			if (deltaVComponent != null)
 			{
 				DrawEntry("∆v", $"{deltaVComponent.TotalDeltaVActual:N0}", "m/s");
@@ -386,7 +381,7 @@ namespace MicroMod
 		{
 			DrawStagesHeader(ref popoutStg);
 
-			List<DeltaVStageInfo> stages = activeVessel.VesselDeltaV?.StageInfo;
+			List<DeltaVStageInfo> stages = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo;
 
 			int stageCount = stages?.Count ?? 0;
 			if (stages != null && stageCount > 0)
@@ -423,33 +418,33 @@ namespace MicroMod
 		{
 			DrawSectionHeader("Orbital", ref popoutOrb);
 
-			DrawEntry("Apoapsis", $"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}", "m");
-			DrawEntry("Time to Ap.", $"{SecondsToTimeString((activeVessel.Situation == VesselSituations.Landed || activeVessel.Situation == VesselSituations.PreLaunch) ? 0f : activeVessel.Orbit.TimeToAp)}", "s");
-			DrawEntry("Periapsis", $"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}", "m");
-			DrawEntry("Time to Pe.", $"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}", "s");
-			DrawEntry("Inclination", $"{activeVessel.Orbit.inclination:N3}", "°");
-			DrawEntry("Eccentricity", $"{activeVessel.Orbit.eccentricity:N3}");
-			DrawEntry("Period", $"{SecondsToTimeString(activeVessel.Orbit.period)}", "s");
-			double secondsToSoiTransition = activeVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime;
+			DrawEntry("Apoapsis", $"{MicroUtility.MetersToDistanceString(MicroUtility.ActiveVessel.Orbit.ApoapsisArl)}", "m");
+			DrawEntry("Time to Ap.", $"{MicroUtility.SecondsToTimeString((MicroUtility.ActiveVessel.Situation == VesselSituations.Landed || MicroUtility.ActiveVessel.Situation == VesselSituations.PreLaunch) ? 0f : MicroUtility.ActiveVessel.Orbit.TimeToAp)}", "s");
+			DrawEntry("Periapsis", $"{MicroUtility.MetersToDistanceString(MicroUtility.ActiveVessel.Orbit.PeriapsisArl)}", "m");
+			DrawEntry("Time to Pe.", $"{MicroUtility.SecondsToTimeString(MicroUtility.ActiveVessel.Orbit.TimeToPe)}", "s");
+			DrawEntry("Inclination", $"{MicroUtility.ActiveVessel.Orbit.inclination:N3}", "°");
+			DrawEntry("Eccentricity", $"{MicroUtility.ActiveVessel.Orbit.eccentricity:N3}");
+			DrawEntry("Period", $"{MicroUtility.SecondsToTimeString(MicroUtility.ActiveVessel.Orbit.period)}", "s");
+			double secondsToSoiTransition = MicroUtility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime;
 			if (secondsToSoiTransition >= 0)
 			{
-				DrawEntry("SOI Trans.", SecondsToTimeString(secondsToSoiTransition), "s");
+				DrawEntry("SOI Trans.", MicroUtility.SecondsToTimeString(secondsToSoiTransition), "s");
 			}
 			DrawSectionEnd(popoutOrb);
 		}
 
 		private void FillSurface(int _ = 0)
 		{
-			DrawSectionHeader("Surface", ref popoutSur, activeVessel.mainBody.bodyName);
+			DrawSectionHeader("Surface", ref popoutSur, MicroUtility.ActiveVessel.mainBody.bodyName);
 
-			DrawEntry("Situation", SituationToString(activeVessel.Situation));
-			DrawEntry("Latitude", $"{DegreesToDMS(activeVessel.Latitude)}", activeVessel.Latitude < 0 ? "S" : "N");
-			DrawEntry("Longitude", $"{DegreesToDMS(activeVessel.Longitude)}", activeVessel.Longitude < 0 ? "W" : "E");
-			DrawEntry("Biome", BiomeToString(activeVessel.SimulationObject.Telemetry.SurfaceBiome));
-			DrawEntry("Alt. MSL", MetersToDistanceString(activeVessel.AltitudeFromSeaLevel), "m");
-			DrawEntry("Alt. AGL", MetersToDistanceString(activeVessel.AltitudeFromScenery), "m");
-			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:N1}", "m/s");
-			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:N1}", "m/s");
+			DrawEntry("Situation", MicroUtility.SituationToString(MicroUtility.ActiveVessel.Situation));
+			DrawEntry("Latitude", $"{MicroUtility.DegreesToDMS(MicroUtility.ActiveVessel.Latitude)}", MicroUtility.ActiveVessel.Latitude < 0 ? "S" : "N");
+			DrawEntry("Longitude", $"{MicroUtility.DegreesToDMS(MicroUtility.ActiveVessel.Longitude)}", MicroUtility.ActiveVessel.Longitude < 0 ? "W" : "E");
+			DrawEntry("Biome", MicroUtility.BiomeToString(MicroUtility.ActiveVessel.SimulationObject.Telemetry.SurfaceBiome));
+			DrawEntry("Alt. MSL", MicroUtility.MetersToDistanceString(MicroUtility.ActiveVessel.AltitudeFromSeaLevel), "m");
+			DrawEntry("Alt. AGL", MicroUtility.MetersToDistanceString(MicroUtility.ActiveVessel.AltitudeFromScenery), "m");
+			DrawEntry("Horizontal Vel.", $"{MicroUtility.ActiveVessel.HorizontalSrfSpeed:N1}", "m/s");
+			DrawEntry("Vertical Vel.", $"{MicroUtility.ActiveVessel.VerticalSrfSpeed:N1}", "m/s");
 
 			DrawSectionEnd(popoutSur);
 		}
@@ -458,9 +453,9 @@ namespace MicroMod
 		{
 			DrawSectionHeader("Flight", ref popoutFlt);
 
-			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N1}", "m/s");
-			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N2}");
-			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N3}", "g/L");
+			DrawEntry("Speed", $"{MicroUtility.ActiveVessel.SurfaceVelocity.magnitude:N1}", "m/s");
+			DrawEntry("Mach Number", $"{MicroUtility.ActiveVessel.SimulationObject.Telemetry.MachNumber:N2}");
+			DrawEntry("Atm. Density", $"{MicroUtility.ActiveVessel.SimulationObject.Telemetry.AtmosphericDensity:N3}", "g/L");
 			GetAeroStats();
 
 			DrawEntry("Total Lift", $"{totalLift * 1000:N0}", "N");
@@ -473,20 +468,20 @@ namespace MicroMod
 
 		private void FillTarget(int _ = 0)
 		{
-			DrawSectionHeader("Target", ref popoutTgt, currentTarget.DisplayName);
+			DrawSectionHeader("Target", ref popoutTgt, MicroUtility.ActiveVessel.TargetObject.DisplayName);
 
-			if (currentTarget.Orbit != null)
+			if (MicroUtility.ActiveVessel.TargetObject.Orbit != null)
 			{
-				DrawEntry("Target Ap.", MetersToDistanceString(currentTarget.Orbit.ApoapsisArl), "m");
-				DrawEntry("Target Pe.", MetersToDistanceString(currentTarget.Orbit.PeriapsisArl), "m");
+				DrawEntry("Target Ap.", MicroUtility.MetersToDistanceString(MicroUtility.ActiveVessel.TargetObject.Orbit.ApoapsisArl), "m");
+				DrawEntry("Target Pe.", MicroUtility.MetersToDistanceString(MicroUtility.ActiveVessel.TargetObject.Orbit.PeriapsisArl), "m");
 
-				if (activeVessel.Orbit.referenceBody == currentTarget.Orbit.referenceBody)
+				if (MicroUtility.ActiveVessel.Orbit.referenceBody == MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody)
 				{
-					double distanceToTarget = (activeVessel.Orbit.Position - currentTarget.Orbit.Position).magnitude;
-					DrawEntry("Distance", MetersToDistanceString(distanceToTarget), "m");
-					double relativeVelocity = (activeVessel.Orbit.relativeVelocity - currentTarget.Orbit.relativeVelocity).magnitude;
+					double distanceToTarget = (MicroUtility.ActiveVessel.Orbit.Position - MicroUtility.ActiveVessel.TargetObject.Orbit.Position).magnitude;
+					DrawEntry("Distance", MicroUtility.MetersToDistanceString(distanceToTarget), "m");
+					double relativeVelocity = (MicroUtility.ActiveVessel.Orbit.relativeVelocity - MicroUtility.ActiveVessel.TargetObject.Orbit.relativeVelocity).magnitude;
 					DrawEntry("Rel. Speed", $"{relativeVelocity:N1}", "m/s");
-					OrbitTargeter targeter = activeVessel.Orbiter.OrbitTargeter;
+					OrbitTargeter targeter = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter;
 					DrawEntry("Rel. Incl.", $"{targeter.AscendingNodeTarget.Inclination:N3}", "°");
 				}
 			}
@@ -496,14 +491,14 @@ namespace MicroMod
 		private void FillManeuver(int _ = 0)
 		{
 			DrawSectionHeader("Maneuver", ref popoutMan);
-			PatchedConicsOrbit newOrbit = activeVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault();
-			DrawEntry("Projected Ap.", MetersToDistanceString(newOrbit.ApoapsisArl), "m");
-			DrawEntry("Projected Pe.", MetersToDistanceString(newOrbit.PeriapsisArl), "m");
-            double requiredDVremaining = (activeVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - activeVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude;
+			PatchedConicsOrbit newOrbit = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault();
+			DrawEntry("Projected Ap.", MicroUtility.MetersToDistanceString(newOrbit.ApoapsisArl), "m");
+			DrawEntry("Projected Pe.", MicroUtility.MetersToDistanceString(newOrbit.PeriapsisArl), "m");
+            double requiredDVremaining = (MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude;
             DrawEntry("∆v required", $"{requiredDVremaining:N1}", "m/s");
-			double timeUntilNode = currentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
-			DrawEntry("Time to", SecondsToTimeString(timeUntilNode), "s");
-			DrawEntry("Burn Time", SecondsToTimeString(currentManeuver.BurnDuration), "s");
+			double timeUntilNode = MicroUtility.CurrentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
+			DrawEntry("Time to", MicroUtility.SecondsToTimeString(timeUntilNode), "s");
+			DrawEntry("Burn Time", MicroUtility.SecondsToTimeString(MicroUtility.CurrentManeuver.BurnDuration), "s");
 
 			DrawSectionEnd(popoutMan);
 		}
@@ -567,7 +562,7 @@ namespace MicroMod
 			GUILayout.Space(16);
 			GUILayout.Label($"{stageInfo.TWRActual.ToString(twrFormatString)}", MicroStyles.ValueLabelStyle, GUILayout.Width(40));
 			GUILayout.Space(16);
-			string burnTime = SecondsToTimeString(stageInfo.StageBurnTime, false);
+			string burnTime = MicroUtility.SecondsToTimeString(stageInfo.StageBurnTime, false);
 			string lastUnit = "s";
 			if (burnTime.Contains('h'))
 			{
@@ -603,112 +598,6 @@ namespace MicroMod
 			return GUI.Button(closeBtnRect, "x", MicroStyles.CloseBtnStyle);
 		}
 
-		private string SituationToString(VesselSituations situation)
-		{
-			return situation switch
-			{
-				VesselSituations.PreLaunch => "Pre-Launch",
-				VesselSituations.Landed => "Landed",
-				VesselSituations.Splashed => "Splashed down",
-				VesselSituations.Flying => "Flying",
-				VesselSituations.SubOrbital => "Suborbital",
-				VesselSituations.Orbiting => "Orbiting",
-				VesselSituations.Escaping => "Escaping",
-				_ => "UNKNOWN",
-			};
-		}
-
-		private string SecondsToTimeString(double seconds, bool addSpacing = true)
-		{
-			if (seconds == Double.PositiveInfinity)
-			{
-				return "∞";
-			}
-			else if (seconds == Double.NegativeInfinity)
-			{
-				return "-∞";
-			}
-
-			seconds = Math.Ceiling(seconds);
-
-			string result = "";
-			string spacing = "";
-			if (addSpacing)
-			{
-				spacing = " ";
-			}
-
-			if (seconds < 0)
-			{
-				result += "-";
-				seconds = Math.Abs(seconds);
-			}
-
-			int days = (int)(seconds / 21600);
-			int hours = (int)((seconds - (days * 21600)) / 3600);
-			int minutes = (int)((seconds - (hours * 3600) - (days * 21600)) / 60);
-			int secs = (int)(seconds - (days * 21600) - (hours * 3600) - (minutes * 60));
-
-			if (days > 0)
-			{
-				result += $"{days}{spacing}<color=#{MicroStyles.UnitColorHex}>d</color> ";
-			}
-
-			if (hours > 0 || days > 0)
-			{
-				{
-					result += $"{hours}{spacing}<color=#{MicroStyles.UnitColorHex}>h</color> ";
-				}
-			}
-
-			if (minutes > 0 || hours > 0 || days > 0)
-			{
-				if (hours > 0 || days > 0)
-				{
-					result += $"{minutes:00.}{spacing}<color=#{MicroStyles.UnitColorHex}>m</color> ";
-				}
-				else
-				{
-					result += $"{minutes}{spacing}<color=#{MicroStyles.UnitColorHex}>m</color> ";
-				}
-			}
-
-			if (minutes > 0 || hours > 0 || days > 0)
-			{
-				result += $"{secs:00.}";
-			}
-			else
-			{
-				result += secs;
-			}
-
-			return result;
-
-		}
-
-		private string MetersToDistanceString(double heightInMeters)
-		{
-			return $"{heightInMeters:N0}";
-		}
-
-		private string BiomeToString(BiomeSurfaceData biome)
-		{
-			string result = biome.type.ToString().ToLower().Replace('_', ' ');
-			return result.Substring(0, 1).ToUpper() + result.Substring(1);
-		}
-
-		private string DegreesToDMS(double degreeD)
-		{
-			var ts = TimeSpan.FromHours(Math.Abs(degreeD));
-			int degrees = (int)Math.Floor(ts.TotalHours);
-			int minutes = ts.Minutes;
-			int seconds = ts.Seconds;
-
-			string result = $"{degrees:N0}<color={MicroStyles.UnitColorHex}>°</color> {minutes:00}<color={MicroStyles.UnitColorHex}>'</color> {seconds:00}<color={MicroStyles.UnitColorHex}>\"</color>";
-
-			return result;
-		}
-
 		private void CloseWindow()
 		{
 			GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(false);
@@ -720,8 +609,8 @@ namespace MicroMod
 			totalDrag = 0.0;
 			totalLift = 0.0;
 
-			IEnumerable<PartComponent> parts = activeVessel?.SimulationObject?.PartOwner?.Parts;
-			if (parts == null || !activeVessel.IsInAtmosphere)
+			IEnumerable<PartComponent> parts = MicroUtility.ActiveVessel?.SimulationObject?.PartOwner?.Parts;
+			if (parts == null || !MicroUtility.ActiveVessel.IsInAtmosphere)
 			{
 				return;
 			}
