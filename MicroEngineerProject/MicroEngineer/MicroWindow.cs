@@ -34,7 +34,9 @@ namespace MicroMod
     public class MicroWindow
     {
         public string Name;
+        public string Abbreviation;
         public string Description; // not used?
+        
         public bool IsEditorActive;
         public bool IsFlightActive;
         public bool IsMapActive;

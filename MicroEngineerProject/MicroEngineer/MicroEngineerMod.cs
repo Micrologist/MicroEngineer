@@ -765,7 +765,8 @@ namespace MicroMod
 			{
 				MicroWindows.Add(new MicroWindow
 				{
-					Name = "Vessel",
+					Name = "Vessel",					
+					Abbreviation = "VES",
 					Description = "Vessel entries",
 					IsEditorActive = false,
 					IsFlightActive = true,
@@ -784,8 +785,9 @@ namespace MicroMod
                 MicroWindows.Add(new MicroWindow
                 {
                     Name = "Orbital",
-                    Description = "Orbital entries",
-                    IsEditorActive = false,
+					Abbreviation = "ORB",
+					Description = "Orbital entries",
+					IsEditorActive = false,
                     IsFlightActive = true,
                     IsMapActive = false,
                     IsEditorPoppedOut = false,
@@ -802,6 +804,7 @@ namespace MicroMod
                 MicroWindows.Add(new MicroWindow
                 {
                     Name = "Surface",
+                    Abbreviation = "SUR",
                     Description = "Surface entries",
                     IsEditorActive = false,
                     IsFlightActive = true,
@@ -820,6 +823,7 @@ namespace MicroMod
                 MicroWindows.Add(new MicroWindow
                 {
                     Name = "Flight",
+                    Abbreviation = "FLT",
                     Description = "Flight entries",
                     IsEditorActive = false,
                     IsFlightActive = true,
@@ -838,6 +842,7 @@ namespace MicroMod
                 MicroWindows.Add(new MicroWindow
                 {
                     Name = "Target",
+                    Abbreviation = "TGT",
                     Description = "Flight entries",
                     IsEditorActive = false,
                     IsFlightActive = true,
@@ -856,6 +861,7 @@ namespace MicroMod
                 MicroWindows.Add(new MicroWindow
                 {
                     Name = "Maneuver",
+                    Abbreviation = "MAN",
                     Description = "Maneuver entries",
                     IsEditorActive = false,
                     IsFlightActive = true,
@@ -874,6 +880,7 @@ namespace MicroMod
                 MicroWindows.Add(new MicroWindow
                 {
                     Name = "Stage",
+                    Abbreviation = "STG",
                     Description = "Stage entries",
                     IsEditorActive = false,
                     IsFlightActive = true,
