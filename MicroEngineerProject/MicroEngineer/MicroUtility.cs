@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using KSP.Game;
 using KSP.Messages.PropertyWatchers;
@@ -7,10 +8,12 @@ using KSP.Sim;
 using KSP.Sim.impl;
 using KSP.Sim.Maneuver;
 using KSP.UI.Flight;
+using Newtonsoft.Json;
 using SpaceWarp.API.UI;
 using UnityEngine;
 using static KSP.Modules.Data_LiftingSurface;
 using static KSP.Rendering.Planets.PQSData;
+using BepInEx.Logging;
 
 namespace MicroMod
 {
@@ -18,6 +21,8 @@ namespace MicroMod
     {
         public static VesselComponent ActiveVessel;
         public static ManeuverNodeData CurrentManeuver;
+        public static string LayoutPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MicroLayout.json");
+        private static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.MicroUtility");
 
         /// <summary>
         /// Refreshes the ActiveVessel and CurrentManeuver
@@ -132,6 +137,44 @@ namespace MicroMod
         {
             string result = biome.type.ToString().ToLower().Replace('_', ' ');
             return result.Substring(0, 1).ToUpper() + result.Substring(1);
+        }
+
+        public static void SaveLayout(List<MicroWindow> windows)
+        {
+            try
+            {
+                // Deactivate the Settings window before saving, because it doesn't make sense to save it in an active state since user cannot click the save button without having the Settings window active
+                windows.Find(w => w.MainWindow == MainWindow.Settings).IsFlightActive = false;
+
+                File.WriteAllText(LayoutPath, JsonConvert.SerializeObject(windows));
+                Logger.LogInfo("SaveLayout successful");
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Error trying to SaveLayout. Error description: " + ex);
+            }
+        }
+
+        public static void LoadLayout(List<MicroWindow> windows)
+        {
+            try
+            {
+                List<MicroWindow> deserializedWindows = JsonConvert.DeserializeObject<List<MicroWindow>>(File.ReadAllText(LayoutPath));
+
+                windows.Clear();
+                windows.AddRange(deserializedWindows);                
+                
+                Logger.LogInfo("LoadLayout successful");
+            }
+            catch (FileNotFoundException ex)
+            {
+                Logger.LogWarning($"Error loading layout. File was not found at the expected location. Full error description:\n" + ex);
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Error trying to LoadLayout. Full error description:\n" + ex);
+            }
         }
     }    
 

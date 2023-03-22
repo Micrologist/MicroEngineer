@@ -10,6 +10,7 @@ using KSP.Sim;
 using static KSP.Modules.Data_LiftingSurface;
 using KSP.UI.Flight;
 using KSP.UI.Binding;
+using Newtonsoft.Json;
 
 namespace MicroMod
 {
@@ -17,7 +18,7 @@ namespace MicroMod
     // THINK ABOUT
     // unlock windows button - enables 'X', unables undocking, enables drag - maybe?
     // stage info window - editable? defined as a MicroWindow?
-    
+
     // TODO
     // Add separator
 
@@ -27,45 +28,63 @@ namespace MicroMod
 
     //TODO: MicroUtility.ActiveVessel.Orbiter.HasActiveManeuver
 
+    //TODO: Layout Save/Load notification of success
+
 
     /// <summary>
     /// Window that can hold a list of Entries
     /// </summary>
+    [JsonObject(MemberSerialization.OptIn)]
     public class MicroWindow
     {
+        [JsonProperty]
         public string Name;
+        [JsonProperty]
         public string Abbreviation;
-        public string Description; // not used?
-        
-        public bool IsEditorActive;
-        public bool IsFlightActive;
-        public bool IsMapActive;
+        [JsonProperty]
+        public string Description; // not used - remove?
 
+        [JsonProperty]
+        public bool IsEditorActive; // TODO: implement
+        [JsonProperty]
+        public bool IsFlightActive;
+        [JsonProperty]
+        public bool IsMapActive; // TODO: implement
+
+        [JsonProperty]
         public bool IsEditorPoppedOut;
+        [JsonProperty]
         public bool IsFlightPoppedOut;
+        [JsonProperty]
         public bool IsMapPoppedOut;
 
-        // TODO enable dragging and closing of unlocked windows
+        // TODO disable dragging of locked windows
         /// <summary>
         /// Can the window be dragged or closed
         /// </summary>
+        [JsonProperty]
         public bool IsLocked;
 
         // TODO implement disabling deleting of "main" windows
         /// <summary>
         /// Window can be deleted if it's not one of main windows
         /// </summary>
+        [JsonProperty]
         public bool IsDeletable { get => MainWindow == MainWindow.None; }
 
         /// <summary>
         /// Can the window be edited (add, remove & arrange entries)
         /// </summary>
+        [JsonProperty]
         public bool IsEditable;
 
+        [JsonProperty]
         public MainWindow MainWindow;
 
-        public Vector2? EditorPosition;
-        public Vector2 FlightPosition;
+        public Rect? EditorRect; // TODO: implement
+        [JsonProperty]
+        public Rect FlightRect;
+        [JsonProperty]
         public List<MicroEntry> Entries;
 
         /// <summary>
@@ -156,6 +175,7 @@ namespace MicroMod
     public enum MainWindow
     {
         None = 0,
+        MainGui,
         Vessel,
         Stage,
         Orbital,

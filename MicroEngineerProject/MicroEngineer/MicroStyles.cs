@@ -27,6 +27,13 @@ namespace MicroMod
         public static int SpacingAfterSection = 5;
         public static float SpacingBelowPopout = 10;
 
+        public static float PoppedOutX = Screen.width * 0.6f;
+        public static float PoppedOutY = Screen.height * 0.2f;
+        public static float MainGuiX = Screen.width * 0.8f;
+        public static float MainGuiY = Screen.height * 0.2f;
+
+        public static Rect CloseBtnRect = new Rect(MicroStyles.WindowWidth - 23, 6, 16, 16);
+
         public static void InitializeStyles()
         {
             SpaceWarpUISkin = Skins.ConsoleSkin;

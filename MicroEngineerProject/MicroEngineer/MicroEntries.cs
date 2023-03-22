@@ -1,5 +1,6 @@
 ﻿using KSP.Game;
 using KSP.Sim.impl;
+using Newtonsoft.Json;
 using static KSP.Rendering.Planets.PQSData;
 
 namespace MicroMod
@@ -7,12 +8,18 @@ namespace MicroMod
     /// <summary>
     /// Base class for all Entries (values that can be attached to windows)
     /// </summary>
+    [JsonObject(MemberSerialization.OptIn)]
     public class MicroEntry
     {
+        [JsonProperty]
         public string Name;
+        [JsonProperty]
         public string Description;
+        [JsonProperty]
         public MicroEntryCategory Category;
+        [JsonProperty]
         public string Unit;
+        [JsonProperty]
         public string Formatting;
 
         public virtual object EntryValue { get; set; }
@@ -164,6 +171,7 @@ namespace MicroMod
             }
         }
     }
+
     public class Apoapsis : MicroEntry
     {
         public Apoapsis()
@@ -331,7 +339,6 @@ namespace MicroMod
             }
         }
     }
-
 
     public class Period : MicroEntry
     {
@@ -989,9 +996,7 @@ namespace MicroMod
             }
         }
     }
-
-
-
+    
     public class ProjectedPe : MicroEntry
     {
         public ProjectedPe()
