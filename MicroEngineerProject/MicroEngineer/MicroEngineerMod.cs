@@ -177,6 +177,9 @@ namespace MicroMod
 			
 			GUILayout.BeginHorizontal();
 			editableWindows[selectedWindowId].IsLocked = GUILayout.Toggle(editableWindows[selectedWindowId].IsLocked, "Locked");
+			GUILayout.FlexibleSpace();
+			if(GUILayout.Button("NEW WINDOW", MicroStyles.NormalBtnStyle))
+				CreateCustomWindow(editableWindows);
 			GUILayout.EndHorizontal();
 			
 			GUILayout.Space(10);
@@ -265,6 +268,44 @@ namespace MicroMod
 			#endregion
 
 			GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
+        }
+
+		/// <summary>
+		/// Creates a new custom window user can fill with any entry
+		/// </summary>
+		/// <param name="editableWindows"></param>
+		private void CreateCustomWindow(List<MicroWindow> editableWindows)
+		{
+			// Default window's name will be CustomX where X represents the first not used integer
+			int nameID = 1;
+			foreach (MicroWindow window in editableWindows)
+			{
+				if (window.Name == "Custom" + nameID)
+					nameID++;
+			}
+
+			MicroWindow newWindow = new MicroWindow()
+			{
+                Name = "Custom" + nameID,
+                Abbreviation = nameID.ToString().Length == 1 ? "Cu" + nameID : nameID.ToString().Length == 2 ? "C" + nameID : nameID.ToString(),
+                Description = "",
+                IsEditorActive = false,
+                IsFlightActive = true,
+                IsMapActive = false,
+                IsEditorPoppedOut = false,
+                IsFlightPoppedOut = false,
+                IsMapPoppedOut = false,
+                IsLocked = false,
+                MainWindow = MainWindow.None,
+                EditorRect = null,
+                FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                Entries = new List<MicroEntry>()
+            };
+
+			MicroWindows.Add(newWindow);
+			editableWindows.Add(newWindow);
+			
+			selectedWindowId = editableWindows.Count-1;
         }
 
 		private void DrawPopoutWindow(int windowIndex)
