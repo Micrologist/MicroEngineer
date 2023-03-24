@@ -46,7 +46,7 @@ namespace MicroMod
         public Vessel()
         {
             Name = "Vessel";
-            Description = "Name of the vessel";
+            Description = "Name of the current vessel.";
             Category = MicroEntryCategory.Vessel;
             Unit = null;
             Formatting = null;
@@ -65,7 +65,7 @@ namespace MicroMod
         public Mass()
         {
             Name = "Mass";
-            Description = "Current mass of the vessel";
+            Description = "Shows the total mass of the vessel.";
             Category = MicroEntryCategory.Vessel;
             Unit = "kg";
             Formatting = "{0:N0}";
@@ -93,7 +93,7 @@ namespace MicroMod
         public DeltaV()
         {
             Name = "∆v";
-            Description = "Current vessel's delta v";
+            Description = "Shows the vessel's total delta velocity.";
             Category = MicroEntryCategory.Vessel;
             Unit = "m/s";
             Formatting = "{0:N0}";
@@ -121,7 +121,7 @@ namespace MicroMod
         public Thrust()
         {
             Name = "Thrust";
-            Description = "Current vessel's thrust in Newtons";
+            Description = "Shows the vessel's actual thrust.";
             Category = MicroEntryCategory.Vessel;
             Unit = "N";
             Formatting = "{0:N0}";
@@ -149,7 +149,7 @@ namespace MicroMod
         public TWR()
         {
             Name = "TWR";
-            Description = "Current vessel's Thrust to Weight Ratio";
+            Description = "Shows the vessel's Thrust to Weight Ratio.";
             Category = MicroEntryCategory.Vessel;
             Unit = null;
             Formatting = "{0:N2}";
@@ -177,7 +177,7 @@ namespace MicroMod
         public Apoapsis()
         {
             Name = "Apoapsis";
-            Description = "TODO";
+            Description = "Vessel's apoapsis height relative to the sea level. Apoapsis is the highest point of an orbit.";
             Category = MicroEntryCategory.Orbital;
             Unit = "m";
             Formatting = null;
@@ -205,7 +205,7 @@ namespace MicroMod
         public TimeToApoapsis()
         {
             Name = "Time to Ap.";
-            Description = "TODO";
+            Description = "Shows the time until the vessel reaches apoapsis, the highest point of the orbit.";
             Category = MicroEntryCategory.Orbital;
             Unit = "s";
             Formatting = null;
@@ -233,7 +233,7 @@ namespace MicroMod
         public Periapsis()
         {
             Name = "Periapsis";
-            Description = "TODO";
+            Description = "Vessel's periapsis height relative to the sea level. Periapsis is the lowest point of an orbit.";
             Category = MicroEntryCategory.Orbital;
             Unit = "m";
             Formatting = null;
@@ -261,7 +261,7 @@ namespace MicroMod
         public TimeToPeriapsis()
         {
             Name = "Time to Pe.";
-            Description = "TODO";
+            Description = "Shows the time until the vessel reaches periapsis, the lowest point of the orbit.";
             Category = MicroEntryCategory.Orbital;
             Unit = "s";
             Formatting = null;
@@ -289,7 +289,7 @@ namespace MicroMod
         public Inclination()
         {
             Name = "Inclination";
-            Description = "TODO";
+            Description = "Shows the vessel's orbital inclination relative to the equator.";
             Category = MicroEntryCategory.Orbital;
             Unit = "°";
             Formatting = "{0:N3}";
@@ -317,7 +317,7 @@ namespace MicroMod
         public Eccentricity()
         {
             Name = "Eccentricity";
-            Description = "TODO";
+            Description = "Shows the vessel's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
             Category = MicroEntryCategory.Orbital;
             Unit = null;
             Formatting = "{0:N3}";
@@ -345,7 +345,7 @@ namespace MicroMod
         public Period()
         {
             Name = "Period";
-            Description = "TODO";
+            Description = "Shows the amount of time it will take to complete a full orbit.";
             Category = MicroEntryCategory.Orbital;
             Unit = "s";
             Formatting = null;
@@ -373,7 +373,7 @@ namespace MicroMod
         public SoiTransition()
         {
             Name = "SOI Trans.";
-            Description = "TODO";
+            Description = "Shows the amount of time it will take to transition to another Sphere of Influence.";
             Category = MicroEntryCategory.Orbital;
             Unit = "s";
             Formatting = null;
@@ -401,7 +401,7 @@ namespace MicroMod
         public Body()
         {
             Name = "Body";
-            Description = "TODO";
+            Description = "Shows the body that vessel is currently at.";
             Category = MicroEntryCategory.Surface;
             Unit = null;
             Formatting = null;
@@ -429,7 +429,7 @@ namespace MicroMod
         public Situation()
         {
             Name = "Situation";
-            Description = "TODO";
+            Description = "Shows the vessel's current situation: Landed, Flying, Orbiting, etc.";
             Category = MicroEntryCategory.Surface;
             Unit = null;
             Formatting = null;
@@ -457,7 +457,7 @@ namespace MicroMod
         public Latitude()
         {
             Name = "Latitude";
-            Description = "TODO";
+            Description = "Shows the vessel's latitude position around the celestial body. Latitude is the angle from the equator towards the poles.";
             Category = MicroEntryCategory.Surface;
             Formatting = null;
         }
@@ -485,7 +485,7 @@ namespace MicroMod
         public Longitude()
         {
             Name = "Longitude";
-            Description = "TODO";
+            Description = "Shows the vessel's longitude position around the celestial body. Longitude is the angle from the body's prime meridian to the current meridian.";
             Category = MicroEntryCategory.Surface;
             Formatting = null;
         }
@@ -513,7 +513,7 @@ namespace MicroMod
         public Biome()
         {
             Name = "Biome";
-            Description = "TODO";
+            Description = "Shows the biome currently below the vessel.";
             Category = MicroEntryCategory.Surface;
             Unit = null;
             Formatting = null;
@@ -541,7 +541,7 @@ namespace MicroMod
         public AltitudeAsl()
         {
             Name = "Altitude (ASL)";
-            Description = "Altitude Above Sea Level";
+            Description = "Shows the vessel's altitude Above Sea Level";
             Category = MicroEntryCategory.Surface;
             Unit = "m";
             Formatting = null;
@@ -569,7 +569,7 @@ namespace MicroMod
         public AltitudeAgl()
         {
             Name = "Altitude (AGL)";
-            Description = "Altitude Above Ground Level";
+            Description = "Shows the vessel's altitude Above Ground Level";
             Category = MicroEntryCategory.Surface;
             Unit = "m";
             Formatting = null;
@@ -597,7 +597,7 @@ namespace MicroMod
         public HorizontalVelocity()
         {
             Name = "Horizontal Vel.";
-            Description = "Horizontal velocity";
+            Description = "Shows the vessel's horizontal velocity across a celestial body's surface.";
             Category = MicroEntryCategory.Surface;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -625,7 +625,7 @@ namespace MicroMod
         public VerticalVelocity()
         {
             Name = "Vertical Vel.";
-            Description = "Vertical velocity";
+            Description = "Shows the vessel's vertical velocity (up/down).";
             Category = MicroEntryCategory.Surface;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -653,7 +653,7 @@ namespace MicroMod
         public Speed()
         {
             Name = "Speed";
-            Description = "TODO";
+            Description = "Shows the vessel's total velocity.";
             Category = MicroEntryCategory.Flight;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -681,7 +681,7 @@ namespace MicroMod
         public MachNumber()
         {
             Name = "Mach Number";
-            Description = "TODO";
+            Description = "Shows the ratio of vessel's speed and local speed of sound.";
             Category = MicroEntryCategory.Flight;
             Unit = null;
             Formatting = "{0:N2}";
@@ -709,7 +709,7 @@ namespace MicroMod
         public AtmosphericDensity()
         {
             Name = "Atm. Density";
-            Description = "TODO";
+            Description = "Shows the atmospheric density.";
             Category = MicroEntryCategory.Flight;
             Unit = "g/L";
             Formatting = "{0:N3}";
@@ -737,7 +737,7 @@ namespace MicroMod
         public TotalLift()
         {
             Name = "Total Lift";
-            Description = "TODO";
+            Description = "Shows the total lift force produced by the vessel.";
             Category = MicroEntryCategory.Flight;
             Unit = "N";
             Formatting = "{0:N0}";
@@ -766,7 +766,7 @@ namespace MicroMod
         public TotalDrag()
         {
             Name = "Total Drag";
-            Description = "TODO";
+            Description = "Shows the total drag force exerted on the vessel.";
             Category = MicroEntryCategory.Flight;
             Unit = "N";
             Formatting = "{0:N0}";
@@ -795,7 +795,7 @@ namespace MicroMod
         public LiftDivDrag()
         {
             Name = "Lift / Drag";
-            Description = "TODO";
+            Description = "Shows the ratio of total lift and drag forces.";
             Category = MicroEntryCategory.Flight;
             Unit = null;
             Formatting = "{0:N3}";
@@ -824,7 +824,7 @@ namespace MicroMod
         public TargetApoapsis()
         {
             Name = "Target Ap.";
-            Description = "TODO";
+            Description = "Shows the target's apoapsis height relative to the sea level.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = null;
@@ -852,7 +852,7 @@ namespace MicroMod
         public TargetPeriapsis()
         {
             Name = "Target Pe.";
-            Description = "TODO";
+            Description = "Shows the target's periapsis height relative to the sea level.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = null;
@@ -880,7 +880,7 @@ namespace MicroMod
         public DistanceToTarget()
         {
             Name = "Distance to Target";
-            Description = "TODO";
+            Description = "Shows the current distance between the vessel and the target.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = null;
@@ -910,7 +910,7 @@ namespace MicroMod
         public RelativeSpeed()
         {
             Name = "Rel. Speed";
-            Description = "TODO";
+            Description = "Shows the relative velocity between the vessel and the target.";
             Category = MicroEntryCategory.Target;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -942,7 +942,7 @@ namespace MicroMod
         public RelativeInclination()
         {
             Name = "Rel. Inclination";
-            Description = "TODO";
+            Description = "Shows the relative inclination between the vessel and the target.";
             Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N3}";
@@ -974,7 +974,7 @@ namespace MicroMod
         public ProjectedAp()
         {
             Name = "Projected Ap.";
-            Description = "TODO";
+            Description = "Shows the projected apoapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m";
             Formatting = null;
@@ -1002,7 +1002,7 @@ namespace MicroMod
         public ProjectedPe()
         {
             Name = "Projected Pe.";
-            Description = "TODO";
+            Description = "Shows the projected periapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m";
             Formatting = null;
@@ -1030,7 +1030,7 @@ namespace MicroMod
         public DeltaVRequired()
         {
             Name = "∆v required";
-            Description = "TODO";
+            Description = "Shows the delta velocity needed to complete the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -1058,7 +1058,7 @@ namespace MicroMod
         public TimeToNode()
         {
             Name = "Time to Node";
-            Description = "TODO";
+            Description = "Shows the time until vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = null;
@@ -1086,7 +1086,7 @@ namespace MicroMod
         public BurnTime()
         {
             Name = "Burn Time";
-            Description = "TODO";
+            Description = "Shows the length of time needed to complete the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = null;
@@ -1114,7 +1114,7 @@ namespace MicroMod
         public TotalDeltaVVac()
         {
             Name = "Total ∆v Vac";
-            Description = "TODO";
+            Description = "Shows the total delta velocity of the vessel in vacuum.";
             Category = MicroEntryCategory.Stage;
             Unit = "m/s";
             Formatting = "{0:N0}";
@@ -1142,7 +1142,7 @@ namespace MicroMod
         public TotalDeltaVAsl()
         {
             Name = "Total ∆v ASL";
-            Description = "TODO";
+            Description = "Shows the total delta velocity of the vessel At Sea Level.";
             Category = MicroEntryCategory.Stage;
             Unit = "m/s";
             Formatting = "{0:N0}";
@@ -1170,7 +1170,7 @@ namespace MicroMod
         public TotalDeltaVActual()
         {
             Name = "Total ∆v Actual";
-            Description = "TODO";
+            Description = "Shows the current total delta velocity.";
             Category = MicroEntryCategory.Stage;
             Unit = "m/s";
             Formatting = "{0:N0}";
@@ -1198,7 +1198,7 @@ namespace MicroMod
         public StageInfo()
         {
             Name = "Stage Info";
-            Description = "TODO";
+            Description = "Stage Info object, not implemented yet."; // TODO Stage Info display and description
             Category = MicroEntryCategory.Stage;
             Unit = null;
             Formatting = null;
