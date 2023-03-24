@@ -76,7 +76,7 @@ namespace MicroMod
         /// Can the window be edited (add, remove & arrange entries)
         /// </summary>
         [JsonProperty]
-        public bool IsEditable;
+        public bool IsEditable { get => MainWindow != MainWindow.MainGui && MainWindow != MainWindow.Settings && MainWindow != MainWindow.Stage; }
 
         [JsonProperty]
         public MainWindow MainWindow;

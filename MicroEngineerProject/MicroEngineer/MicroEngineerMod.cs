@@ -21,25 +21,18 @@ namespace MicroMod
 	public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
 		private bool showGUI = false;
-
-		public bool showSettings = false;
-		public bool showVes = true;
-		public bool showOrb = true;
-		public bool showSur = true;
-		public bool showFlt = false;
-		public bool showMan = true;
-		public bool showTgt = false;
-		public bool showStg = true;
-
-		private bool showTestWindow = false; // TEMP - TO DELETE
-		private bool showTestWindow2 = false;  // TEMP - TO DELETE
-        private Rect testWindow = new Rect(100, 100, 300, 300); // TEMP - TO DELETE
-		private List<Rect> microWindowRects = new List<Rect>(); // TEMP - TO DELETE
 		
-        /// <summary>
-        /// Holds all entries we can have in any window
-        /// </summary>
-        private List<MicroEntry> MicroEntries;
+		#region Editing window
+		private bool showEditWindow = false;
+		private int selectedWindowId = 0;
+		private MicroEntryCategory selectedCategory = MicroEntryCategory.Vessel;
+		private (bool condition, int index) showTooltip = (false, 0);
+		#endregion
+
+		/// <summary>
+		/// Holds all entries we can have in any window
+		/// </summary>
+		private List<MicroEntry> MicroEntries;
 		
 		/// <summary>
 		/// All windows that can be rendered
@@ -119,8 +112,8 @@ namespace MicroMod
 					"",
 					MicroStyles.PopoutWindowStyle,
 					GUILayout.Height(0),
-					GUILayout.Width(MicroStyles.WindowWidth
-					));
+					GUILayout.Width(MicroStyles.WindowWidth)
+					);
 
                 MicroWindows[settingsIndex].FlightRect.position = ClampToScreen(MicroWindows[settingsIndex].FlightRect.position, MicroWindows[settingsIndex].FlightRect.size);
             }
@@ -136,36 +129,149 @@ namespace MicroMod
                     "",
                     MicroStyles.PopoutWindowStyle,
                     GUILayout.Height(0),
-                    GUILayout.Width(MicroStyles.WindowWidth
-                    ));
+                    GUILayout.Width(MicroStyles.WindowWidth)
+					);
 
                 MicroWindows[stageIndex].FlightRect.position = ClampToScreen(MicroWindows[stageIndex].FlightRect.position, MicroWindows[stageIndex].FlightRect.size);
             }
 
-            //TEMP - TO DELETE
-            if (showTestWindow)
+			// Draw Edit Window
+			if (showEditWindow)
 			{
-                testWindow = GUILayout.Window(0, testWindow, DrawTestWindow, "Test Window");
+				MicroStyles.EditWindowRect = GUILayout.Window(
+					GUIUtility.GetControlID(FocusType.Passive),
+					MicroStyles.EditWindowRect,
+					DrawEditWindow,
+					"",
+					MicroStyles.EditWindowStyle
+					);
             }
+        }
 
-            if (showTestWindow2)
-            {
-				MicroUtility.RefreshActiveVesselAndCurrentManeuver();
+		/// <summary>
+		/// Window for edditing window contents. Add/Remove/Reorder entries.
+		/// </summary>
+		/// <param name="windowIndex"></param>
+		private void DrawEditWindow(int windowIndex)
+		{
+			List<MicroWindow> editableWindows = MicroWindows.FindAll(w => w.IsEditable); // Editable windows are all except MainGUI, Settings and Stage
+			List<MicroEntry> entriesByCategory = MicroEntries.FindAll(e => e.Category == selectedCategory); // All window entries belong to a category, but they can still be placed in any window
 
-				foreach (var (window, index) in MicroWindows.Select((window, index) => (window, index)))
+            showEditWindow = !CloseButton();			
+			
+			#region Selection of window to be edited
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("<b>EDITING WINDOW</b>", MicroStyles.TitleLabelStyle);
+			GUILayout.FlexibleSpace();
+			if (GUILayout.Button("<", MicroStyles.OneCharacterBtnStyle))
+			{
+                selectedWindowId = selectedWindowId > 0 ? selectedWindowId - 1 : editableWindows.Count - 1 ;
+			}
+            editableWindows[selectedWindowId].Name = GUILayout.TextField(editableWindows[selectedWindowId].Name, MicroStyles.WindowSelectionTextFieldStyle);
+			if (GUILayout.Button(">", MicroStyles.OneCharacterBtnStyle))
+			{
+				selectedWindowId = selectedWindowId < editableWindows.Count - 1 ? selectedWindowId + 1 : 0;
+			}
+			GUILayout.EndHorizontal();
+			#endregion
+			
+			GUILayout.BeginHorizontal();
+			editableWindows[selectedWindowId].IsLocked = GUILayout.Toggle(editableWindows[selectedWindowId].IsLocked, "Locked");
+			GUILayout.EndHorizontal();
+			
+			GUILayout.Space(10);
+			MicroStyles.DrawHorizontalLine();
+			GUILayout.Space(10);
+
+			#region Installed entries in the selected window
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("<b>Installed</b>", MicroStyles.NormalLabelStyle);
+			GUILayout.EndHorizontal();
+			
+			var entries = editableWindows[selectedWindowId].Entries.ToList();
+			foreach (var (entry, index) in entries.Select((entry, index) => (entry, index)))
+			{
+				GUILayout.BeginHorizontal();
+				GUILayout.Label(entry.Name, MicroStyles.NameLabelStyle);
+				if (GUILayout.Button("↑", MicroStyles.OneCharacterBtnStyle))
 				{
-					microWindowRects[index] = GUILayout.Window(index, microWindowRects[index], DrawMicroWindow, $"{window.Name}");
+					if (index > 0 )
+						editableWindows[selectedWindowId].MoveEntryUp(index);
+				}
+				if (GUILayout.Button("↓", MicroStyles.OneCharacterBtnStyle))
+				{
+					if (index < editableWindows[selectedWindowId].Entries.Count - 1)
+						editableWindows[selectedWindowId].MoveEntryDown(index);
+				}
+				if(GUILayout.Button("X", MicroStyles.OneCharacterBtnStyle))
+					editableWindows[selectedWindowId].RemoveEntry(index);
+				GUILayout.EndHorizontal();
+			}
+			#endregion
+			
+			GUILayout.Space(10);
+			MicroStyles.DrawHorizontalLine();
+			GUILayout.Space(10);
+			
+			#region All entries that can be added to any IsEditable window
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("<b>Add</b>", MicroStyles.NormalLabelStyle);
+			GUILayout.EndHorizontal();
+			
+			GUILayout.BeginHorizontal();
+			GUILayout.Label("Category", MicroStyles.NormalLabelStyle);
+			GUILayout.FlexibleSpace();
+			
+			if (GUILayout.Button("<", MicroStyles.OneCharacterBtnStyle))
+			{
+				selectedCategory = (int)selectedCategory > 0 ? selectedCategory - 1 : Enum.GetValues(typeof(MicroEntryCategory)).Cast<MicroEntryCategory>().Last();
+			}
+			GUILayout.Label(selectedCategory.ToString(), MicroStyles.NormalCenteredLabelStyle);
+			if (GUILayout.Button(">", MicroStyles.OneCharacterBtnStyle))
+			{
+				selectedCategory = (int)selectedCategory < (int)Enum.GetValues(typeof(MicroEntryCategory)).Cast<MicroEntryCategory>().Last() ? selectedCategory + 1 : Enum.GetValues(typeof(MicroEntryCategory)).Cast<MicroEntryCategory>().First();
+			}
+			GUILayout.EndHorizontal();
+			
+			foreach (var (entry, index) in entriesByCategory.Select((entry, index) => (entry, index)))
+			{
+				GUILayout.BeginHorizontal();
+				GUILayout.Label(entry.Name, MicroStyles.NameLabelStyle);
+				if (GUILayout.Button("?", MicroStyles.OneCharacterBtnStyle))
+				{
+					if (!showTooltip.condition)
+						showTooltip = (true, index);
+					else
+					{
+						if (showTooltip.index != index)
+							showTooltip = (true, index);
+						else
+							showTooltip = (false, index);
+					}
+				}
+				if(GUILayout.Button("+", MicroStyles.OneCharacterBtnStyle))
+				{
+                    editableWindows[selectedWindowId].AddEntry(entry);
+				}
+				GUILayout.EndHorizontal();
+                
+				if (showTooltip.condition && showTooltip.index == index)
+				{
+					GUILayout.BeginHorizontal();
+					GUILayout.Label(entry.Description, MicroStyles.BlueLabelStyle);
+					GUILayout.EndHorizontal();
 				}
 			}
-            //TEMP - END
+			#endregion
 
+			GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
         }
 
 		private void DrawPopoutWindow(int windowIndex)
         {
 			MicroWindow windowToDraw = MicroWindows[windowIndex];
 
-            DrawSectionHeader(windowToDraw.Name, ref windowToDraw.IsFlightPoppedOut, "");
+            DrawSectionHeader(windowToDraw.Name, ref windowToDraw.IsFlightPoppedOut, windowToDraw.IsLocked, "");
 
             foreach (MicroEntry entry in windowToDraw.Entries)
             {
@@ -173,7 +279,7 @@ namespace MicroMod
                 DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
             }
 
-            DrawSectionEnd(windowToDraw.IsFlightPoppedOut);
+            DrawSectionEnd(windowToDraw);
         }
 
 		private Vector2 ClampToScreen(Vector2 position, Vector2 size)
@@ -227,7 +333,7 @@ namespace MicroMod
 					.Where(x => x.window.MainWindow != MainWindow.Settings && x.window.MainWindow != MainWindow.Stage && x.window.MainWindow != MainWindow.MainGui)) // MainGUI, Settings and Stage are special, they'll be drawn separately
 
                 {
-					DrawSectionHeader(window.Name, ref window.IsFlightPoppedOut, "");
+					DrawSectionHeader(window.Name, ref window.IsFlightPoppedOut, window.IsLocked, "");
 
 					foreach (MicroEntry entry in window.Entries)
 					{
@@ -235,7 +341,7 @@ namespace MicroMod
 						DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
 					}
 
-					DrawSectionEnd(window.IsFlightPoppedOut);
+					DrawSectionEnd(window);
 				}
 
 				GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
@@ -251,76 +357,29 @@ namespace MicroMod
 		{
 			MicroWindow windowToDraw = MicroWindows[windowIndex];
 
-            DrawSectionHeader(windowToDraw.Name, ref windowToDraw.IsFlightPoppedOut, "");
+            DrawSectionHeader(windowToDraw.Name, ref windowToDraw.IsFlightPoppedOut, windowToDraw.IsLocked, "");
 
             GUILayout.Space(10);
 			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("SAVE LAYOUT", MicroStyles.SaveLoadBtnStyle))
+			if (GUILayout.Button("SAVE LAYOUT", MicroStyles.NormalBtnStyle))
 				MicroUtility.SaveLayout(MicroWindows);
 			GUILayout.Space(5);
-			if (GUILayout.Button("LOAD LAYOUT", MicroStyles.SaveLoadBtnStyle))
-				MicroUtility.LoadLayout(MicroWindows);
+			if (GUILayout.Button("LOAD LAYOUT", MicroStyles.NormalBtnStyle))
+				MicroUtility.LoadLayout(MicroWindows);			
 			GUILayout.Space(5);
-			if (GUILayout.Button("RESET", MicroStyles.SaveLoadBtnStyle))
+			if (GUILayout.Button("RESET", MicroStyles.NormalBtnStyle))
 				ResetLayout();
 			GUILayout.EndHorizontal();
 
-			// TEMP START - TO BE DELETED
 			GUILayout.BeginHorizontal();
-
-			if (GUILayout.Button("EntriesTest", MicroStyles.SaveLoadBtnStyle))
+			if (GUILayout.Button("Edit Windows", MicroStyles.NormalBtnStyle))
 			{
-				showTestWindow = !showTestWindow;
-            }
+				showEditWindow = !showEditWindow;
+			}
+			GUILayout.EndHorizontal();
 
-            if (GUILayout.Button("EntriesTest2", MicroStyles.SaveLoadBtnStyle))
-            {
-                showTestWindow2 = !showTestWindow2;
-            }
-
-            GUILayout.EndHorizontal();
-            // TEMP END
-
-
-            DrawSectionEnd(windowToDraw.IsFlightPoppedOut);
+            DrawSectionEnd(windowToDraw);
 		}
-
-
-		// TEMP START - TO DELETE
-		public void DrawTestWindow(int windowID)
-		{
-			// Refresh ActiveVessel and CurrentManeuver refrences
-			MicroUtility.RefreshActiveVesselAndCurrentManeuver();
-			
-			foreach (MicroEntry entry in MicroEntries)
-			{
-				// grab new data and draw it
-				entry.RefreshData();
-				
-				DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
-            }
-
-            MicroWindows[0].Entries.RemoveAt(0); // TEMP for test
-
-            GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
-        }
-
-        public void DrawMicroWindow(int windowIndex)
-        {
-			MicroWindow windowToDraw = MicroWindows[windowIndex];
-
-            foreach (MicroEntry entry in windowToDraw.Entries)
-            {
-                // grab new data and draw it
-                entry.RefreshData();
-
-                DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
-            }
-
-            GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
-        }
-
-        // TEMP END
 
 		private void DrawStages(int windowIndex)
 		{
@@ -360,15 +419,17 @@ namespace MicroMod
 				}
 			}
 
-			DrawSectionEnd(windowToDraw.IsFlightPoppedOut);
+			DrawSectionEnd(windowToDraw);
 		}
 
-		private void DrawSectionHeader(string sectionName, ref bool isPopout, string value = "")
+		private void DrawSectionHeader(string sectionName, ref bool isPopout, bool isLocked, string value = "")
 		{
 			GUILayout.BeginHorizontal();
-			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", MicroStyles.PopoutBtnStyle);
+			
+			// If window is popped out and it's not locked => show the close button. If it's not popped out => show to popup arrow
+			isPopout = isPopout && !isLocked ? !CloseButton() : !isPopout ? GUILayout.Button("⇖", MicroStyles.PopoutBtnStyle) : isPopout;
 
-			GUILayout.Label($"<b>{sectionName}</b>");
+            GUILayout.Label($"<b>{sectionName}</b>");
 			GUILayout.FlexibleSpace();
 			GUILayout.Label(value, MicroStyles.ValueLabelStyle);
 			GUILayout.Space(5);
@@ -439,11 +500,13 @@ namespace MicroMod
 			GUILayout.Space(MicroStyles.SpacingAfterEntry);
 		}
 
-		private void DrawSectionEnd(bool isPopout)
+		private void DrawSectionEnd(MicroWindow window)
 		{
-			if (isPopout)
+			if (window.IsFlightPoppedOut)
 			{
-				GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
+				if (!window.IsLocked)
+					GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
+				
 				GUILayout.Space(MicroStyles.SpacingBelowPopout);
 			}
 			else
@@ -454,7 +517,7 @@ namespace MicroMod
 
 		private bool CloseButton()
 		{
-			return GUI.Button(MicroStyles.CloseBtnRect, "x", MicroStyles.CloseBtnStyle);
+			return GUI.Button(MicroStyles.CloseBtnRect, "X", MicroStyles.CloseBtnStyle);
 		}
 
 		private void CloseWindow()
@@ -570,7 +633,6 @@ namespace MicroMod
 					IsFlightPoppedOut = false,
 					IsMapPoppedOut = false,
 					IsLocked = false,
-					IsEditable = true,
 					MainWindow = MainWindow.Vessel,
 					EditorRect = null,
 					FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
@@ -589,7 +651,6 @@ namespace MicroMod
                     IsFlightPoppedOut = false,
                     IsMapPoppedOut = false,
                     IsLocked = false,
-                    IsEditable = true,
                     MainWindow = MainWindow.Orbital,
                     EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
@@ -608,7 +669,6 @@ namespace MicroMod
                     IsFlightPoppedOut = false,
                     IsMapPoppedOut = false,
                     IsLocked = false,
-                    IsEditable = true,
                     MainWindow = MainWindow.Surface,
                     EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
@@ -627,7 +687,6 @@ namespace MicroMod
                     IsFlightPoppedOut = false,
                     IsMapPoppedOut = false,
                     IsLocked = false,
-                    IsEditable = true,
                     MainWindow = MainWindow.Flight,
                     EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
@@ -646,7 +705,6 @@ namespace MicroMod
                     IsFlightPoppedOut = false,
                     IsMapPoppedOut = false,
                     IsLocked = false,
-                    IsEditable = true,
                     MainWindow = MainWindow.Target,
                     EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
@@ -665,7 +723,6 @@ namespace MicroMod
                     IsFlightPoppedOut = false,
                     IsMapPoppedOut = false,
                     IsLocked = false,
-                    IsEditable = true,
                     MainWindow = MainWindow.Maneuver,
                     EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
@@ -684,7 +741,6 @@ namespace MicroMod
                     IsFlightPoppedOut = false,
                     IsMapPoppedOut = false,
                     IsLocked = false,
-                    IsEditable = false,
                     MainWindow = MainWindow.Stage,
                     EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
@@ -703,7 +759,6 @@ namespace MicroMod
                     IsFlightPoppedOut = false,
                     IsMapPoppedOut = false,
                     IsLocked = false,
-                    IsEditable = false,
                     MainWindow = MainWindow.Settings,
                     EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
@@ -722,7 +777,6 @@ namespace MicroMod
                     IsFlightPoppedOut = false, // not relevant to Main GUI
                     IsMapPoppedOut = false, // not relevant to Main GUI
                     IsLocked = false,
-                    IsEditable = false,
                     MainWindow = MainWindow.MainGui,
                     EditorRect = null,
                     FlightRect = new Rect(MicroStyles.MainGuiX, MicroStyles.MainGuiY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
