@@ -106,6 +106,10 @@ namespace MicroMod
 				if (window.MainWindow == MainWindow.Maneuver && !MicroUtility.ManeuverExists())
 					continue;
 
+				// If window is locked set alpha to 80%
+				if (window.IsLocked)
+					GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, 0.8f);
+
 				window.FlightRect = GUILayout.Window(
 					index,
                     window.FlightRect,
@@ -116,7 +120,11 @@ namespace MicroMod
 					GUILayout.Width(MicroStyles.WindowWidth
 					));
 
-				window.FlightRect.position = MicroUtility.ClampToScreen(window.FlightRect.position, window.FlightRect.size);
+				// Set alpha back to 100%
+                if (window.IsLocked)
+                    GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, 1);
+
+                window.FlightRect.position = MicroUtility.ClampToScreen(window.FlightRect.position, window.FlightRect.size);
             }
 
 			// Draw popped out Settings
