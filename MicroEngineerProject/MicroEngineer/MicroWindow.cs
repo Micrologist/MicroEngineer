@@ -14,23 +14,6 @@ using Newtonsoft.Json;
 
 namespace MicroMod
 {
-
-    // THINK ABOUT
-    // unlock windows button - enables 'X', unables undocking, enables drag - maybe?
-    // stage info window - editable? defined as a MicroWindow?
-
-    // TODO
-    // Add separator
-
-    // TODO: how to check for scene
-    //GameStateConfiguration gameStateConfiguration = GameManager.Instance.Game.GlobalGameState.GetGameState();
-    //        if (gameStateConfiguration.IsFlightMode)
-
-    //TODO: MicroUtility.ActiveVessel.Orbiter.HasActiveManeuver
-
-    //TODO: Layout Save/Load notification of success
-
-
     /// <summary>
     /// Window that can hold a list of Entries
     /// </summary>
@@ -42,7 +25,7 @@ namespace MicroMod
         [JsonProperty]
         public string Abbreviation;
         [JsonProperty]
-        public string Description; // not used - remove?
+        public string Description; // not used
 
         [JsonProperty]
         public bool IsEditorActive; // TODO: implement
@@ -58,14 +41,12 @@ namespace MicroMod
         [JsonProperty]
         public bool IsMapPoppedOut;
 
-        // TODO disable dragging of locked windows
         /// <summary>
         /// Can the window be dragged or closed
         /// </summary>
         [JsonProperty]
         public bool IsLocked;
 
-        // TODO implement disabling deleting of "main" windows
         /// <summary>
         /// Window can be deleted if it's not one of main windows
         /// </summary>
@@ -141,18 +122,6 @@ namespace MicroMod
             foreach (MicroEntry entry in Entries)
                 entry.RefreshData();
         }
-
-        // TODO
-        // windowBackgroundColor
-        // windowTransparency - float, min 0, max 1 -> if >max set to max, if <min set to min
-
-        // TODO
-        // EntryNameColor
-        // EntryValueColor
-        // EntryUnitColor
-        // EntryBold
-        // EntryItalic
-
     }
 
     /// <summary>

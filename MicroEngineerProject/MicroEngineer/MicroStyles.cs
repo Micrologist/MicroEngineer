@@ -151,7 +151,6 @@ namespace MicroMod
                 alignment = TextAnchor.MiddleCenter
             };
 
-
             TableHeaderLabelStyle = new GUIStyle(NameLabelStyle)
             {
                 alignment = TextAnchor.MiddleRight
