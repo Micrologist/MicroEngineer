@@ -1221,4 +1221,17 @@ namespace MicroMod
             }
         }
     }
+
+    public class Separator : MicroEntry
+    {
+        public Separator()
+        {
+            Name = "--------------";
+            Description = "It's a separator!";
+            Category = MicroEntryCategory.Misc;
+            Unit = "---";
+            Formatting = null;
+            EntryValue = "---------------";
+        }
+    }
 }

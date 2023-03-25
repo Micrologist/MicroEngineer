@@ -608,83 +608,65 @@ namespace MicroMod
 		{
 			MicroEntries = new List<MicroEntry>();
 
-			InitializeVesselEntries();
-			InitializeOrbitalEntries();
-			InitializeSurfaceEntries();
-			InitializeFlightEntries();
-			InitializeTargetEntries();
-			InitializeManeuverEntries();
-			InitializeStageEntries();
-        }
-
-		private void InitializeVesselEntries()
-		{
-			MicroEntries.Add(new Vessel());
-			MicroEntries.Add(new Mass());
+            #region Vessel entries
+            MicroEntries.Add(new Vessel());
+            MicroEntries.Add(new Mass());
             MicroEntries.Add(new DeltaV());
             MicroEntries.Add(new Thrust());
             MicroEntries.Add(new TWR());
-        }
-
-        private void InitializeOrbitalEntries()
-        {
-			MicroEntries.Add(new Apoapsis());
-			MicroEntries.Add(new TimeToApoapsis());
-			MicroEntries.Add(new Periapsis());
-			MicroEntries.Add(new TimeToPeriapsis());
-			MicroEntries.Add(new Inclination());
-			MicroEntries.Add(new Eccentricity());
-			MicroEntries.Add(new Period());
-			MicroEntries.Add(new SoiTransition());
-        }
-
-		private void InitializeSurfaceEntries()
-		{
-			MicroEntries.Add(new Body());
-			MicroEntries.Add(new Situation());
-			MicroEntries.Add(new Latitude());
-			MicroEntries.Add(new Longitude());
-			MicroEntries.Add(new Biome());
-			MicroEntries.Add(new AltitudeAsl());
-			MicroEntries.Add(new AltitudeAgl());
-			MicroEntries.Add(new HorizontalVelocity());
-			MicroEntries.Add(new VerticalVelocity());
-        }
-
-		private void InitializeFlightEntries()
-		{
-			MicroEntries.Add(new Speed());
-			MicroEntries.Add(new MachNumber());
-			MicroEntries.Add(new AtmosphericDensity());
-			MicroEntries.Add(new TotalLift());
-			MicroEntries.Add(new TotalDrag());
-			MicroEntries.Add(new LiftDivDrag());
-        }
-
-		private void InitializeTargetEntries()
-		{
-			MicroEntries.Add(new TargetApoapsis());
-			MicroEntries.Add(new TargetPeriapsis());
-			MicroEntries.Add(new DistanceToTarget());
-			MicroEntries.Add(new RelativeSpeed());
-			MicroEntries.Add(new RelativeInclination());
-        }
-
-		private void InitializeManeuverEntries()
-		{
-			MicroEntries.Add(new ProjectedAp());
-			MicroEntries.Add(new ProjectedPe());
-			MicroEntries.Add(new DeltaVRequired());
-			MicroEntries.Add(new TimeToNode());
-			MicroEntries.Add(new BurnTime());
-        }
-
-		private void InitializeStageEntries()
-		{
-			MicroEntries.Add(new TotalDeltaVVac());
-			MicroEntries.Add(new TotalDeltaVAsl());
-			MicroEntries.Add(new TotalDeltaVActual());
-			MicroEntries.Add(new StageInfo());
+			#endregion
+            #region Orbital entries
+            MicroEntries.Add(new Apoapsis());
+            MicroEntries.Add(new TimeToApoapsis());
+            MicroEntries.Add(new Periapsis());
+            MicroEntries.Add(new TimeToPeriapsis());
+            MicroEntries.Add(new Inclination());
+            MicroEntries.Add(new Eccentricity());
+            MicroEntries.Add(new Period());
+            MicroEntries.Add(new SoiTransition());
+            #endregion
+            #region Surface entries
+            MicroEntries.Add(new Body());
+            MicroEntries.Add(new Situation());
+            MicroEntries.Add(new Latitude());
+            MicroEntries.Add(new Longitude());
+            MicroEntries.Add(new Biome());
+            MicroEntries.Add(new AltitudeAsl());
+            MicroEntries.Add(new AltitudeAgl());
+            MicroEntries.Add(new HorizontalVelocity());
+            MicroEntries.Add(new VerticalVelocity());
+            #endregion
+            #region Flight entries
+            MicroEntries.Add(new Speed());
+            MicroEntries.Add(new MachNumber());
+            MicroEntries.Add(new AtmosphericDensity());
+            MicroEntries.Add(new TotalLift());
+            MicroEntries.Add(new TotalDrag());
+            MicroEntries.Add(new LiftDivDrag());
+            #endregion
+            #region Flight entries
+            MicroEntries.Add(new TargetApoapsis());
+            MicroEntries.Add(new TargetPeriapsis());
+            MicroEntries.Add(new DistanceToTarget());
+            MicroEntries.Add(new RelativeSpeed());
+            MicroEntries.Add(new RelativeInclination());
+            #endregion
+            #region Maneuver entries
+            MicroEntries.Add(new ProjectedAp());
+            MicroEntries.Add(new ProjectedPe());
+            MicroEntries.Add(new DeltaVRequired());
+            MicroEntries.Add(new TimeToNode());
+            MicroEntries.Add(new BurnTime());
+            #endregion
+            #region Stage entries
+            MicroEntries.Add(new TotalDeltaVVac());
+            MicroEntries.Add(new TotalDeltaVAsl());
+            MicroEntries.Add(new TotalDeltaVActual());
+            MicroEntries.Add(new StageInfo());
+            #endregion
+            #region Misc entries
+            MicroEntries.Add(new Separator());
+            #endregion
         }
 
 		/// <summary>

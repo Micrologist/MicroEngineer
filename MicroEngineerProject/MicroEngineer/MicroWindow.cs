@@ -166,7 +166,8 @@ namespace MicroMod
         Flight,
         Target,
         Maneuver,
-        Stage
+        Stage,
+        Misc
     }
 
     /// <summary>
