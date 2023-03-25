@@ -1,15 +1,4 @@
-﻿using KSP.Messages.PropertyWatchers;
-using SpaceWarp.API.Mods;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using UnityEngine;
-using KSP.Sim.impl;
-using static KSP.Rendering.Planets.PQSData;
-using KSP.Sim;
-using static KSP.Modules.Data_LiftingSurface;
-using KSP.UI.Flight;
-using KSP.UI.Binding;
+﻿using UnityEngine;
 using Newtonsoft.Json;
 
 namespace MicroMod

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Text;
+﻿using System.Reflection;
 using KSP.Game;
-using KSP.Messages.PropertyWatchers;
 using KSP.Sim;
 using KSP.Sim.impl;
 using KSP.Sim.Maneuver;
 using KSP.UI.Flight;
 using Newtonsoft.Json;
-using SpaceWarp.API.UI;
 using UnityEngine;
-using static KSP.Modules.Data_LiftingSurface;
 using static KSP.Rendering.Planets.PQSData;
 using BepInEx.Logging;
 
