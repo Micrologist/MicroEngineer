@@ -61,17 +61,27 @@ namespace MicroMod
 			InitializeWindows();
 		}
 
+        public void Update()
+        {
+            MicroUtility.RefreshActiveVesselAndCurrentManeuver();
+            if (MicroUtility.ActiveVessel == null) return;
+
+            // Grab all entries from all active windows and refresh their data
+			foreach (MicroEntry entry in MicroWindows
+				.Where(w => w.IsFlightActive)
+				.SelectMany(w => w.Entries ?? Enumerable.Empty<MicroEntry>()).ToList())
+                entry.RefreshData();
+        }
+		
 		private void OnGUI()
 		{
             GUI.skin = MicroStyles.SpaceWarpUISkin;
 
-            MicroUtility.RefreshActiveVesselAndCurrentManeuver(); // TODO: move to Update()			
-
 			if (!showGUI || MicroUtility.ActiveVessel == null) return;
 
             MicroWindow mainGui = MicroWindows.Find(window => window.MainWindow == MainWindow.MainGui);
-
-            // Draw main GUI that contains docked windows 
+			
+			// Draw main GUI that contains docked windows
             mainGui.FlightRect = GUILayout.Window(
 				GUIUtility.GetControlID(FocusType.Passive),
                 mainGui.FlightRect,
@@ -338,10 +348,7 @@ namespace MicroMod
             DrawSectionHeader(windowToDraw.Name, ref windowToDraw.IsFlightPoppedOut, windowToDraw.IsLocked, "");
 
             foreach (MicroEntry entry in windowToDraw.Entries)
-            {
-                entry.RefreshData(); //TODO: move refreshing of data to Update()
-                DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
-            }
+				DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
 
             DrawSectionEnd(windowToDraw);
         }
@@ -408,10 +415,7 @@ namespace MicroMod
                     DrawSectionHeader(window.Name, ref window.IsFlightPoppedOut, window.IsLocked, "");
 
 					foreach (MicroEntry entry in window.Entries)
-					{
-						entry.RefreshData(); //TODO: move refreshing of data to Update()
 						DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
-					}
 
 					DrawSectionEnd(window);
 				}
@@ -456,8 +460,6 @@ namespace MicroMod
 		private void DrawStages(int windowIndex)
 		{
             MicroWindow windowToDraw = MicroWindows[windowIndex];
-
-            windowToDraw.RefreshEntryData(); // TODO: move refresh to Update()
 
             DrawStagesHeader(windowToDraw);
 
