@@ -184,6 +184,15 @@ namespace MicroMod
 			editableWindows[selectedWindowId].IsLocked = GUILayout.Toggle(editableWindows[selectedWindowId].IsLocked, "Locked");
 			GUILayout.EndVertical();
 			GUILayout.FlexibleSpace();
+			if (editableWindows[selectedWindowId].IsDeletable)
+			{
+                if (GUILayout.Button("DEL WINDOW", MicroStyles.NormalBtnStyle))
+                {
+                    MicroWindows.Remove(editableWindows[selectedWindowId]);
+                    editableWindows.Remove(editableWindows[selectedWindowId]);
+                    selectedWindowId--;
+                }
+            }			
 			if(GUILayout.Button("NEW WINDOW", MicroStyles.NormalBtnStyle))
 				CreateCustomWindow(editableWindows);
 			GUILayout.EndHorizontal();
