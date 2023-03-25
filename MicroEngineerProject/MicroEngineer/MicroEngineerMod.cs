@@ -167,6 +167,8 @@ namespace MicroMod
 			{
                 selectedWindowId = selectedWindowId > 0 ? selectedWindowId - 1 : editableWindows.Count - 1 ;
 			}
+			editableWindows[selectedWindowId].Abbreviation = GUILayout.TextField(editableWindows[selectedWindowId].Abbreviation, MicroStyles.WindowSelectionAbbrevitionTextFieldStyle);
+			editableWindows[selectedWindowId].Abbreviation = MicroUtility.ValidateAbbreviation(editableWindows[selectedWindowId].Abbreviation);
             editableWindows[selectedWindowId].Name = GUILayout.TextField(editableWindows[selectedWindowId].Name, MicroStyles.WindowSelectionTextFieldStyle);
 			if (GUILayout.Button(">", MicroStyles.OneCharacterBtnStyle))
 			{
@@ -174,9 +176,13 @@ namespace MicroMod
 			}
 			GUILayout.EndHorizontal();
 			#endregion
-			
+
+			GUILayout.Space(-10);
 			GUILayout.BeginHorizontal();
+			GUILayout.BeginVertical();
+			GUILayout.Space(10);
 			editableWindows[selectedWindowId].IsLocked = GUILayout.Toggle(editableWindows[selectedWindowId].IsLocked, "Locked");
+			GUILayout.EndVertical();
 			GUILayout.FlexibleSpace();
 			if(GUILayout.Button("NEW WINDOW", MicroStyles.NormalBtnStyle))
 				CreateCustomWindow(editableWindows);
@@ -346,8 +352,8 @@ namespace MicroMod
 				// Draw toggles for all windows except MainGui
 				foreach (var (window, index) in MicroWindows.Select((window, index) => (window, index)).Where(x => x.window.MainWindow != MainWindow.MainGui))
 				{
-					// layout can fit 6 toggles, so if all 6 slots are filled then go to a new line. Index == 0 will also go to a new line
-					if (index % 6 == 0 && index > 0)
+					// layout can fit 6 toggles, so if all 6 slots are filled then go to a new line. Index == 0 is the MainGUI which isn't rendered
+					if ((index-1) % 6 == 0 && index > 1)
 					{
 						GUILayout.EndHorizontal();
 						GUILayout.BeginHorizontal();
@@ -662,7 +668,43 @@ namespace MicroMod
 
 			try
 			{
-				MicroWindows.Add(new MicroWindow
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "MainGui",
+                    Abbreviation = null,
+                    Description = "Main GUI",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false, // not relevant to Main GUI
+                    IsFlightPoppedOut = false, // not relevant to Main GUI
+                    IsMapPoppedOut = false, // not relevant to Main GUI
+                    IsLocked = false,
+                    MainWindow = MainWindow.MainGui,
+                    EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.MainGuiX, MicroStyles.MainGuiY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    Entries = null
+                });
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Settings",
+                    Abbreviation = "SET",
+                    Description = "Settings",
+                    IsEditorActive = false,
+                    IsFlightActive = false,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    MainWindow = MainWindow.Settings,
+                    EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    Entries = null
+                });
+
+                MicroWindows.Add(new MicroWindow
 				{
 					Name = "Vessel",					
 					Abbreviation = "VES",
@@ -786,43 +828,7 @@ namespace MicroMod
                     EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
                     Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Stage).ToList()
-                });
-
-                MicroWindows.Add(new MicroWindow
-                {
-                    Name = "Settings",
-                    Abbreviation = "SET",
-                    Description = "Settings",
-                    IsEditorActive = false,
-                    IsFlightActive = false,
-                    IsMapActive = false,
-                    IsEditorPoppedOut = false,
-                    IsFlightPoppedOut = false,
-                    IsMapPoppedOut = false,
-                    IsLocked = false,
-                    MainWindow = MainWindow.Settings,
-                    EditorRect = null,
-                    FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
-                    Entries = null
-                });
-
-                MicroWindows.Add(new MicroWindow
-                {
-                    Name = "MainGui",
-                    Abbreviation = null,
-                    Description = "Main GUI",
-                    IsEditorActive = false,
-                    IsFlightActive = true,
-                    IsMapActive = false,
-                    IsEditorPoppedOut = false, // not relevant to Main GUI
-                    IsFlightPoppedOut = false, // not relevant to Main GUI
-                    IsMapPoppedOut = false, // not relevant to Main GUI
-                    IsLocked = false,
-                    MainWindow = MainWindow.MainGui,
-                    EditorRect = null,
-                    FlightRect = new Rect(MicroStyles.MainGuiX, MicroStyles.MainGuiY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
-                    Entries = null
-                });
+                });                
             }
 			catch (Exception ex)
 			{

@@ -139,6 +139,19 @@ namespace MicroMod
             return result.Substring(0, 1).ToUpper() + result.Substring(1);
         }
 
+        /// <summary>
+		/// Validates if user entered a 3 character string
+		/// </summary>
+		/// <param name="abbreviation">String that will be shortened to 3 characters</param>
+		/// <returns>Uppercase string shortened to 3 characters. If abbreviation is empty returns "CUS"</returns>
+		public static string ValidateAbbreviation(string abbreviation)
+        {
+            if (String.IsNullOrEmpty(abbreviation))
+                return "CUS";
+
+            return abbreviation.Substring(0, Math.Min(abbreviation.Length, 3)).ToUpperInvariant();
+        }
+
         public static void SaveLayout(List<MicroWindow> windows)
         {
             try

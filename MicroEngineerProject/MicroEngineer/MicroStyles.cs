@@ -22,6 +22,7 @@ namespace MicroMod
         public static GUIStyle TitleLabelStyle;
         public static GUIStyle NormalCenteredLabelStyle;
         public static GUIStyle WindowSelectionTextFieldStyle;
+        public static GUIStyle WindowSelectionAbbrevitionTextFieldStyle;
         public static GUIStyle CloseBtnStyle;
         public static GUIStyle NormalBtnStyle;
         public static GUIStyle OneCharacterBtnStyle;
@@ -104,8 +105,9 @@ namespace MicroMod
             TitleLabelStyle = new GUIStyle(SpaceWarpUISkin.label)
             {
                 fontSize = 18,
-                fixedWidth = 140,
-                contentOffset = new Vector2(0, -1)
+                fixedWidth = 100,
+                fixedHeight = 50,
+                contentOffset = new Vector2(0, -20),
             };
 
             NormalCenteredLabelStyle = new GUIStyle(SpaceWarpUISkin.label)
@@ -125,6 +127,12 @@ namespace MicroMod
             {
                 alignment = TextAnchor.MiddleCenter,
                 fixedWidth = 80
+            };
+
+            WindowSelectionAbbrevitionTextFieldStyle = new GUIStyle(SpaceWarpUISkin.textField)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fixedWidth = 40
             };
 
             CloseBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
