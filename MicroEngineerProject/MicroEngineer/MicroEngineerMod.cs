@@ -90,7 +90,7 @@ namespace MicroMod
                 MicroStyles.MainWindowStyle,
 				GUILayout.Height(0)
 			);
-            mainGui.FlightRect.position = ClampToScreen(mainGui.FlightRect.position, mainGui.FlightRect.size);
+            mainGui.FlightRect.position = MicroUtility.ClampToScreen(mainGui.FlightRect.position, mainGui.FlightRect.size);
 
             // Draw all other popped out windows
             foreach (var (window, index) in MicroWindows
@@ -116,7 +116,7 @@ namespace MicroMod
 					GUILayout.Width(MicroStyles.WindowWidth
 					));
 
-				window.FlightRect.position = ClampToScreen(window.FlightRect.position, window.FlightRect.size);
+				window.FlightRect.position = MicroUtility.ClampToScreen(window.FlightRect.position, window.FlightRect.size);
             }
 
 			// Draw popped out Settings
@@ -133,7 +133,7 @@ namespace MicroMod
 					GUILayout.Width(MicroStyles.WindowWidth)
 					);
 
-                MicroWindows[settingsIndex].FlightRect.position = ClampToScreen(MicroWindows[settingsIndex].FlightRect.position, MicroWindows[settingsIndex].FlightRect.size);
+                MicroWindows[settingsIndex].FlightRect.position = MicroUtility.ClampToScreen(MicroWindows[settingsIndex].FlightRect.position, MicroWindows[settingsIndex].FlightRect.size);
             }
 
             // Draw popped out Stages
@@ -150,7 +150,7 @@ namespace MicroMod
                     GUILayout.Width(MicroStyles.WindowWidth)
 					);
 
-                MicroWindows[stageIndex].FlightRect.position = ClampToScreen(MicroWindows[stageIndex].FlightRect.position, MicroWindows[stageIndex].FlightRect.size);
+                MicroWindows[stageIndex].FlightRect.position = MicroUtility.ClampToScreen(MicroWindows[stageIndex].FlightRect.position, MicroWindows[stageIndex].FlightRect.size);
             }
 
 			// Draw Edit Window
@@ -352,13 +352,6 @@ namespace MicroMod
 
             DrawSectionEnd(windowToDraw);
         }
-
-		private Vector2 ClampToScreen(Vector2 position, Vector2 size)
-		{
-			float x = Mathf.Clamp(position.x, 0, Screen.width - size.x);
-			float y = Mathf.Clamp(position.y, 0, Screen.height - size.y);
-			return new Vector2(x, y);
-		}
 
 		private void FillMainGUI(int windowID)
 		{

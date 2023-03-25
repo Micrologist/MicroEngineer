@@ -209,6 +209,13 @@ namespace MicroMod
             try { return (GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(MicroUtility.ActiveVessel.GlobalId).FirstOrDefault() != null); }
             catch { return false; }
         }
+
+        public static Vector2 ClampToScreen(Vector2 position, Vector2 size)
+        {
+            float x = Mathf.Clamp(position.x, 0, Screen.width - size.x);
+            float y = Mathf.Clamp(position.y, 0, Screen.height - size.y);
+            return new Vector2(x, y);
+        }
     }    
 
     public static class AeroForces
