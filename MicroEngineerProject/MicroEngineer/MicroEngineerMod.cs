@@ -88,6 +88,14 @@ namespace MicroMod
 				.Where(x => x.window.IsFlightActive && x.window.IsFlightPoppedOut) // must be active & popped out
 				.Where(x => x.window.MainWindow != MainWindow.Settings && x.window.MainWindow != MainWindow.Stage && x.window.MainWindow != MainWindow.MainGui)) // MainGUI, Settings and Stage are special, they'll be drawn separately
 			{
+				// Skip drawing of Target window if there's no active target
+				if (window.MainWindow == MainWindow.Target && !MicroUtility.TargetExists())
+					continue;
+
+				// Skip drawing of Maneuver window if there's no active maneuver
+				if (window.MainWindow == MainWindow.Maneuver && !MicroUtility.ManeuverExists())
+					continue;
+
 				window.FlightRect = GUILayout.Window(
 					index,
                     window.FlightRect,
@@ -389,7 +397,15 @@ namespace MicroMod
 					.Where(x => x.window.MainWindow != MainWindow.Settings && x.window.MainWindow != MainWindow.Stage && x.window.MainWindow != MainWindow.MainGui)) // MainGUI, Settings and Stage are special, they'll be drawn separately
 
                 {
-					DrawSectionHeader(window.Name, ref window.IsFlightPoppedOut, window.IsLocked, "");
+                    // Skip drawing of Target window if there's no active target
+                    if (window.MainWindow == MainWindow.Target && !MicroUtility.TargetExists())
+                        continue;
+
+                    // Skip drawing of Maneuver window if there's no active maneuver
+                    if (window.MainWindow == MainWindow.Maneuver && !MicroUtility.ManeuverExists())
+                        continue;
+
+                    DrawSectionHeader(window.Name, ref window.IsFlightPoppedOut, window.IsLocked, "");
 
 					foreach (MicroEntry entry in window.Entries)
 					{

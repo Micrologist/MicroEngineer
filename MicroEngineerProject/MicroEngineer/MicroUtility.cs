@@ -189,6 +189,26 @@ namespace MicroMod
                 Logger.LogError("Error trying to LoadLayout. Full error description:\n" + ex);
             }
         }
+
+        /// <summary>
+        /// Check if current vessel has an active target (celestial body or vessel)
+        /// </summary>
+        /// <returns></returns>
+        public static bool TargetExists()
+        {
+            try { return (MicroUtility.ActiveVessel.TargetObject != null); }
+            catch { return false; }
+        }
+
+        /// <summary>
+        /// Checks if current vessel has a maneuver
+        /// </summary>
+        /// <returns></returns>
+        public static bool ManeuverExists()
+        {
+            try { return (GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(MicroUtility.ActiveVessel.GlobalId).FirstOrDefault() != null); }
+            catch { return false; }
+        }
     }    
 
     public static class AeroForces
