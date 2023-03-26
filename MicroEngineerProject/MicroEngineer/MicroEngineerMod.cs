@@ -16,131 +16,31 @@ using static KSP.Rendering.Planets.PQSData;
 
 namespace MicroMod
 {
-	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.5.0")]
+	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.6.0")]
 	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 	public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
 		private bool showGUI = false;
+		
+		#region Editing window
+		private bool showEditWindow = false;
+		private int selectedWindowId = 0;
+		private MicroEntryCategory selectedCategory = MicroEntryCategory.Vessel;
+		private (bool condition, int index) showTooltip = (false, 0);
+		#endregion
 
-		private readonly int windowWidth = 290;
-		private readonly int windowHeight = 700;
-		public Rect mainGuiRect, settingsGuiRect, vesGuiRect, orbGuiRect, surGuiRect, fltGuiRect, manGuiRect, tgtGuiRect, stgGuiRect;
-		private Rect closeBtnRect;
+		/// <summary>
+		/// Holds all entries we can have in any window
+		/// </summary>
+		private List<MicroEntry> MicroEntries;
+		
+		/// <summary>
+		/// All windows that can be rendered
+		/// </summary>
+		private List<MicroWindow> MicroWindows;
 
-		private GUISkin _spaceWarpUISkin;
-		private GUIStyle popoutBtnStyle;
-		private GUIStyle mainWindowStyle;
-		private GUIStyle popoutWindowStyle;
-		private GUIStyle sectionToggleStyle;
-		private GUIStyle closeBtnStyle;
-		private GUIStyle saveLoadBtnStyle;
-		private GUIStyle loadBtnStyle;
-		private GUIStyle nameLabelStyle;
-		private GUIStyle valueLabelStyle;
-		private GUIStyle unitLabelStyle;
-		private GUIStyle tableHeaderLabelStyle;
-
-		private string unitColorHex;
-
-		private int spacingAfterHeader = -12;
-		private int spacingAfterEntry = -12;
-		private int spacingAfterSection = 5;
-		private float spacingBelowPopout = 10;
-
-		public bool showSettings = false;
-		public bool showVes = true;
-		public bool showOrb = true;
-		public bool showSur = true;
-		public bool showFlt = false;
-		public bool showMan = true;
-		public bool showTgt = false;
-		public bool showStg = true;
-
-		public bool popoutSettings, popoutVes, popoutOrb, popoutSur, popoutMan, popoutTgt, popoutFlt, popoutStg;
-
-		private VesselComponent activeVessel;
-		private SimulationObjectModel currentTarget;
-		private ManeuverNodeData currentManeuver;
-
-		private double totalDrag, totalLift;
-
-		private static readonly List<Type> liftForces = new()
+        public override void OnInitialized()
 		{
-			PhysicsForceDisplaySystem.MODULE_DRAG_BODY_LIFT_TYPE,
-			PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_LIFT_TYPE
-		};
-
-		private static readonly List<Type> dragForces = new()
-		{
-			PhysicsForceDisplaySystem.MODULE_DRAG_DRAG_TYPE,
-			PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_DRAG_TYPE
-		};
-
-		public override void OnInitialized()
-		{
-			_spaceWarpUISkin = Skins.ConsoleSkin;
-
-			mainWindowStyle = new GUIStyle(_spaceWarpUISkin.window)
-			{
-				padding = new RectOffset(8, 8, 20, 8),
-				contentOffset = new Vector2(0, -22),
-				fixedWidth = windowWidth
-			};
-
-			popoutWindowStyle = new GUIStyle(mainWindowStyle)
-			{
-				padding = new RectOffset(mainWindowStyle.padding.left, mainWindowStyle.padding.right, 0, mainWindowStyle.padding.bottom - 5),
-				fixedWidth = windowWidth
-			};
-
-			popoutBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
-			{
-				alignment = TextAnchor.MiddleCenter,
-				contentOffset = new Vector2(0, 2),
-				fixedHeight = 15,
-				fixedWidth = 15,
-				fontSize = 28,
-				clipping = TextClipping.Overflow,
-				margin = new RectOffset(0, 0, 10, 0)
-			};
-
-			sectionToggleStyle = new GUIStyle(_spaceWarpUISkin.toggle)
-			{
-				padding = new RectOffset(14, 0, 3, 3)
-			};
-
-			nameLabelStyle = new GUIStyle(_spaceWarpUISkin.label);
-			nameLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
-
-			valueLabelStyle = new GUIStyle(_spaceWarpUISkin.label)
-			{
-				alignment = TextAnchor.MiddleRight
-			};
-			valueLabelStyle.normal.textColor = new Color(.6f, .7f, 1, 1);
-
-			unitLabelStyle = new GUIStyle(valueLabelStyle)
-			{
-				fixedWidth = 24,
-				alignment = TextAnchor.MiddleLeft
-			};
-			unitLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
-
-			unitColorHex = ColorUtility.ToHtmlStringRGBA(unitLabelStyle.normal.textColor);
-
-			closeBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
-			{
-				fontSize = 8
-			};
-
-			saveLoadBtnStyle = new GUIStyle(_spaceWarpUISkin.button)
-			{
-				alignment = TextAnchor.MiddleCenter
-			};
-
-			closeBtnRect = new Rect(windowWidth - 23, 6, 16, 16);
-
-			tableHeaderLabelStyle = new GUIStyle(nameLabelStyle) { alignment = TextAnchor.MiddleRight };
-
 			Appbar.RegisterAppButton(
 					"Micro Engineer",
 					"BTN-MicroEngineerBtn",
@@ -148,236 +48,251 @@ namespace MicroMod
 					delegate { showGUI = !showGUI; }
 			);
 
-
-			InitializeRects();
-			ResetLayout();
+			MicroStyles.InitializeStyles();
+			InitializeEntries();
+			InitializeWindows();
+			
 			// load window positions and states from disk, if file exists
-			LoadLayoutState();
+			MicroUtility.LoadLayout(MicroWindows);
 		}
+		
+        public void Update()
+        {
+            MicroUtility.RefreshActiveVesselAndCurrentManeuver();
+            if (MicroUtility.ActiveVessel == null) return;
 
-		private void InitializeRects()
-		{
-			mainGuiRect = settingsGuiRect = vesGuiRect = orbGuiRect = surGuiRect = fltGuiRect = manGuiRect = tgtGuiRect = stgGuiRect = new();
-		}
-
-		private void ResetLayout()
-		{
-			popoutVes = popoutStg = popoutOrb = popoutSur = popoutFlt = popoutTgt = popoutMan = popoutSettings = false;
-			mainGuiRect.position = new(Screen.width * 0.8f, Screen.height * 0.2f);
-			Vector2 popoutWindowPosition = new(Screen.width * 0.6f, Screen.height * 0.2f);
-			vesGuiRect.position = popoutWindowPosition;
-			stgGuiRect.position = popoutWindowPosition;
-			orbGuiRect.position = popoutWindowPosition;
-			surGuiRect.position = popoutWindowPosition;
-			fltGuiRect.position = popoutWindowPosition;
-			tgtGuiRect.position = popoutWindowPosition;
-			manGuiRect.position = popoutWindowPosition;
-			settingsGuiRect.position = popoutWindowPosition;
-		}
-
+            // Grab all entries from all active windows and refresh their data
+			foreach (MicroEntry entry in MicroWindows
+				.Where(w => w.IsFlightActive)
+				.SelectMany(w => w.Entries ?? Enumerable.Empty<MicroEntry>()).ToList())
+                entry.RefreshData();
+        }
+		
 		private void OnGUI()
 		{
-			activeVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
-			if (!showGUI || activeVessel == null) return;
+            GUI.skin = MicroStyles.SpaceWarpUISkin;
 
-			currentTarget = activeVessel.TargetObject;
-			currentManeuver = GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(activeVessel.GlobalId).FirstOrDefault();
-			GUI.skin = _spaceWarpUISkin;
+			if (!showGUI || MicroUtility.ActiveVessel == null) return;
 
-			mainGuiRect = GUILayout.Window(
+            MicroWindow mainGui = MicroWindows.Find(window => window.MainWindow == MainWindow.MainGui);
+			
+			// Draw main GUI that contains docked windows
+            mainGui.FlightRect = GUILayout.Window(
 				GUIUtility.GetControlID(FocusType.Passive),
-				mainGuiRect,
+                mainGui.FlightRect,
 				FillMainGUI,
 				"<color=#696DFF>// MICRO ENGINEER</color>",
-				mainWindowStyle,
+                MicroStyles.MainWindowStyle,
 				GUILayout.Height(0)
 			);
-			mainGuiRect.position = ClampToScreen(mainGuiRect.position, mainGuiRect.size);
+            mainGui.FlightRect.position = MicroUtility.ClampToScreen(mainGui.FlightRect.position, mainGui.FlightRect.size);
 
-			if (showSettings && popoutSettings)
+            // Draw all other popped out windows
+            foreach (var (window, index) in MicroWindows
+				.Select((window, index) => (window, index))
+				.Where(x => x.window.IsFlightActive && x.window.IsFlightPoppedOut) // must be active & popped out
+				.Where(x => x.window.MainWindow != MainWindow.Settings && x.window.MainWindow != MainWindow.Stage && x.window.MainWindow != MainWindow.MainGui)) // MainGUI, Settings and Stage are special, they'll be drawn separately
 			{
-				DrawPopoutWindow(ref settingsGuiRect, FillSettings);
-			}
+				// Skip drawing of Target window if there's no active target
+				if (window.MainWindow == MainWindow.Target && !MicroUtility.TargetExists())
+					continue;
 
-			if (showVes && popoutVes)
+				// Skip drawing of Maneuver window if there's no active maneuver
+				if (window.MainWindow == MainWindow.Maneuver && !MicroUtility.ManeuverExists())
+					continue;
+
+				// If window is locked set alpha to 80%
+				if (window.IsLocked)
+					GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, 0.8f);
+
+				window.FlightRect = GUILayout.Window(
+					index,
+                    window.FlightRect,
+					DrawPopoutWindow,
+					"",
+					MicroStyles.PopoutWindowStyle,
+					GUILayout.Height(0),
+					GUILayout.Width(MicroStyles.WindowWidth
+					));
+
+				// Set alpha back to 100%
+                if (window.IsLocked)
+                    GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, 1);
+
+                window.FlightRect.position = MicroUtility.ClampToScreen(window.FlightRect.position, window.FlightRect.size);
+            }
+
+			// Draw popped out Settings
+            int settingsIndex = MicroWindows.FindIndex(window => window.MainWindow == MainWindow.Settings);
+            if (MicroWindows[settingsIndex].IsFlightActive && MicroWindows[settingsIndex].IsFlightPoppedOut)
 			{
-				DrawPopoutWindow(ref vesGuiRect, FillVessel);
-			}
+                MicroWindows[settingsIndex].FlightRect = GUILayout.Window(
+					settingsIndex,
+                    MicroWindows[settingsIndex].FlightRect,
+					DrawSettingsWindow,
+					"",
+					MicroStyles.PopoutWindowStyle,
+					GUILayout.Height(0),
+					GUILayout.Width(MicroStyles.WindowWidth)
+					);
 
-			if (showOrb && popoutOrb)
+                MicroWindows[settingsIndex].FlightRect.position = MicroUtility.ClampToScreen(MicroWindows[settingsIndex].FlightRect.position, MicroWindows[settingsIndex].FlightRect.size);
+            }
+
+            // Draw popped out Stages
+            int stageIndex = MicroWindows.FindIndex(window => window.MainWindow == MainWindow.Stage);
+            if (MicroWindows[stageIndex].IsFlightActive && MicroWindows[stageIndex].IsFlightPoppedOut)
+            {
+                MicroWindows[stageIndex].FlightRect = GUILayout.Window(
+                    stageIndex,
+                    MicroWindows[stageIndex].FlightRect,
+                    DrawStages,
+                    "",
+                    MicroStyles.PopoutWindowStyle,
+                    GUILayout.Height(0),
+                    GUILayout.Width(MicroStyles.WindowWidth)
+					);
+
+                MicroWindows[stageIndex].FlightRect.position = MicroUtility.ClampToScreen(MicroWindows[stageIndex].FlightRect.position, MicroWindows[stageIndex].FlightRect.size);
+            }
+
+			// Draw Edit Window
+			if (showEditWindow)
 			{
-				DrawPopoutWindow(ref orbGuiRect, FillOrbital);
-			}
+				MicroStyles.EditWindowRect = GUILayout.Window(
+					GUIUtility.GetControlID(FocusType.Passive),
+					MicroStyles.EditWindowRect,
+					DrawEditWindow,
+					"",
+					MicroStyles.EditWindowStyle
+					);
+            }
+        }
 
-			if (showSur && popoutSur)
-			{
-				DrawPopoutWindow(ref surGuiRect, FillSurface);
-			}
+        /// <summary>
+        /// Draws the main GUI with all windows that are toggled and docked
+        /// </summary>
+        /// <param name="windowID"></param>
+        private void FillMainGUI(int windowID)
+        {
+            try
+            {
+                if (CloseButton())
+                {
+                    CloseWindow();
+                }
 
-			if (showFlt && popoutFlt)
-			{
-				DrawPopoutWindow(ref fltGuiRect, FillFlight);
-			}
+                GUILayout.Space(10);
 
-			if (showTgt && popoutTgt && currentTarget != null)
-			{
-				DrawPopoutWindow(ref tgtGuiRect, FillTarget);
-			}
+                GUILayout.BeginHorizontal();
 
-			if (showMan && popoutMan && currentManeuver != null)
-			{
-				DrawPopoutWindow(ref manGuiRect, FillManeuver);
-			}
+                // Draw toggles for all windows except MainGui
+                foreach (var (window, index) in MicroWindows.Select((window, index) => (window, index)).Where(x => x.window.MainWindow != MainWindow.MainGui))
+                {
+                    // layout can fit 6 toggles, so if all 6 slots are filled then go to a new line. Index == 0 is the MainGUI which isn't rendered
+                    if ((index - 1) % 6 == 0 && index > 1)
+                    {
+                        GUILayout.EndHorizontal();
+                        GUILayout.BeginHorizontal();
+                    }
+                    window.IsFlightActive = GUILayout.Toggle(window.IsFlightActive, window.Abbreviation, MicroStyles.SectionToggleStyle);
+                    GUILayout.Space(26);
+                }
+                GUILayout.EndHorizontal();
 
-			if (showStg && popoutStg)
-			{
-				DrawPopoutWindow(ref stgGuiRect, FillStages);
-			}
-		}
+                // Draw Settings window first
+                int settingsIndex = MicroWindows.FindIndex(window => window.MainWindow == MainWindow.Settings);
+                if (MicroWindows[settingsIndex].IsFlightActive && !MicroWindows[settingsIndex].IsFlightPoppedOut)
+                    DrawSettingsWindow(settingsIndex);
 
-		private void DrawPopoutWindow(ref Rect guiRect, UnityEngine.GUI.WindowFunction fillAction)
+                // Draw Stage window next
+                int stageIndex = MicroWindows.FindIndex(window => window.MainWindow == MainWindow.Stage);
+                if (MicroWindows[stageIndex].IsFlightActive && !MicroWindows[stageIndex].IsFlightPoppedOut)
+                    DrawStages(stageIndex);
+
+                // Draw all other windows
+                foreach (var (window, index) in MicroWindows
+                    .Select((window, index) => (window, index))
+                    .Where(x => x.window.IsFlightActive && !x.window.IsFlightPoppedOut) // must be active & docked
+                    .Where(x => x.window.MainWindow != MainWindow.Settings && x.window.MainWindow != MainWindow.Stage && x.window.MainWindow != MainWindow.MainGui)) // MainGUI, Settings and Stage are special, they'll be drawn separately
+
+                {
+                    // Skip drawing of Target window if there's no active target
+                    if (window.MainWindow == MainWindow.Target && !MicroUtility.TargetExists())
+                        continue;
+
+                    // Skip drawing of Maneuver window if there's no active maneuver
+                    if (window.MainWindow == MainWindow.Maneuver && !MicroUtility.ManeuverExists())
+                        continue;
+
+                    DrawSectionHeader(window.Name, ref window.IsFlightPoppedOut, window.IsLocked, "");
+
+                    foreach (MicroEntry entry in window.Entries)
+                        DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
+
+                    DrawSectionEnd(window);
+                }
+
+                GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
+
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+            }
+        }
+
+		/// <summary>
+        /// Draws all windows that are toggled and popped out
+        /// </summary>
+        /// <param name="windowIndex"></param>
+        private void DrawPopoutWindow(int windowIndex)
+        {
+			MicroWindow windowToDraw = MicroWindows[windowIndex];
+
+            DrawSectionHeader(windowToDraw.Name, ref windowToDraw.IsFlightPoppedOut, windowToDraw.IsLocked, "");
+
+            foreach (MicroEntry entry in windowToDraw.Entries)
+				DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
+
+            DrawSectionEnd(windowToDraw);
+        }
+
+		private void DrawSettingsWindow(int windowIndex)
 		{
-			guiRect = GUILayout.Window(
-				GUIUtility.GetControlID(FocusType.Passive),
-				guiRect,
-				fillAction,
-				"",
-				popoutWindowStyle,
-				GUILayout.Height(0),
-				GUILayout.Width(windowWidth)
-			);
-			guiRect.position = ClampToScreen(guiRect.position, guiRect.size);
-		}
+			MicroWindow windowToDraw = MicroWindows[windowIndex];
 
-		private Vector2 ClampToScreen(Vector2 position, Vector2 size)
-		{
-			float x = Mathf.Clamp(position.x, 0, Screen.width - size.x);
-			float y = Mathf.Clamp(position.y, 0, Screen.height - size.y);
-			return new Vector2(x, y);
-		}
+            DrawSectionHeader(windowToDraw.Name, ref windowToDraw.IsFlightPoppedOut, windowToDraw.IsLocked, "");
 
-		private void FillMainGUI(int windowID)
-		{
-			if (CloseButton())
-			{
-				CloseWindow();
-			}
-
-			GUILayout.Space(10);
-
+            GUILayout.Space(10);
 			GUILayout.BeginHorizontal();
-			showVes = GUILayout.Toggle(showVes, "<b>VES</b>", sectionToggleStyle);
-			GUILayout.Space(26);
-			showStg = GUILayout.Toggle(showStg, "<b>STG</b>", sectionToggleStyle);
-			GUILayout.Space(26);
-			showOrb = GUILayout.Toggle(showOrb, "<b>ORB</b>", sectionToggleStyle);
-			GUILayout.Space(26);
-			showSur = GUILayout.Toggle(showSur, "<b>SUR</b>", sectionToggleStyle);
-			GUILayout.Space(26);
-			showFlt = GUILayout.Toggle(showFlt, "<b>FLT</b>", sectionToggleStyle);
-			GUILayout.Space(26);
-			showTgt = GUILayout.Toggle(showTgt, "<b>TGT</b>", sectionToggleStyle);
-			GUILayout.EndHorizontal();
-
-			GUILayout.BeginHorizontal();
-			showMan = GUILayout.Toggle(showMan, "<b>MAN</b>", sectionToggleStyle);
-			GUILayout.Space(26);
-			showSettings = GUILayout.Toggle(showSettings, "<b>SET</b>", sectionToggleStyle);
-			GUILayout.EndHorizontal();
-
-
-			GUILayout.Space(-3);
-
-			GUILayout.BeginHorizontal();
-			GUILayout.EndHorizontal();
-
-			if (showSettings && !popoutSettings)
-			{
-				FillSettings();
-			}
-
-			if (showVes && !popoutVes)
-			{
-				FillVessel();
-			}
-
-			if (showStg && !popoutStg)
-			{
-				FillStages();
-			}
-
-			if (showOrb && !popoutOrb)
-			{
-				FillOrbital();
-			}
-
-			if (showSur && !popoutSur)
-			{
-				FillSurface();
-			}
-
-			if (showFlt && !popoutFlt)
-			{
-				FillFlight();
-			}
-
-			if (showTgt && !popoutTgt && currentTarget != null)
-			{
-				FillTarget();
-			}
-
-			if (showMan && !popoutMan && currentManeuver != null)
-			{
-				FillManeuver();
-			}
-
-			GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
-		}
-
-		private void FillSettings(int _ = 0)
-		{
-			DrawSectionHeader("Settings", ref popoutSettings);
-
-			GUILayout.Space(10);
-			GUILayout.BeginHorizontal();
-			if (GUILayout.Button("SAVE LAYOUT", saveLoadBtnStyle))
-				SaveLayoutState();
+			if (GUILayout.Button("SAVE LAYOUT", MicroStyles.NormalBtnStyle))
+				MicroUtility.SaveLayout(MicroWindows);
 			GUILayout.Space(5);
-			if (GUILayout.Button("LOAD LAYOUT", saveLoadBtnStyle))
-				LoadLayoutState();
+			if (GUILayout.Button("LOAD LAYOUT", MicroStyles.NormalBtnStyle))
+				MicroUtility.LoadLayout(MicroWindows);			
 			GUILayout.Space(5);
-			if (GUILayout.Button("RESET", saveLoadBtnStyle))
+			if (GUILayout.Button("RESET", MicroStyles.NormalBtnStyle))
 				ResetLayout();
 			GUILayout.EndHorizontal();
 
-			DrawSectionEnd(popoutSettings);
-		}
-
-		private void FillVessel(int _ = 0)
-		{
-			DrawSectionHeader("Vessel", ref popoutVes, activeVessel.DisplayName);
-
-			DrawEntry("Mass", $"{activeVessel.totalMass * 1000:N0}", "kg");
-
-			VesselDeltaVComponent deltaVComponent = activeVessel.VesselDeltaV;
-			if (deltaVComponent != null)
+			GUILayout.BeginHorizontal();
+			if (GUILayout.Button("Edit Windows", MicroStyles.NormalBtnStyle))
 			{
-				DrawEntry("∆v", $"{deltaVComponent.TotalDeltaVActual:N0}", "m/s");
-				if (deltaVComponent.StageInfo.FirstOrDefault()?.DeltaVinVac > 0.0001 || deltaVComponent.StageInfo.FirstOrDefault()?.DeltaVatASL > 0.0001)
-				{
-					DrawEntry("Thrust", $"{deltaVComponent.StageInfo.FirstOrDefault()?.ThrustActual * 1000:N0}", "N");
-					DrawEntry("TWR", $"{deltaVComponent.StageInfo.FirstOrDefault()?.TWRActual:N2}");
-				}
+				showEditWindow = !showEditWindow;
 			}
+			GUILayout.EndHorizontal();
 
-			DrawSectionEnd(popoutVes);
+            DrawSectionEnd(windowToDraw);
 		}
 
-		private void FillStages(int _ = 0)
+		private void DrawStages(int windowIndex)
 		{
-			DrawStagesHeader(ref popoutStg);
+            MicroWindow windowToDraw = MicroWindows[windowIndex];
 
-			List<DeltaVStageInfo> stages = activeVessel.VesselDeltaV?.StageInfo;
+            DrawStagesHeader(windowToDraw);
+
+			List<DeltaVStageInfo> stages = (List<DeltaVStageInfo>)windowToDraw.Entries.Find(entry => entry.Name == "Stage Info").EntryValue;
 
 			int stageCount = stages?.Count ?? 0;
 			if (stages != null && stageCount > 0)
@@ -407,158 +322,70 @@ namespace MicroMod
 				}
 			}
 
-			DrawSectionEnd(popoutStg);
+			DrawSectionEnd(windowToDraw);
 		}
 
-		private void FillOrbital(int _ = 0)
-		{
-			DrawSectionHeader("Orbital", ref popoutOrb);
-
-			DrawEntry("Apoapsis", $"{MetersToDistanceString(activeVessel.Orbit.ApoapsisArl)}", "m");
-			DrawEntry("Time to Ap.", $"{SecondsToTimeString((activeVessel.Situation == VesselSituations.Landed || activeVessel.Situation == VesselSituations.PreLaunch) ? 0f : activeVessel.Orbit.TimeToAp)}", "s");
-			DrawEntry("Periapsis", $"{MetersToDistanceString(activeVessel.Orbit.PeriapsisArl)}", "m");
-			DrawEntry("Time to Pe.", $"{SecondsToTimeString(activeVessel.Orbit.TimeToPe)}", "s");
-			DrawEntry("Inclination", $"{activeVessel.Orbit.inclination:N3}", "°");
-			DrawEntry("Eccentricity", $"{activeVessel.Orbit.eccentricity:N3}");
-			DrawEntry("Period", $"{SecondsToTimeString(activeVessel.Orbit.period)}", "s");
-			double secondsToSoiTransition = activeVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime;
-			if (secondsToSoiTransition >= 0)
-			{
-				DrawEntry("SOI Trans.", SecondsToTimeString(secondsToSoiTransition), "s");
-			}
-			DrawSectionEnd(popoutOrb);
-		}
-
-		private void FillSurface(int _ = 0)
-		{
-			DrawSectionHeader("Surface", ref popoutSur, activeVessel.mainBody.bodyName);
-
-			DrawEntry("Situation", SituationToString(activeVessel.Situation));
-			DrawEntry("Latitude", $"{DegreesToDMS(activeVessel.Latitude)}", activeVessel.Latitude < 0 ? "S" : "N");
-			DrawEntry("Longitude", $"{DegreesToDMS(activeVessel.Longitude)}", activeVessel.Longitude < 0 ? "W" : "E");
-			DrawEntry("Biome", BiomeToString(activeVessel.SimulationObject.Telemetry.SurfaceBiome));
-			DrawEntry("Alt. MSL", MetersToDistanceString(activeVessel.AltitudeFromSeaLevel), "m");
-			DrawEntry("Alt. AGL", MetersToDistanceString(activeVessel.AltitudeFromScenery), "m");
-			DrawEntry("Horizontal Vel.", $"{activeVessel.HorizontalSrfSpeed:N1}", "m/s");
-			DrawEntry("Vertical Vel.", $"{activeVessel.VerticalSrfSpeed:N1}", "m/s");
-
-			DrawSectionEnd(popoutSur);
-		}
-
-		private void FillFlight(int _ = 0)
-		{
-			DrawSectionHeader("Flight", ref popoutFlt);
-
-			DrawEntry("Speed", $"{activeVessel.SurfaceVelocity.magnitude:N1}", "m/s");
-			DrawEntry("Mach Number", $"{activeVessel.SimulationObject.Telemetry.MachNumber:N2}");
-			DrawEntry("Atm. Density", $"{activeVessel.SimulationObject.Telemetry.AtmosphericDensity:N3}", "g/L");
-			GetAeroStats();
-
-			DrawEntry("Total Lift", $"{totalLift * 1000:N0}", "N");
-			DrawEntry("Total Drag", $"{totalDrag * 1000:N0}", "N");
-
-			DrawEntry("Lift / Drag", $"{totalLift / totalDrag:N3}");
-
-			DrawSectionEnd(popoutFlt);
-		}
-
-		private void FillTarget(int _ = 0)
-		{
-			DrawSectionHeader("Target", ref popoutTgt, currentTarget.DisplayName);
-
-			if (currentTarget.Orbit != null)
-			{
-				DrawEntry("Target Ap.", MetersToDistanceString(currentTarget.Orbit.ApoapsisArl), "m");
-				DrawEntry("Target Pe.", MetersToDistanceString(currentTarget.Orbit.PeriapsisArl), "m");
-
-				if (activeVessel.Orbit.referenceBody == currentTarget.Orbit.referenceBody)
-				{
-					double distanceToTarget = (activeVessel.Orbit.Position - currentTarget.Orbit.Position).magnitude;
-					DrawEntry("Distance", MetersToDistanceString(distanceToTarget), "m");
-					double relativeVelocity = (activeVessel.Orbit.relativeVelocity - currentTarget.Orbit.relativeVelocity).magnitude;
-					DrawEntry("Rel. Speed", $"{relativeVelocity:N1}", "m/s");
-					OrbitTargeter targeter = activeVessel.Orbiter.OrbitTargeter;
-					DrawEntry("Rel. Incl.", $"{targeter.AscendingNodeTarget.Inclination:N3}", "°");
-				}
-			}
-			DrawSectionEnd(popoutTgt);
-		}
-
-		private void FillManeuver(int _ = 0)
-		{
-			DrawSectionHeader("Maneuver", ref popoutMan);
-			PatchedConicsOrbit newOrbit = activeVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList.FirstOrDefault();
-			DrawEntry("Projected Ap.", MetersToDistanceString(newOrbit.ApoapsisArl), "m");
-			DrawEntry("Projected Pe.", MetersToDistanceString(newOrbit.PeriapsisArl), "m");
-			double requiredDVremaining = (activeVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - activeVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude;
-			DrawEntry("∆v required", $"{requiredDVremaining:N1}", "m/s");
-			double timeUntilNode = currentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
-			DrawEntry("Time to", SecondsToTimeString(timeUntilNode), "s");
-			DrawEntry("Burn Time", SecondsToTimeString(currentManeuver.BurnDuration), "s");
-
-			DrawSectionEnd(popoutMan);
-		}
-
-		private void DrawSectionHeader(string sectionName, ref bool isPopout, string value = "")
+		private void DrawSectionHeader(string sectionName, ref bool isPopout, bool isLocked, string value = "")
 		{
 			GUILayout.BeginHorizontal();
-			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", popoutBtnStyle);
+			
+			// If window is popped out and it's not locked => show the close button. If it's not popped out => show to popup arrow
+			isPopout = isPopout && !isLocked ? !CloseButton() : !isPopout ? GUILayout.Button("⇖", MicroStyles.PopoutBtnStyle) : isPopout;
 
-			GUILayout.Label($"<b>{sectionName}</b>");
+            GUILayout.Label($"<b>{sectionName}</b>");
 			GUILayout.FlexibleSpace();
-			GUILayout.Label(value, valueLabelStyle);
+			GUILayout.Label(value, MicroStyles.ValueLabelStyle);
 			GUILayout.Space(5);
-			GUILayout.Label("", unitLabelStyle);
+			GUILayout.Label("", MicroStyles.UnitLabelStyle);
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spacingAfterHeader);
+			GUILayout.Space(MicroStyles.SpacingAfterHeader);
 		}
 
-		private void DrawStagesHeader(ref bool isPopout)
+		private void DrawStagesHeader(MicroWindow stageWindow)
 		{
 			GUILayout.BeginHorizontal();
-			isPopout = isPopout ? !CloseButton() : GUILayout.Button("⇖", popoutBtnStyle);
+			stageWindow.IsFlightPoppedOut = stageWindow.IsFlightPoppedOut ? !CloseButton() : GUILayout.Button("⇖", MicroStyles.PopoutBtnStyle);
 
-			GUILayout.Label("<b>Stage</b>");
+			GUILayout.Label($"<b>{stageWindow.Name}</b>");
 			GUILayout.FlexibleSpace();
-			GUILayout.Label("∆v", tableHeaderLabelStyle);
+			GUILayout.Label("∆v", MicroStyles.TableHeaderLabelStyle);
 			GUILayout.Space(16);
-			GUILayout.Label($"TWR", tableHeaderLabelStyle, GUILayout.Width(40));
+			GUILayout.Label($"TWR", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(40));
 			GUILayout.Space(16);
-			if (isPopout)
+			if (stageWindow.IsFlightPoppedOut)
 			{
-				GUILayout.Label($"<color=#{unitColorHex}>Burn</color>", GUILayout.Width(56));
+				GUILayout.Label($"<color=#{MicroStyles.UnitColorHex}>Burn</color>", GUILayout.Width(56));
 			}
 			else
 			{
-				GUILayout.Label($"Burn", tableHeaderLabelStyle, GUILayout.Width(56));
+				GUILayout.Label($"Burn", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(56));
 			}
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spacingAfterHeader);
+			GUILayout.Space(MicroStyles.SpacingAfterHeader);
 		}
-
 
 		private void DrawEntry(string entryName, string value, string unit = "")
 		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Label(entryName, nameLabelStyle);
+			GUILayout.Label(entryName, MicroStyles.NameLabelStyle);
 			GUILayout.FlexibleSpace();
-			GUILayout.Label(value, valueLabelStyle);
+			GUILayout.Label(value, MicroStyles.ValueLabelStyle);
 			GUILayout.Space(5);
-			GUILayout.Label(unit, unitLabelStyle);
+			GUILayout.Label(unit, MicroStyles.UnitLabelStyle);
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spacingAfterEntry);
+			GUILayout.Space(MicroStyles.SpacingAfterEntry);
 		}
 
 		private void DrawStageEntry(int stageID, DeltaVStageInfo stageInfo, string twrFormatString)
 		{
 			GUILayout.BeginHorizontal();
-			GUILayout.Label($"{stageID:00.}", nameLabelStyle, GUILayout.Width(24));
+			GUILayout.Label($"{stageID:00.}", MicroStyles.NameLabelStyle, GUILayout.Width(24));
 			GUILayout.FlexibleSpace();
-			GUILayout.Label($"{stageInfo.DeltaVActual:N0} <color=#{unitColorHex}>m/s</color>", valueLabelStyle);
+			GUILayout.Label($"{stageInfo.DeltaVActual:N0} <color=#{MicroStyles.UnitColorHex}>m/s</color>", MicroStyles.ValueLabelStyle);
 			GUILayout.Space(16);
-			GUILayout.Label($"{stageInfo.TWRActual.ToString(twrFormatString)}", valueLabelStyle, GUILayout.Width(40));
+			GUILayout.Label($"{stageInfo.TWRActual.ToString(twrFormatString)}", MicroStyles.ValueLabelStyle, GUILayout.Width(40));
 			GUILayout.Space(16);
-			string burnTime = SecondsToTimeString(stageInfo.StageBurnTime, false);
+			string burnTime = MicroUtility.SecondsToTimeString(stageInfo.StageBurnTime, false);
 			string lastUnit = "s";
 			if (burnTime.Contains('h'))
 			{
@@ -571,133 +398,204 @@ namespace MicroMod
 				lastUnit = "h";
 			}
 
-			GUILayout.Label($"{burnTime}<color=#{unitColorHex}>{lastUnit}</color>", valueLabelStyle, GUILayout.Width(56));
+			GUILayout.Label($"{burnTime}<color=#{MicroStyles.UnitColorHex}>{lastUnit}</color>", MicroStyles.ValueLabelStyle, GUILayout.Width(56));
 			GUILayout.EndHorizontal();
-			GUILayout.Space(spacingAfterEntry);
+			GUILayout.Space(MicroStyles.SpacingAfterEntry);
 		}
 
-		private void DrawSectionEnd(bool isPopout)
+		private void DrawSectionEnd(MicroWindow window)
 		{
-			if (isPopout)
+			if (window.IsFlightPoppedOut)
 			{
-				GUI.DragWindow(new Rect(0, 0, windowWidth, windowHeight));
-				GUILayout.Space(spacingBelowPopout);
+				if (!window.IsLocked)
+					GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
+				
+				GUILayout.Space(MicroStyles.SpacingBelowPopout);
 			}
 			else
 			{
-				GUILayout.Space(spacingAfterSection);
+				GUILayout.Space(MicroStyles.SpacingAfterSection);
 			}
 		}
 
-		private bool CloseButton()
+        /// <summary>
+        /// Window for edditing window contents. Add/Remove/Reorder entries.
+        /// </summary>
+        /// <param name="windowIndex"></param>
+        private void DrawEditWindow(int windowIndex)
+        {
+            List<MicroWindow> editableWindows = MicroWindows.FindAll(w => w.IsEditable); // Editable windows are all except MainGUI, Settings and Stage
+            List<MicroEntry> entriesByCategory = MicroEntries.FindAll(e => e.Category == selectedCategory); // All window entries belong to a category, but they can still be placed in any window
+
+            showEditWindow = !CloseButton();
+
+            #region Selection of window to be edited
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("<b>EDITING WINDOW</b>", MicroStyles.TitleLabelStyle);
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("<", MicroStyles.OneCharacterBtnStyle))
+            {
+                selectedWindowId = selectedWindowId > 0 ? selectedWindowId - 1 : editableWindows.Count - 1;
+            }
+            editableWindows[selectedWindowId].Abbreviation = GUILayout.TextField(editableWindows[selectedWindowId].Abbreviation, MicroStyles.WindowSelectionAbbrevitionTextFieldStyle);
+            editableWindows[selectedWindowId].Abbreviation = MicroUtility.ValidateAbbreviation(editableWindows[selectedWindowId].Abbreviation);
+            editableWindows[selectedWindowId].Name = GUILayout.TextField(editableWindows[selectedWindowId].Name, MicroStyles.WindowSelectionTextFieldStyle);
+            if (GUILayout.Button(">", MicroStyles.OneCharacterBtnStyle))
+            {
+                selectedWindowId = selectedWindowId < editableWindows.Count - 1 ? selectedWindowId + 1 : 0;
+            }
+            GUILayout.EndHorizontal();
+            #endregion
+
+            GUILayout.Space(-10);
+            GUILayout.BeginHorizontal();
+            GUILayout.BeginVertical();
+            GUILayout.Space(10);
+            editableWindows[selectedWindowId].IsLocked = GUILayout.Toggle(editableWindows[selectedWindowId].IsLocked, "Locked");
+            GUILayout.EndVertical();
+            GUILayout.FlexibleSpace();
+            if (editableWindows[selectedWindowId].IsDeletable)
+            {
+                if (GUILayout.Button("DEL WINDOW", MicroStyles.NormalBtnStyle))
+                {
+                    MicroWindows.Remove(editableWindows[selectedWindowId]);
+                    editableWindows.Remove(editableWindows[selectedWindowId]);
+                    selectedWindowId--;
+                }
+            }
+            if (GUILayout.Button("NEW WINDOW", MicroStyles.NormalBtnStyle))
+                CreateCustomWindow(editableWindows);
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            MicroStyles.DrawHorizontalLine();
+            GUILayout.Space(10);
+
+            #region Installed entries in the selected window
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("<b>Installed</b>", MicroStyles.NormalLabelStyle);
+            GUILayout.EndHorizontal();
+
+            var entries = editableWindows[selectedWindowId].Entries.ToList();
+            foreach (var (entry, index) in entries.Select((entry, index) => (entry, index)))
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(entry.Name, MicroStyles.NameLabelStyle);
+                if (GUILayout.Button("↑", MicroStyles.OneCharacterBtnStyle))
+                {
+                    if (index > 0)
+                        editableWindows[selectedWindowId].MoveEntryUp(index);
+                }
+                if (GUILayout.Button("↓", MicroStyles.OneCharacterBtnStyle))
+                {
+                    if (index < editableWindows[selectedWindowId].Entries.Count - 1)
+                        editableWindows[selectedWindowId].MoveEntryDown(index);
+                }
+                if (GUILayout.Button("X", MicroStyles.OneCharacterBtnStyle))
+                    editableWindows[selectedWindowId].RemoveEntry(index);
+                GUILayout.EndHorizontal();
+            }
+            #endregion
+
+            GUILayout.Space(10);
+            MicroStyles.DrawHorizontalLine();
+            GUILayout.Space(10);
+
+            #region All entries that can be added to any IsEditable window
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("<b>Add</b>", MicroStyles.NormalLabelStyle);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Category", MicroStyles.NormalLabelStyle);
+            GUILayout.FlexibleSpace();
+
+            if (GUILayout.Button("<", MicroStyles.OneCharacterBtnStyle))
+            {
+                selectedCategory = (int)selectedCategory > 0 ? selectedCategory - 1 : Enum.GetValues(typeof(MicroEntryCategory)).Cast<MicroEntryCategory>().Last();
+            }
+            GUILayout.Label(selectedCategory.ToString(), MicroStyles.NormalCenteredLabelStyle);
+            if (GUILayout.Button(">", MicroStyles.OneCharacterBtnStyle))
+            {
+                selectedCategory = (int)selectedCategory < (int)Enum.GetValues(typeof(MicroEntryCategory)).Cast<MicroEntryCategory>().Last() ? selectedCategory + 1 : Enum.GetValues(typeof(MicroEntryCategory)).Cast<MicroEntryCategory>().First();
+            }
+            GUILayout.EndHorizontal();
+
+            foreach (var (entry, index) in entriesByCategory.Select((entry, index) => (entry, index)))
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(entry.Name, MicroStyles.NameLabelStyle);
+                if (GUILayout.Button("?", MicroStyles.OneCharacterBtnStyle))
+                {
+                    if (!showTooltip.condition)
+                        showTooltip = (true, index);
+                    else
+                    {
+                        if (showTooltip.index != index)
+                            showTooltip = (true, index);
+                        else
+                            showTooltip = (false, index);
+                    }
+                }
+                if (GUILayout.Button("+", MicroStyles.OneCharacterBtnStyle))
+                {
+                    editableWindows[selectedWindowId].AddEntry(entry);
+                }
+                GUILayout.EndHorizontal();
+
+                if (showTooltip.condition && showTooltip.index == index)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label(entry.Description, MicroStyles.BlueLabelStyle);
+                    GUILayout.EndHorizontal();
+                }
+            }
+            #endregion
+
+            GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth, MicroStyles.WindowHeight));
+        }
+
+        /// <summary>
+        /// Creates a new custom window user can fill with any entry
+        /// </summary>
+        /// <param name="editableWindows"></param>
+        private void CreateCustomWindow(List<MicroWindow> editableWindows)
+        {
+            // Default window's name will be CustomX where X represents the first not used integer
+            int nameID = 1;
+            foreach (MicroWindow window in editableWindows)
+            {
+                if (window.Name == "Custom" + nameID)
+                    nameID++;
+            }
+
+            MicroWindow newWindow = new MicroWindow()
+            {
+                Name = "Custom" + nameID,
+                Abbreviation = nameID.ToString().Length == 1 ? "Cu" + nameID : nameID.ToString().Length == 2 ? "C" + nameID : nameID.ToString(),
+                Description = "",
+                IsEditorActive = false,
+                IsFlightActive = true,
+                IsMapActive = false,
+                IsEditorPoppedOut = false,
+                IsFlightPoppedOut = false,
+                IsMapPoppedOut = false,
+                IsLocked = false,
+                MainWindow = MainWindow.None,
+                EditorRect = null,
+                FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                Entries = new List<MicroEntry>()
+            };
+
+            MicroWindows.Add(newWindow);
+            editableWindows.Add(newWindow);
+
+            selectedWindowId = editableWindows.Count - 1;
+        }
+
+        private bool CloseButton()
 		{
-			return GUI.Button(closeBtnRect, "x", closeBtnStyle);
-		}
-
-		private string SituationToString(VesselSituations situation)
-		{
-			return situation switch
-			{
-				VesselSituations.PreLaunch => "Pre-Launch",
-				VesselSituations.Landed => "Landed",
-				VesselSituations.Splashed => "Splashed down",
-				VesselSituations.Flying => "Flying",
-				VesselSituations.SubOrbital => "Suborbital",
-				VesselSituations.Orbiting => "Orbiting",
-				VesselSituations.Escaping => "Escaping",
-				_ => "UNKNOWN",
-			};
-		}
-
-		private string SecondsToTimeString(double seconds, bool addSpacing = true)
-		{
-			if (seconds == Double.PositiveInfinity)
-			{
-				return "∞";
-			}
-			else if (seconds == Double.NegativeInfinity)
-			{
-				return "-∞";
-			}
-
-			seconds = Math.Ceiling(seconds);
-
-			string result = "";
-			string spacing = "";
-			if (addSpacing)
-			{
-				spacing = " ";
-			}
-
-			if (seconds < 0)
-			{
-				result += "-";
-				seconds = Math.Abs(seconds);
-			}
-
-			int days = (int)(seconds / 21600);
-			int hours = (int)((seconds - (days * 21600)) / 3600);
-			int minutes = (int)((seconds - (hours * 3600) - (days * 21600)) / 60);
-			int secs = (int)(seconds - (days * 21600) - (hours * 3600) - (minutes * 60));
-
-			if (days > 0)
-			{
-				result += $"{days}{spacing}<color=#{unitColorHex}>d</color> ";
-			}
-
-			if (hours > 0 || days > 0)
-			{
-				{
-					result += $"{hours}{spacing}<color=#{unitColorHex}>h</color> ";
-				}
-			}
-
-			if (minutes > 0 || hours > 0 || days > 0)
-			{
-				if (hours > 0 || days > 0)
-				{
-					result += $"{minutes:00.}{spacing}<color=#{unitColorHex}>m</color> ";
-				}
-				else
-				{
-					result += $"{minutes}{spacing}<color=#{unitColorHex}>m</color> ";
-				}
-			}
-
-			if (minutes > 0 || hours > 0 || days > 0)
-			{
-				result += $"{secs:00.}";
-			}
-			else
-			{
-				result += secs;
-			}
-
-			return result;
-
-		}
-
-		private string MetersToDistanceString(double heightInMeters)
-		{
-			return $"{heightInMeters:N0}";
-		}
-
-		private string BiomeToString(BiomeSurfaceData biome)
-		{
-			string result = biome.type.ToString().ToLower().Replace('_', ' ');
-			return result.Substring(0, 1).ToUpper() + result.Substring(1);
-		}
-
-		private string DegreesToDMS(double degreeD)
-		{
-			var ts = TimeSpan.FromHours(Math.Abs(degreeD));
-			int degrees = (int)Math.Floor(ts.TotalHours);
-			int minutes = ts.Minutes;
-			int seconds = ts.Seconds;
-
-			string result = $"{degrees:N0}<color={unitColorHex}>°</color> {minutes:00}<color={unitColorHex}>'</color> {seconds:00}<color={unitColorHex}>\"</color>";
-
-			return result;
+			return GUI.Button(MicroStyles.CloseBtnRect, "X", MicroStyles.CloseBtnStyle);
 		}
 
 		private void CloseWindow()
@@ -706,71 +604,254 @@ namespace MicroMod
 			showGUI = false;
 		}
 
-		private void GetAeroStats()
+        private void ResetLayout()
+        {
+            InitializeWindows();
+        }
+
+        /// <summary>
+        /// Builds the list of all Entries
+        /// </summary>
+        private void InitializeEntries()
 		{
-			totalDrag = 0.0;
-			totalLift = 0.0;
+			MicroEntries = new List<MicroEntry>();
 
-			IEnumerable<PartComponent> parts = activeVessel?.SimulationObject?.PartOwner?.Parts;
-			if (parts == null || !activeVessel.IsInAtmosphere)
-			{
-				return;
-			}
+            #region Vessel entries
+            MicroEntries.Add(new Vessel());
+            MicroEntries.Add(new Mass());
+            MicroEntries.Add(new DeltaV());
+            MicroEntries.Add(new Thrust());
+            MicroEntries.Add(new TWR());
+			#endregion
+            #region Orbital entries
+            MicroEntries.Add(new Apoapsis());
+            MicroEntries.Add(new TimeToApoapsis());
+            MicroEntries.Add(new Periapsis());
+            MicroEntries.Add(new TimeToPeriapsis());
+            MicroEntries.Add(new Inclination());
+            MicroEntries.Add(new Eccentricity());
+            MicroEntries.Add(new Period());
+            MicroEntries.Add(new SoiTransition());
+            #endregion
+            #region Surface entries
+            MicroEntries.Add(new Body());
+            MicroEntries.Add(new Situation());
+            MicroEntries.Add(new Latitude());
+            MicroEntries.Add(new Longitude());
+            MicroEntries.Add(new Biome());
+            MicroEntries.Add(new AltitudeAsl());
+            MicroEntries.Add(new AltitudeAgl());
+            MicroEntries.Add(new HorizontalVelocity());
+            MicroEntries.Add(new VerticalVelocity());
+            #endregion
+            #region Flight entries
+            MicroEntries.Add(new Speed());
+            MicroEntries.Add(new MachNumber());
+            MicroEntries.Add(new AtmosphericDensity());
+            MicroEntries.Add(new TotalLift());
+            MicroEntries.Add(new TotalDrag());
+            MicroEntries.Add(new LiftDivDrag());
+            #endregion
+            #region Flight entries
+            MicroEntries.Add(new TargetApoapsis());
+            MicroEntries.Add(new TargetPeriapsis());
+            MicroEntries.Add(new DistanceToTarget());
+            MicroEntries.Add(new RelativeSpeed());
+            MicroEntries.Add(new RelativeInclination());
+            #endregion
+            #region Maneuver entries
+            MicroEntries.Add(new ProjectedAp());
+            MicroEntries.Add(new ProjectedPe());
+            MicroEntries.Add(new DeltaVRequired());
+            MicroEntries.Add(new TimeToNode());
+            MicroEntries.Add(new BurnTime());
+            #endregion
+            #region Stage entries
+            MicroEntries.Add(new TotalDeltaVVac());
+            MicroEntries.Add(new TotalDeltaVAsl());
+            MicroEntries.Add(new TotalDeltaVActual());
+            MicroEntries.Add(new StageInfo());
+            #endregion
+            #region Misc entries
+            MicroEntries.Add(new Separator());
+            #endregion
+        }
 
-			foreach (PartComponent part in parts)
+		/// <summary>
+		/// Builds the default Windows and fills them with default Entries
+		/// </summary>
+		private void InitializeWindows()
+		{
+			MicroWindows = new List<MicroWindow>();
+
+			try
 			{
-				foreach (IForce force in part.SimulationObject.Rigidbody.Forces)
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "MainGui",
+                    Abbreviation = null,
+                    Description = "Main GUI",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false, // not relevant to Main GUI
+                    IsFlightPoppedOut = false, // not relevant to Main GUI
+                    IsMapPoppedOut = false, // not relevant to Main GUI
+                    IsLocked = false,
+                    MainWindow = MainWindow.MainGui,
+                    EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.MainGuiX, MicroStyles.MainGuiY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    Entries = null
+                });
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Settings",
+                    Abbreviation = "SET",
+                    Description = "Settings",
+                    IsEditorActive = false,
+                    IsFlightActive = false,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    MainWindow = MainWindow.Settings,
+                    EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    Entries = null
+                });
+
+                MicroWindows.Add(new MicroWindow
 				{
-					if (dragForces.Contains(force.GetType()))
-					{
-						totalDrag += force.RelativeForce.magnitude;
-					}
-					if (liftForces.Contains(force.GetType()))
-					{
-						totalLift += force.RelativeForce.magnitude;
-					}
-				}
-			}
-		}
+					Name = "Vessel",					
+					Abbreviation = "VES",
+					Description = "Vessel entries",
+					IsEditorActive = false,
+					IsFlightActive = true,
+					IsMapActive = false,
+					IsEditorPoppedOut = false,
+					IsFlightPoppedOut = false,
+					IsMapPoppedOut = false,
+					IsLocked = false,
+					MainWindow = MainWindow.Vessel,
+					EditorRect = null,
+					FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+					Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Vessel).ToList()
+				});
 
-		private void SaveLayoutState()
-		{
-			LayoutState state = new(this);
-			state.Save();
-		}
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Orbital",
+					Abbreviation = "ORB",
+					Description = "Orbital entries",
+					IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    MainWindow = MainWindow.Orbital,
+                    EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Orbital).ToList()
+                });
 
-		private void LoadLayoutState()
-		{
-			LayoutState state = LayoutState.Load();
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Surface",
+                    Abbreviation = "SUR",
+                    Description = "Surface entries",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    MainWindow = MainWindow.Surface,
+                    EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Surface).ToList()
+                });
 
-			if (state != null)
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Flight",
+                    Abbreviation = "FLT",
+                    Description = "Flight entries",
+                    IsEditorActive = false,
+                    IsFlightActive = false,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    MainWindow = MainWindow.Flight,
+                    EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Flight).ToList()
+                });
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Target",
+                    Abbreviation = "TGT",
+                    Description = "Flight entries",
+                    IsEditorActive = false,
+                    IsFlightActive = false,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    MainWindow = MainWindow.Target,
+                    EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Target).ToList()
+                });
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Maneuver",
+                    Abbreviation = "MAN",
+                    Description = "Maneuver entries",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    MainWindow = MainWindow.Maneuver,
+                    EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Maneuver).ToList()
+                });
+
+                MicroWindows.Add(new MicroWindow
+                {
+                    Name = "Stage",
+                    Abbreviation = "STG",
+                    Description = "Stage entries",
+                    IsEditorActive = false,
+                    IsFlightActive = true,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    MainWindow = MainWindow.Stage,
+                    EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Stage).ToList()
+                });                
+            }
+			catch (Exception ex)
 			{
-				showSettings = false;
-				showVes = state.ShowVes;
-				showOrb = state.ShowOrb;
-				showSur = state.ShowSur;
-				showFlt = state.ShowFlt;
-				showMan = state.ShowMan;
-				showTgt = state.ShowTgt;
-				showStg = state.ShowStg;
-				popoutSettings = state.IsPopoutSettings;
-				popoutVes = state.IsPopoutVes;
-				popoutOrb = state.IsPopoutOrb;
-				popoutSur = state.IsPopoutSur;
-				popoutFlt = state.IsPopOutFlt;
-				popoutMan = state.IsPopOutMan;
-				popoutTgt = state.IsPopOutTgt;
-				popoutStg = state.IsPopOutStg;
-				mainGuiRect.position = state.MainGuiPosition;
-				settingsGuiRect.position = state.SettingsPosition;
-				vesGuiRect.position = state.VesPosition;
-				orbGuiRect.position = state.OrbPosition;
-				surGuiRect.position = state.SurPosition;
-				fltGuiRect.position = state.FltPosition;
-				manGuiRect.position = state.ManPosition;
-				tgtGuiRect.position = state.TgtPosition;
-				stgGuiRect.position = state.StgPosition;
+				Logger.LogError(ex);
 			}
 		}
-	}
+    }
 }
