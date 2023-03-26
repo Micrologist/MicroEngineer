@@ -16,7 +16,7 @@ using static KSP.Rendering.Planets.PQSData;
 
 namespace MicroMod
 {
-	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.5.0")]
+	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.6.0")]
 	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 	public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
