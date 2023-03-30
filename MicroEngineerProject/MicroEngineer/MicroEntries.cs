@@ -1,4 +1,5 @@
 ﻿using KSP.Game;
+using KSP.Sim.DeltaV;
 using KSP.Sim.impl;
 using Newtonsoft.Json;
 using static KSP.Rendering.Planets.PQSData;
@@ -41,6 +42,7 @@ namespace MicroMod
         public virtual void RefreshData() { }
     }
 
+    #region Flight scene entries
     public class Vessel : MicroEntry
     {
         public Vessel()
@@ -1234,4 +1236,222 @@ namespace MicroMod
             EntryValue = "---------------";
         }
     }
+    #endregion
+
+    #region OAB scene entries
+    public class TotalBurnTime_OAB : MicroEntry
+    {
+        public bool UseDHMSFormatting;
+
+        public TotalBurnTime_OAB()
+        {
+            Name = "Total Burn Time (OAB)";
+            Description = "TODO";
+            Category = MicroEntryCategory.OAB;
+            Unit = "s";
+            Formatting = "{0:N1}";
+            UseDHMSFormatting = true;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalBurnTime;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                if (UseDHMSFormatting)
+                    return MicroUtility.SecondsToTimeString((double)EntryValue);
+                else
+                    return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
+    public class TotalDeltaVASL_OAB : MicroEntry
+    {
+        public TotalDeltaVASL_OAB()
+        {
+            Name = "Total ∆v ASL (OAB)";
+            Description = "TODO";
+            Category = MicroEntryCategory.OAB;
+            Unit = "m/s";
+            Formatting = "{0:N0}";
+        }
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalDeltaVASL;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+                
+                return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
+    public class TotalDeltaVActual_OAB : MicroEntry
+    {
+        public TotalDeltaVActual_OAB()
+        {
+            Name = "Total ∆v Actual (OAB)";
+            Description = "TODO";
+            Category = MicroEntryCategory.OAB;
+            Unit = "m/s";
+            Formatting = "{0:N0}";
+        }
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalDeltaVActual;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
+    public class TotalDeltaVVac_OAB : MicroEntry
+    {
+        public TotalDeltaVVac_OAB()
+        {
+            Name = "Total ∆v Vac (OAB)";
+            Description = "TODO";
+            Category = MicroEntryCategory.OAB;
+            Unit = "m/s";
+            Formatting = "{0:N0}";
+        }
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalDeltaVVac;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
+    public class StageInfo_OAB : MicroEntry
+    {
+        public StageInfo_OAB()
+        {
+            Name = "Stage Info (OAB)";
+            Description = "TODO";
+            Category = MicroEntryCategory.OAB;
+            Unit = null;
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue ??= new List<DeltaVStageInfo_OAB>();
+
+            ((List<DeltaVStageInfo_OAB>)EntryValue).Clear();
+
+            if (MicroUtility.VesselDeltaVComponentOAB?.StageInfo == null) return;
+
+            foreach (var stage in MicroUtility.VesselDeltaVComponentOAB.StageInfo)
+            {
+                ((List<DeltaVStageInfo_OAB>)EntryValue).Add(new DeltaVStageInfo_OAB
+                {
+                    DeltaVActual = stage.DeltaVActual,
+                    DeltaVASL = stage.DeltaVatASL,
+                    DeltaVVac = stage.DeltaVinVac,
+                    DryMass = stage.DryMass,
+                    EndMass = stage.EndMass,
+                    FuelMass = stage.FuelMass,
+                    IspASL = stage.IspASL,
+                    IspActual = stage.IspActual,
+                    IspVac = stage.IspVac,
+                    SeparationIndex = stage.SeparationIndex,
+                    Stage = stage.Stage,
+                    StageBurnTime = stage.StageBurnTime,
+                    StageMass = stage.StageMass,
+                    StartMass = stage.StartMass,
+                    TWRASL = stage.TWRASL,
+                    TWRActual = stage.TWRActual,
+                    TWRVac = stage.TWRVac,
+                    ThrustASL = stage.ThrustASL,
+                    ThrustActual = stage.ThrustActual,
+                    ThrustVac = stage.ThrustVac,
+                    TotalExhaustVelocityASL = stage.TotalExhaustVelocityASL,
+                    TotalExhaustVelocityActual = stage.TotalExhaustVelocityActual,
+                    TotalExhaustVelocityVAC = stage.TotalExhaustVelocityVAC
+                });
+            }
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                return "-";
+            }
+        }
+    }
+
+    public class DeltaVStageInfo_OAB
+    {
+        public double DeltaVActual; // 1137.103515625 double
+        public double DeltaVASL; // 1137.103515625 double
+        public double DeltaVVac; // 1303.40734863281 double
+        public double DryMass; // 8.21689996941015 double
+        public double EndMass; // 14.6350441498584 double
+        public double FuelMass; // 19.2799997702241 double
+        public double IspASL; // 183.860239557547 double
+        public double IspActual; // 183.860239557547 double
+        public double IspVac; // 210.761997905552 double 
+        public int SeparationIndex;
+        //      -> 5 for stage 0
+        //      -> 5 for stage 1
+        //      -> 4 for stage 2
+        //      -> 2 for stage 3
+        //      -> 2 for stage 4
+        //      -> 0 for stage 5
+        //      -> 0 for stage 6
+        public int Stage;
+        //      -> 6 for stage 0
+        //      -> 5 for stage 1
+        //      -> 4 for stage 2
+        //      -> 3
+        //      -> 2
+        //      -> 1
+        //      -> 0
+        public double StageBurnTime; // 23.6707731615498 double
+        public double StageMass; // 27.4968997396342 double
+        public double StartMass; // 27.4968997396342 double
+        public float TWRASL; // 3.632009 float
+        public float TWRActual; // 3.632009 float
+        public float TWRVac; // 4.163198 float
+        public float ThrustASL; // 979.7148 float
+        public float ThrustActual; // 979.7148 float
+        public float ThrustVac; // 1123 float
+        public float TotalExhaustVelocityASL; //	979.7148	float
+        public float TotalExhaustVelocityActual; //	979.7148	float
+        public float TotalExhaustVelocityVAC; //	1123	float
+    }
+    #endregion
 }

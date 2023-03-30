@@ -13,6 +13,7 @@ using KSP.Sim.DeltaV;
 using KSP.Sim;
 using KSP.UI.Flight;
 using static KSP.Rendering.Planets.PQSData;
+using KSP.Messages;
 
 namespace MicroMod
 {
@@ -20,7 +21,8 @@ namespace MicroMod
 	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 	public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
-		private bool showGUI = false;
+        private bool _showGuiFlight;
+        private bool _showGuiOAB;
 		
 		#region Editing window
 		private bool showEditWindow = false;
@@ -41,38 +43,201 @@ namespace MicroMod
 
         public override void OnInitialized()
 		{
-			Appbar.RegisterAppButton(
-					"Micro Engineer",
-					"BTN-MicroEngineerBtn",
-					AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
-					delegate { showGUI = !showGUI; }
-			);
-
-			MicroStyles.InitializeStyles();
+            MicroStyles.InitializeStyles();
 			InitializeEntries();
 			InitializeWindows();
+            SubscribeToMessages();
 			
-			// load window positions and states from disk, if file exists
+			// Load window positions and states from disk, if file exists
 			MicroUtility.LoadLayout(MicroWindows);
-		}
-		
+
+            // Preserve backward compatibility with 0.6.0. If user previously saved the layout and then upgraded without deleting the original folder, then StageInfoOAB window will be wiped by LoadLayout(). So, we add it manually now.
+            if (MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB) == null)
+                InitializeStageInfoOABWindow();
+
+            Appbar.RegisterAppButton(
+                "Micro Engineer",
+                "BTN-MicroEngineerBtn",
+                AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
+                isOpen =>
+                {
+                    _showGuiFlight = isOpen;
+                    MicroWindows.Find(w => w.MainWindow == MainWindow.MainGui).IsFlightActive = isOpen;
+                    GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
+                });
+
+            Appbar.RegisterOABAppButton(
+                "Micro Engineer",
+                "BTN-MicroEngineerOAB",
+                AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
+                isOpen =>
+                {
+                    _showGuiOAB = isOpen;
+                    MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
+                    GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
+                });
+        }
+
+        private void SubscribeToMessages()
+        {
+            MicroUtility.RefreshGameManager();
+
+            // While in OAB we use the VesselDeltaVCalculationMessage event to refresh data as it's triggered a lot less frequently than Update()
+            MicroUtility.MessageCenter.Subscribe<VesselDeltaVCalculationMessage>(new Action<MessageCenterMessage>(this.RefreshStagingDataOAB));
+            
+            // We are loading layout state when entering Flight or OAB game state
+            MicroUtility.MessageCenter.Subscribe<GameStateEnteredMessage>(new Action<MessageCenterMessage>(this.GameStateEntered));
+            
+            // We are saving layout state when exiting from Flight or OAB game state
+            MicroUtility.MessageCenter.Subscribe<GameStateLeftMessage>(new Action<MessageCenterMessage>(this.GameStateLeft));
+        }
+
+        private void GameStateEntered(MessageCenterMessage obj)
+        {
+            Logger.LogInfo("Message triggered: GameStateEnteredMessage");
+
+            MicroUtility.RefreshGameManager();
+            if (MicroUtility.GameState.GameState == GameState.FlightView || MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder)
+            {
+                MicroUtility.LoadLayout(MicroWindows);
+
+                if(MicroUtility.GameState.GameState == GameState.FlightView)
+                    _showGuiFlight = MicroWindows.Find(w => w.MainWindow == MainWindow.MainGui).IsFlightActive;
+
+                if(MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder)
+                    _showGuiOAB = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
+            }
+        }
+
+        private void GameStateLeft(MessageCenterMessage obj)
+        {
+            Logger.LogInfo("Message triggered: GameStateLeftMessage");
+
+            MicroUtility.RefreshGameManager();
+            if (MicroUtility.GameState.GameState == GameState.FlightView || MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder)
+            {
+                MicroUtility.SaveLayout(MicroWindows);
+
+                if (MicroUtility.GameState.GameState == GameState.FlightView)
+                    _showGuiFlight = false;
+
+                if (MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder)
+                    _showGuiOAB = false;
+            }
+        }
+
+        private void RefreshStagingDataOAB(MessageCenterMessage obj)
+        {
+            MicroUtility.RefreshGameManager();
+            if (MicroUtility.GameState.GameState != GameState.VehicleAssemblyBuilder) return;
+
+            MicroUtility.RefreshStagesOAB();
+
+            MicroWindow stageWindow = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+
+            if (MicroUtility.VesselDeltaVComponentOAB?.StageInfo == null)
+            {
+                stageWindow.Entries.Find(e => e.Name == "Stage Info (OAB)").EntryValue = null;
+                return;
+            }
+
+            foreach (var entry in stageWindow.Entries)
+                entry.RefreshData();
+        }
+
         public void Update()
         {
             MicroUtility.RefreshActiveVesselAndCurrentManeuver();
-            if (MicroUtility.ActiveVessel == null) return;
+
+            if (MicroUtility.GameState == null || !MicroUtility.GameState.IsFlightMode)
+                return;
+            
+            if (MicroUtility.ActiveVessel == null)
+                return;
 
             // Grab all entries from all active windows and refresh their data
-			foreach (MicroEntry entry in MicroWindows
-				.Where(w => w.IsFlightActive)
-				.SelectMany(w => w.Entries ?? Enumerable.Empty<MicroEntry>()).ToList())
+            foreach (MicroEntry entry in MicroWindows
+                .Where(w => w.IsFlightActive)
+                .SelectMany(w => w.Entries ?? Enumerable.Empty<MicroEntry>()).ToList())
                 entry.RefreshData();
         }
 		
-		private void OnGUI()
-		{
+
+        private void OnGUI()
+        {
             GUI.skin = MicroStyles.SpaceWarpUISkin;
 
-			if (!showGUI || MicroUtility.ActiveVessel == null) return;
+            MicroUtility.RefreshGameManager();
+            if (MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder)
+                OnGUI_OAB();
+            else
+                OnGUI_Flight();
+        }
+
+        private void OnGUI_OAB()
+        {
+            if (!_showGuiOAB) return;
+
+            MicroWindow stageInfoOAB = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            if (stageInfoOAB.Entries.Find(e => e.Name == "Stage Info (OAB)").EntryValue == null) return;
+
+            stageInfoOAB.EditorRect = GUILayout.Window(
+                GUIUtility.GetControlID(FocusType.Passive),
+                stageInfoOAB.EditorRect,
+                DrawStageInfoOAB,
+                "",
+                MicroStyles.StageOABWindowStyle,
+                GUILayout.Height(0)
+                );
+            stageInfoOAB.EditorRect.position = MicroUtility.ClampToScreen(stageInfoOAB.EditorRect.position, stageInfoOAB.EditorRect.size);
+
+        }
+
+        // TODO: implement StageInfoOAB drawing fully
+        private void DrawStageInfoOAB(int windowID)
+        {
+            MicroWindow stageInfoOAB = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+
+            // Draw Stage header
+            GUILayout.BeginHorizontal();
+            if (CloseButton())
+            {
+                stageInfoOAB.IsEditorActive = false;
+                _showGuiOAB = false;
+            }
+            GUILayout.Label($"<b>{stageInfoOAB.Name}</b>");
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginVertical();
+            foreach (MicroEntry entry in stageInfoOAB.Entries)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(entry.Name);
+                GUILayout.Label(entry.ValueDisplay);
+                GUILayout.Label(entry.Unit);
+                GUILayout.EndHorizontal();
+            }
+
+            foreach (var stage in (List<DeltaVStageInfo_OAB>)stageInfoOAB.Entries.Find(e => e.Name == "Stage Info (OAB)").EntryValue)
+            {
+                GUILayout.BeginHorizontal();
+
+                GUILayout.Label(stage.Stage.ToString());
+                GUILayout.Label(stage.TWRVac.ToString());
+                GUILayout.Label(stage.TWRASL.ToString());
+                GUILayout.Label(stage.DeltaVASL.ToString());
+                GUILayout.Label(stage.DeltaVVac.ToString());
+                GUILayout.Label(stage.StageBurnTime.ToString());
+                GUILayout.EndHorizontal();            
+            }
+
+            GUILayout.EndVertical();
+            GUI.DragWindow(new Rect(0, 0, MicroStyles.WindowWidth+500, MicroStyles.WindowHeight));
+        }
+
+        private void OnGUI_Flight()
+		{
+            if (!_showGuiFlight || MicroUtility.ActiveVessel == null) return;
 
             MicroWindow mainGui = MicroWindows.Find(window => window.MainWindow == MainWindow.MainGui);
 			
@@ -168,7 +333,7 @@ namespace MicroMod
 					);
             }
         }
-
+        
         /// <summary>
         /// Draws the main GUI with all windows that are toggled and docked
         /// </summary>
@@ -186,8 +351,8 @@ namespace MicroMod
 
                 GUILayout.BeginHorizontal();
 
-                // Draw toggles for all windows except MainGui
-                foreach (var (window, index) in MicroWindows.Select((window, index) => (window, index)).Where(x => x.window.MainWindow != MainWindow.MainGui))
+                // Draw toggles for all windows except MainGui and StageInfoOAB
+                foreach (var (window, index) in MicroWindows.Select((window, index) => (window, index)).Where(x => x.window.MainWindow != MainWindow.MainGui && x.window.MainWindow != MainWindow.StageInfoOAB))
                 {
                     // layout can fit 6 toggles, so if all 6 slots are filled then go to a new line. Index == 0 is the MainGUI which isn't rendered
                     if ((index - 1) % 6 == 0 && index > 1)
@@ -343,7 +508,7 @@ namespace MicroMod
 
 		private void DrawStagesHeader(MicroWindow stageWindow)
 		{
-			GUILayout.BeginHorizontal();
+            GUILayout.BeginHorizontal();
 			stageWindow.IsFlightPoppedOut = stageWindow.IsFlightPoppedOut ? !CloseButton() : GUILayout.Button("⇖", MicroStyles.PopoutBtnStyle);
 
 			GUILayout.Label($"<b>{stageWindow.Name}</b>");
@@ -424,7 +589,7 @@ namespace MicroMod
         /// <param name="windowIndex"></param>
         private void DrawEditWindow(int windowIndex)
         {
-            List<MicroWindow> editableWindows = MicroWindows.FindAll(w => w.IsEditable); // Editable windows are all except MainGUI, Settings and Stage
+            List<MicroWindow> editableWindows = MicroWindows.FindAll(w => w.IsEditable); // Editable windows are all except MainGUI, Settings, Stage and StageInfoOAB
             List<MicroEntry> entriesByCategory = MicroEntries.FindAll(e => e.Category == selectedCategory); // All window entries belong to a category, but they can still be placed in any window
 
             showEditWindow = !CloseButton();
@@ -582,7 +747,7 @@ namespace MicroMod
                 IsMapPoppedOut = false,
                 IsLocked = false,
                 MainWindow = MainWindow.None,
-                EditorRect = null,
+                //EditorRect = null,
                 FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
                 Entries = new List<MicroEntry>()
             };
@@ -601,7 +766,7 @@ namespace MicroMod
 		private void CloseWindow()
 		{
 			GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(false);
-			showGUI = false;
+			_showGuiFlight = false;
 		}
 
         private void ResetLayout()
@@ -675,12 +840,19 @@ namespace MicroMod
             #region Misc entries
             MicroEntries.Add(new Separator());
             #endregion
+            #region OAB entries
+            MicroEntries.Add(new TotalBurnTime_OAB());
+            MicroEntries.Add(new TotalDeltaVASL_OAB());
+            MicroEntries.Add(new TotalDeltaVActual_OAB());
+            MicroEntries.Add(new TotalDeltaVVac_OAB());
+            MicroEntries.Add(new StageInfo_OAB());
+            #endregion
         }
 
-		/// <summary>
-		/// Builds the default Windows and fills them with default Entries
-		/// </summary>
-		private void InitializeWindows()
+        /// <summary>
+        /// Builds the default Windows and fills them with default Entries
+        /// </summary>
+        private void InitializeWindows()
 		{
 			MicroWindows = new List<MicroWindow>();
 
@@ -692,14 +864,14 @@ namespace MicroMod
                     Abbreviation = null,
                     Description = "Main GUI",
                     IsEditorActive = false,
-                    IsFlightActive = true,
+                    IsFlightActive = false,
                     IsMapActive = false,
                     IsEditorPoppedOut = false, // not relevant to Main GUI
                     IsFlightPoppedOut = false, // not relevant to Main GUI
                     IsMapPoppedOut = false, // not relevant to Main GUI
                     IsLocked = false,
                     MainWindow = MainWindow.MainGui,
-                    EditorRect = null,
+                    //EditorRect = null,
                     FlightRect = new Rect(MicroStyles.MainGuiX, MicroStyles.MainGuiY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
                     Entries = null
                 });
@@ -717,7 +889,7 @@ namespace MicroMod
                     IsMapPoppedOut = false,
                     IsLocked = false,
                     MainWindow = MainWindow.Settings,
-                    EditorRect = null,
+                    //EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
                     Entries = null
                 });
@@ -735,8 +907,8 @@ namespace MicroMod
 					IsMapPoppedOut = false,
 					IsLocked = false,
 					MainWindow = MainWindow.Vessel,
-					EditorRect = null,
-					FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
+                    //EditorRect = null,
+                    FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
 					Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Vessel).ToList()
 				});
 
@@ -753,7 +925,7 @@ namespace MicroMod
                     IsMapPoppedOut = false,
                     IsLocked = false,
                     MainWindow = MainWindow.Orbital,
-                    EditorRect = null,
+                    //EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
                     Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Orbital).ToList()
                 });
@@ -771,7 +943,7 @@ namespace MicroMod
                     IsMapPoppedOut = false,
                     IsLocked = false,
                     MainWindow = MainWindow.Surface,
-                    EditorRect = null,
+                    //EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
                     Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Surface).ToList()
                 });
@@ -789,7 +961,7 @@ namespace MicroMod
                     IsMapPoppedOut = false,
                     IsLocked = false,
                     MainWindow = MainWindow.Flight,
-                    EditorRect = null,
+                    //EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
                     Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Flight).ToList()
                 });
@@ -807,7 +979,7 @@ namespace MicroMod
                     IsMapPoppedOut = false,
                     IsLocked = false,
                     MainWindow = MainWindow.Target,
-                    EditorRect = null,
+                    //EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
                     Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Target).ToList()
                 });
@@ -825,7 +997,7 @@ namespace MicroMod
                     IsMapPoppedOut = false,
                     IsLocked = false,
                     MainWindow = MainWindow.Maneuver,
-                    EditorRect = null,
+                    //EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
                     Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Maneuver).ToList()
                 });
@@ -843,15 +1015,37 @@ namespace MicroMod
                     IsMapPoppedOut = false,
                     IsLocked = false,
                     MainWindow = MainWindow.Stage,
-                    EditorRect = null,
+                    //EditorRect = null,
                     FlightRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, MicroStyles.WindowWidth, MicroStyles.WindowHeight),
                     Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Stage).ToList()
-                });                
+                });
+
+                InitializeStageInfoOABWindow();
             }
 			catch (Exception ex)
 			{
-				Logger.LogError(ex);
+				Logger.LogError("Error creating a MicroWindow. Full exception: " + ex);
 			}
 		}
+
+        private void InitializeStageInfoOABWindow()
+        {
+            MicroWindows.Add(new MicroWindow
+            {
+                Name = "Stage (OAB)",
+                Abbreviation = "SOAB",
+                Description = "Stage Info window for OAB",
+                IsEditorActive = false,
+                IsFlightActive = false, // Not used
+                IsMapActive = false, // Not used
+                IsEditorPoppedOut = true, // Not used
+                IsFlightPoppedOut = false, // Not used
+                IsMapPoppedOut = false, // Not used
+                IsLocked = false, // Not used
+                MainWindow = MainWindow.StageInfoOAB,
+                EditorRect = new Rect(MicroStyles.PoppedOutX, MicroStyles.PoppedOutY, 0, 0),
+                Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.OAB).ToList()
+            });
+        }
     }
 }

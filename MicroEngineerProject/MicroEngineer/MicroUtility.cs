@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using UnityEngine;
 using static KSP.Rendering.Planets.PQSData;
 using BepInEx.Logging;
+using KSP.Messages;
+using KSP.Sim.DeltaV;
 
 namespace MicroMod
 {
@@ -17,6 +19,9 @@ namespace MicroMod
         public static ManeuverNodeData CurrentManeuver;
         public static string LayoutPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MicroLayout.json");
         private static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.MicroUtility");
+        public static GameStateConfiguration GameState;
+        public static MessageCenter MessageCenter;
+        public static VesselDeltaVComponent VesselDeltaVComponentOAB;
 
         /// <summary>
         /// Refreshes the ActiveVessel and CurrentManeuver
@@ -25,7 +30,17 @@ namespace MicroMod
         {
             ActiveVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
             CurrentManeuver = ActiveVessel != null ? GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(ActiveVessel.GlobalId).FirstOrDefault(): null;
+        }
 
+        public static void RefreshGameManager()
+        {
+            GameState = GameManager.Instance?.Game?.GlobalGameState?.GetGameState();
+            MessageCenter = GameManager.Instance?.Game?.Messages;
+        }
+
+        public static void RefreshStagesOAB()
+        {
+            VesselDeltaVComponentOAB = GameManager.Instance?.Game?.OAB?.Current?.Stats?.MainAssembly?.VesselDeltaV;
         }
 
         public static string DegreesToDMS(double degreeD)

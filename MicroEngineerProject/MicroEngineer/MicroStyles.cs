@@ -7,11 +7,13 @@ namespace MicroMod
     {
         public static int WindowWidth = 290;
         public static int WindowHeight = 1440;
+        public static int WindowWidthStageOAB = 600;
 
         public static GUISkin SpaceWarpUISkin;
         public static GUIStyle MainWindowStyle;
         public static GUIStyle PopoutWindowStyle;
         public static GUIStyle EditWindowStyle;
+        public static GUIStyle StageOABWindowStyle;
         public static GUIStyle PopoutBtnStyle;
         public static GUIStyle SectionToggleStyle;
         public static GUIStyle NameLabelStyle;
@@ -63,6 +65,13 @@ namespace MicroMod
             EditWindowStyle = new GUIStyle(PopoutWindowStyle)
             {
                 padding = new RectOffset(8, 8, 30, 8)
+            };
+
+            StageOABWindowStyle = new GUIStyle(SpaceWarpUISkin.window)
+            {
+                padding = new RectOffset(8, 8, 20, 8),
+                contentOffset = new Vector2(0, -22),
+                fixedWidth = WindowWidthStageOAB
             };
 
             PopoutBtnStyle = new GUIStyle(SpaceWarpUISkin.button)

@@ -46,12 +46,12 @@ namespace MicroMod
         /// Can the window be edited (add, remove & arrange entries)
         /// </summary>
         [JsonProperty]
-        public bool IsEditable { get => MainWindow != MainWindow.MainGui && MainWindow != MainWindow.Settings && MainWindow != MainWindow.Stage; }
+        public bool IsEditable { get => MainWindow != MainWindow.MainGui && MainWindow != MainWindow.Settings && MainWindow != MainWindow.Stage && MainWindow != MainWindow.StageInfoOAB; }
 
         [JsonProperty]
         public MainWindow MainWindow;
-
-        public Rect? EditorRect; // TODO: implement
+        [JsonProperty]
+        public Rect EditorRect;
         [JsonProperty]
         public Rect FlightRect;
         [JsonProperty]
@@ -125,7 +125,8 @@ namespace MicroMod
         Target,
         Maneuver,
         Stage,
-        Misc
+        Misc,
+        OAB
     }
 
     /// <summary>
@@ -142,6 +143,7 @@ namespace MicroMod
         Flight,
         Target,
         Maneuver,
-        Settings
+        Settings,
+        StageInfoOAB
     }
 }
