@@ -60,7 +60,7 @@ namespace MicroMod
             return $"{heightInMeters:N0}";
         }
 
-        public static string SecondsToTimeString(double seconds, bool addSpacing = true)
+        public static string SecondsToTimeString(double seconds, bool addSpacing = true, bool returnLastUnit = false)
         {
             if (seconds == Double.PositiveInfinity)
             {
@@ -117,11 +117,11 @@ namespace MicroMod
 
             if (minutes > 0 || hours > 0 || days > 0)
             {
-                result += $"{secs:00.}";
+                result += returnLastUnit ? $"{secs:00.}{spacing}<color=#{MicroStyles.UnitColorHex}>s</color>" : $"{secs:00.}";
             }
             else
             {
-                result += secs;
+                result += returnLastUnit ? $"{secs}{spacing}<color=#{MicroStyles.UnitColorHex}>s</color>" : $"{secs}";
             }
 
             return result;
