@@ -276,8 +276,16 @@ namespace MicroMod
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(String.Format("{0:00}", stages[stageIndex].Stage), MicroStyles.NameLabelStyle, GUILayout.Width(40));
                 GUILayout.FlexibleSpace();
-                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * _celestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex])), MicroStyles.ValueLabelStyle, GUILayout.Width(60));
-                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRASL * _celestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex])), MicroStyles.ValueLabelStyle, GUILayout.Width(60));
+
+                // We calculate what factor needs to be applied to TWR in order to compensate for different gravity of the selected celestial body
+                // For selected bodies with atmosphere, for ASL TWR we just apply the factor to HomeWorld's (i.e. Kerbin) ASL TWR as it's a good enough approximation for now.
+                // -> This is just an approximation because ASL TWR depends on Thrust as well which changes depending on atmospheric pressure
+                (double factor, bool hasAtmosphere) twrFactor = _celestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex]);
+
+                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor.factor), MicroStyles.ValueLabelStyle, GUILayout.Width(60));
+
+                // If target body doesn't have an atmosphere, its ASL TWR is the same as Vacuum TWR
+                GUILayout.Label(String.Format("{0:N2}", twrFactor.hasAtmosphere ? stages[stageIndex].TWRASL * twrFactor.factor : stages[stageIndex].TWRVac * twrFactor.factor ), MicroStyles.ValueLabelStyle, GUILayout.Width(60));
                 GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVASL), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
                 GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVVac), MicroStyles.ValueLabelStyle, GUILayout.Width(75));

@@ -15,7 +15,7 @@ namespace MicroMod
         /// Refreshes the list of all CelestialBodies. Does nothing if list is already populated.
         /// </summary>
         /// <returns>True = refresh completed successfully or list is already populated</returns>
-        public bool GetBodies()
+        internal bool GetBodies()
         {
             if (this.Bodies.Count > 0)
                 return true;
@@ -43,15 +43,15 @@ namespace MicroMod
         /// Calculates what factor needs to be used for HomeWorld's TWR in order to compensate for gravity of the selected body
         /// </summary>
         /// <param name="bodyName">Name of the CelestialBody for which the TWR factor is calculated</param>
-        /// <returns>Factor that needs to be multiplied with HomeWorld's TWR to get TWR at the selected body</returns>
-        public double GetTwrFactor(string bodyName)
+        /// <returns>TWR factor that needs to be multiplied with HomeWorld's TWR to get TWR at the selected body and information if target body has an atmosphere</returns>
+        internal (double twrFactor, bool hasAtmosphere) GetTwrFactor(string bodyName)
         {
-            if (Bodies.Count == 0) return 0;
+            if (Bodies.Count == 0) return (0, false);
             CelestialBody homeWorld = Bodies.Find(b => b.IsHomeWorld);
             CelestialBody targetBody = Bodies.Find(t => t.Name.ToLowerInvariant() == bodyName.ToLowerInvariant()) ?? null;
-            if (targetBody == null) return 0;
-            
-            return homeWorld.GravityASL / targetBody.GravityASL;
+            if (targetBody == null) return (0, false);
+
+            return (homeWorld.GravityASL / targetBody.GravityASL, targetBody.HasAtmosphere);
         }
     }
 
