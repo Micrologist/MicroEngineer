@@ -275,7 +275,7 @@ namespace MicroMod
                     stageInfoOab.AddNewCelestialBody(_celestialBodies);
 
                 GUILayout.BeginHorizontal();
-                GUILayout.Label(String.Format("{0:00}", stages[stageIndex].Stage), MicroStyles.NameLabelStyle, GUILayout.Width(40));
+                GUILayout.Label(String.Format("{0:00}", ((List<DeltaVStageInfo_OAB>)stageInfoOab.EntryValue).Count - stages[stageIndex].Stage), MicroStyles.NameLabelStyle, GUILayout.Width(40));
                 GUILayout.FlexibleSpace();
 
                 // We calculate what factor needs to be applied to TWR in order to compensate for different gravity of the selected celestial body
