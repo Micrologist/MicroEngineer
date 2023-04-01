@@ -11,6 +11,10 @@ namespace MicroMod
     {
         public List<CelestialBody> Bodies = new();
 
+        /// <summary>
+        /// Refreshes the list of all CelestialBodies. Does nothing if list is already populated.
+        /// </summary>
+        /// <returns>True = refresh completed successfully or list is already populated</returns>
         public bool GetBodies()
         {
             if (this.Bodies.Count > 0)
@@ -23,7 +27,7 @@ namespace MicroMod
 
             foreach (var body in bodies)
             {
-                Bodies.Add(new CelestialBody
+                this.Bodies.Add(new CelestialBody
                 {
                     Name = body.Value.data.bodyName,
                     GravityASL = body.Value.data.gravityASL,
@@ -35,6 +39,11 @@ namespace MicroMod
             return true;
         }
 
+        /// <summary>
+        /// Calculates what factor needs to be used for HomeWorld's TWR in order to compensate for gravity of the selected body
+        /// </summary>
+        /// <param name="bodyName">Name of the CelestialBody for which the TWR factor is calculated</param>
+        /// <returns>Factor that needs to be multiplied with HomeWorld's TWR to get TWR at the selected body</returns>
         public double GetTwrFactor(string bodyName)
         {
             if (Bodies.Count == 0) return 0;
