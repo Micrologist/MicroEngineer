@@ -1356,6 +1356,8 @@ namespace MicroMod
 
     public class StageInfo_OAB : MicroEntry
     {
+        public List<string> CelestialBodyForStage = new();
+
         public StageInfo_OAB()
         {
             Name = "Stage Info (OAB)";
@@ -1411,6 +1413,15 @@ namespace MicroMod
                 return "-";
             }
         }
+
+        /// <summary>
+        /// Adds a new string to the CelestialBodyForStage list that corresponds to the HomeWorld, i.e. Kerbin
+        /// </summary>
+        /// <param name="celestialBodies"></param>
+        internal void AddNewCelestialBody(MicroCelestialBodies celestialBodies)
+        {
+            this.CelestialBodyForStage.Add(celestialBodies.Bodies.Find(b => b.IsHomeWorld).Name);            
+        }
     }
 
     public class DeltaVStageInfo_OAB
@@ -1452,6 +1463,7 @@ namespace MicroMod
         public float TotalExhaustVelocityASL; //	979.7148	float
         public float TotalExhaustVelocityActual; //	979.7148	float
         public float TotalExhaustVelocityVAC; //	1123	float
+        public string CelestialBody;
     }
     #endregion
 }
