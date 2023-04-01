@@ -7,8 +7,8 @@ namespace MicroMod
     {
         public static int WindowWidth = 290;
         public static int WindowHeight = 1440;
-        public static int WindowWidthStageOAB = 620;
-        public static int WindowWidthCelestialSelection = 200;
+        public static int WindowWidthStageOAB = 645;
+        public static int WindowWidthCelestialSelection = 100;
 
         public static GUISkin SpaceWarpUISkin;
         public static GUIStyle MainWindowStyle;
@@ -34,6 +34,7 @@ namespace MicroMod
         public static GUIStyle CelestialSelectionBtnStyle;
         public static GUIStyle OneCharacterBtnStyle;
         public static GUIStyle TableHeaderLabelStyle;
+        public static GUIStyle TableHeaderCenteredLabelStyle;
 
         public static string UnitColorHex { get => ColorUtility.ToHtmlStringRGBA(UnitLabelStyle.normal.textColor); }
 
@@ -176,7 +177,8 @@ namespace MicroMod
             CelestialSelectionBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
             {
                 alignment = TextAnchor.MiddleCenter,
-                fixedWidth = 100
+                fixedWidth = 80,
+                fixedHeight = 20
             };
 
             OneCharacterBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
@@ -188,6 +190,10 @@ namespace MicroMod
             TableHeaderLabelStyle = new GUIStyle(NameLabelStyle)
             {
                 alignment = TextAnchor.MiddleRight
+            };
+            TableHeaderCenteredLabelStyle = new GUIStyle(NameLabelStyle)
+            {
+                alignment = TextAnchor.MiddleCenter
             };
         }
 

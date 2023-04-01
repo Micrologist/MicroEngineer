@@ -207,7 +207,7 @@ namespace MicroMod
             if (_celestialBodySelectionStageIndex > -1)
             {
                 Rect stageInfoOabRect = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).EditorRect;
-                Rect celestialBodyRect = new Rect(stageInfoOabRect.x + stageInfoOabRect.width, stageInfoOabRect.y, 200, 0);
+                Rect celestialBodyRect = new Rect(stageInfoOabRect.x + stageInfoOabRect.width, stageInfoOabRect.y, 0, 0);
 
                 celestialBodyRect = GUILayout.Window(
                     GUIUtility.GetControlID(FocusType.Passive),
@@ -249,14 +249,15 @@ namespace MicroMod
             GUILayout.BeginHorizontal();
             GUILayout.Label("Stage", MicroStyles.NameLabelStyle, GUILayout.Width(40));
             GUILayout.FlexibleSpace();
-            GUILayout.Label("TWR", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(60));
-            GUILayout.Label("SLT", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(60));
+            GUILayout.Label("TWR", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(65));
+            GUILayout.Label("SLT", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(75));
             GUILayout.Label("", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(30));
             GUILayout.Label("ASL ∆v", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(75));
             GUILayout.Label("", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(30));
             GUILayout.Label("Vac ∆v", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(75));
-            GUILayout.Label("Burn Time", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(100));
-            GUILayout.Label("Body", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(100));
+            GUILayout.Label("Burn Time", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(110));
+            GUILayout.Space(20);
+            GUILayout.Label("Body", MicroStyles.TableHeaderCenteredLabelStyle, GUILayout.Width(80));
             GUILayout.EndHorizontal();
             GUILayout.Space(MicroStyles.SpacingAfterEntry);
 
@@ -282,19 +283,24 @@ namespace MicroMod
                 // -> This is just an approximation because ASL TWR depends on Thrust as well which changes depending on atmospheric pressure
                 (double factor, bool hasAtmosphere) twrFactor = _celestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex]);
 
-                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor.factor), MicroStyles.ValueLabelStyle, GUILayout.Width(60));
+                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor.factor), MicroStyles.ValueLabelStyle, GUILayout.Width(65));
 
                 // If target body doesn't have an atmosphere, its ASL TWR is the same as Vacuum TWR
-                GUILayout.Label(String.Format("{0:N2}", twrFactor.hasAtmosphere ? stages[stageIndex].TWRASL * twrFactor.factor : stages[stageIndex].TWRVac * twrFactor.factor ), MicroStyles.ValueLabelStyle, GUILayout.Width(60));
+                GUILayout.Label(String.Format("{0:N2}", twrFactor.hasAtmosphere ? stages[stageIndex].TWRASL * twrFactor.factor : stages[stageIndex].TWRVac * twrFactor.factor ), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVASL), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
                 GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVVac), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
-                GUILayout.Label(MicroUtility.SecondsToTimeString(stages[stageIndex].StageBurnTime, true, true), MicroStyles.ValueLabelStyle, GUILayout.Width(100));
+                GUILayout.Label(MicroUtility.SecondsToTimeString(stages[stageIndex].StageBurnTime, true, true), MicroStyles.ValueLabelStyle, GUILayout.Width(110));
+                GUILayout.Space(20);
+                GUILayout.BeginVertical();
+                GUILayout.FlexibleSpace();
                 if(GUILayout.Button(stageInfoOab.CelestialBodyForStage[celestialIndex], MicroStyles.CelestialSelectionBtnStyle))
                 {
                     _celestialBodySelectionStageIndex = celestialIndex;
                 }
+                //GUILayout.FlexibleSpace();
+                GUILayout.EndVertical();
                 GUILayout.EndHorizontal();
                 GUILayout.Space(MicroStyles.SpacingAfterEntry);
             }
