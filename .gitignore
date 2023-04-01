@@ -22,4 +22,3 @@ MicroEngineerProject/[Bb]in/
 /MicroEngineerProject/.vs/*
 /Staging/CopyStagingToGame.bat
 *.bat
-*.csproj
