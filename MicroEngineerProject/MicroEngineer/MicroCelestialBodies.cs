@@ -1,9 +1,5 @@
 ﻿using KSP.Game;
 using KSP.Sim.Definitions;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace MicroMod
 {

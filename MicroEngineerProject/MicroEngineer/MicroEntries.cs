@@ -1,5 +1,4 @@
 ﻿using KSP.Game;
-using KSP.Sim.DeltaV;
 using KSP.Sim.impl;
 using Newtonsoft.Json;
 using static KSP.Rendering.Planets.PQSData;

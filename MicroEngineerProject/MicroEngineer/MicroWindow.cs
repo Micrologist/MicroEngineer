@@ -17,7 +17,7 @@ namespace MicroMod
         public string Description; // not used
 
         [JsonProperty]
-        public bool IsEditorActive; // TODO: implement
+        public bool IsEditorActive;
         [JsonProperty]
         public bool IsFlightActive;
         [JsonProperty]

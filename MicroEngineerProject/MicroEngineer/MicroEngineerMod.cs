@@ -1,18 +1,12 @@
 using BepInEx;
 using KSP.Game;
-using KSP.Sim.impl;
 using UnityEngine;
 using SpaceWarp;
 using SpaceWarp.API.Assets;
 using SpaceWarp.API.Mods;
-using SpaceWarp.API.UI;
 using SpaceWarp.API.UI.Appbar;
-using KSP.Sim.Maneuver;
 using KSP.UI.Binding;
 using KSP.Sim.DeltaV;
-using KSP.Sim;
-using KSP.UI.Flight;
-using static KSP.Rendering.Planets.PQSData;
 using KSP.Messages;
 
 namespace MicroMod
@@ -45,6 +39,8 @@ namespace MicroMod
         /// Holds data on all bodies for calculating TWR (currently)
         /// </summary>
         private MicroCelestialBodies _celestialBodies = new();
+        
+        // Index of the stage for which user wants to select a different CelestialBody for different TWR calculations. -1 -> no stage is selected
         private int _celestialBodySelectionStageIndex = -1;
 
         public override void OnInitialized()
@@ -85,6 +81,9 @@ namespace MicroMod
                 });
         }
 
+        /// <summary>
+        /// Subscribe to Messages KSP2 is using
+        /// </summary>
         private void SubscribeToMessages()
         {
             MicroUtility.RefreshGameManager();
@@ -115,7 +114,8 @@ namespace MicroMod
                 {
                     _showGuiOAB = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
                     InitializeCelestialBodies();
-                }                    
+                    _celestialBodySelectionStageIndex = -1;
+                }
             }
         }
 
@@ -136,6 +136,10 @@ namespace MicroMod
             }
         }
 
+        #region Data refreshing
+        /// <summary>
+        /// Refresh all staging data while in OAB
+        /// </summary>
         private void RefreshStagingDataOAB(MessageCenterMessage obj)
         {
             MicroUtility.RefreshGameManager();
@@ -166,12 +170,13 @@ namespace MicroMod
             if (MicroUtility.ActiveVessel == null)
                 return;
             
-            // Grab all stageInfoOabEntries from all active windows and refresh their data
+            // Grab all Flight entries from all active windows and refresh their data
             foreach (MicroEntry entry in MicroWindows
                 .Where(w => w.IsFlightActive)
                 .SelectMany(w => w.Entries ?? Enumerable.Empty<MicroEntry>()).ToList())
                 entry.RefreshData();
         }
+        #endregion
 
         private void OnGUI()
         {
@@ -184,160 +189,13 @@ namespace MicroMod
                 OnGUI_Flight();
         }
 
-        private void OnGUI_OAB()
-        {
-            if (!_showGuiOAB) return;
-
-            MicroWindow stageInfoOAB = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
-            if (stageInfoOAB.Entries.Find(e => e.Name == "Stage Info (OAB)").EntryValue == null) return;
-
-            stageInfoOAB.EditorRect = GUILayout.Window(
-                GUIUtility.GetControlID(FocusType.Passive),
-                stageInfoOAB.EditorRect,
-                DrawStageInfoOAB,
-                "",
-                MicroStyles.StageOABWindowStyle,
-                GUILayout.Height(0)
-                );
-            stageInfoOAB.EditorRect.position = MicroUtility.ClampToScreen(stageInfoOAB.EditorRect.position, stageInfoOAB.EditorRect.size);
-
-            // Draw window for selecting CelestialBody for a stage
-            // -1 -> no selection of CelestialBody is not taking place
-            // any other int -> index represents the stage number for which the selection was clicked
-            if (_celestialBodySelectionStageIndex > -1)
-            {
-                Rect stageInfoOabRect = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).EditorRect;
-                Rect celestialBodyRect = new Rect(stageInfoOabRect.x + stageInfoOabRect.width, stageInfoOabRect.y, 0, 0);
-
-                celestialBodyRect = GUILayout.Window(
-                    GUIUtility.GetControlID(FocusType.Passive),
-                    celestialBodyRect,
-                    DrawCelestialBodySelection,
-                    "",
-                    MicroStyles.CelestialSelectionStyle,
-                    GUILayout.Height(0)
-                    );
-            }
-
-        }
-
-        private void DrawStageInfoOAB(int windowID)
-        {
-            MicroWindow stageInfoOabWindow = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
-            List<MicroEntry> stageInfoOabEntries = stageInfoOabWindow.Entries;
-
-            GUILayout.BeginHorizontal();
-            if (CloseButton(MicroStyles.CloseBtnStagesOABRect))
-            {
-                stageInfoOabWindow.IsEditorActive = false;
-                _showGuiOAB = false;
-            }
-            GUILayout.Label($"<b>Stage Info</b>");
-            GUILayout.EndHorizontal();
-
-
-            // Draw StageInfo header - Delta V fields
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Total ∆v (ASL, vacuum)", MicroStyles.NameLabelStyle);
-            GUILayout.FlexibleSpace();
-            GUILayout.Label($"{stageInfoOabEntries.Find(e => e.Name == "Total ∆v Actual (OAB)").ValueDisplay}, {stageInfoOabEntries.Find(e => e.Name == "Total ∆v Vac (OAB)").ValueDisplay}", MicroStyles.ValueLabelStyle);
-            GUILayout.Space(5);
-            GUILayout.Label("m/s", MicroStyles.UnitLabelStyle);
-            GUILayout.EndHorizontal();
-
-            // Draw Stage table header
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Stage", MicroStyles.NameLabelStyle, GUILayout.Width(40));
-            GUILayout.FlexibleSpace();
-            GUILayout.Label("TWR", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(65));
-            GUILayout.Label("SLT", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(75));
-            GUILayout.Label("", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(30));
-            GUILayout.Label("ASL ∆v", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(75));
-            GUILayout.Label("", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(30));
-            GUILayout.Label("Vac ∆v", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(75));
-            GUILayout.Label("Burn Time", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(110));
-            GUILayout.Space(20);
-            GUILayout.Label("Body", MicroStyles.TableHeaderCenteredLabelStyle, GUILayout.Width(80));
-            GUILayout.EndHorizontal();
-            GUILayout.Space(MicroStyles.SpacingAfterEntry);
-
-            StageInfo_OAB stageInfoOab = (StageInfo_OAB)stageInfoOabWindow.Entries
-                .Find(e => e.Name == "Stage Info (OAB)");
-
-            // Draw each stage that has delta v
-            var stages = ((List<DeltaVStageInfo_OAB>)stageInfoOab.EntryValue)
-                .FindAll(s => s.DeltaVVac > 0.0001 || s.DeltaVASL > 0.0001);
-
-            int celestialIndex = -1;
-            for (int stageIndex = stages.Count - 1; stageIndex >= 0; stageIndex--)
-            {
-                if (stageInfoOab.CelestialBodyForStage.Count == ++celestialIndex)
-                    stageInfoOab.AddNewCelestialBody(_celestialBodies);
-
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(String.Format("{0:00}", ((List<DeltaVStageInfo_OAB>)stageInfoOab.EntryValue).Count - stages[stageIndex].Stage), MicroStyles.NameLabelStyle, GUILayout.Width(40));
-                GUILayout.FlexibleSpace();
-
-                // We calculate what factor needs to be applied to TWR in order to compensate for different gravity of the selected celestial body
-                // For selected bodies with atmosphere, for ASL TWR we just apply the factor to HomeWorld's (i.e. Kerbin) ASL TWR as it's a good enough approximation for now.
-                // -> This is just an approximation because ASL TWR depends on Thrust as well which changes depending on atmospheric pressure
-                (double factor, bool hasAtmosphere) twrFactor = _celestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex]);
-
-                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor.factor), MicroStyles.ValueLabelStyle, GUILayout.Width(65));
-
-                // If target body doesn't have an atmosphere, its ASL TWR is the same as Vacuum TWR
-                GUILayout.Label(String.Format("{0:N2}", twrFactor.hasAtmosphere ? stages[stageIndex].TWRASL * twrFactor.factor : stages[stageIndex].TWRVac * twrFactor.factor ), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
-                GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVASL), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
-                GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
-                GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVVac), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
-                GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
-                GUILayout.Label(MicroUtility.SecondsToTimeString(stages[stageIndex].StageBurnTime, true, true), MicroStyles.ValueLabelStyle, GUILayout.Width(110));
-                GUILayout.Space(20);
-                GUILayout.BeginVertical();
-                GUILayout.FlexibleSpace();
-                if(GUILayout.Button(stageInfoOab.CelestialBodyForStage[celestialIndex], MicroStyles.CelestialSelectionBtnStyle))
-                {
-                    _celestialBodySelectionStageIndex = celestialIndex;
-                }
-                //GUILayout.FlexibleSpace();
-                GUILayout.EndVertical();
-                GUILayout.EndHorizontal();
-                GUILayout.Space(MicroStyles.SpacingAfterEntry);
-            }
-
-            GUILayout.Space(MicroStyles.SpacingBelowPopout);
-
-            GUI.DragWindow(new Rect(0, 0, Screen.width, Screen.height));
-        }
-
-        /// <summary>
-        /// Opens a window for selecting a CelestialObject for the stage on the given index
-        /// </summary>
-        private void DrawCelestialBodySelection(int id)
-        {            
-            GUILayout.BeginVertical();
-            
-            foreach (var body in _celestialBodies.Bodies)
-            {
-                if (GUILayout.Button(body.Name))
-                {
-                    StageInfo_OAB stageInfoOab = (StageInfo_OAB)MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Stage Info (OAB)");
-                    stageInfoOab.CelestialBodyForStage[_celestialBodySelectionStageIndex] = body.Name;                    
-
-                    // Hide the selection window
-                    _celestialBodySelectionStageIndex = -1;
-                }
-            }
-
-            GUILayout.EndVertical();
-        }
-
+        #region Flight scene UI and logic
         private void OnGUI_Flight()
 		{
             if (!_showGuiFlight || MicroUtility.ActiveVessel == null) return;
 
             MicroWindow mainGui = MicroWindows.Find(window => window.MainWindow == MainWindow.MainGui);
-			
+
 			// Draw main GUI that contains docked windows
             mainGui.FlightRect = GUILayout.Window(
 				GUIUtility.GetControlID(FocusType.Passive),
@@ -426,8 +284,9 @@ namespace MicroMod
 					MicroStyles.EditWindowRect,
 					DrawEditWindow,
 					"",
-					MicroStyles.EditWindowStyle
-					);
+					MicroStyles.EditWindowStyle,
+                    GUILayout.Height(0)
+                    );
             }
         }
         
@@ -855,27 +714,178 @@ namespace MicroMod
             selectedWindowId = editableWindows.Count - 1;
         }
 
+        private void ResetLayout()
+        {
+            InitializeWindows();
+        }
+
+        private void CloseWindow()
+        {
+            GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(false);
+            _showGuiFlight = false;
+        }
+
+        #endregion
+        
+        #region OAB scene UI and logic
+        private void OnGUI_OAB()
+        {
+            if (!_showGuiOAB) return;
+
+            MicroWindow stageInfoOAB = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            if (stageInfoOAB.Entries.Find(e => e.Name == "Stage Info (OAB)").EntryValue == null) return;
+
+            stageInfoOAB.EditorRect = GUILayout.Window(
+                GUIUtility.GetControlID(FocusType.Passive),
+                stageInfoOAB.EditorRect,
+                DrawStageInfoOAB,
+                "",
+                MicroStyles.StageOABWindowStyle,
+                GUILayout.Height(0)
+                );
+            stageInfoOAB.EditorRect.position = MicroUtility.ClampToScreen(stageInfoOAB.EditorRect.position, stageInfoOAB.EditorRect.size);
+
+            // Draw window for selecting CelestialBody for a stage
+            // -1 -> no selection of CelestialBody is taking place
+            // any other int -> index represents the stage number for which the selection was clicked
+            if (_celestialBodySelectionStageIndex > -1)
+            {
+                Rect stageInfoOabRect = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).EditorRect;
+                Rect celestialBodyRect = new Rect(stageInfoOabRect.x + stageInfoOabRect.width, stageInfoOabRect.y, 0, 0);
+
+                celestialBodyRect = GUILayout.Window(
+                    GUIUtility.GetControlID(FocusType.Passive),
+                    celestialBodyRect,
+                    DrawCelestialBodySelection,
+                    "",
+                    MicroStyles.CelestialSelectionStyle,
+                    GUILayout.Height(0)
+                    );
+            }
+        }
+
+        private void DrawStageInfoOAB(int windowID)
+        {
+            MicroWindow stageInfoOabWindow = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            List<MicroEntry> stageInfoOabEntries = stageInfoOabWindow.Entries;
+
+            GUILayout.BeginHorizontal();
+            if (CloseButton(MicroStyles.CloseBtnStagesOABRect))
+            {
+                stageInfoOabWindow.IsEditorActive = false;
+                _showGuiOAB = false;
+            }
+            GUILayout.Label($"<b>Stage Info</b>");
+            GUILayout.EndHorizontal();
+
+            // Draw StageInfo header - Delta V fields
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Total ∆v (ASL, vacuum)", MicroStyles.NameLabelStyle);
+            GUILayout.FlexibleSpace();
+            GUILayout.Label($"{stageInfoOabEntries.Find(e => e.Name == "Total ∆v Actual (OAB)").ValueDisplay}, {stageInfoOabEntries.Find(e => e.Name == "Total ∆v Vac (OAB)").ValueDisplay}", MicroStyles.ValueLabelStyle);
+            GUILayout.Space(5);
+            GUILayout.Label("m/s", MicroStyles.UnitLabelStyle);
+            GUILayout.EndHorizontal();
+
+            // Draw Stage table header
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Stage", MicroStyles.NameLabelStyle, GUILayout.Width(40));
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("TWR", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(65));
+            GUILayout.Label("SLT", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(75));
+            GUILayout.Label("", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(30));
+            GUILayout.Label("ASL ∆v", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(75));
+            GUILayout.Label("", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(30));
+            GUILayout.Label("Vac ∆v", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(75));
+            GUILayout.Label("Burn Time", MicroStyles.TableHeaderLabelStyle, GUILayout.Width(110));
+            GUILayout.Space(20);
+            GUILayout.Label("Body", MicroStyles.TableHeaderCenteredLabelStyle, GUILayout.Width(80));
+            GUILayout.EndHorizontal();
+            GUILayout.Space(MicroStyles.SpacingAfterEntry);
+
+            StageInfo_OAB stageInfoOab = (StageInfo_OAB)stageInfoOabWindow.Entries
+                .Find(e => e.Name == "Stage Info (OAB)");
+
+            // Draw each stage that has delta v
+            var stages = ((List<DeltaVStageInfo_OAB>)stageInfoOab.EntryValue)
+                .FindAll(s => s.DeltaVVac > 0.0001 || s.DeltaVASL > 0.0001);
+
+            int celestialIndex = -1;
+            for (int stageIndex = stages.Count - 1; stageIndex >= 0; stageIndex--)
+            {
+                // Check if this stage has a CelestialBody attached. If not, create a new CelestialBody and assign it to HomeWorld (i.e. Kerbin)
+                if (stageInfoOab.CelestialBodyForStage.Count == ++celestialIndex)
+                    stageInfoOab.AddNewCelestialBody(_celestialBodies);
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label(String.Format("{0:00}", ((List<DeltaVStageInfo_OAB>)stageInfoOab.EntryValue).Count - stages[stageIndex].Stage), MicroStyles.NameLabelStyle, GUILayout.Width(40));
+                GUILayout.FlexibleSpace();
+
+                // We calculate what factor needs to be applied to TWR in order to compensate for different gravity of the selected celestial body
+                // For selected bodies with atmosphere, for ASL TWR we just apply the factor to HomeWorld's (i.e. Kerbin) ASL TWR as it's a good enough approximation for now.
+                // -> This is just an approximation because ASL TWR depends on Thrust as well which changes depending on atmospheric pressure
+                (double factor, bool hasAtmosphere) twrFactor = _celestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex]);
+
+                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor.factor), MicroStyles.ValueLabelStyle, GUILayout.Width(65));
+
+                // If target body doesn't have an atmosphere, its ASL TWR is the same as Vacuum TWR
+                GUILayout.Label(String.Format("{0:N2}", twrFactor.hasAtmosphere ? stages[stageIndex].TWRASL * twrFactor.factor : stages[stageIndex].TWRVac * twrFactor.factor), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
+                GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVASL), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
+                GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
+                GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVVac), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
+                GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
+                GUILayout.Label(MicroUtility.SecondsToTimeString(stages[stageIndex].StageBurnTime, true, true), MicroStyles.ValueLabelStyle, GUILayout.Width(110));
+                GUILayout.Space(20);
+                GUILayout.BeginVertical();
+                GUILayout.FlexibleSpace();
+                if (GUILayout.Button(stageInfoOab.CelestialBodyForStage[celestialIndex], MicroStyles.CelestialSelectionBtnStyle))
+                {
+                    _celestialBodySelectionStageIndex = celestialIndex;
+                }
+                GUILayout.EndVertical();
+                GUILayout.EndHorizontal();
+                GUILayout.Space(MicroStyles.SpacingAfterEntry);
+            }
+
+            GUILayout.Space(MicroStyles.SpacingBelowPopout);
+
+            GUI.DragWindow(new Rect(0, 0, Screen.width, Screen.height));
+        }
+
+        /// <summary>
+        /// Opens a window for selecting a CelestialObject for the stage on the given index
+        /// </summary>
+        private void DrawCelestialBodySelection(int id)
+        {
+            GUILayout.BeginVertical();
+
+            foreach (var body in _celestialBodies.Bodies)
+            {
+                if (GUILayout.Button(body.Name))
+                {
+                    StageInfo_OAB stageInfoOab = (StageInfo_OAB)MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Stage Info (OAB)");
+                    stageInfoOab.CelestialBodyForStage[_celestialBodySelectionStageIndex] = body.Name;
+
+                    // Hide the selection window
+                    _celestialBodySelectionStageIndex = -1;
+                }
+            }
+
+            GUILayout.EndVertical();
+        }
+        #endregion
+
         /// <summary>
         /// Draws a close button (X)
         /// </summary>
         /// <param name="rect">Where to position the close button</param>
         /// <returns></returns>
         private bool CloseButton(Rect rect)
-		{
-			return GUI.Button(rect, "X", MicroStyles.CloseBtnStyle);
-		}
-
-		private void CloseWindow()
-		{
-			GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(false);
-			_showGuiFlight = false;
-		}
-
-        private void ResetLayout()
         {
-            InitializeWindows();
+            return GUI.Button(rect, "X", MicroStyles.CloseBtnStyle);
         }
 
+        #region Window and data initialization
         /// <summary>
         /// Builds the list of all Entries
         /// </summary>
@@ -1157,5 +1167,6 @@ namespace MicroMod
 
             _celestialBodies.GetBodies();
         }
+        #endregion
     }
 }
