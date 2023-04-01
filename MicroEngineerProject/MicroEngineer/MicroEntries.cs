@@ -1241,12 +1241,12 @@ namespace MicroMod
     #region OAB scene entries
     public class TotalBurnTime_OAB : MicroEntry
     {
-        public bool UseDHMSFormatting;
+        public bool UseDHMSFormatting; // TODO: implement
 
         public TotalBurnTime_OAB()
         {
             Name = "Total Burn Time (OAB)";
-            Description = "TODO";
+            Description = "Shows the total length of burn the vessel can mantain.";
             Category = MicroEntryCategory.OAB;
             Unit = "s";
             Formatting = "{0:N1}";
@@ -1278,7 +1278,7 @@ namespace MicroMod
         public TotalDeltaVASL_OAB()
         {
             Name = "Total ∆v ASL (OAB)";
-            Description = "TODO";
+            Description = "Shows the vessel's total delta velocity At Sea Level.";
             Category = MicroEntryCategory.OAB;
             Unit = "m/s";
             Formatting = "{0:N0}";
@@ -1305,7 +1305,7 @@ namespace MicroMod
         public TotalDeltaVActual_OAB()
         {
             Name = "Total ∆v Actual (OAB)";
-            Description = "TODO";
+            Description = "Shows the vessel's actual total delta velocity (not used in OAB).";
             Category = MicroEntryCategory.OAB;
             Unit = "m/s";
             Formatting = "{0:N0}";
@@ -1332,7 +1332,7 @@ namespace MicroMod
         public TotalDeltaVVac_OAB()
         {
             Name = "Total ∆v Vac (OAB)";
-            Description = "TODO";
+            Description = "Shows the vessel's total delta velocity in Vacuum.";
             Category = MicroEntryCategory.OAB;
             Unit = "m/s";
             Formatting = "{0:N0}";
@@ -1354,6 +1354,9 @@ namespace MicroMod
         }
     }
 
+    /// <summary>
+    /// Holds stage info parameters for each stage. Also keeps information about the celestial body user selected in the window.
+    /// </summary>
     public class StageInfo_OAB : MicroEntry
     {
         public List<string> CelestialBodyForStage = new();
@@ -1361,7 +1364,7 @@ namespace MicroMod
         public StageInfo_OAB()
         {
             Name = "Stage Info (OAB)";
-            Description = "TODO";
+            Description = "Holds a list of stage info parameters.";
             Category = MicroEntryCategory.OAB;
             Unit = null;
             Formatting = null;
@@ -1424,45 +1427,34 @@ namespace MicroMod
         }
     }
 
+    /// <summary>
+    /// Parameters for one stage
+    /// </summary>
     public class DeltaVStageInfo_OAB
     {
-        public double DeltaVActual; // 1137.103515625 double
-        public double DeltaVASL; // 1137.103515625 double
-        public double DeltaVVac; // 1303.40734863281 double
-        public double DryMass; // 8.21689996941015 double
-        public double EndMass; // 14.6350441498584 double
-        public double FuelMass; // 19.2799997702241 double
-        public double IspASL; // 183.860239557547 double
-        public double IspActual; // 183.860239557547 double
-        public double IspVac; // 210.761997905552 double 
+        public double DeltaVActual;
+        public double DeltaVASL;
+        public double DeltaVVac;
+        public double DryMass;
+        public double EndMass;
+        public double FuelMass;
+        public double IspASL;
+        public double IspActual;
+        public double IspVac;
         public int SeparationIndex;
-        //      -> 5 for stage 0
-        //      -> 5 for stage 1
-        //      -> 4 for stage 2
-        //      -> 2 for stage 3
-        //      -> 2 for stage 4
-        //      -> 0 for stage 5
-        //      -> 0 for stage 6
         public int Stage;
-        //      -> 6 for stage 0
-        //      -> 5 for stage 1
-        //      -> 4 for stage 2
-        //      -> 3
-        //      -> 2
-        //      -> 1
-        //      -> 0
-        public double StageBurnTime; // 23.6707731615498 double
-        public double StageMass; // 27.4968997396342 double
-        public double StartMass; // 27.4968997396342 double
-        public float TWRASL; // 3.632009 float
-        public float TWRActual; // 3.632009 float
-        public float TWRVac; // 4.163198 float
-        public float ThrustASL; // 979.7148 float
-        public float ThrustActual; // 979.7148 float
-        public float ThrustVac; // 1123 float
-        public float TotalExhaustVelocityASL; //	979.7148	float
-        public float TotalExhaustVelocityActual; //	979.7148	float
-        public float TotalExhaustVelocityVAC; //	1123	float
+        public double StageBurnTime;
+        public double StageMass;
+        public double StartMass;
+        public float TWRASL;
+        public float TWRActual;
+        public float TWRVac;
+        public float ThrustASL;
+        public float ThrustActual;
+        public float ThrustVac;
+        public float TotalExhaustVelocityASL;
+        public float TotalExhaustVelocityActual;
+        public float TotalExhaustVelocityVAC;
         public string CelestialBody;
     }
     #endregion
