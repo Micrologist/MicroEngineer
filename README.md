@@ -1,4 +1,4 @@
-# Micro Engineer
+# Micro Engineer - a KSP2 plugin
 Displays useful in-flight information about your vessel, your orbital and surface parameters and many other things.
 ![Micro Engineer](https://i.imgur.com/I7mZ4oQ.png)
 
