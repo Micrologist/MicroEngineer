@@ -303,23 +303,24 @@ namespace MicroMod
                     CloseWindow();
                 }
 
-                GUILayout.Space(10);
+                GUILayout.Space(5);
 
                 GUILayout.BeginHorizontal();
 
+                int toggleIndex = -1;
                 // Draw toggles for all windows except MainGui and StageInfoOAB
-                foreach (var (window, index) in MicroWindows.Select((window, index) => (window, index)).Where(x => x.window.MainWindow != MainWindow.MainGui && x.window.MainWindow != MainWindow.StageInfoOAB))
+                foreach (MicroWindow window in MicroWindows.Where(x => x.MainWindow != MainWindow.MainGui && x.MainWindow != MainWindow.StageInfoOAB))
                 {
                     // layout can fit 6 toggles, so if all 6 slots are filled then go to a new line. Index == 0 is the MainGUI which isn't rendered
-                    if ((index - 1) % 6 == 0 && index > 1)
+                    if (++toggleIndex % 6 == 0 && toggleIndex > 0)
                     {
                         GUILayout.EndHorizontal();
                         GUILayout.BeginHorizontal();
                     }
                     window.IsFlightActive = GUILayout.Toggle(window.IsFlightActive, window.Abbreviation, MicroStyles.SectionToggleStyle);
-                    GUILayout.Space(26);
                 }
                 GUILayout.EndHorizontal();
+                GUILayout.Space(5);
 
                 // Draw Settings window first
                 int settingsIndex = MicroWindows.FindIndex(window => window.MainWindow == MainWindow.Settings);
