@@ -43,6 +43,9 @@ namespace MicroMod
         // Index of the stage for which user wants to select a different CelestialBody for different TWR calculations. -1 -> no stage is selected
         private int _celestialBodySelectionStageIndex = -1;
 
+        // If game input is enabled or disabled (used for locking controls when user is editing a text field
+        private bool _gameInputState = true;
+
         public override void OnInitialized()
 		{
             MicroStyles.InitializeStyles();
@@ -192,6 +195,8 @@ namespace MicroMod
         #region Flight scene UI and logic
         private void OnGUI_Flight()
 		{
+            _gameInputState = MicroUtility.ToggleGameInputOnControlInFocus(_gameInputState, _showGuiFlight);
+
             if (!_showGuiFlight || MicroUtility.ActiveVessel == null) return;
 
             MicroWindow mainGui = MicroWindows.Find(window => window.MainWindow == MainWindow.MainGui);
@@ -559,8 +564,10 @@ namespace MicroMod
             {
                 selectedWindowId = selectedWindowId > 0 ? selectedWindowId - 1 : editableWindows.Count - 1;
             }
+            GUI.SetNextControlName(MicroUtility.InputDisableWindowAbbreviation);
             editableWindows[selectedWindowId].Abbreviation = GUILayout.TextField(editableWindows[selectedWindowId].Abbreviation, MicroStyles.WindowSelectionAbbrevitionTextFieldStyle);
             editableWindows[selectedWindowId].Abbreviation = MicroUtility.ValidateAbbreviation(editableWindows[selectedWindowId].Abbreviation);
+            GUI.SetNextControlName(MicroUtility.InputDisableWindowName);
             editableWindows[selectedWindowId].Name = GUILayout.TextField(editableWindows[selectedWindowId].Name, MicroStyles.WindowSelectionTextFieldStyle);
             if (GUILayout.Button(">", MicroStyles.OneCharacterBtnStyle))
             {
