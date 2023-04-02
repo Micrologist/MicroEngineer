@@ -101,7 +101,8 @@ namespace MicroMod
 
             SectionToggleStyle = new GUIStyle(SpaceWarpUISkin.toggle)
             {
-                padding = new RectOffset(14, 0, 3, 3)
+                padding = new RectOffset(0, 18, -5, 0),
+                contentOffset= new Vector2(17, 8)
             };
 
             NameLabelStyle = new GUIStyle(SpaceWarpUISkin.label);
