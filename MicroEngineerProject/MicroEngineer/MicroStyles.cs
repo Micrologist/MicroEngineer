@@ -7,26 +7,34 @@ namespace MicroMod
     {
         public static int WindowWidth = 290;
         public static int WindowHeight = 1440;
+        public static int WindowWidthStageOAB = 645;
+        public static int WindowWidthCelestialSelection = 100;
 
         public static GUISkin SpaceWarpUISkin;
         public static GUIStyle MainWindowStyle;
         public static GUIStyle PopoutWindowStyle;
         public static GUIStyle EditWindowStyle;
+        public static GUIStyle StageOABWindowStyle;
+        public static GUIStyle CelestialSelectionStyle;
         public static GUIStyle PopoutBtnStyle;
         public static GUIStyle SectionToggleStyle;
         public static GUIStyle NameLabelStyle;
         public static GUIStyle ValueLabelStyle;
         public static GUIStyle BlueLabelStyle;
         public static GUIStyle UnitLabelStyle;
+        public static GUIStyle UnitLabelStyleStageOAB;
         public static GUIStyle NormalLabelStyle;
         public static GUIStyle TitleLabelStyle;
         public static GUIStyle NormalCenteredLabelStyle;
         public static GUIStyle WindowSelectionTextFieldStyle;
         public static GUIStyle WindowSelectionAbbrevitionTextFieldStyle;
         public static GUIStyle CloseBtnStyle;
+        public static GUIStyle CloseBtnStageOABStyle;
         public static GUIStyle NormalBtnStyle;
+        public static GUIStyle CelestialSelectionBtnStyle;
         public static GUIStyle OneCharacterBtnStyle;
         public static GUIStyle TableHeaderLabelStyle;
+        public static GUIStyle TableHeaderCenteredLabelStyle;
 
         public static string UnitColorHex { get => ColorUtility.ToHtmlStringRGBA(UnitLabelStyle.normal.textColor); }
 
@@ -41,6 +49,7 @@ namespace MicroMod
         public static float MainGuiY = Screen.height * 0.2f;
 
         public static Rect CloseBtnRect = new Rect(MicroStyles.WindowWidth - 23, 6, 16, 16);
+        public static Rect CloseBtnStagesOABRect = new Rect(MicroStyles.WindowWidthStageOAB - 23, 6, 16, 16);
         public static Rect EditWindowRect = new Rect(Screen.width * 0.5f - MicroStyles.WindowWidth / 2, Screen.height * 0.2f, MicroStyles.WindowWidth, 0);
 
         public static void InitializeStyles()
@@ -63,6 +72,20 @@ namespace MicroMod
             EditWindowStyle = new GUIStyle(PopoutWindowStyle)
             {
                 padding = new RectOffset(8, 8, 30, 8)
+            };
+
+            StageOABWindowStyle = new GUIStyle(SpaceWarpUISkin.window)
+            {
+                padding = new RectOffset(8, 8, 0, 8),
+                contentOffset = new Vector2(0, -22),
+                fixedWidth = WindowWidthStageOAB
+            };
+
+            CelestialSelectionStyle = new GUIStyle(SpaceWarpUISkin.window)
+            {
+                padding = new RectOffset(8, 8, 0, 8),
+                contentOffset = new Vector2(0, -22),
+                fixedWidth = WindowWidthCelestialSelection
             };
 
             PopoutBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
@@ -96,6 +119,12 @@ namespace MicroMod
                 alignment = TextAnchor.MiddleLeft
             };
             UnitLabelStyle.normal.textColor = new Color(.7f, .75f, .75f, 1);
+
+            UnitLabelStyleStageOAB = new GUIStyle(SpaceWarpUISkin.label)
+            {
+                alignment = TextAnchor.MiddleRight
+            };
+            UnitLabelStyleStageOAB.normal.textColor = new Color(.7f, .75f, .75f, 1);
 
             NormalLabelStyle = new GUIStyle(SpaceWarpUISkin.label)
             {
@@ -145,6 +174,13 @@ namespace MicroMod
                 alignment = TextAnchor.MiddleCenter
             };
 
+            CelestialSelectionBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fixedWidth = 80,
+                fixedHeight = 20
+            };
+
             OneCharacterBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
             {
                 fixedWidth = 20,
@@ -154,6 +190,10 @@ namespace MicroMod
             TableHeaderLabelStyle = new GUIStyle(NameLabelStyle)
             {
                 alignment = TextAnchor.MiddleRight
+            };
+            TableHeaderCenteredLabelStyle = new GUIStyle(NameLabelStyle)
+            {
+                alignment = TextAnchor.MiddleCenter
             };
         }
 

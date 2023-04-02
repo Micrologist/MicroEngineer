@@ -41,6 +41,7 @@ namespace MicroMod
         public virtual void RefreshData() { }
     }
 
+    #region Flight scene entries
     public class Vessel : MicroEntry
     {
         public Vessel()
@@ -1234,4 +1235,226 @@ namespace MicroMod
             EntryValue = "---------------";
         }
     }
+    #endregion
+
+    #region OAB scene entries
+    public class TotalBurnTime_OAB : MicroEntry
+    {
+        public bool UseDHMSFormatting; // TODO: implement
+
+        public TotalBurnTime_OAB()
+        {
+            Name = "Total Burn Time (OAB)";
+            Description = "Shows the total length of burn the vessel can mantain.";
+            Category = MicroEntryCategory.OAB;
+            Unit = "s";
+            Formatting = "{0:N1}";
+            UseDHMSFormatting = true;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalBurnTime;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                if (UseDHMSFormatting)
+                    return MicroUtility.SecondsToTimeString((double)EntryValue);
+                else
+                    return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
+    public class TotalDeltaVASL_OAB : MicroEntry
+    {
+        public TotalDeltaVASL_OAB()
+        {
+            Name = "Total ∆v ASL (OAB)";
+            Description = "Shows the vessel's total delta velocity At Sea Level.";
+            Category = MicroEntryCategory.OAB;
+            Unit = "m/s";
+            Formatting = "{0:N0}";
+        }
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalDeltaVASL;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+                
+                return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
+    public class TotalDeltaVActual_OAB : MicroEntry
+    {
+        public TotalDeltaVActual_OAB()
+        {
+            Name = "Total ∆v Actual (OAB)";
+            Description = "Shows the vessel's actual total delta velocity (not used in OAB).";
+            Category = MicroEntryCategory.OAB;
+            Unit = "m/s";
+            Formatting = "{0:N0}";
+        }
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalDeltaVActual;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
+    public class TotalDeltaVVac_OAB : MicroEntry
+    {
+        public TotalDeltaVVac_OAB()
+        {
+            Name = "Total ∆v Vac (OAB)";
+            Description = "Shows the vessel's total delta velocity in Vacuum.";
+            Category = MicroEntryCategory.OAB;
+            Unit = "m/s";
+            Formatting = "{0:N0}";
+        }
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalDeltaVVac;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Holds stage info parameters for each stage. Also keeps information about the celestial body user selected in the window.
+    /// </summary>
+    public class StageInfo_OAB : MicroEntry
+    {
+        public List<string> CelestialBodyForStage = new();
+
+        public StageInfo_OAB()
+        {
+            Name = "Stage Info (OAB)";
+            Description = "Holds a list of stage info parameters.";
+            Category = MicroEntryCategory.OAB;
+            Unit = null;
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue ??= new List<DeltaVStageInfo_OAB>();
+
+            ((List<DeltaVStageInfo_OAB>)EntryValue).Clear();
+
+            if (MicroUtility.VesselDeltaVComponentOAB?.StageInfo == null) return;
+
+            foreach (var stage in MicroUtility.VesselDeltaVComponentOAB.StageInfo)
+            {
+                ((List<DeltaVStageInfo_OAB>)EntryValue).Add(new DeltaVStageInfo_OAB
+                {
+                    DeltaVActual = stage.DeltaVActual,
+                    DeltaVASL = stage.DeltaVatASL,
+                    DeltaVVac = stage.DeltaVinVac,
+                    DryMass = stage.DryMass,
+                    EndMass = stage.EndMass,
+                    FuelMass = stage.FuelMass,
+                    IspASL = stage.IspASL,
+                    IspActual = stage.IspActual,
+                    IspVac = stage.IspVac,
+                    SeparationIndex = stage.SeparationIndex,
+                    Stage = stage.Stage,
+                    StageBurnTime = stage.StageBurnTime,
+                    StageMass = stage.StageMass,
+                    StartMass = stage.StartMass,
+                    TWRASL = stage.TWRASL,
+                    TWRActual = stage.TWRActual,
+                    TWRVac = stage.TWRVac,
+                    ThrustASL = stage.ThrustASL,
+                    ThrustActual = stage.ThrustActual,
+                    ThrustVac = stage.ThrustVac,
+                    TotalExhaustVelocityASL = stage.TotalExhaustVelocityASL,
+                    TotalExhaustVelocityActual = stage.TotalExhaustVelocityActual,
+                    TotalExhaustVelocityVAC = stage.TotalExhaustVelocityVAC
+                });
+            }
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                return "-";
+            }
+        }
+
+        /// <summary>
+        /// Adds a new string to the CelestialBodyForStage list that corresponds to the HomeWorld, i.e. Kerbin
+        /// </summary>
+        /// <param name="celestialBodies"></param>
+        internal void AddNewCelestialBody(MicroCelestialBodies celestialBodies)
+        {
+            this.CelestialBodyForStage.Add(celestialBodies.Bodies.Find(b => b.IsHomeWorld).Name);            
+        }
+    }
+
+    /// <summary>
+    /// Parameters for one stage
+    /// </summary>
+    public class DeltaVStageInfo_OAB
+    {
+        public double DeltaVActual;
+        public double DeltaVASL;
+        public double DeltaVVac;
+        public double DryMass;
+        public double EndMass;
+        public double FuelMass;
+        public double IspASL;
+        public double IspActual;
+        public double IspVac;
+        public int SeparationIndex;
+        public int Stage;
+        public double StageBurnTime;
+        public double StageMass;
+        public double StartMass;
+        public float TWRASL;
+        public float TWRActual;
+        public float TWRVac;
+        public float ThrustASL;
+        public float ThrustActual;
+        public float ThrustVac;
+        public float TotalExhaustVelocityASL;
+        public float TotalExhaustVelocityActual;
+        public float TotalExhaustVelocityVAC;
+        public string CelestialBody;
+    }
+    #endregion
 }

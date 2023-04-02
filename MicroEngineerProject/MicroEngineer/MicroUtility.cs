@@ -8,6 +8,8 @@ using Newtonsoft.Json;
 using UnityEngine;
 using static KSP.Rendering.Planets.PQSData;
 using BepInEx.Logging;
+using KSP.Messages;
+using KSP.Sim.DeltaV;
 
 namespace MicroMod
 {
@@ -17,6 +19,9 @@ namespace MicroMod
         public static ManeuverNodeData CurrentManeuver;
         public static string LayoutPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MicroLayout.json");
         private static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.MicroUtility");
+        public static GameStateConfiguration GameState;
+        public static MessageCenter MessageCenter;
+        public static VesselDeltaVComponent VesselDeltaVComponentOAB;
 
         /// <summary>
         /// Refreshes the ActiveVessel and CurrentManeuver
@@ -25,7 +30,17 @@ namespace MicroMod
         {
             ActiveVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
             CurrentManeuver = ActiveVessel != null ? GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(ActiveVessel.GlobalId).FirstOrDefault(): null;
+        }
 
+        public static void RefreshGameManager()
+        {
+            GameState = GameManager.Instance?.Game?.GlobalGameState?.GetGameState();
+            MessageCenter = GameManager.Instance?.Game?.Messages;
+        }
+
+        public static void RefreshStagesOAB()
+        {
+            VesselDeltaVComponentOAB = GameManager.Instance?.Game?.OAB?.Current?.Stats?.MainAssembly?.VesselDeltaV;
         }
 
         public static string DegreesToDMS(double degreeD)
@@ -45,7 +60,7 @@ namespace MicroMod
             return $"{heightInMeters:N0}";
         }
 
-        public static string SecondsToTimeString(double seconds, bool addSpacing = true)
+        public static string SecondsToTimeString(double seconds, bool addSpacing = true, bool returnLastUnit = false)
         {
             if (seconds == Double.PositiveInfinity)
             {
@@ -102,11 +117,11 @@ namespace MicroMod
 
             if (minutes > 0 || hours > 0 || days > 0)
             {
-                result += $"{secs:00.}";
+                result += returnLastUnit ? $"{secs:00.}{spacing}<color=#{MicroStyles.UnitColorHex}>s</color>" : $"{secs:00.}";
             }
             else
             {
-                result += secs;
+                result += returnLastUnit ? $"{secs}{spacing}<color=#{MicroStyles.UnitColorHex}>s</color>" : $"{secs}";
             }
 
             return result;
