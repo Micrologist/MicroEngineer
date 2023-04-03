@@ -22,6 +22,8 @@ namespace MicroMod
         public static GameStateConfiguration GameState;
         public static MessageCenter MessageCenter;
         public static VesselDeltaVComponent VesselDeltaVComponentOAB;
+        public static string InputDisableWindowAbbreviation = "WindowAbbreviation";
+        public static string InputDisableWindowName = "WindowName";
 
         /// <summary>
         /// Refreshes the ActiveVessel and CurrentManeuver
@@ -225,7 +227,37 @@ namespace MicroMod
             float y = Mathf.Clamp(position.y, 0, Screen.height - size.y);
             return new Vector2(x, y);
         }
-    }    
+
+        /// <summary>
+        /// Check if focus is on an editable text field. If it is, disable input controls. If it's not, reenable controls.
+        /// </summary>
+        /// <param name="gameInputState">If input is currently enabled or disabled</param>
+        /// <param name="showGuiFlight">If MainGui window is opened</param>
+        /// <returns>True = input is enabled. False = input is disabled</returns>
+        internal static bool ToggleGameInputOnControlInFocus(bool gameInputState, bool showGuiFlight)
+        {
+            if (gameInputState)
+            {
+                if (MicroUtility.InputDisableWindowAbbreviation == GUI.GetNameOfFocusedControl() || MicroUtility.InputDisableWindowName == GUI.GetNameOfFocusedControl())
+                {
+                    GameManager.Instance.Game.Input.Disable();
+                    return false;
+                }
+
+                return true;
+            }
+            else
+            {
+                if ((MicroUtility.InputDisableWindowAbbreviation != GUI.GetNameOfFocusedControl() && MicroUtility.InputDisableWindowName != GUI.GetNameOfFocusedControl()) || !showGuiFlight)
+                {
+                    GameManager.Instance.Game.Input.Enable();
+                    return true;
+                }
+
+                return false;
+            }
+        }
+    }
 
     public static class AeroForces
     {
