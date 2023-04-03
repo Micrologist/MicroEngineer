@@ -256,9 +256,8 @@ namespace MicroMod
 
                 return false;
             }
-            
         }
-    }    
+    }
 
     public static class AeroForces
     {
