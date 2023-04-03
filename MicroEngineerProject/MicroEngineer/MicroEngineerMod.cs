@@ -186,7 +186,7 @@ namespace MicroMod
             GUI.skin = MicroStyles.SpaceWarpUISkin;
 
             MicroUtility.RefreshGameManager();
-            if (MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder)
+            if (MicroUtility.GameState?.GameState == GameState.VehicleAssemblyBuilder)
                 OnGUI_OAB();
             else
                 OnGUI_Flight();
