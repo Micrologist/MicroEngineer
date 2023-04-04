@@ -4,7 +4,7 @@
     "name": "Micro Engineer",
     "description": "Get in-flight and VAB information about your current vessel",
     "source": "https://github.com/Micrologist/MicroEngineer",
-    "version": "0.7.1",
+    "version": "0.7.2",
     "dependencies": [
 		{
 		  "id":  "SpaceWarp",
