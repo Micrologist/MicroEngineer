@@ -61,6 +61,10 @@ namespace MicroMod
             if (MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB) == null)
                 InitializeStageInfoOABWindow();
 
+            // Preserve backward compatibility with SpaceWarp 1.0.1
+            if (MicroUtility.IsModOlderThan("SpaceWarp", 1, 1, 0))
+                MicroStyles.SetStylesForOldSpaceWarpSkin();
+
             Appbar.RegisterAppButton(
                 "Micro Engineer",
                 "BTN-MicroEngineerBtn",
@@ -186,7 +190,7 @@ namespace MicroMod
             GUI.skin = MicroStyles.SpaceWarpUISkin;
 
             MicroUtility.RefreshGameManager();
-            if (MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder)
+            if (MicroUtility.GameState?.GameState == GameState.VehicleAssemblyBuilder)
                 OnGUI_OAB();
             else
                 OnGUI_Flight();

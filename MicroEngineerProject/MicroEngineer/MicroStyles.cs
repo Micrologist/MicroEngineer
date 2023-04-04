@@ -214,5 +214,13 @@ namespace MicroMod
         /// Draws a white horizontal line accross the container it's put in with height of 1 px
         /// </summary>
         public static void DrawHorizontalLine() { MicroStyles.DrawHorizontalLine(1); }
+
+        internal static void SetStylesForOldSpaceWarpSkin()
+        {
+            SectionToggleStyle = new GUIStyle(SpaceWarpUISkin.toggle)
+            {
+                margin = new RectOffset(0, 30, 0, 5)
+            };
+        }
     }
 }
