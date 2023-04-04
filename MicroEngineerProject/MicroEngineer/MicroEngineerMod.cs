@@ -11,7 +11,7 @@ using KSP.Messages;
 
 namespace MicroMod
 {
-	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.7.1")]
+	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.7.2")]
 	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 	public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
