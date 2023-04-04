@@ -10,6 +10,8 @@ using static KSP.Rendering.Planets.PQSData;
 using BepInEx.Logging;
 using KSP.Messages;
 using KSP.Sim.DeltaV;
+using BepInEx.Bootstrap;
+using SpaceWarp.API.Mods;
 
 namespace MicroMod
 {
@@ -256,6 +258,62 @@ namespace MicroMod
 
                 return false;
             }
+        }
+
+        internal static (int major, int minor, int patch)? GetModVersion(string modId)
+        {
+            var plugin = Chainloader.Plugins?.OfType<BaseSpaceWarpPlugin>().ToList().FirstOrDefault(p => p.SpaceWarpMetadata.ModID.ToLowerInvariant() == modId.ToLowerInvariant());
+            string versionString = plugin?.SpaceWarpMetadata?.Version;
+
+            string[] versionNumbers = versionString?.Split(new char[] { '.' }, 3);
+
+            if (versionNumbers != null && versionNumbers.Length >= 1)
+            {
+                int majorVersion = 0;
+                int minorVersion = 0;
+                int patchVersion = 0;
+
+                if (versionNumbers.Length >= 1)
+                    int.TryParse(versionNumbers[0], out majorVersion);
+                if (versionNumbers.Length >= 2)
+                    int.TryParse(versionNumbers[1], out minorVersion);
+                if (versionNumbers.Length == 3)
+                    int.TryParse(versionNumbers[2], out patchVersion);
+
+                return (majorVersion, minorVersion, patchVersion);
+            }
+            else return null;
+        }
+
+        /// <summary>
+        /// Check if installed mod is older than the specified version
+        /// </summary>
+        /// <param name="modId">SpaceWarp mod ID</param>
+        /// <param name="major">Specified major version (X.0.0)</param>
+        /// <param name="minor">Specified minor version (0.X.0)</param>
+        /// <param name="patch">Specified patch version (0.0.X)</param>
+        /// <returns>True = installed mod is older. False = installed mod has the same version or it's newer or version isn't declared or version declared is gibberish that cannot be parsed</returns>
+        internal static bool IsModOlderThan (string modId, int major, int minor, int patch)
+        {
+            var modVersion = MicroUtility.GetModVersion(modId);
+
+            if (!modVersion.HasValue || modVersion.Value == (0, 0, 0))
+                return false;
+
+            if (modVersion.Value.Item1 < major)
+                return true;
+            else if (modVersion.Value.Item1 > major)
+                return false;
+
+            if (modVersion.Value.Item2 < minor)
+                return true;
+            else if (modVersion.Value.Item2 > minor)
+                return false;
+
+            if (modVersion.Value.Item3 < patch)
+                return true;
+            else
+                return false;
         }
     }
 
