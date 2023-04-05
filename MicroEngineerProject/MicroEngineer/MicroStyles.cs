@@ -8,7 +8,7 @@ namespace MicroMod
         public static int WindowWidth = 290;
         public static int WindowHeight = 1440;
         public static int WindowWidthStageOAB = 645;
-        public static int WindowWidthCelestialSelection = 100;
+        //public static int WindowWidthCelestialSelection = 200;
 
         public static GUISkin SpaceWarpUISkin;
         public static GUIStyle MainWindowStyle;
@@ -31,6 +31,7 @@ namespace MicroMod
         public static GUIStyle CloseBtnStyle;
         public static GUIStyle CloseBtnStageOABStyle;
         public static GUIStyle NormalBtnStyle;
+        public static GUIStyle CelestialBodyBtnStyle;
         public static GUIStyle CelestialSelectionBtnStyle;
         public static GUIStyle OneCharacterBtnStyle;
         public static GUIStyle TableHeaderLabelStyle;
@@ -84,8 +85,7 @@ namespace MicroMod
             CelestialSelectionStyle = new GUIStyle(SpaceWarpUISkin.window)
             {
                 padding = new RectOffset(8, 8, 0, 8),
-                contentOffset = new Vector2(0, -22),
-                fixedWidth = WindowWidthCelestialSelection
+                contentOffset = new Vector2(0, -22)
             };
 
             PopoutBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
@@ -175,11 +175,17 @@ namespace MicroMod
                 alignment = TextAnchor.MiddleCenter
             };
 
-            CelestialSelectionBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
+            CelestialBodyBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
             {
                 alignment = TextAnchor.MiddleCenter,
                 fixedWidth = 80,
                 fixedHeight = 20
+            };
+
+            CelestialSelectionBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fixedWidth = 120
             };
 
             OneCharacterBtnStyle = new GUIStyle(SpaceWarpUISkin.button)

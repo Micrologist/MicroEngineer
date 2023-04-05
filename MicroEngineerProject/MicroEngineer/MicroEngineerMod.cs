@@ -8,6 +8,7 @@ using SpaceWarp.API.UI.Appbar;
 using KSP.UI.Binding;
 using KSP.Sim.DeltaV;
 using KSP.Messages;
+using KSP.Sim.impl;
 
 namespace MicroMod
 {
@@ -63,8 +64,14 @@ namespace MicroMod
 
             // Preserve backward compatibility with SpaceWarp 1.0.1
             if (MicroUtility.IsModOlderThan("SpaceWarp", 1, 1, 0))
+            {
+                Logger.LogInfo("Space Warp older version detected. Loading old MicroStyles.");
                 MicroStyles.SetStylesForOldSpaceWarpSkin();
+            }
+            else
+                Logger.LogInfo("Space Warp new version detected. Loading new MicroStyles.");
 
+            // Register Flight and OAB buttons
             Appbar.RegisterAppButton(
                 "Micro Engineer",
                 "BTN-MicroEngineerBtn",
@@ -149,8 +156,12 @@ namespace MicroMod
         /// </summary>
         private void RefreshStagingDataOAB(MessageCenterMessage obj)
         {
+            // Check if message originated from ships in flight. If yes, return.
+            VesselDeltaVCalculationMessage msg = (VesselDeltaVCalculationMessage)obj;
+            if (msg.DeltaVComponent.Ship == null || !msg.DeltaVComponent.Ship.IsLaunchAssembly()) return;
+
             MicroUtility.RefreshGameManager();
-            if (MicroUtility.GameState.GameState != GameState.VehicleAssemblyBuilder) return;
+            if (MicroUtility.GameState.GameState != GameState.VehicleAssemblyBuilder) return;            
 
             MicroUtility.RefreshStagesOAB();
 
@@ -833,24 +844,23 @@ namespace MicroMod
                 GUILayout.Label(String.Format("{0:00}", ((List<DeltaVStageInfo_OAB>)stageInfoOab.EntryValue).Count - stages[stageIndex].Stage), MicroStyles.NameLabelStyle, GUILayout.Width(40));
                 GUILayout.FlexibleSpace();
 
-                // We calculate what factor needs to be applied to TWR in order to compensate for different gravity of the selected celestial body
-                // For selected bodies with atmosphere, for ASL TWR we just apply the factor to HomeWorld's (i.e. Kerbin) ASL TWR as it's a good enough approximation for now.
-                // -> This is just an approximation because ASL TWR depends on Thrust as well which changes depending on atmospheric pressure
-                (double factor, bool hasAtmosphere) twrFactor = _celestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex]);
+                // We calculate what factor needs to be applied to TWR in order to compensate for different gravity of the selected celestial body                
+                double twrFactor = _celestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex]);
+                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor), MicroStyles.ValueLabelStyle, GUILayout.Width(65));
 
-                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor.factor), MicroStyles.ValueLabelStyle, GUILayout.Width(65));
-
-                // If target body doesn't have an atmosphere, its ASL TWR is the same as Vacuum TWR
-                GUILayout.Label(String.Format("{0:N2}", twrFactor.hasAtmosphere ? stages[stageIndex].TWRASL * twrFactor.factor : stages[stageIndex].TWRVac * twrFactor.factor), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
-                GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVASL), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
+                // Calculate Sea Level TWR and DeltaV
+                CelestialBodyComponent cel = _celestialBodies.Bodies.Find(b => b.Name == stageInfoOab.CelestialBodyForStage[celestialIndex]).CelestialBodyComponent;                
+                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].GetTWRAtSeaLevel(cel) * twrFactor), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
+                GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].GetDeltaVelAtSeaLevel(cel)), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
+
                 GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVVac), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
                 GUILayout.Label(MicroUtility.SecondsToTimeString(stages[stageIndex].StageBurnTime, true, true), MicroStyles.ValueLabelStyle, GUILayout.Width(110));
                 GUILayout.Space(20);
                 GUILayout.BeginVertical();
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button(stageInfoOab.CelestialBodyForStage[celestialIndex], MicroStyles.CelestialSelectionBtnStyle))
+                if (GUILayout.Button(stageInfoOab.CelestialBodyForStage[celestialIndex], MicroStyles.CelestialBodyBtnStyle))
                 {
                     _celestialBodySelectionStageIndex = celestialIndex;
                 }
@@ -873,7 +883,7 @@ namespace MicroMod
 
             foreach (var body in _celestialBodies.Bodies)
             {
-                if (GUILayout.Button(body.Name))
+                if (GUILayout.Button(body.DisplayName, MicroStyles.CelestialSelectionBtnStyle))
                 {
                     StageInfo_OAB stageInfoOab = (StageInfo_OAB)MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Stage Info (OAB)");
                     stageInfoOab.CelestialBodyForStage[_celestialBodySelectionStageIndex] = body.Name;

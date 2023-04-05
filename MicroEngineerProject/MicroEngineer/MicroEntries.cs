@@ -1,4 +1,5 @@
 ﻿using KSP.Game;
+using KSP.Sim.DeltaV;
 using KSP.Sim.impl;
 using Newtonsoft.Json;
 using static KSP.Rendering.Planets.PQSData;
@@ -1403,7 +1404,8 @@ namespace MicroMod
                     ThrustVac = stage.ThrustVac,
                     TotalExhaustVelocityASL = stage.TotalExhaustVelocityASL,
                     TotalExhaustVelocityActual = stage.TotalExhaustVelocityActual,
-                    TotalExhaustVelocityVAC = stage.TotalExhaustVelocityVAC
+                    TotalExhaustVelocityVAC = stage.TotalExhaustVelocityVAC,
+                    DeltaVStageInfo = stage
                 });
             }
         }
@@ -1429,32 +1431,46 @@ namespace MicroMod
     /// <summary>
     /// Parameters for one stage
     /// </summary>
-    public class DeltaVStageInfo_OAB
+    internal class DeltaVStageInfo_OAB
     {
-        public double DeltaVActual;
-        public double DeltaVASL;
-        public double DeltaVVac;
-        public double DryMass;
-        public double EndMass;
-        public double FuelMass;
-        public double IspASL;
-        public double IspActual;
-        public double IspVac;
-        public int SeparationIndex;
-        public int Stage;
-        public double StageBurnTime;
-        public double StageMass;
-        public double StartMass;
-        public float TWRASL;
-        public float TWRActual;
-        public float TWRVac;
-        public float ThrustASL;
-        public float ThrustActual;
-        public float ThrustVac;
-        public float TotalExhaustVelocityASL;
-        public float TotalExhaustVelocityActual;
-        public float TotalExhaustVelocityVAC;
-        public string CelestialBody;
+        internal double DeltaVActual;
+        internal double DeltaVASL;
+        internal double DeltaVVac;
+        internal double DryMass;
+        internal double EndMass;
+        internal double FuelMass;
+        internal double IspASL;
+        internal double IspActual;
+        internal double IspVac;
+        internal int SeparationIndex;
+        internal int Stage;
+        internal double StageBurnTime;
+        internal double StageMass;
+        internal double StartMass;
+        internal float TWRASL;
+        internal float TWRActual;
+        internal float TWRVac;
+        internal float ThrustASL;
+        internal float ThrustActual;
+        internal float ThrustVac;
+        internal float TotalExhaustVelocityASL;
+        internal float TotalExhaustVelocityActual;
+        internal float TotalExhaustVelocityVAC;
+        internal DeltaVStageInfo DeltaVStageInfo;
+
+        private float GetThrustAtAltitude(double altitude, CelestialBodyComponent cel) => this.DeltaVStageInfo.EnginesActiveInStage?.Select(e => e.Engine.MaxThrustOutputAtm(atmPressure: cel.GetPressure(altitude) / 101.325))?.Sum() ?? 0;
+        private double GetISPAtAltitude(double altitude, CelestialBodyComponent cel)
+        {
+            float sum = 0;
+            foreach (DeltaVEngineInfo engInfo in this.DeltaVStageInfo.EnginesActiveInStage)
+                sum += engInfo.Engine.MaxThrustOutputAtm(atmPressure: cel.GetPressure(altitude) / 101.325) /
+                 engInfo.Engine.currentEngineModeData.atmosphereCurve.Evaluate((float)cel.GetPressure(altitude) / 101.325f);
+            return GetThrustAtAltitude(altitude, cel) / sum;
+        }
+        private double GetDeltaVelAlt(double altitude, CelestialBodyComponent cel) => GetISPAtAltitude(altitude, cel) * 9.80665 * Math.Log(this.DeltaVStageInfo.StartMass / this.DeltaVStageInfo.EndMass);
+        private double GetTWRAtAltitude(double altitude, CelestialBodyComponent cel) => this.DeltaVStageInfo.TWRVac * (GetThrustAtAltitude(altitude, cel) / this.DeltaVStageInfo.ThrustVac);
+        internal double GetTWRAtSeaLevel(CelestialBodyComponent cel) => this.GetTWRAtAltitude(0, cel);
+        internal double GetDeltaVelAtSeaLevel(CelestialBodyComponent cel) => GetDeltaVelAlt(0, cel);
     }
     #endregion
 }
