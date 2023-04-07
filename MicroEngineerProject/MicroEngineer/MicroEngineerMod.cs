@@ -8,15 +8,17 @@ using SpaceWarp.API.UI.Appbar;
 using KSP.UI.Binding;
 using KSP.Sim.DeltaV;
 using KSP.Messages;
+using KSP.Sim.impl;
 
 namespace MicroMod
 {
-	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.7.2")]
+	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.8.0")]
 	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 	public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
         private bool _showGuiFlight;
         private bool _showGuiOAB;
+        private bool _showGuiSettingsOAB;
 		
 		#region Editing window
 		private bool showEditWindow = false;
@@ -46,6 +48,8 @@ namespace MicroMod
         // If game input is enabled or disabled (used for locking controls when user is editing a text field
         private bool _gameInputState = true;
 
+        private float _lastUpdate = 0;
+
         public override void OnInitialized()
 		{
             MicroStyles.InitializeStyles();
@@ -57,14 +61,9 @@ namespace MicroMod
 			// Load window positions and states from disk, if file exists
 			MicroUtility.LoadLayout(MicroWindows);
 
-            // Preserve backward compatibility with 0.6.0. If user previously saved the layout and then upgraded without deleting the original folder, then StageInfoOAB window will be wiped by LoadLayout(). So, we add it manually now.
-            if (MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB) == null)
-                InitializeStageInfoOABWindow();
+            BackwardCompatibilityInitializations();            
 
-            // Preserve backward compatibility with SpaceWarp 1.0.1
-            if (MicroUtility.IsModOlderThan("SpaceWarp", 1, 1, 0))
-                MicroStyles.SetStylesForOldSpaceWarpSkin();
-
+            // Register Flight and OAB buttons
             Appbar.RegisterAppButton(
                 "Micro Engineer",
                 "BTN-MicroEngineerBtn",
@@ -86,6 +85,30 @@ namespace MicroMod
                     MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
                     GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
+        }
+
+        private void BackwardCompatibilityInitializations()
+        {
+            // Preserve backward compatibility with 0.6.0. If user previously saved the layout and then upgraded without deleting the original folder, then StageInfoOAB window will be wiped by LoadLayout(). So, we add it manually now.
+            if (MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB) == null)
+                InitializeStageInfoOABWindow();
+
+            // Preserve backward compatibility with SpaceWarp 1.0.1
+            if (MicroUtility.IsModOlderThan("SpaceWarp", 1, 1, 0))
+            {
+                Logger.LogInfo("Space Warp older version detected. Loading old MicroStyles.");
+                MicroStyles.SetStylesForOldSpaceWarpSkin();
+            }
+            else
+                Logger.LogInfo("Space Warp new version detected. Loading new MicroStyles.");
+
+            // Preserve backward compatibility with 0.7.2. If user previously saved the layout and then upgraded without deleting the original folder, then the Torque entry won't be in the loaded StageOAB window. So, we add it manually now.
+            MicroWindow stageOabWindow = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            if (stageOabWindow.Entries.Find(e => e.Name == "Torque") == null)
+            {
+                stageOabWindow.Entries.Add(this.MicroEntries.Find(e => e.Name == "Torque"));
+                MicroUtility.SaveLayout(this.MicroWindows);
+            }
         }
 
         /// <summary>
@@ -149,8 +172,12 @@ namespace MicroMod
         /// </summary>
         private void RefreshStagingDataOAB(MessageCenterMessage obj)
         {
+            // Check if message originated from ships in flight. If yes, return.
+            VesselDeltaVCalculationMessage msg = (VesselDeltaVCalculationMessage)obj;
+            if (msg.DeltaVComponent.Ship == null || !msg.DeltaVComponent.Ship.IsLaunchAssembly()) return;
+
             MicroUtility.RefreshGameManager();
-            if (MicroUtility.GameState.GameState != GameState.VehicleAssemblyBuilder) return;
+            if (MicroUtility.GameState.GameState != GameState.VehicleAssemblyBuilder) return;            
 
             MicroUtility.RefreshStagesOAB();
 
@@ -168,20 +195,37 @@ namespace MicroMod
 
         public void Update()
         {
-            MicroUtility.RefreshActiveVesselAndCurrentManeuver();
+            MicroUtility.RefreshGameManager();
 
-            // Do not perform flight UI updates if we're outside of flight and map scene
-            if (MicroUtility.GameState == null || (MicroUtility.GameState.GameState != GameState.FlightView && MicroUtility.GameState.GameState != GameState.Map3DView))
-                return;
-            
-            if (MicroUtility.ActiveVessel == null)
-                return;
-            
-            // Grab all Flight entries from all active windows and refresh their data
-            foreach (MicroEntry entry in MicroWindows
-                .Where(w => w.IsFlightActive)
-                .SelectMany(w => w.Entries ?? Enumerable.Empty<MicroEntry>()).ToList())
-                entry.RefreshData();
+
+            // Perform OAB updates only if we're in OAB
+            if (MicroUtility.GameState != null && MicroUtility.GameState.IsObjectAssembly)
+            {
+                // Do updates every 1 sec
+                if (Time.time - _lastUpdate > 1)
+                {
+                    _lastUpdate = Time.time;
+
+                    Torque torque = (Torque)MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Torque");
+                    if (torque.IsActive)
+                        torque.RefreshData();
+                }
+            }
+
+            // Perform flight UI updates only if we're in Flight or Map view
+            if (MicroUtility.GameState != null && (MicroUtility.GameState.GameState == GameState.FlightView || MicroUtility.GameState.GameState == GameState.Map3DView))
+            {
+                MicroUtility.RefreshActiveVesselAndCurrentManeuver();
+
+                if (MicroUtility.ActiveVessel == null)
+                    return;
+
+                // Grab all Flight entries from all active windows and refresh their data
+                foreach (MicroEntry entry in MicroWindows
+                    .Where(w => w.IsFlightActive)
+                    .SelectMany(w => w.Entries ?? Enumerable.Empty<MicroEntry>()).ToList())
+                    entry.RefreshData();
+            }
         }
         #endregion
 
@@ -774,6 +818,22 @@ namespace MicroMod
                     GUILayout.Height(0)
                     );
             }
+
+            // Draw Settings window for the StageInfoOAB
+            if(_showGuiSettingsOAB)
+            {
+                Rect stageInfoOabRect = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).EditorRect;
+                Rect settingsRect = new Rect(stageInfoOabRect.x + stageInfoOabRect.width, stageInfoOabRect.y, 0, 0);
+
+                settingsRect = GUILayout.Window(
+                    GUIUtility.GetControlID(FocusType.Passive),
+                    settingsRect,
+                    DrawSettingsOabWindow,
+                    "",
+                    MicroStyles.SettingsOabStyle,
+                    GUILayout.Height(0)
+                    );
+            }
         }
 
         private void DrawStageInfoOAB(int windowID)
@@ -782,6 +842,9 @@ namespace MicroMod
             List<MicroEntry> stageInfoOabEntries = stageInfoOabWindow.Entries;
 
             GUILayout.BeginHorizontal();
+            if (SettingsButton(MicroStyles.SettingsOABRect))
+                _showGuiSettingsOAB = !_showGuiSettingsOAB;
+
             if (CloseButton(MicroStyles.CloseBtnStagesOABRect))
             {
                 stageInfoOabWindow.IsEditorActive = false;
@@ -798,6 +861,20 @@ namespace MicroMod
             GUILayout.Space(5);
             GUILayout.Label("m/s", MicroStyles.UnitLabelStyle);
             GUILayout.EndHorizontal();
+
+            // Draw Torque
+            Torque torque = (Torque)stageInfoOabEntries.Find(e => e.Name == "Torque");
+            if (torque.IsActive)
+            {
+                GUILayout.Space(MicroStyles.SpacingAfterEntry);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Torque", MicroStyles.NameLabelStyle);
+                GUILayout.FlexibleSpace();
+                GUILayout.Label(torque.ValueDisplay, MicroStyles.ValueLabelStyle);
+                GUILayout.Space(5);
+                GUILayout.Label(torque.Unit, MicroStyles.UnitLabelStyle);
+                GUILayout.EndHorizontal();
+            }
 
             // Draw Stage table header
             GUILayout.BeginHorizontal();
@@ -833,24 +910,23 @@ namespace MicroMod
                 GUILayout.Label(String.Format("{0:00}", ((List<DeltaVStageInfo_OAB>)stageInfoOab.EntryValue).Count - stages[stageIndex].Stage), MicroStyles.NameLabelStyle, GUILayout.Width(40));
                 GUILayout.FlexibleSpace();
 
-                // We calculate what factor needs to be applied to TWR in order to compensate for different gravity of the selected celestial body
-                // For selected bodies with atmosphere, for ASL TWR we just apply the factor to HomeWorld's (i.e. Kerbin) ASL TWR as it's a good enough approximation for now.
-                // -> This is just an approximation because ASL TWR depends on Thrust as well which changes depending on atmospheric pressure
-                (double factor, bool hasAtmosphere) twrFactor = _celestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex]);
+                // We calculate what factor needs to be applied to TWR in order to compensate for different gravity of the selected celestial body                
+                double twrFactor = _celestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex]);
+                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor), MicroStyles.ValueLabelStyle, GUILayout.Width(65));
 
-                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor.factor), MicroStyles.ValueLabelStyle, GUILayout.Width(65));
-
-                // If target body doesn't have an atmosphere, its ASL TWR is the same as Vacuum TWR
-                GUILayout.Label(String.Format("{0:N2}", twrFactor.hasAtmosphere ? stages[stageIndex].TWRASL * twrFactor.factor : stages[stageIndex].TWRVac * twrFactor.factor), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
-                GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVASL), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
+                // Calculate Sea Level TWR and DeltaV
+                CelestialBodyComponent cel = _celestialBodies.Bodies.Find(b => b.Name == stageInfoOab.CelestialBodyForStage[celestialIndex]).CelestialBodyComponent;                
+                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].GetTWRAtSeaLevel(cel) * twrFactor), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
+                GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].GetDeltaVelAtSeaLevel(cel)), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
+
                 GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVVac), MicroStyles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label("m/s", MicroStyles.UnitLabelStyleStageOAB, GUILayout.Width(30));
                 GUILayout.Label(MicroUtility.SecondsToTimeString(stages[stageIndex].StageBurnTime, true, true), MicroStyles.ValueLabelStyle, GUILayout.Width(110));
                 GUILayout.Space(20);
                 GUILayout.BeginVertical();
                 GUILayout.FlexibleSpace();
-                if (GUILayout.Button(stageInfoOab.CelestialBodyForStage[celestialIndex], MicroStyles.CelestialSelectionBtnStyle))
+                if (GUILayout.Button(stageInfoOab.CelestialBodyForStage[celestialIndex], MicroStyles.CelestialBodyBtnStyle))
                 {
                     _celestialBodySelectionStageIndex = celestialIndex;
                 }
@@ -873,7 +949,7 @@ namespace MicroMod
 
             foreach (var body in _celestialBodies.Bodies)
             {
-                if (GUILayout.Button(body.Name))
+                if (GUILayout.Button(body.DisplayName, MicroStyles.CelestialSelectionBtnStyle))
                 {
                     StageInfo_OAB stageInfoOab = (StageInfo_OAB)MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Stage Info (OAB)");
                     stageInfoOab.CelestialBodyForStage[_celestialBodySelectionStageIndex] = body.Name;
@@ -885,6 +961,21 @@ namespace MicroMod
 
             GUILayout.EndVertical();
         }
+
+        /// <summary>
+        /// Opens a Settings window for OAB
+        /// </summary>
+        private void DrawSettingsOabWindow(int id)
+        {
+            if (CloseButton(MicroStyles.CloseBtnSettingsOABRect))
+                _showGuiSettingsOAB = false;
+
+            MicroWindow stageInfoOabWindow = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            List<MicroEntry> stageInfoOabEntries = stageInfoOabWindow.Entries;
+            Torque torqueEntry = (Torque)stageInfoOabEntries.Find(e => e.Name == "Torque");
+
+            torqueEntry.IsActive = GUILayout.Toggle(torqueEntry.IsActive, "Display Torque (experimental)\nTurn on CoT & CoM for this", MicroStyles.SectionToggleStyle);
+        }
         #endregion
 
         /// <summary>
@@ -895,6 +986,16 @@ namespace MicroMod
         private bool CloseButton(Rect rect)
         {
             return GUI.Button(rect, "X", MicroStyles.CloseBtnStyle);
+        }
+
+        /// <summary>
+        /// Draws a Settings butoon (≡)
+        /// </summary>
+        /// <param name="settingsOABRect"></param>
+        /// <returns></returns>
+        private bool SettingsButton(Rect rect)
+        {
+            return GUI.Button(rect, "≡", MicroStyles.SettingsBtnStyle);
         }
 
         #region Window and data initialization
@@ -969,6 +1070,7 @@ namespace MicroMod
             MicroEntries.Add(new TotalDeltaVASL_OAB());
             MicroEntries.Add(new TotalDeltaVActual_OAB());
             MicroEntries.Add(new TotalDeltaVVac_OAB());
+            MicroEntries.Add(new Torque());
             MicroEntries.Add(new StageInfo_OAB());
             #endregion
         }

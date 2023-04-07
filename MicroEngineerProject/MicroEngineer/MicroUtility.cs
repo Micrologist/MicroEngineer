@@ -280,6 +280,8 @@ namespace MicroMod
                 if (versionNumbers.Length == 3)
                     int.TryParse(versionNumbers[2], out patchVersion);
 
+                Logger.LogInfo($"Space Warp version {majorVersion}.{minorVersion}.{patchVersion} detected.");
+
                 return (majorVersion, minorVersion, patchVersion);
             }
             else return null;
