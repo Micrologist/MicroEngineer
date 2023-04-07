@@ -8,7 +8,7 @@ namespace MicroMod
         public static int WindowWidth = 290;
         public static int WindowHeight = 1440;
         public static int WindowWidthStageOAB = 645;
-        //public static int WindowWidthCelestialSelection = 200;
+        public static int WindowWidthSettingsOAB = 300;
 
         public static GUISkin SpaceWarpUISkin;
         public static GUIStyle MainWindowStyle;
@@ -16,6 +16,7 @@ namespace MicroMod
         public static GUIStyle EditWindowStyle;
         public static GUIStyle StageOABWindowStyle;
         public static GUIStyle CelestialSelectionStyle;
+        public static GUIStyle SettingsOabStyle;
         public static GUIStyle PopoutBtnStyle;
         public static GUIStyle SectionToggleStyle;
         public static GUIStyle NameLabelStyle;
@@ -29,6 +30,7 @@ namespace MicroMod
         public static GUIStyle WindowSelectionTextFieldStyle;
         public static GUIStyle WindowSelectionAbbrevitionTextFieldStyle;
         public static GUIStyle CloseBtnStyle;
+        public static GUIStyle SettingsBtnStyle;
         public static GUIStyle CloseBtnStageOABStyle;
         public static GUIStyle NormalBtnStyle;
         public static GUIStyle CelestialBodyBtnStyle;
@@ -51,6 +53,8 @@ namespace MicroMod
 
         public static Rect CloseBtnRect = new Rect(MicroStyles.WindowWidth - 23, 6, 16, 16);
         public static Rect CloseBtnStagesOABRect = new Rect(MicroStyles.WindowWidthStageOAB - 23, 6, 16, 16);
+        public static Rect CloseBtnSettingsOABRect = new Rect(MicroStyles.WindowWidthSettingsOAB - 23, 6, 16, 16);
+        public static Rect SettingsOABRect = new Rect(MicroStyles.WindowWidthStageOAB - 50, 6, 16, 16);
         public static Rect EditWindowRect = new Rect(Screen.width * 0.5f - MicroStyles.WindowWidth / 2, Screen.height * 0.2f, MicroStyles.WindowWidth, 0);
 
         public static void InitializeStyles()
@@ -86,6 +90,13 @@ namespace MicroMod
             {
                 padding = new RectOffset(8, 8, 0, 8),
                 contentOffset = new Vector2(0, -22)
+            };
+
+            SettingsOabStyle = new GUIStyle(SpaceWarpUISkin.window)
+            {
+                padding = new RectOffset(8, 8, 0, 16),
+                contentOffset = new Vector2(0, -22),
+                fixedWidth = WindowWidthSettingsOAB
             };
 
             PopoutBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
@@ -168,6 +179,11 @@ namespace MicroMod
             CloseBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
             {
                 fontSize = 8
+            };
+
+            SettingsBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
+            {
+                fontSize = 24
             };
 
             NormalBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
