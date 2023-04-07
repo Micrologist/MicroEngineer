@@ -12,7 +12,7 @@ using KSP.Sim.impl;
 
 namespace MicroMod
 {
-	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.7.2")]
+	[BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "0.8.0")]
 	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 	public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
