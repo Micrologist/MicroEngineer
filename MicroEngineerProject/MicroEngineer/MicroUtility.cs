@@ -152,6 +152,11 @@ namespace MicroMod
             return result.Substring(0, 1).ToUpper() + result.Substring(1);
         }
 
+        public static double RadiansToDegrees(double radians)
+        {
+            return radians * PatchedConicsOrbit.Rad2Deg;
+        }
+
         /// <summary>
 		/// Validates if user entered a 3 character string
 		/// </summary>
