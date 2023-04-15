@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MicroMod
 {
-    public static class MicroStyles
+    public static class Styles
     {
         public static int WindowWidth = 290;
         public static int WindowHeight = 1440;
@@ -15,6 +15,7 @@ namespace MicroMod
         public static GUIStyle PopoutWindowStyle;
         public static GUIStyle EditWindowStyle;
         public static GUIStyle StageOABWindowStyle;
+
         public static GUIStyle CelestialSelectionStyle;
         public static GUIStyle SettingsOabStyle;
         public static GUIStyle PopoutBtnStyle;
@@ -29,6 +30,7 @@ namespace MicroMod
         public static GUIStyle NormalCenteredLabelStyle;
         public static GUIStyle WindowSelectionTextFieldStyle;
         public static GUIStyle WindowSelectionAbbrevitionTextFieldStyle;
+
         public static GUIStyle CloseBtnStyle;
         public static GUIStyle SettingsBtnStyle;
         public static GUIStyle CloseBtnStageOABStyle;
@@ -36,6 +38,7 @@ namespace MicroMod
         public static GUIStyle CelestialBodyBtnStyle;
         public static GUIStyle CelestialSelectionBtnStyle;
         public static GUIStyle OneCharacterBtnStyle;
+
         public static GUIStyle TableHeaderLabelStyle;
         public static GUIStyle TableHeaderCenteredLabelStyle;
 
@@ -51,11 +54,11 @@ namespace MicroMod
         public static float MainGuiX = Screen.width * 0.8f;
         public static float MainGuiY = Screen.height * 0.2f;
 
-        public static Rect CloseBtnRect = new Rect(MicroStyles.WindowWidth - 23, 6, 16, 16);
-        public static Rect CloseBtnStagesOABRect = new Rect(MicroStyles.WindowWidthStageOAB - 23, 6, 16, 16);
-        public static Rect CloseBtnSettingsOABRect = new Rect(MicroStyles.WindowWidthSettingsOAB - 23, 6, 16, 16);
-        public static Rect SettingsOABRect = new Rect(MicroStyles.WindowWidthStageOAB - 50, 6, 16, 16);
-        public static Rect EditWindowRect = new Rect(Screen.width * 0.5f - MicroStyles.WindowWidth / 2, Screen.height * 0.2f, MicroStyles.WindowWidth, 0);
+        public static Rect CloseBtnRect = new Rect(Styles.WindowWidth - 23, 6, 16, 16);
+        public static Rect CloseBtnStagesOABRect = new Rect(Styles.WindowWidthStageOAB - 23, 6, 16, 16);
+        public static Rect CloseBtnSettingsOABRect = new Rect(Styles.WindowWidthSettingsOAB - 23, 6, 16, 16);
+        public static Rect SettingsOABRect = new Rect(Styles.WindowWidthStageOAB - 50, 6, 16, 16);
+        public static Rect EditWindowRect = new Rect(Screen.width * 0.5f - Styles.WindowWidth / 2, Screen.height * 0.2f, Styles.WindowWidth, 0);
 
         public static void InitializeStyles()
         {
@@ -235,7 +238,7 @@ namespace MicroMod
         /// <summary>
         /// Draws a white horizontal line accross the container it's put in with height of 1 px
         /// </summary>
-        public static void DrawHorizontalLine() { MicroStyles.DrawHorizontalLine(1); }
+        public static void DrawHorizontalLine() { Styles.DrawHorizontalLine(1); }
 
         internal static void SetStylesForOldSpaceWarpSkin()
         {
