@@ -9,6 +9,7 @@ using KSP.UI.Binding;
 using KSP.Sim.DeltaV;
 using KSP.Messages;
 using KSP.Sim.impl;
+using KSP.Sim.Maneuver;
 
 namespace MicroMod
 {
@@ -196,7 +197,6 @@ namespace MicroMod
         public void Update()
         {
             MicroUtility.RefreshGameManager();
-
 
             // Perform OAB updates only if we're in OAB
             if (MicroUtility.GameState != null && MicroUtility.GameState.IsObjectAssembly)
@@ -416,7 +416,7 @@ namespace MicroMod
                 Logger.LogError(ex);
             }
         }
-
+        private int _selectedNode = 0;
 		/// <summary>
         /// Draws all windows that are toggled and popped out
         /// </summary>
@@ -430,10 +430,74 @@ namespace MicroMod
             foreach (MicroEntry entry in windowToDraw.Entries)
 				DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
 
+            // TEMP - MOVE SOMEWHERE ELSE WHEN DONE
+
+            GUILayout.BeginHorizontal();
+            if(GUILayout.Button("<"))
+            {
+                _selectedNode--;
+            }
+            GUILayout.Label($"{_selectedNode}");
+            if (GUILayout.Button(">"))
+            {
+                _selectedNode++;
+            }
+            GUILayout.EndHorizontal();
+
+            if (windowToDraw.Name == "Maneuver")
+            {
+                if (GUILayout.Button("Delete"))
+                {
+                    /* OLD - DOESN'T WORK
+                    var activeVesselPlan2 = GameManager.Instance.Game.SpaceSimulation.Maneuvers.GetNodesForVessel(MicroUtility.ActiveVessel.GlobalId);
+                    if (activeVesselPlan2 != null)
+                    {
+                        var node = activeVesselPlan2.FirstOrDefault();
+                        if (node != null)
+                        {
+                            
+                            GameManager.Instance.Game.SpaceSimulation.Maneuvers.RemoveNodesFromVessel(MicroUtility.ActiveVessel.GlobalId, new List<ManeuverNodeData> { node });
+                        }
+                    }
+                    */
+
+                    /* THIS WORKS!
+                    var _activeVesselPlan = MicroUtility.ActiveVessel.SimulationObject.FindComponent<ManeuverPlanComponent>();
+                    List<ManeuverNodeData> nodeData = new List<ManeuverNodeData>();
+                    nodeData.Add(_activeVesselPlan.ActiveNode);
+                    
+                    foreach (ManeuverNodeData node in _activeVesselPlan.GetNodes())
+                    {
+                        if (!nodeData.Contains(node) && (!_activeVesselPlan.ActiveNode.IsOnManeuverTrajectory || _activeVesselPlan.ActiveNode.Time < node.Time))
+                            nodeData.Add(node);
+                    }
+                    GameManager.Instance.Game.SpaceSimulation.Maneuvers.RemoveNodesFromVessel(MicroUtility.ActiveVessel.GlobalId, nodeData);
+                    */
+
+                    var _activeVesselPlan = MicroUtility.ActiveVessel.SimulationObject.FindComponent<ManeuverPlanComponent>();
+                    List<ManeuverNodeData> nodeData = new List<ManeuverNodeData>();
+
+                    var nodeToDelete = _activeVesselPlan.GetNodes()[_selectedNode];
+                    nodeData.Add(nodeToDelete);
+
+                    foreach (ManeuverNodeData node in _activeVesselPlan.GetNodes())
+                    {
+                        if (!nodeData.Contains(node) && (!nodeToDelete.IsOnManeuverTrajectory || nodeToDelete.Time < node.Time))
+                            nodeData.Add(node);
+                    }
+                    GameManager.Instance.Game.SpaceSimulation.Maneuvers.RemoveNodesFromVessel(MicroUtility.ActiveVessel.GlobalId, nodeData);
+
+
+
+                    //this.RemoveNodesFromVessel(this._activeVesselPlan.ActiveNode.RelatedSimID, nodeData);
+                    //this.NormalizedManeuverTime = ManeuverProvider.NORMALIZED_MANEUVER_BOUND;
+                }
+            }
+
+            // END TEMP
             DrawSectionEnd(windowToDraw);
         }
-
-		private void DrawSettingsWindow(int windowIndex)
+        private void DrawSettingsWindow(int windowIndex)
 		{
 			MicroWindow windowToDraw = MicroWindows[windowIndex];
 
@@ -1072,6 +1136,59 @@ namespace MicroMod
             MicroEntries.Add(new TotalDeltaVVac_OAB());
             MicroEntries.Add(new Torque());
             MicroEntries.Add(new StageInfo_OAB());
+            #endregion
+
+            #region New entries
+            MicroEntries.Add(new AltitudeFromScenery());
+            MicroEntries.Add(new AtmosphericTemperature());
+            MicroEntries.Add(new DynamicPressure_kPa());
+            MicroEntries.Add(new ExposedArea());
+            MicroEntries.Add(new ExternalTemperature());
+            MicroEntries.Add(new FuelPercentage());
+            MicroEntries.Add(new Heading());
+            MicroEntries.Add(new Pitch_HorizonRelative());
+            MicroEntries.Add(new Roll_HorizonRelative());
+            MicroEntries.Add(new Yaw_HorizonRelative());
+            MicroEntries.Add(new DragCoefficient());
+            MicroEntries.Add(new OrbitalSpeed());
+            MicroEntries.Add(new SoundSpeed());
+            MicroEntries.Add(new StageFuelPercentage());
+            MicroEntries.Add(new StaticPressure_kPa());
+            MicroEntries.Add(new TimeSinceLaunch());
+            MicroEntries.Add(new TotalCommandCrewCapacity());
+            MicroEntries.Add(new Zenith());
+            MicroEntries.Add(new altimeterMode());
+            MicroEntries.Add(new geeForce());
+            MicroEntries.Add(new gravityForPos());
+            MicroEntries.Add(new launchTime());
+            MicroEntries.Add(new speedMode());
+            MicroEntries.Add(new AutopilotStatus_IsEnabled());
+            MicroEntries.Add(new AutopilotStatus_Mode());
+            MicroEntries.Add(new EccentricAnomaly());
+            MicroEntries.Add(new EndUT());
+            MicroEntries.Add(new MeanAnomaly());
+            MicroEntries.Add(new ObT());
+            MicroEntries.Add(new ArgumentOfPeriapsis());
+            MicroEntries.Add(new LongitudeOfAscendingNode());
+            MicroEntries.Add(new SemiMajorAxis());
+            MicroEntries.Add(new SemiMinorAxis());
+            MicroEntries.Add(new OrbitalEnergy());
+            MicroEntries.Add(new ReferenceBodyConstants_Radius());
+            MicroEntries.Add(new ReferenceBodyConstants_StandardGravitationParameter());
+            MicroEntries.Add(new SemiLatusRectum());
+            MicroEntries.Add(new StartUT());
+            MicroEntries.Add(new TrueAnomaly());
+            MicroEntries.Add(new UniversalTimeAtClosestApproach());
+            MicroEntries.Add(new UniversalTimeAtSoiEncounter());
+            MicroEntries.Add(new orbitPercent());
+            MicroEntries.Add(new radius());
+            MicroEntries.Add(new ManeuverPrograde());
+            MicroEntries.Add(new ManeuverNormal());
+            MicroEntries.Add(new ManeuverRadial());
+
+
+
+
             #endregion
         }
 

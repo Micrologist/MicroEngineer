@@ -126,7 +126,9 @@ namespace MicroMod
         Maneuver,
         Stage,
         Misc,
-        OAB
+        OAB,
+        New,
+        Accepted
     }
 
     /// <summary>
