@@ -973,6 +973,8 @@ namespace MicroMod
 
     public class ProjectedAp : MicroEntry
     {
+        internal int SelectedNodeIndex = 0;
+
         public ProjectedAp()
         {
             Name = "Projected Ap.";
@@ -984,7 +986,18 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList.FirstOrDefault().ApoapsisArl;
+            List<PatchedConicsOrbit> patchedConicsList = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?.Where(p => p.ActivePatch == true).ToList();
+            
+            if (patchedConicsList == null || patchedConicsList.Count() == 0)
+            {
+                EntryValue = null;
+                return;
+            }
+
+            if (patchedConicsList.Count >= SelectedNodeIndex + 1)
+            {
+                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList[SelectedNodeIndex].ApoapsisArl;
+            }
         }
 
         public override string ValueDisplay
@@ -1001,6 +1014,8 @@ namespace MicroMod
     
     public class ProjectedPe : MicroEntry
     {
+        internal int SelectedNodeIndex = 0;
+
         public ProjectedPe()
         {
             Name = "Projected Pe.";
@@ -1012,7 +1027,18 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList.FirstOrDefault().PeriapsisArl;
+            List<PatchedConicsOrbit> patchedConicsList = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?.Where(p => p.ActivePatch == true).ToList();
+
+            if (patchedConicsList == null || patchedConicsList.Count() == 0)
+            {
+                EntryValue = null;
+                return;
+            }
+
+            if (patchedConicsList.Count >= SelectedNodeIndex + 1)
+            {
+                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList[SelectedNodeIndex].PeriapsisArl;
+            }
         }
 
         public override string ValueDisplay
@@ -1029,6 +1055,8 @@ namespace MicroMod
 
     public class DeltaVRequired : MicroEntry
     {
+        internal int SelectedNodeIndex = 0;
+
         public DeltaVRequired()
         {
             Name = "∆v required";
@@ -1040,7 +1068,28 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = (MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude;
+            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
+            var nodes = activeVesselPlan?.GetNodes();
+
+            if (nodes == null || nodes.Count == 0)
+            {
+                EntryValue = null;
+                return;
+            }
+
+            if (nodes.Count == 1)
+            {
+                EntryValue = (MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude;
+            }
+            else if (nodes.Count >= SelectedNodeIndex + 1)
+            {
+                EntryValue = nodes[SelectedNodeIndex].BurnRequiredDV;
+            }
+            else
+            {
+                EntryValue = null;
+                return;
+            }
         }
 
         public override string ValueDisplay
@@ -1057,6 +1106,8 @@ namespace MicroMod
 
     public class TimeToNode : MicroEntry
     {
+        internal int SelectedNodeIndex = 0;
+
         public TimeToNode()
         {
             Name = "Time to Node";
@@ -1068,7 +1119,28 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.CurrentManeuver != null ? MicroUtility.CurrentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime : null;
+            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
+            var nodes = activeVesselPlan?.GetNodes();
+
+            if (nodes == null || nodes.Count == 0)
+            {
+                EntryValue = null;
+                return;
+            }
+
+            if (nodes.Count == 1)
+            {
+                EntryValue = MicroUtility.CurrentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
+            }
+            else if (nodes.Count >= SelectedNodeIndex + 1)
+            {
+                EntryValue = nodes[SelectedNodeIndex].Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
+            }
+            else
+            {
+                EntryValue = null;
+                return;
+            }
         }
 
         public override string ValueDisplay
@@ -1085,6 +1157,8 @@ namespace MicroMod
 
     public class BurnTime : MicroEntry
     {
+        internal int SelectedNodeIndex = 0;
+
         public BurnTime()
         {
             Name = "Burn Time";
@@ -1096,7 +1170,28 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.CurrentManeuver?.BurnDuration;
+            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
+            var nodes = activeVesselPlan?.GetNodes();
+
+            if (nodes == null || nodes.Count == 0)
+            {
+                EntryValue = null;
+                return;
+            }
+
+            if (nodes.Count == 1)
+            {
+                EntryValue = MicroUtility.CurrentManeuver?.BurnDuration;
+            }
+            else if (nodes.Count >= SelectedNodeIndex + 1)
+            {
+                EntryValue = nodes[SelectedNodeIndex].BurnDuration;
+            }
+            else
+            {
+                EntryValue = null;
+                return;
+            }
         }
 
         public override string ValueDisplay

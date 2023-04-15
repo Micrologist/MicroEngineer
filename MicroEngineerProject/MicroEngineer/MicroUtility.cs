@@ -54,7 +54,7 @@ namespace MicroMod
             int minutes = ts.Minutes;
             int seconds = ts.Seconds;
 
-            string result = $"{degrees:N0}<color={MicroStyles.UnitColorHex}>°</color> {minutes:00}<color={MicroStyles.UnitColorHex}>'</color> {seconds:00}<color={MicroStyles.UnitColorHex}>\"</color>";
+            string result = $"{degrees:N0}<color={Styles.UnitColorHex}>°</color> {minutes:00}<color={Styles.UnitColorHex}>'</color> {seconds:00}<color={Styles.UnitColorHex}>\"</color>";
 
             return result;
         }
@@ -97,13 +97,13 @@ namespace MicroMod
 
             if (days > 0)
             {
-                result += $"{days}{spacing}<color=#{MicroStyles.UnitColorHex}>d</color> ";
+                result += $"{days}{spacing}<color=#{Styles.UnitColorHex}>d</color> ";
             }
 
             if (hours > 0 || days > 0)
             {
                 {
-                    result += $"{hours}{spacing}<color=#{MicroStyles.UnitColorHex}>h</color> ";
+                    result += $"{hours}{spacing}<color=#{Styles.UnitColorHex}>h</color> ";
                 }
             }
 
@@ -111,21 +111,21 @@ namespace MicroMod
             {
                 if (hours > 0 || days > 0)
                 {
-                    result += $"{minutes:00.}{spacing}<color=#{MicroStyles.UnitColorHex}>m</color> ";
+                    result += $"{minutes:00.}{spacing}<color=#{Styles.UnitColorHex}>m</color> ";
                 }
                 else
                 {
-                    result += $"{minutes}{spacing}<color=#{MicroStyles.UnitColorHex}>m</color> ";
+                    result += $"{minutes}{spacing}<color=#{Styles.UnitColorHex}>m</color> ";
                 }
             }
 
             if (minutes > 0 || hours > 0 || days > 0)
             {
-                result += returnLastUnit ? $"{secs:00.}{spacing}<color=#{MicroStyles.UnitColorHex}>s</color>" : $"{secs:00.}";
+                result += returnLastUnit ? $"{secs:00.}{spacing}<color=#{Styles.UnitColorHex}>s</color>" : $"{secs:00.}";
             }
             else
             {
-                result += returnLastUnit ? $"{secs}{spacing}<color=#{MicroStyles.UnitColorHex}>s</color>" : $"{secs}";
+                result += returnLastUnit ? $"{secs}{spacing}<color=#{Styles.UnitColorHex}>s</color>" : $"{secs}";
             }
 
             return result;
@@ -170,7 +170,7 @@ namespace MicroMod
             return abbreviation.Substring(0, Math.Min(abbreviation.Length, 3)).ToUpperInvariant();
         }
 
-        public static void SaveLayout(List<MicroWindow> windows)
+        internal static void SaveLayout(List<BaseWindow> windows)
         {
             try
             {
@@ -186,11 +186,11 @@ namespace MicroMod
             }
         }
 
-        public static void LoadLayout(List<MicroWindow> windows)
+        internal static void LoadLayout(List<BaseWindow> windows)
         {
             try
             {
-                List<MicroWindow> deserializedWindows = JsonConvert.DeserializeObject<List<MicroWindow>>(File.ReadAllText(LayoutPath));
+                List<BaseWindow> deserializedWindows = JsonConvert.DeserializeObject<List<BaseWindow>>(File.ReadAllText(LayoutPath));
 
                 windows.Clear();
                 windows.AddRange(deserializedWindows);                
