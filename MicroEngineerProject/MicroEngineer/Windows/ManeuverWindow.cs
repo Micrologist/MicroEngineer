@@ -67,12 +67,11 @@ namespace MicroMod
             base.RefreshData();
             RefreshManeuverNodes();
 
-            // Add _selectedNodeIndex to base entries as well. They will show the correct node's info.
-            (Entries.Find(e => e.GetType() == typeof(ProjectedAp)) as ProjectedAp).SelectedNodeIndex = _selectedNodeIndex;
-            (Entries.Find(e => e.GetType() == typeof(ProjectedPe)) as ProjectedPe).SelectedNodeIndex = _selectedNodeIndex;
-            (Entries.Find(e => e.GetType() == typeof(DeltaVRequired)) as DeltaVRequired).SelectedNodeIndex = _selectedNodeIndex;
-            (Entries.Find(e => e.GetType() == typeof(TimeToNode)) as TimeToNode).SelectedNodeIndex = _selectedNodeIndex;
-            (Entries.Find(e => e.GetType() == typeof(BurnTime)) as BurnTime).SelectedNodeIndex = _selectedNodeIndex;
+            // Add _selectedNodeIndex to entries as well. They will show the correct node's info.
+            List<ManeuverEntry> entries = Entries.OfType<ManeuverEntry>().ToList();
+
+            foreach (var entry in entries)
+                entry.SelectedNodeIndex = _selectedNodeIndex;
         }
 
         private void RefreshManeuverNodes()
