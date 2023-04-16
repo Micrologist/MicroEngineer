@@ -26,6 +26,7 @@ namespace MicroMod
         public static VesselDeltaVComponent VesselDeltaVComponentOAB;
         public static string InputDisableWindowAbbreviation = "WindowAbbreviation";
         public static string InputDisableWindowName = "WindowName";
+        public static double UniversalTime => GameManager.Instance.Game.UniverseModel.UniversalTime;
 
         /// <summary>
         /// Refreshes the ActiveVessel and CurrentManeuver
