@@ -1076,9 +1076,9 @@ namespace MicroMod
             #region Vessel entries
             MicroEntries.Add(new Vessel());
             MicroEntries.Add(new Mass());
-            MicroEntries.Add(new DeltaV());
-            MicroEntries.Add(new Thrust());
-            MicroEntries.Add(new TWR());
+            MicroEntries.Add(new TotalDeltaVActual());
+            MicroEntries.Add(new StageThrustActual());
+            MicroEntries.Add(new StageTWRActual());
 			#endregion
             #region Orbital entries
             MicroEntries.Add(new Apoapsis());
@@ -1124,9 +1124,6 @@ namespace MicroMod
             MicroEntries.Add(new BurnTime());
             #endregion
             #region Stage entries
-            MicroEntries.Add(new TotalDeltaVVac());
-            MicroEntries.Add(new TotalDeltaVAsl());
-            MicroEntries.Add(new TotalDeltaVActual());
             MicroEntries.Add(new StageInfo());
             #endregion
             #region Misc entries
@@ -1213,6 +1210,18 @@ namespace MicroMod
             MicroEntries.Add(new Target_Name());
             MicroEntries.Add(new Target_Obtvelocity());
 
+
+            MicroEntries.Add(new PartsCount());
+            MicroEntries.Add(new TotalBurnTime());
+            MicroEntries.Add(new TotalDeltaVASL());
+            MicroEntries.Add(new TotalDeltaVVac());
+            MicroEntries.Add(new StageISPAsl());
+            MicroEntries.Add(new StageISPActual());
+            MicroEntries.Add(new StageISPVac());
+            MicroEntries.Add(new StageTWRASL());
+            MicroEntries.Add(new StageTWRVac());
+            MicroEntries.Add(new StageThrustASL());
+            MicroEntries.Add(new StageThrustVac());
 
 
 

@@ -270,7 +270,7 @@ namespace MicroMod
         {
             Name = "[T] Orbit Time";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted;
             Unit = "s";
             Formatting = "{0:N3}";
         }
