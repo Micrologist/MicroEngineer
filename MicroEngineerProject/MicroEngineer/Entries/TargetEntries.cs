@@ -161,6 +161,53 @@ namespace MicroMod
 
     ////////////////////////        NEW     ENTRIES         ////////////////////////
 
+    public class Target_AltitudeFromSeaLevel : TargetEntry
+    {
+        public Target_AltitudeFromSeaLevel()
+        {
+            Name = "[T] Altitude (Sea)";
+            Description = "";
+            Category = MicroEntryCategory.Accepted;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.TargetObject?.AltitudeFromSeaLevel;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return MicroUtility.MetersToDistanceString((double)EntryValue);
+            }
+        }
+    }
+
+    public class Target_Name : TargetEntry
+    {
+        public Target_Name()
+        {
+            Name = "[T] Name";
+            Description = "";
+            Category = MicroEntryCategory.Accepted;
+            Unit = null;
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.TargetObject?.DisplayName;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
     public class Target_EccentricAnomaly : TargetEntry
     {
         public Target_EccentricAnomaly()
@@ -223,8 +270,8 @@ namespace MicroMod
         {
             Name = "[T] Orbit Time";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = null;
+            Category = MicroEntryCategory.New;
+            Unit = "s";
             Formatting = "{0:N3}";
         }
 
@@ -570,6 +617,208 @@ namespace MicroMod
         }
 
         public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Target_Obtvelocity : TargetEntry
+    {
+        public Target_Obtvelocity()
+        {
+            Name = "[T] Orbital Speed";
+            Description = "";
+            Category = MicroEntryCategory.Accepted;
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.TargetObject?.ObtVelocity.magnitude;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+
+    public class DistanceAtCloseApproach1 : MicroEntry
+    {
+        public DistanceAtCloseApproach1()
+        {
+            Name = "CloseApp1 Dist";
+            Description = "";
+            Category = MicroEntryCategory.Accepted;
+            Unit = "m";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.RelativeDistance : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return MicroUtility.MetersToDistanceString((double)EntryValue);
+            }
+
+        }
+    }
+
+    public class TimeToCloseApproach1 : MicroEntry
+    {
+        public TimeToCloseApproach1()
+        {
+            Name = "CloseApp1 Time";
+            Description = "";
+            Category = MicroEntryCategory.Accepted;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.UniversalTime - MicroUtility.UniversalTime : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return MicroUtility.SecondsToTimeString((double)EntryValue);
+            }
+        }
+    }
+
+    public class RelativeSpeedAtCloseApproach1 : MicroEntry
+    {
+        public RelativeSpeedAtCloseApproach1()
+        {
+            Name = "CloseApp1 Speed";
+            Description = "";
+            Category = MicroEntryCategory.Accepted;
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.RelativeSpeed : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
+    public class DistanceAtCloseApproach2 : MicroEntry
+    {
+        public DistanceAtCloseApproach2()
+        {
+            Name = "CloseApp2 Dist";
+            Description = "";
+            Category = MicroEntryCategory.Accepted;
+            Unit = "m";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeDistance : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return MicroUtility.MetersToDistanceString((double)EntryValue);
+            }
+
+        }
+    }
+
+    public class TimeToCloseApproach2 : MicroEntry
+    {
+        public TimeToCloseApproach2()
+        {
+            Name = "CloseApp2 Time";
+            Description = "";
+            Category = MicroEntryCategory.Accepted;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.UniversalTime - MicroUtility.UniversalTime : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return MicroUtility.SecondsToTimeString((double)EntryValue);
+            }
+        }
+    }
+
+    public class RelativeSpeedAtCloseApproach2 : MicroEntry
+    {
+        public RelativeSpeedAtCloseApproach2()
+        {
+            Name = "CloseApp2 Speed";
+            Description = "";
+            Category = MicroEntryCategory.Accepted;
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeSpeed : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
     }
 
 
