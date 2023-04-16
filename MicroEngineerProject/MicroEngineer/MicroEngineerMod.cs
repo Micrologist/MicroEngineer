@@ -9,6 +9,7 @@ using KSP.UI.Binding;
 using KSP.Sim.DeltaV;
 using KSP.Messages;
 using KSP.Sim.impl;
+using KSP.Iteration.UI.Binding;
 
 namespace MicroMod
 {
@@ -1187,6 +1188,30 @@ namespace MicroMod
             MicroEntries.Add(new ManeuverPrograde());
             MicroEntries.Add(new ManeuverNormal());
             MicroEntries.Add(new ManeuverRadial());
+            MicroEntries.Add(new DistanceAtCloseApproach1());
+            MicroEntries.Add(new TimeToCloseApproach1());
+            MicroEntries.Add(new RelativeSpeedAtCloseApproach1());
+            MicroEntries.Add(new DistanceAtCloseApproach2());
+            MicroEntries.Add(new TimeToCloseApproach2());
+            MicroEntries.Add(new RelativeSpeedAtCloseApproach2());
+
+            MicroEntries.Add(new Target_EccentricAnomaly());
+            MicroEntries.Add(new Target_MeanAnomaly());
+            MicroEntries.Add(new Target_ObT());
+            MicroEntries.Add(new Target_ArgumentOfPeriapsis());
+            MicroEntries.Add(new Target_Eccentricity());
+            MicroEntries.Add(new Target_Inclination());
+            MicroEntries.Add(new Target_LongitudeOfAscendingNode());
+            MicroEntries.Add(new Target_SemiMajorAxis());
+            MicroEntries.Add(new Target_ReferenceBodyConstants_Radius());
+            MicroEntries.Add(new Target_ReferenceBodyConstants_StandardGravitationParameter());
+            MicroEntries.Add(new Target_SemiLatusRectum());
+            MicroEntries.Add(new Target_SemiMinorAxis());
+            MicroEntries.Add(new Target_TrueAnomaly());
+            MicroEntries.Add(new Target_Period());
+            MicroEntries.Add(new Target_radius());
+
+
 
 
 

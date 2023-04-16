@@ -41,12 +41,7 @@ namespace MicroMod
 
         public virtual void RefreshData() { }
     }
-
-    public class ManeuverEntry : MicroEntry
-    {
-        internal int SelectedNodeIndex = 0;
-    }
-
+    
 
     #region Flight scene entries
     public class Vessel : MicroEntry
@@ -827,505 +822,9 @@ namespace MicroMod
         }
     }
 
-    public class TargetApoapsis : MicroEntry
-    {
-        public TargetApoapsis()
-        {
-            Name = "Target Ap.";
-            Description = "Shows the target's apoapsis height relative to the sea level.";
-            Category = MicroEntryCategory.Target;
-            Unit = "m";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.ApoapsisArl;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-        }
-    }
-
-    public class TargetPeriapsis : MicroEntry
-    {
-        public TargetPeriapsis()
-        {
-            Name = "Target Pe.";
-            Description = "Shows the target's periapsis height relative to the sea level.";
-            Category = MicroEntryCategory.Target;
-            Unit = "m";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.PeriapsisArl;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-        }
-    }
-
-    public class DistanceToTarget : MicroEntry
-    {
-        public DistanceToTarget()
-        {
-            Name = "Distance to Target";
-            Description = "Shows the current distance between the vessel and the target.";
-            Category = MicroEntryCategory.Target;
-            Unit = "m";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit != null ? (MicroUtility.ActiveVessel.Orbit.Position - MicroUtility.ActiveVessel.TargetObject.Orbit.Position).magnitude : null;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                // return value only if vessel and target are in the same SOI
-                return MicroUtility.ActiveVessel.Orbit.referenceBody == MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody ?
-                    MicroUtility.MetersToDistanceString((double)EntryValue) : "-";
-            }
-        }
-    }
-
-    public class RelativeSpeed : MicroEntry
-    {
-        public RelativeSpeed()
-        {
-            Name = "Rel. Speed";
-            Description = "Shows the relative velocity between the vessel and the target.";
-            Category = MicroEntryCategory.Target;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit != null ? (MicroUtility.ActiveVessel.Orbit.relativeVelocity - MicroUtility.ActiveVessel.TargetObject.Orbit.relativeVelocity).magnitude : null;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                // return value only if vessel and target are in the same SOI
-                if (MicroUtility.ActiveVessel.Orbit.referenceBody != MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
-            }
-        }
-    }
-
-    public class RelativeInclination : MicroEntry
-    {
-        public RelativeInclination()
-        {
-            Name = "Rel. Inclination";
-            Description = "Shows the relative inclination between the vessel and the target.";
-            Category = MicroEntryCategory.Target;
-            Unit = "°";
-            Formatting = "{0:N3}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.AscendingNodeTarget.Inclination;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                // return value only if vessel and target are in the same SOI
-                if (MicroUtility.ActiveVessel.Orbit.referenceBody != MicroUtility.ActiveVessel.TargetObject?.Orbit?.referenceBody)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
-            }
-        }
-    }
-
-    public class ProjectedAp : ManeuverEntry
-    {
-        public ProjectedAp()
-        {
-            Name = "Projected Ap.";
-            Description = "Shows the projected apoapsis vessel will have after completing the maneuver.";
-            Category = MicroEntryCategory.Maneuver;
-            Unit = "m";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            List<PatchedConicsOrbit> patchedConicsList = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?.Where(p => p.ActivePatch == true).ToList();
-            
-            if (patchedConicsList == null || patchedConicsList.Count() == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (patchedConicsList.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList[base.SelectedNodeIndex].ApoapsisArl;
-            }
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-        }
-    }
     
-    public class ProjectedPe : ManeuverEntry
-    {
-        public ProjectedPe()
-        {
-            Name = "Projected Pe.";
-            Description = "Shows the projected periapsis vessel will have after completing the maneuver.";
-            Category = MicroEntryCategory.Maneuver;
-            Unit = "m";
-            Formatting = null;
-        }
 
-        public override void RefreshData()
-        {
-            List<PatchedConicsOrbit> patchedConicsList = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?.Where(p => p.ActivePatch == true).ToList();
-
-            if (patchedConicsList == null || patchedConicsList.Count() == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (patchedConicsList.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList[base.SelectedNodeIndex].PeriapsisArl;
-            }
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-        }
-    }
-
-    public class DeltaVRequired : ManeuverEntry
-    {
-        public DeltaVRequired()
-        {
-            Name = "∆v required";
-            Description = "Shows the delta velocity needed to complete the maneuver.";
-            Category = MicroEntryCategory.Maneuver;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count == 1)
-            {
-                EntryValue = (MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude;
-            }
-            else if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].BurnRequiredDV;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
-            }
-        }
-    }
-
-    public class ManeuverPrograde : ManeuverEntry
-    {
-        public ManeuverPrograde()
-        {
-            Name = "∆v Prograde";
-            Description = "";
-            Category = MicroEntryCategory.Maneuver;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].BurnVector.z;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
-            
-            // DOESN'T WORK
-            //EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector.z - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut).z;
-
-            //EntryValue = MicroUtility.CurrentManeuver?.BurnVector.z;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class ManeuverNormal : ManeuverEntry
-    {
-        public ManeuverNormal()
-        {
-            Name = "∆v Normal";
-            Description = "";
-            Category = MicroEntryCategory.Maneuver;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].BurnVector.y;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
-
-            // DOESN'T WORK
-            // EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector.y - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut).y;
-
-            //EntryValue = MicroUtility.CurrentManeuver?.BurnVector.y;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class ManeuverRadial : ManeuverEntry
-    {
-        public ManeuverRadial()
-        {
-            Name = "∆v Radial";
-            Description = "";
-            Category = MicroEntryCategory.Maneuver;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].BurnVector.x;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
-
-            // DOESN'T WORK
-            // EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector.x - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut).x;
-
-            //EntryValue = MicroUtility.CurrentManeuver?.BurnVector.x;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-
-
-    public class TimeToNode : ManeuverEntry
-    {
-        public TimeToNode()
-        {
-            Name = "Time to Node";
-            Description = "Shows the time until vessel reaches the maneuver node.";
-            Category = MicroEntryCategory.Maneuver;
-            Unit = "s";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count == 1)
-            {
-                EntryValue = MicroUtility.CurrentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
-            }
-            else if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.SecondsToTimeString((double)EntryValue);
-            }
-        }
-    }
-
-    public class BurnTime : ManeuverEntry
-    {
-        public BurnTime()
-        {
-            Name = "Burn Time";
-            Description = "Shows the length of time needed to complete the maneuver node.";
-            Category = MicroEntryCategory.Maneuver;
-            Unit = "s";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count == 1)
-            {
-                EntryValue = MicroUtility.CurrentManeuver?.BurnDuration;
-            }
-            else if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].BurnDuration;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.SecondsToTimeString((double)EntryValue);
-            }
-        }
-    }
+    
 
     public class TotalDeltaVVac : MicroEntry
     {
@@ -2484,7 +1983,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue) + "(" + String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg) + ")";
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
             }
         }
     }
@@ -2540,7 +2039,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue) + "(" + String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg) + ")";
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
             }
         }
     }
@@ -2636,8 +2135,8 @@ namespace MicroMod
             Name = "SemiMajorAxis";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Unit = "m";
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -2857,7 +2356,7 @@ namespace MicroMod
     {
         public UniversalTimeAtClosestApproach()
         {
-            Name = "UT Closest Appr.";
+            Name = "UniversalTime Closest Appr.";
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = null;
@@ -2885,7 +2384,7 @@ namespace MicroMod
     {
         public UniversalTimeAtSoiEncounter()
         {
-            Name = "UT SOI Enc";
+            Name = "UniversalTime SOI Enc";
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = null;
@@ -2947,7 +2446,187 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    
+    public class DistanceAtCloseApproach1 : MicroEntry
+    {
+        public DistanceAtCloseApproach1()
+        {
+            Name = "CloseApp1 Dist";
+            Description = "";
+            Category = MicroEntryCategory.Accepted; //Target
+            Unit = "m";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.RelativeDistance : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return MicroUtility.MetersToDistanceString((double)EntryValue);
+            }
+
+        }
+    }
+
+    public class TimeToCloseApproach1 : MicroEntry
+    {
+        public TimeToCloseApproach1()
+        {
+            Name = "CloseApp1 Time";
+            Description = "";
+            Category = MicroEntryCategory.Accepted; //Target
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.UniversalTime - MicroUtility.UniversalTime : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return MicroUtility.SecondsToTimeString((double)EntryValue);
+            }
+        }
+    }
+
+    public class RelativeSpeedAtCloseApproach1 : MicroEntry
+    {
+        public RelativeSpeedAtCloseApproach1()
+        {
+            Name = "CloseApp1 Speed";
+            Description = "";
+            Category = MicroEntryCategory.Accepted; //Target
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.RelativeSpeed : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
+
+    public class DistanceAtCloseApproach2 : MicroEntry
+    {
+        public DistanceAtCloseApproach2()
+        {
+            Name = "CloseApp2 Dist";
+            Description = "";
+            Category = MicroEntryCategory.Accepted; //Target
+            Unit = "m";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeDistance : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return MicroUtility.MetersToDistanceString((double)EntryValue);
+            }
+
+        }
+    }
+
+    public class TimeToCloseApproach2 : MicroEntry
+    {
+        public TimeToCloseApproach2()
+        {
+            Name = "CloseApp2 Time";
+            Description = "";
+            Category = MicroEntryCategory.Accepted; //Target
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.UniversalTime - MicroUtility.UniversalTime : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return MicroUtility.SecondsToTimeString((double)EntryValue);
+            }
+        }
+    }
+
+    public class RelativeSpeedAtCloseApproach2 : MicroEntry
+    {
+        public RelativeSpeedAtCloseApproach2()
+        {
+            Name = "CloseApp2 Speed";
+            Description = "";
+            Category = MicroEntryCategory.Accepted; //Target
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
+
+            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeSpeed : null;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+            }
+        }
+    }
 
 
 
