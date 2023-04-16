@@ -126,6 +126,15 @@ namespace MicroMod
             
             // We are saving layout state when exiting from Flight or OAB game state
             MicroUtility.MessageCenter.Subscribe<GameStateLeftMessage>(new Action<MessageCenterMessage>(this.GameStateLeft));
+
+            // Sets the selected node index to the newly created node
+            MicroUtility.MessageCenter.Subscribe<ManeuverCreatedMessage>(new Action<MessageCenterMessage>(this.OnManeuverCreatedMessage));
+        }
+
+        private void OnManeuverCreatedMessage(MessageCenterMessage message)
+        {
+            var maneuverWindow = MicroWindows.Find(w => w.GetType() == typeof(ManeuverWindow)) as ManeuverWindow;
+            maneuverWindow.OnManeuverCreatedMessage(message);
         }
 
         private void GameStateEntered(MessageCenterMessage obj)
@@ -399,8 +408,12 @@ namespace MicroMod
 
                     DrawSectionHeader(window.Name, ref window.IsFlightPoppedOut, window.IsLocked, "");
 
+                    window.DrawWindowHeader();
+
                     foreach (MicroEntry entry in window.Entries)
                         DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
+
+                    window.DrawWindowFooter();
 
                     DrawSectionEnd(window);
                 }

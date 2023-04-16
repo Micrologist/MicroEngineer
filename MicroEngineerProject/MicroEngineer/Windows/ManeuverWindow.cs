@@ -1,4 +1,5 @@
 ﻿using KSP.Game;
+using KSP.Messages;
 using KSP.Sim.impl;
 using KSP.Sim.Maneuver;
 using UnityEngine;
@@ -83,6 +84,12 @@ namespace MicroMod
             {
                 Nodes = activeVesselPlan.GetNodes();
             }
+        }
+
+        internal void OnManeuverCreatedMessage(MessageCenterMessage message)
+        {
+            var nodeData = MicroUtility.ActiveVessel.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            SelectedNodeIndex = nodeData != null ? nodeData.Count > 0 ? nodeData.Count - 1 : 0 : 0;
         }
     }
 }
