@@ -1194,7 +1194,6 @@ namespace MicroMod
             MicroEntries.Add(new DistanceAtCloseApproach2());
             MicroEntries.Add(new TimeToCloseApproach2());
             MicroEntries.Add(new RelativeSpeedAtCloseApproach2());
-
             MicroEntries.Add(new Target_EccentricAnomaly());
             MicroEntries.Add(new Target_MeanAnomaly());
             MicroEntries.Add(new Target_ObT());
@@ -1210,6 +1209,9 @@ namespace MicroMod
             MicroEntries.Add(new Target_TrueAnomaly());
             MicroEntries.Add(new Target_Period());
             MicroEntries.Add(new Target_radius());
+            MicroEntries.Add(new Target_AltitudeFromSeaLevel());
+            MicroEntries.Add(new Target_Name());
+            MicroEntries.Add(new Target_Obtvelocity());
 
 
 
