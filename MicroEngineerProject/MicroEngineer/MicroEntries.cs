@@ -42,6 +42,12 @@ namespace MicroMod
         public virtual void RefreshData() { }
     }
 
+    public class ManeuverEntry : MicroEntry
+    {
+        internal int SelectedNodeIndex = 0;
+    }
+
+
     #region Flight scene entries
     public class Vessel : MicroEntry
     {
@@ -971,10 +977,8 @@ namespace MicroMod
         }
     }
 
-    public class ProjectedAp : MicroEntry
+    public class ProjectedAp : ManeuverEntry
     {
-        internal int SelectedNodeIndex = 0;
-
         public ProjectedAp()
         {
             Name = "Projected Ap.";
@@ -994,9 +998,9 @@ namespace MicroMod
                 return;
             }
 
-            if (patchedConicsList.Count >= SelectedNodeIndex + 1)
+            if (patchedConicsList.Count >= base.SelectedNodeIndex + 1)
             {
-                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList[SelectedNodeIndex].ApoapsisArl;
+                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList[base.SelectedNodeIndex].ApoapsisArl;
             }
         }
 
@@ -1012,10 +1016,8 @@ namespace MicroMod
         }
     }
     
-    public class ProjectedPe : MicroEntry
+    public class ProjectedPe : ManeuverEntry
     {
-        internal int SelectedNodeIndex = 0;
-
         public ProjectedPe()
         {
             Name = "Projected Pe.";
@@ -1035,9 +1037,9 @@ namespace MicroMod
                 return;
             }
 
-            if (patchedConicsList.Count >= SelectedNodeIndex + 1)
+            if (patchedConicsList.Count >= base.SelectedNodeIndex + 1)
             {
-                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList[SelectedNodeIndex].PeriapsisArl;
+                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList[base.SelectedNodeIndex].PeriapsisArl;
             }
         }
 
@@ -1053,10 +1055,8 @@ namespace MicroMod
         }
     }
 
-    public class DeltaVRequired : MicroEntry
+    public class DeltaVRequired : ManeuverEntry
     {
-        internal int SelectedNodeIndex = 0;
-
         public DeltaVRequired()
         {
             Name = "∆v required";
@@ -1081,9 +1081,9 @@ namespace MicroMod
             {
                 EntryValue = (MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude;
             }
-            else if (nodes.Count >= SelectedNodeIndex + 1)
+            else if (nodes.Count >= base.SelectedNodeIndex + 1)
             {
-                EntryValue = nodes[SelectedNodeIndex].BurnRequiredDV;
+                EntryValue = nodes[base.SelectedNodeIndex].BurnRequiredDV;
             }
             else
             {
@@ -1104,10 +1104,133 @@ namespace MicroMod
         }
     }
 
-    public class TimeToNode : MicroEntry
+    public class ManeuverPrograde : ManeuverEntry
     {
-        internal int SelectedNodeIndex = 0;
+        public ManeuverPrograde()
+        {
+            Name = "∆v Prograde";
+            Description = "";
+            Category = MicroEntryCategory.Maneuver;
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
 
+        public override void RefreshData()
+        {
+            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
+            var nodes = activeVesselPlan?.GetNodes();
+
+            if (nodes == null || nodes.Count == 0)
+            {
+                EntryValue = null;
+                return;
+            }
+
+            if (nodes.Count >= base.SelectedNodeIndex + 1)
+            {
+                EntryValue = nodes[base.SelectedNodeIndex].BurnVector.z;
+            }
+            else
+            {
+                EntryValue = null;
+                return;
+            }
+            
+            // DOESN'T WORK
+            //EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector.z - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut).z;
+
+            //EntryValue = MicroUtility.CurrentManeuver?.BurnVector.z;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class ManeuverNormal : ManeuverEntry
+    {
+        public ManeuverNormal()
+        {
+            Name = "∆v Normal";
+            Description = "";
+            Category = MicroEntryCategory.Maneuver;
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
+            var nodes = activeVesselPlan?.GetNodes();
+
+            if (nodes == null || nodes.Count == 0)
+            {
+                EntryValue = null;
+                return;
+            }
+
+            if (nodes.Count >= base.SelectedNodeIndex + 1)
+            {
+                EntryValue = nodes[base.SelectedNodeIndex].BurnVector.y;
+            }
+            else
+            {
+                EntryValue = null;
+                return;
+            }
+
+            // DOESN'T WORK
+            // EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector.y - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut).y;
+
+            //EntryValue = MicroUtility.CurrentManeuver?.BurnVector.y;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class ManeuverRadial : ManeuverEntry
+    {
+        public ManeuverRadial()
+        {
+            Name = "∆v Radial";
+            Description = "";
+            Category = MicroEntryCategory.Maneuver;
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
+            var nodes = activeVesselPlan?.GetNodes();
+
+            if (nodes == null || nodes.Count == 0)
+            {
+                EntryValue = null;
+                return;
+            }
+
+            if (nodes.Count >= base.SelectedNodeIndex + 1)
+            {
+                EntryValue = nodes[base.SelectedNodeIndex].BurnVector.x;
+            }
+            else
+            {
+                EntryValue = null;
+                return;
+            }
+
+            // DOESN'T WORK
+            // EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector.x - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut).x;
+
+            //EntryValue = MicroUtility.CurrentManeuver?.BurnVector.x;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+
+
+    public class TimeToNode : ManeuverEntry
+    {
         public TimeToNode()
         {
             Name = "Time to Node";
@@ -1132,9 +1255,9 @@ namespace MicroMod
             {
                 EntryValue = MicroUtility.CurrentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
             }
-            else if (nodes.Count >= SelectedNodeIndex + 1)
+            else if (nodes.Count >= base.SelectedNodeIndex + 1)
             {
-                EntryValue = nodes[SelectedNodeIndex].Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
+                EntryValue = nodes[base.SelectedNodeIndex].Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
             }
             else
             {
@@ -1155,10 +1278,8 @@ namespace MicroMod
         }
     }
 
-    public class BurnTime : MicroEntry
+    public class BurnTime : ManeuverEntry
     {
-        internal int SelectedNodeIndex = 0;
-
         public BurnTime()
         {
             Name = "Burn Time";
@@ -1183,9 +1304,9 @@ namespace MicroMod
             {
                 EntryValue = MicroUtility.CurrentManeuver?.BurnDuration;
             }
-            else if (nodes.Count >= SelectedNodeIndex + 1)
+            else if (nodes.Count >= base.SelectedNodeIndex + 1)
             {
-                EntryValue = nodes[SelectedNodeIndex].BurnDuration;
+                EntryValue = nodes[base.SelectedNodeIndex].BurnDuration;
             }
             else
             {
@@ -2826,62 +2947,7 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class ManeuverPrograde : MicroEntry
-    {
-        public ManeuverPrograde()
-        {
-            Name = "∆v Prograde";
-            Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.CurrentManeuver?.BurnVector.z;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class ManeuverNormal : MicroEntry
-    {
-        public ManeuverNormal()
-        {
-            Name = "∆v Normal";
-            Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.CurrentManeuver?.BurnVector.y;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class ManeuverRadial : MicroEntry
-    {
-        public ManeuverRadial()
-        {
-            Name = "∆v Radial";
-            Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.CurrentManeuver?.BurnVector.x;            
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
+    
 
 
 
