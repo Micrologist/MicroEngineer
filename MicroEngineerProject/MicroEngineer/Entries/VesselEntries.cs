@@ -109,7 +109,7 @@ namespace MicroMod
         {
             Name = "Parts";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = null;
             Formatting = null;
         }
@@ -128,7 +128,7 @@ namespace MicroMod
         {
             Name = "Total Burn Time";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "s";
             Formatting = "{0:N0}";
         }
@@ -147,7 +147,7 @@ namespace MicroMod
         {
             Name = "Total ∆v ASL";
             Description = "Shows the total delta velocity of the vessel At Sea Level.";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "m/s";
             Formatting = "{0:N0}";
         }
@@ -167,7 +167,7 @@ namespace MicroMod
         {
             Name = "Total ∆v Vac";
             Description = "Shows the total delta velocity of the vessel in vacuum.";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "m/s";
             Formatting = "{0:N0}";
         }
@@ -186,7 +186,7 @@ namespace MicroMod
         {
             Name = "ISP (ASL)";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "s";
             Formatting = "{0:N0}";
         }
@@ -205,7 +205,7 @@ namespace MicroMod
         {
             Name = "ISP (Actual)";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "s";
             Formatting = "{0:N0}";
         }
@@ -224,7 +224,7 @@ namespace MicroMod
         {
             Name = "ISP (Vacuum)";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "s";
             Formatting = "{0:N0}";
         }
@@ -243,7 +243,7 @@ namespace MicroMod
         {
             Name = "TWR (ASL)";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = null;
             Formatting = "{0:N2}";
         }
@@ -262,7 +262,7 @@ namespace MicroMod
         {
             Name = "TWR (Vacuum)";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = null;
             Formatting = "{0:N2}";
         }
@@ -281,7 +281,7 @@ namespace MicroMod
         {
             Name = "Thrust (ASL)";
             Description = "Shows the vessel's actual thrust.";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "N";
             Formatting = "{0:N0}";
         }
@@ -300,7 +300,7 @@ namespace MicroMod
         {
             Name = "Thrust (Vacuum)";
             Description = "Shows the vessel's actual thrust.";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "N";
             Formatting = "{0:N0}";
         }

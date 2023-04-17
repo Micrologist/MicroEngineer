@@ -1748,7 +1748,7 @@ namespace MicroMod
     {
         public EccentricAnomaly()
         {
-            Name = "EccentricAnomaly";
+            Name = "Eccentric Anomaly";
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = null;
@@ -1808,7 +1808,7 @@ namespace MicroMod
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = null;
-            Formatting = "{0:N3}";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
@@ -1888,7 +1888,7 @@ namespace MicroMod
     {
         public LongitudeOfAscendingNode()
         {
-            Name = "LongitudeOfAscendingNode";
+            Name = "LAN";
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = null;
@@ -2140,7 +2140,7 @@ namespace MicroMod
     {
         public UniversalTimeAtClosestApproach()
         {
-            Name = "UniversalTime Closest Appr.";
+            Name = "UT Closest Appr.";
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = null;
@@ -2168,7 +2168,7 @@ namespace MicroMod
     {
         public UniversalTimeAtSoiEncounter()
         {
-            Name = "UniversalTime SOI Enc";
+            Name = "UT SOI Enc";
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = null;
