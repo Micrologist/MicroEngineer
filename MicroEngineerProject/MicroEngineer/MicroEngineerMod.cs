@@ -9,7 +9,6 @@ using KSP.UI.Binding;
 using KSP.Sim.DeltaV;
 using KSP.Messages;
 using KSP.Sim.impl;
-using KSP.Iteration.UI.Binding;
 
 namespace MicroMod
 {

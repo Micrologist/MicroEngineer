@@ -1,5 +1,6 @@
 ﻿using KSP.Game;
 using KSP.Sim.impl;
+using KSP.Sim.Maneuver;
 
 namespace MicroMod
 {
@@ -21,18 +22,10 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            List<PatchedConicsOrbit> patchedConicsList = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?.Where(p => p.ActivePatch == true).ToList();
-
-            if (patchedConicsList == null || patchedConicsList.Count() == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (patchedConicsList.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList[base.SelectedNodeIndex].ApoapsisArl;
-            }
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .ApoapsisArl;
         }
 
         public override string ValueDisplay
@@ -60,18 +53,10 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            List<PatchedConicsOrbit> patchedConicsList = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?.Where(p => p.ActivePatch == true).ToList();
-
-            if (patchedConicsList == null || patchedConicsList.Count() == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (patchedConicsList.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.PatchedConicsList[base.SelectedNodeIndex].PeriapsisArl;
-            }
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .PeriapsisArl;
         }
 
         public override string ValueDisplay
@@ -99,28 +84,12 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
+            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
 
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count == 1)
-            {
-                EntryValue = (MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude;
-            }
-            else if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].BurnRequiredDV;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
+            EntryValue = (nodes == null || nodes.Count == 0) ? null :
+                         (nodes.Count == 1) ? (MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude :
+                         (nodes.Count >= base.SelectedNodeIndex + 1) ? nodes[base.SelectedNodeIndex].BurnRequiredDV :
+                         null;
         }
 
         public override string ValueDisplay
@@ -148,29 +117,8 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].BurnVector.z;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
-
-            // DOESN'T WORK
-            //EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector.z - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut).z;
-
-            //EntryValue = MicroUtility.CurrentManeuver?.BurnVector.z;
+            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.BurnVector.z;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -189,29 +137,8 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].BurnVector.y;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
-
-            // DOESN'T WORK
-            // EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector.y - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut).y;
-
-            //EntryValue = MicroUtility.CurrentManeuver?.BurnVector.y;
+            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.BurnVector.y;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -230,29 +157,8 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].BurnVector.x;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
-
-            // DOESN'T WORK
-            // EntryValue = MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector.x - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut).x;
-
-            //EntryValue = MicroUtility.CurrentManeuver?.BurnVector.x;
+            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.BurnVector.x;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -273,28 +179,8 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count == 1)
-            {
-                EntryValue = MicroUtility.CurrentManeuver.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
-            }
-            else if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
+            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
         }
 
         public override string ValueDisplay
@@ -322,28 +208,8 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>();
-            var nodes = activeVesselPlan?.GetNodes();
-
-            if (nodes == null || nodes.Count == 0)
-            {
-                EntryValue = null;
-                return;
-            }
-
-            if (nodes.Count == 1)
-            {
-                EntryValue = MicroUtility.CurrentManeuver?.BurnDuration;
-            }
-            else if (nodes.Count >= base.SelectedNodeIndex + 1)
-            {
-                EntryValue = nodes[base.SelectedNodeIndex].BurnDuration;
-            }
-            else
-            {
-                EntryValue = null;
-                return;
-            }
+            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.BurnDuration;
         }
 
         public override string ValueDisplay
