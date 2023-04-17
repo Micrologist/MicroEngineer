@@ -164,8 +164,6 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-
-
     public class TimeToNode : ManeuverEntry
     {
         public TimeToNode()
@@ -190,7 +188,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.SecondsToTimeString((double)EntryValue);
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -219,8 +217,521 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.SecondsToTimeString((double)EntryValue);
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
+
+
+    // NEW ENTRIES
+
+    public class Maneuver_EccentricAnomaly : ManeuverEntry
+    {
+        public Maneuver_EccentricAnomaly()
+        {
+            Name = "Eccentric Anomaly";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = "°";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .EccentricAnomaly;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
+            }
+        }
+    }
+
+    public class Maneuver_EndUT : ManeuverEntry
+    {
+        public Maneuver_EndUT()
+        {
+            Name = "EndUT";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = "s";
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .EndUT;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Maneuver_MeanAnomaly : ManeuverEntry
+    {
+        public Maneuver_MeanAnomaly()
+        {
+            Name = "Mean Anomaly";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = "°";
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .MeanAnomaly;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
+            }
+        }
+    }
+
+    public class Maneuver_ObT : ManeuverEntry
+    {
+        public Maneuver_ObT()
+        {
+            Name = "Orbit Time";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .ObT;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Maneuver_ArgumentOfPeriapsis : ManeuverEntry
+    {
+        public Maneuver_ArgumentOfPeriapsis()
+        {
+            Name = "Argument of Periapsis";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = null;
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .OrbitalElements.ArgumentOfPeriapsis;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_Eccentricity : ManeuverEntry
+    {
+        public Maneuver_Eccentricity()
+        {
+            Name = "Eccentricity";
+            Description = "Shows the vessel's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
+            Category = MicroEntryCategory.New;
+            Unit = null;
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .OrbitalElements.Eccentricity;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_Inclination : ManeuverEntry
+    {
+        public Maneuver_Inclination()
+        {
+            Name = "Inclination";
+            Description = "Shows the vessel's orbital inclination relative to the equator.";
+            Category = MicroEntryCategory.New;
+            Unit = "°";
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .OrbitalElements.Inclination;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_LongitudeOfAscendingNode : ManeuverEntry
+    {
+        public Maneuver_LongitudeOfAscendingNode()
+        {
+            Name = "LAN";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = null;
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .OrbitalElements.LongitudeOfAscendingNode;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_SemiMajorAxis : ManeuverEntry
+    {
+        public Maneuver_SemiMajorAxis()
+        {
+            Name = "Semi Major Axis";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .OrbitalElements.SemiMajorAxis;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_SemiMinorAxis : ManeuverEntry
+    {
+        public Maneuver_SemiMinorAxis()
+        {
+            Name = "Semi Minor Axis";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .SemiMinorAxis;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_OrbitalEnergy : ManeuverEntry
+    {
+        public Maneuver_OrbitalEnergy()
+        {
+            Name = "Orbital Energy";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = null;
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .OrbitalEnergy;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_SemiLatusRectum : ManeuverEntry
+    {
+        public Maneuver_SemiLatusRectum()
+        {
+            Name = "Semi Latus Rectum ℓ";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .SemiLatusRectum;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_TimeToAp : ManeuverEntry
+    {
+        public Maneuver_TimeToAp()
+        {
+            Name = "Time to Ap.";
+            Description = "Shows the time until the vessel reaches apoapsis, the highest point of the orbit.";
+            Category = MicroEntryCategory.New;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .TimeToAp;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Maneuver_TimeToPe : ManeuverEntry
+    {
+        public Maneuver_TimeToPe()
+        {
+            Name = "Time to Pe.";
+            Description = "Shows the time until the vessel reaches periapsis, the lowest point of the orbit.";
+            Category = MicroEntryCategory.New;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .TimeToPe;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Maneuver_TrueAnomaly : ManeuverEntry
+    {
+        public Maneuver_TrueAnomaly()
+        {
+            Name = "True Anomaly";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = "°";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .TrueAnomaly;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
+            }
+        }
+    }
+
+    public class Maneuver_UniversalTimeAtClosestApproach : ManeuverEntry
+    {
+        public Maneuver_UniversalTimeAtClosestApproach()
+        {
+            Name = "UT Closest Appr.";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = null;
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .UniversalTimeAtClosestApproach;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Maneuver_UniversalTimeAtSoiEncounter : ManeuverEntry
+    {
+        public Maneuver_UniversalTimeAtSoiEncounter()
+        {
+            Name = "UT SOI Enc";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = null;
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .UniversalTimeAtSoiEncounter;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Maneuver_orbitPercent : ManeuverEntry
+    {
+        public Maneuver_orbitPercent()
+        {
+            Name = "Orbit percent";
+            Description = "";
+            Category = MicroEntryCategory.New;
+            Unit = "%";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .orbitPercent * 100;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_period : ManeuverEntry
+    {
+        public Maneuver_period()
+        {
+            Name = "Period";
+            Description = "Shows the amount of time it will take to complete a full orbit.";
+            Category = MicroEntryCategory.New;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .period;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+
 }

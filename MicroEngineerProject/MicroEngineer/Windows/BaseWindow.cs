@@ -144,7 +144,8 @@ namespace MicroMod
         Misc,
         OAB,
         New,
-        Accepted
+        Accepted,
+        Accepted2
     }
 
     /// <summary>
