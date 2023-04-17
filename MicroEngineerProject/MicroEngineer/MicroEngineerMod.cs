@@ -129,12 +129,21 @@ namespace MicroMod
 
             // Sets the selected node index to the newly created node
             MicroUtility.MessageCenter.Subscribe<ManeuverCreatedMessage>(new Action<MessageCenterMessage>(this.OnManeuverCreatedMessage));
-        }
 
+            // Resets node index
+            MicroUtility.MessageCenter.Subscribe<ManeuverRemovedMessage>(new Action<MessageCenterMessage>(this.OnManeuverRemovedMessage));
+        }
+        
         private void OnManeuverCreatedMessage(MessageCenterMessage message)
         {
             var maneuverWindow = MicroWindows.Find(w => w.GetType() == typeof(ManeuverWindow)) as ManeuverWindow;
             maneuverWindow.OnManeuverCreatedMessage(message);
+        }
+
+        private void OnManeuverRemovedMessage(MessageCenterMessage message)
+        {
+            var maneuverWindow = MicroWindows.Find(w => w.GetType() == typeof(ManeuverWindow)) as ManeuverWindow;
+            maneuverWindow.OnManeuverRemovedMessage(message);
         }
 
         private void GameStateEntered(MessageCenterMessage obj)
@@ -1208,8 +1217,6 @@ namespace MicroMod
             MicroEntries.Add(new Target_AltitudeFromSeaLevel());
             MicroEntries.Add(new Target_Name());
             MicroEntries.Add(new Target_Obtvelocity());
-
-
             MicroEntries.Add(new PartsCount());
             MicroEntries.Add(new TotalBurnTime());
             MicroEntries.Add(new TotalDeltaVASL());
@@ -1222,6 +1229,25 @@ namespace MicroMod
             MicroEntries.Add(new StageThrustASL());
             MicroEntries.Add(new StageThrustVac());
 
+            MicroEntries.Add(new Maneuver_EccentricAnomaly());
+            MicroEntries.Add(new Maneuver_EndUT());
+            MicroEntries.Add(new Maneuver_MeanAnomaly());
+            MicroEntries.Add(new Maneuver_ObT());
+            MicroEntries.Add(new Maneuver_ArgumentOfPeriapsis());
+            MicroEntries.Add(new Maneuver_Eccentricity());
+            MicroEntries.Add(new Maneuver_Inclination());
+            MicroEntries.Add(new Maneuver_LongitudeOfAscendingNode());
+            MicroEntries.Add(new Maneuver_SemiMajorAxis());
+            MicroEntries.Add(new Maneuver_SemiMinorAxis());
+            MicroEntries.Add(new Maneuver_OrbitalEnergy());
+            MicroEntries.Add(new Maneuver_SemiLatusRectum());
+            MicroEntries.Add(new Maneuver_TimeToAp());
+            MicroEntries.Add(new Maneuver_TimeToPe());
+            MicroEntries.Add(new Maneuver_TrueAnomaly());
+            MicroEntries.Add(new Maneuver_UniversalTimeAtClosestApproach());
+            MicroEntries.Add(new Maneuver_UniversalTimeAtSoiEncounter());
+            MicroEntries.Add(new Maneuver_orbitPercent());
+            MicroEntries.Add(new Maneuver_period());
 
 
 

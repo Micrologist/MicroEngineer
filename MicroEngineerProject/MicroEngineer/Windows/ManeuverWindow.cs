@@ -47,18 +47,22 @@ namespace MicroMod
 
         private void DeleteNodes()
         {
-            var activeVesselPlan = MicroUtility.ActiveVessel.SimulationObject.FindComponent<ManeuverPlanComponent>();
-            List<ManeuverNodeData> nodeData = new List<ManeuverNodeData>();
+            var nodes = MicroUtility.ActiveVessel.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            List<ManeuverNodeData> nodesToDelete = new List<ManeuverNodeData>();
 
-            var nodeToDelete = activeVesselPlan.GetNodes()[_selectedNodeIndex];
-            nodeData.Add(nodeToDelete);
+            // This should never happen, but better be safe
+            if (_selectedNodeIndex + 1 > nodes.Count)
+                _selectedNodeIndex = Math.Max(0, nodes.Count - 1);
 
-            foreach (ManeuverNodeData node in activeVesselPlan.GetNodes())
+            var nodeToDelete = nodes[_selectedNodeIndex];
+            nodesToDelete.Add(nodeToDelete);
+
+            foreach (ManeuverNodeData node in nodes)
             {
-                if (!nodeData.Contains(node) && (!nodeToDelete.IsOnManeuverTrajectory || nodeToDelete.Time < node.Time))
-                    nodeData.Add(node);
+                if (!nodesToDelete.Contains(node) && (!nodeToDelete.IsOnManeuverTrajectory || nodeToDelete.Time < node.Time))
+                    nodesToDelete.Add(node);
             }
-            GameManager.Instance.Game.SpaceSimulation.Maneuvers.RemoveNodesFromVessel(MicroUtility.ActiveVessel.GlobalId, nodeData);
+            GameManager.Instance.Game.SpaceSimulation.Maneuvers.RemoveNodesFromVessel(MicroUtility.ActiveVessel.GlobalId, nodesToDelete);
             _selectedNodeIndex = 0;
         }
 
@@ -76,8 +80,6 @@ namespace MicroMod
 
         private void RefreshManeuverNodes()
         {
-            //MicroUtility.RefreshActiveVesselAndCurrentManeuver(); -> check if we need this here
-
             ManeuverPlanComponent activeVesselPlan = MicroUtility.ActiveVessel.SimulationObject.FindComponent<ManeuverPlanComponent>();
             if (activeVesselPlan != null)
             {
@@ -89,6 +91,11 @@ namespace MicroMod
         {
             var nodeData = MicroUtility.ActiveVessel.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
             _selectedNodeIndex = nodeData != null ? nodeData.Count > 0 ? nodeData.Count - 1 : 0 : 0;
+        }
+
+        internal void OnManeuverRemovedMessage(MessageCenterMessage message)
+        {
+            _selectedNodeIndex = 0;
         }
     }
 }
