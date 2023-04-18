@@ -231,7 +231,7 @@ namespace MicroMod
         {
             Name = "Eccentric Anomaly";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -262,7 +262,7 @@ namespace MicroMod
         {
             Name = "EndUT";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "s";
             Formatting = "{0:N3}";
         }
@@ -293,7 +293,7 @@ namespace MicroMod
         {
             Name = "Mean Anomaly";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "°";
             Formatting = "{0:N3}";
         }
@@ -324,7 +324,7 @@ namespace MicroMod
         {
             Name = "Orbit Time";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "s";
             Formatting = null;
         }
@@ -355,7 +355,7 @@ namespace MicroMod
         {
             Name = "Argument of Periapsis";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = null;
             Formatting = "{0:N3}";
         }
@@ -377,7 +377,7 @@ namespace MicroMod
         {
             Name = "Eccentricity";
             Description = "Shows the vessel's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = null;
             Formatting = "{0:N3}";
         }
@@ -399,7 +399,7 @@ namespace MicroMod
         {
             Name = "Inclination";
             Description = "Shows the vessel's orbital inclination relative to the equator.";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "°";
             Formatting = "{0:N3}";
         }
@@ -421,7 +421,7 @@ namespace MicroMod
         {
             Name = "LAN";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = null;
             Formatting = "{0:N3}";
         }
@@ -443,7 +443,7 @@ namespace MicroMod
         {
             Name = "Semi Major Axis";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -465,7 +465,7 @@ namespace MicroMod
         {
             Name = "Semi Minor Axis";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -487,7 +487,7 @@ namespace MicroMod
         {
             Name = "Orbital Energy";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = null;
             Formatting = "{0:N3}";
         }
@@ -509,7 +509,7 @@ namespace MicroMod
         {
             Name = "Semi Latus Rectum ℓ";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -531,7 +531,7 @@ namespace MicroMod
         {
             Name = "Time to Ap.";
             Description = "Shows the time until the vessel reaches apoapsis, the highest point of the orbit.";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "s";
             Formatting = null;
         }
@@ -562,7 +562,7 @@ namespace MicroMod
         {
             Name = "Time to Pe.";
             Description = "Shows the time until the vessel reaches periapsis, the lowest point of the orbit.";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "s";
             Formatting = null;
         }
@@ -593,7 +593,7 @@ namespace MicroMod
         {
             Name = "True Anomaly";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -624,7 +624,7 @@ namespace MicroMod
         {
             Name = "UT Closest Appr.";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = null;
             Formatting = null;
         }
@@ -655,7 +655,7 @@ namespace MicroMod
         {
             Name = "UT SOI Enc";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = null;
             Formatting = null;
         }
@@ -686,7 +686,7 @@ namespace MicroMod
         {
             Name = "Orbit percent";
             Description = "";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "%";
             Formatting = "{0:N2}";
         }
@@ -708,7 +708,7 @@ namespace MicroMod
         {
             Name = "Period";
             Description = "Shows the amount of time it will take to complete a full orbit.";
-            Category = MicroEntryCategory.New;
+            Category = MicroEntryCategory.Accepted2;
             Unit = "s";
             Formatting = null;
         }
