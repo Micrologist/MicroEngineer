@@ -521,176 +521,7 @@ namespace MicroMod
         }
     }
 
-    public class Speed : MicroEntry
-    {
-        public Speed()
-        {
-            Name = "Speed";
-            Description = "Shows the vessel's total velocity.";
-            Category = MicroEntryCategory.Flight;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.ActiveVessel.SurfaceVelocity.magnitude;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
-    }
-
-    public class MachNumber : MicroEntry
-    {
-        public MachNumber()
-        {
-            Name = "Mach Number";
-            Description = "Shows the ratio of vessel's speed and local speed of sound.";
-            Category = MicroEntryCategory.Flight;
-            Unit = null;
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.ActiveVessel.SimulationObject.Telemetry.MachNumber;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
-    }
-
-    public class AtmosphericDensity : MicroEntry
-    {
-        public AtmosphericDensity()
-        {
-            Name = "Atm. Density";
-            Description = "Shows the atmospheric density.";
-            Category = MicroEntryCategory.Flight;
-            Unit = "g/L";
-            Formatting = "{0:N3}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.ActiveVessel.SimulationObject.Telemetry.AtmosphericDensity;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
-    }
-
-    public class TotalLift : MicroEntry
-    {
-        public TotalLift()
-        {
-            Name = "Total Lift";
-            Description = "Shows the total lift force produced by the vessel.";
-            Category = MicroEntryCategory.Flight;
-            Unit = "N";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = AeroForces.TotalLift;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                double toReturn = (double)EntryValue * 1000;
-                return String.IsNullOrEmpty(base.Formatting) ? toReturn.ToString() : String.Format(base.Formatting, toReturn);
-            }
-        }
-    }
-
-    public class TotalDrag : MicroEntry
-    {
-        public TotalDrag()
-        {
-            Name = "Total Drag";
-            Description = "Shows the total drag force exerted on the vessel.";
-            Category = MicroEntryCategory.Flight;
-            Unit = "N";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = AeroForces.TotalDrag;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                double toReturn = (double)EntryValue * 1000;
-                return String.IsNullOrEmpty(base.Formatting) ? toReturn.ToString() : String.Format(base.Formatting, toReturn);
-            }
-        }
-    }
-
-    public class LiftDivDrag : MicroEntry
-    {
-        public LiftDivDrag()
-        {
-            Name = "Lift / Drag";
-            Description = "Shows the ratio of total lift and drag forces.";
-            Category = MicroEntryCategory.Flight;
-            Unit = null;
-            Formatting = "{0:N3}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = AeroForces.TotalLift / AeroForces.TotalDrag;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                double toReturn = (double)EntryValue * 1000;
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
-            }
-        }
-    }
+    
     
     
 
@@ -1045,7 +876,7 @@ namespace MicroMod
             Name = "Altitude (Scenery)";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
+            Unit = "m";
             Formatting = "{0:N2}";
         }
 
@@ -1054,25 +885,16 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.AltitudeFromScenery;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class AtmosphericTemperature : MicroEntry
     {
         public AtmosphericTemperature()
         {
-            Name = "AtmosphericTemperature";
+            Name = "Static ambient temp.";
             Description = "";
-            Category = MicroEntryCategory.Misc;
+            Category = MicroEntryCategory.Accepted;
             Unit = "K";
             Formatting = "{0:N2}";
         }
@@ -1082,23 +904,14 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.AtmosphericTemperature;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class ExternalTemperature : MicroEntry
     {
         public ExternalTemperature()
         {
-            Name = "ExternalTemperature";
+            Name = "External temperature";
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = "K";
@@ -1110,23 +923,14 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.ExternalTemperature;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class DynamicPressure_kPa : MicroEntry
     {
         public DynamicPressure_kPa()
         {
-            Name = "DynamicPressure_kPa";
+            Name = "Dynamic Pressure";
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = "kPa";
@@ -1138,16 +942,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.DynamicPressure_kPa;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class ExposedArea : MicroEntry
@@ -1166,16 +961,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.ExposedArea;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     
@@ -1196,16 +982,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.FuelPercentage;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Heading : MicroEntry
@@ -1215,7 +992,7 @@ namespace MicroMod
             Name = "Heading";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
+            Unit = "°";
             Formatting = "{0:N2}";
         }
 
@@ -1224,26 +1001,17 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.Heading;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Pitch_HorizonRelative : MicroEntry
     {
         public Pitch_HorizonRelative()
         {
-            Name = "Pitch_HorizonRelative";
+            Name = "Pitch";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
+            Unit = "°";
             Formatting = "{0:N2}";
         }
 
@@ -1252,26 +1020,17 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.Pitch_HorizonRelative;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Roll_HorizonRelative : MicroEntry
     {
         public Roll_HorizonRelative()
         {
-            Name = "Roll_HorizonRelative";
+            Name = "Roll";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
+            Unit = "°";
             Formatting = "{0:N2}";
         }
 
@@ -1280,26 +1039,17 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.Roll_HorizonRelative;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Yaw_HorizonRelative : MicroEntry
     {
         public Yaw_HorizonRelative()
         {
-            Name = "Yaw_HorizonRelative";
+            Name = "Yaw";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
+            Unit = "°";
             Formatting = "{0:N2}";
         }
 
@@ -1308,16 +1058,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.Yaw_HorizonRelative;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class DragCoefficient : MicroEntry
@@ -1336,16 +1077,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.DragCoefficient;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class OrbitalSpeed : MicroEntry
@@ -1364,27 +1096,18 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.OrbitalSpeed;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class SoundSpeed : MicroEntry
     {
         public SoundSpeed()
         {
-            Name = "SoundSpeed";
+            Name = "Speed of sound";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Unit = "m/s";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
@@ -1392,16 +1115,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.SoundSpeed;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class StageFuelPercentage : MicroEntry
@@ -1420,26 +1134,17 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.StageFuelPercentage;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class StaticPressure_kPa : MicroEntry
     {
         public StaticPressure_kPa()
         {
-            Name = "StaticPressure_kPa";
+            Name = "Static Pressure";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
+            Unit = "kPa";
             Formatting = "{0:N3}";
         }
 
@@ -1448,16 +1153,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.StaticPressure_kPa;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class TimeSinceLaunch : MicroEntry
@@ -1504,16 +1200,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TotalCommandCrewCapacity;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Zenith : MicroEntry
@@ -1523,8 +1210,8 @@ namespace MicroMod
             Name = "Zenith";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Unit = "°";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
@@ -1532,16 +1219,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.Zenith;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class altimeterMode : MicroEntry
@@ -1576,10 +1254,10 @@ namespace MicroMod
     {
         public geeForce()
         {
-            Name = "geeForce";
+            Name = "G-Force";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
+            Unit = "g";
             Formatting = "{0:N3}";
         }
 
