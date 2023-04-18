@@ -390,5 +390,66 @@ namespace MicroMod
                 return toReturn;
             }
         }
+
+        public static double AngleOfAttack
+        {
+            get
+            {
+                double aoe = 0.0;
+
+                ISimulationObjectView simulationViewIfLoaded = GameManager.Instance.Game.ViewController.GetSimulationViewIfLoaded(MicroUtility.ActiveVessel.SimulationObject);
+                if (simulationViewIfLoaded != null)
+                {
+                    Vector3d normalized = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(MicroUtility.ActiveVessel.SurfaceVelocity).normalized;
+                    Vector up = simulationViewIfLoaded.Model.Vessel.ControlTransform.up;
+                    Vector3 lhs = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(up);
+                    Vector right = simulationViewIfLoaded.Model.Vessel.ControlTransform.right;
+                    Vector3 rhs = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(right);
+                    Vector3 lhs2 = normalized;
+                    Vector3 normalized2 = Vector3.Cross(lhs2, rhs).normalized;
+                    Vector3 rhs2 = Vector3.Cross(lhs2, normalized2);
+                    aoe = Vector3.Dot(lhs, normalized2);
+                    aoe = Math.Asin(aoe) * 57.295780181884766;
+                    if (double.IsNaN(aoe))
+                    {
+                        aoe = 0.0;
+                    }                    
+                }
+
+                return aoe;
+            }
+        }
+
+        public static double SideSlip
+        {
+            get
+            {
+                double sideSlip = 0.0;
+
+                ISimulationObjectView simulationViewIfLoaded = GameManager.Instance.Game.ViewController.GetSimulationViewIfLoaded(MicroUtility.ActiveVessel.SimulationObject);
+                if (simulationViewIfLoaded != null)
+                {
+                    Vector3d normalized = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(MicroUtility.ActiveVessel.SurfaceVelocity).normalized;
+                    Vector up = simulationViewIfLoaded.Model.Vessel.ControlTransform.up;
+                    Vector3 lhs = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(up);
+                    Vector right = simulationViewIfLoaded.Model.Vessel.ControlTransform.right;
+                    Vector3 rhs = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(right);
+                    Vector3 lhs2 = normalized;
+                    Vector3 normalized2 = Vector3.Cross(lhs2, rhs).normalized;
+                    Vector3 rhs2 = Vector3.Cross(lhs2, normalized2);
+
+                    sideSlip = Vector3.Dot(lhs, rhs2);
+                    sideSlip = Math.Asin(sideSlip) * 57.295780181884766;
+                    if (double.IsNaN(sideSlip))
+                    {
+                        sideSlip = 0.0;
+                    }                    
+                }
+
+                return sideSlip;
+            }
+        }
+
+
     }
 }

@@ -428,7 +428,6 @@ namespace MicroMod
                 }
 
                 GUI.DragWindow(new Rect(0, 0, Styles.WindowWidth, Styles.WindowHeight));
-
             }
             catch (Exception ex)
             {
@@ -1228,7 +1227,6 @@ namespace MicroMod
             MicroEntries.Add(new StageTWRVac());
             MicroEntries.Add(new StageThrustASL());
             MicroEntries.Add(new StageThrustVac());
-
             MicroEntries.Add(new Maneuver_EccentricAnomaly());
             MicroEntries.Add(new Maneuver_EndUT());
             MicroEntries.Add(new Maneuver_MeanAnomaly());
@@ -1248,6 +1246,9 @@ namespace MicroMod
             MicroEntries.Add(new Maneuver_UniversalTimeAtSoiEncounter());
             MicroEntries.Add(new Maneuver_orbitPercent());
             MicroEntries.Add(new Maneuver_period());
+
+            MicroEntries.Add(new AngleOfAttack());
+            MicroEntries.Add(new SideSlip());
 
 
 
