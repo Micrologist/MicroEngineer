@@ -308,16 +308,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.argumentOfPeriapsis;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_Eccentricity : TargetEntry
@@ -336,16 +327,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.eccentricity;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_Inclination : TargetEntry
@@ -364,16 +346,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.inclination;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_LongitudeOfAscendingNode : TargetEntry
@@ -392,16 +365,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.longitudeOfAscendingNode;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_SemiMajorAxis : TargetEntry
@@ -420,16 +384,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.semiMajorAxis;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_ReferenceBodyConstants_Radius : TargetEntry
@@ -448,16 +403,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.referenceBody?.radius;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_ReferenceBodyConstants_StandardGravitationParameter : TargetEntry
@@ -476,16 +422,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.referenceBody.gravParameter;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_SemiLatusRectum : TargetEntry
@@ -504,16 +441,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.SemiLatusRectum;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_SemiMinorAxis : TargetEntry
@@ -532,16 +460,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.SemiMinorAxis;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_TrueAnomaly : TargetEntry
@@ -718,16 +637,7 @@ namespace MicroMod
             EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.RelativeSpeed : null;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class DistanceAtCloseApproach2 : MicroEntry
@@ -809,16 +719,7 @@ namespace MicroMod
             EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeSpeed : null;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
 
