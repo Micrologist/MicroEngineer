@@ -13,7 +13,7 @@ namespace MicroMod
             Description = "Shows the target's apoapsis height relative to the sea level.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
-            Formatting = null;
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -21,16 +21,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.ApoapsisArl;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class TargetPeriapsis : TargetEntry
@@ -41,7 +32,7 @@ namespace MicroMod
             Description = "Shows the target's periapsis height relative to the sea level.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
-            Formatting = null;
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -49,16 +40,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.PeriapsisArl;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class DistanceToTarget : TargetEntry
@@ -69,7 +51,7 @@ namespace MicroMod
             Description = "Shows the current distance between the vessel and the target.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
-            Formatting = null;
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -86,7 +68,7 @@ namespace MicroMod
 
                 // return value only if vessel and target are in the same SOI
                 return MicroUtility.ActiveVessel.Orbit.referenceBody == MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody ?
-                    MicroUtility.MetersToDistanceString((double)EntryValue) : "-";
+                    String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue) : "-";
             }
         }
     }
@@ -177,16 +159,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.TargetObject?.AltitudeFromSeaLevel;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_Name : TargetEntry
@@ -557,7 +530,6 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-
     public class DistanceAtCloseApproach1 : TargetEntry
     {
         public DistanceAtCloseApproach1()
@@ -566,7 +538,7 @@ namespace MicroMod
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = "m";
-            Formatting = null;
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -576,17 +548,7 @@ namespace MicroMod
             EntryValue = isValid != null && isValid == true ? MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.RelativeDistance : null;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class TimeToCloseApproach1 : TargetEntry
@@ -648,7 +610,7 @@ namespace MicroMod
             Description = "";
             Category = MicroEntryCategory.Accepted;
             Unit = "m";
-            Formatting = null;
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -658,17 +620,7 @@ namespace MicroMod
             EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeDistance : null;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class TimeToCloseApproach2 : TargetEntry

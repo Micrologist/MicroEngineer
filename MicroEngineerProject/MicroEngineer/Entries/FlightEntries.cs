@@ -20,16 +20,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.SurfaceVelocity.magnitude;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class MachNumber : FlightEntry
@@ -48,16 +39,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.SimulationObject.Telemetry.MachNumber;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class AtmosphericDensity : FlightEntry
@@ -76,16 +58,7 @@ namespace MicroMod
             EntryValue = MicroUtility.ActiveVessel.SimulationObject.Telemetry.AtmosphericDensity;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class TotalLift : FlightEntry
