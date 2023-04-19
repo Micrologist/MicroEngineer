@@ -319,7 +319,7 @@ namespace MicroMod
         {
             Name = "Throttle";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Vessel;
             Unit = "%";
             Formatting = "{0:N0}";
         }
@@ -327,6 +327,63 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = MicroUtility.ActiveVessel.flightCtrlState.mainThrottle * 100;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class FuelPercentage : VesselEntry
+    {
+        public FuelPercentage()
+        {
+            Name = "Vessel Fuel";
+            Description = "";
+            Category = MicroEntryCategory.Vessel;
+            Unit = "%";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.FuelPercentage;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class StageFuelPercentage : VesselEntry
+    {
+        public StageFuelPercentage()
+        {
+            Name = "Stage Fuel";
+            Description = "";
+            Category = MicroEntryCategory.Vessel;
+            Unit = "%";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.StageFuelPercentage;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class TotalCommandCrewCapacity : VesselEntry
+    {
+        public TotalCommandCrewCapacity()
+        {
+            Name = "Command Crew Capacity";
+            Description = "";
+            Category = MicroEntryCategory.Vessel;
+            Unit = null;
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.TotalCommandCrewCapacity;
         }
 
         public override string ValueDisplay => base.ValueDisplay;

@@ -268,7 +268,7 @@ namespace MicroMod
             Description = "";
             Category = MicroEntryCategory.Accepted2;
             Unit = "°";
-            Formatting = "{0:N3}";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()

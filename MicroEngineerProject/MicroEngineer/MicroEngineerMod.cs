@@ -1097,8 +1097,7 @@ namespace MicroMod
             MicroEntries.Add(new Period());
             MicroEntries.Add(new SoiTransition());
             #endregion
-            #region Surface entries
-            MicroEntries.Add(new Body());
+            #region Surface entries            
             MicroEntries.Add(new Situation());
             MicroEntries.Add(new Latitude());
             MicroEntries.Add(new Longitude());
@@ -1145,6 +1144,10 @@ namespace MicroMod
             MicroEntries.Add(new StageInfo_OAB());
             #endregion
 
+            #region Body entries
+            MicroEntries.Add(new Body());
+            #endregion
+
             #region New entries
             MicroEntries.Add(new AltitudeFromScenery());
             MicroEntries.Add(new AtmosphericTemperature());
@@ -1164,11 +1167,11 @@ namespace MicroMod
             MicroEntries.Add(new TimeSinceLaunch());
             MicroEntries.Add(new TotalCommandCrewCapacity());
             MicroEntries.Add(new Zenith());
-            MicroEntries.Add(new altimeterMode());
-            MicroEntries.Add(new geeForce());
-            MicroEntries.Add(new gravityForPos());
-            MicroEntries.Add(new launchTime());
-            MicroEntries.Add(new speedMode());
+            MicroEntries.Add(new AltimeterMode());
+            MicroEntries.Add(new GeeForce());
+            MicroEntries.Add(new GravityForPos());
+            MicroEntries.Add(new LaunchTime());
+            MicroEntries.Add(new SpeedMode());
             MicroEntries.Add(new AutopilotStatus_IsEnabled());
             MicroEntries.Add(new AutopilotStatus_Mode());
             MicroEntries.Add(new EccentricAnomaly());
@@ -1187,8 +1190,8 @@ namespace MicroMod
             MicroEntries.Add(new TrueAnomaly());
             MicroEntries.Add(new UniversalTimeAtClosestApproach());
             MicroEntries.Add(new UniversalTimeAtSoiEncounter());
-            MicroEntries.Add(new orbitPercent());
-            MicroEntries.Add(new radius());
+            MicroEntries.Add(new OrbitPercent());
+            MicroEntries.Add(new OrbitRadius());
             MicroEntries.Add(new ManeuverPrograde());
             MicroEntries.Add(new ManeuverNormal());
             MicroEntries.Add(new ManeuverRadial());

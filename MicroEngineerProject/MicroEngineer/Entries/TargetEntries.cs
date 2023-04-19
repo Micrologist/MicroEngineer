@@ -216,8 +216,8 @@ namespace MicroMod
             Name = "[T] Mean Anomaly";
             Description = "";
             Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Unit = "°";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
