@@ -1250,6 +1250,7 @@ namespace MicroMod
             MicroEntries.Add(new SideSlip());
             MicroEntries.Add(new PhaseAngle());
 
+            MicroEntries.Add(new TransferAngle());
 
 
 

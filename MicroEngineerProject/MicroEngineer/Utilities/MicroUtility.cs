@@ -1,9 +1,7 @@
 ﻿using System.Reflection;
 using KSP.Game;
-using KSP.Sim;
 using KSP.Sim.impl;
 using KSP.Sim.Maneuver;
-using KSP.UI.Flight;
 using Newtonsoft.Json;
 using UnityEngine;
 using static KSP.Rendering.Planets.PQSData;
@@ -34,7 +32,7 @@ namespace MicroMod
         public static void RefreshActiveVesselAndCurrentManeuver()
         {
             ActiveVessel = GameManager.Instance?.Game?.ViewController?.GetActiveVehicle(true)?.GetSimVessel(true);
-            CurrentManeuver = ActiveVessel != null ? GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(ActiveVessel.GlobalId).FirstOrDefault(): null;
+            CurrentManeuver = ActiveVessel != null ? GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(ActiveVessel.GlobalId).FirstOrDefault() : null;
         }
 
         public static void RefreshGameManager()
@@ -67,11 +65,11 @@ namespace MicroMod
 
         public static string SecondsToTimeString(double seconds, bool addSpacing = true, bool returnLastUnit = false)
         {
-            if (seconds == Double.PositiveInfinity)
+            if (seconds == double.PositiveInfinity)
             {
                 return "∞";
             }
-            else if (seconds == Double.NegativeInfinity)
+            else if (seconds == double.NegativeInfinity)
             {
                 return "-∞";
             }
@@ -92,9 +90,9 @@ namespace MicroMod
             }
 
             int days = (int)(seconds / 21600);
-            int hours = (int)((seconds - (days * 21600)) / 3600);
-            int minutes = (int)((seconds - (hours * 3600) - (days * 21600)) / 60);
-            int secs = (int)(seconds - (days * 21600) - (hours * 3600) - (minutes * 60));
+            int hours = (int)((seconds - days * 21600) / 3600);
+            int minutes = (int)((seconds - hours * 3600 - days * 21600) / 60);
+            int secs = (int)(seconds - days * 21600 - hours * 3600 - minutes * 60);
 
             if (days > 0)
             {
@@ -165,7 +163,7 @@ namespace MicroMod
 		/// <returns>Uppercase string shortened to 3 characters. If abbreviation is empty returns "CUS"</returns>
 		public static string ValidateAbbreviation(string abbreviation)
         {
-            if (String.IsNullOrEmpty(abbreviation))
+            if (string.IsNullOrEmpty(abbreviation))
                 return "CUS";
 
             return abbreviation.Substring(0, Math.Min(abbreviation.Length, 3)).ToUpperInvariant();
@@ -194,8 +192,8 @@ namespace MicroMod
                 List<BaseWindow> deserializedWindows = JsonConvert.DeserializeObject<List<BaseWindow>>(File.ReadAllText(LayoutPath));
 
                 windows.Clear();
-                windows.AddRange(deserializedWindows);                
-                
+                windows.AddRange(deserializedWindows);
+
                 Logger.LogInfo("LoadLayout successful");
             }
             catch (FileNotFoundException ex)
@@ -215,7 +213,7 @@ namespace MicroMod
         /// <returns></returns>
         public static bool TargetExists()
         {
-            try { return (MicroUtility.ActiveVessel.TargetObject != null); }
+            try { return ActiveVessel.TargetObject != null; }
             catch { return false; }
         }
 
@@ -225,7 +223,7 @@ namespace MicroMod
         /// <returns></returns>
         public static bool ManeuverExists()
         {
-            try { return (GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(MicroUtility.ActiveVessel.GlobalId).FirstOrDefault() != null); }
+            try { return GameManager.Instance?.Game?.SpaceSimulation.Maneuvers.GetNodesForVessel(ActiveVessel.GlobalId).FirstOrDefault() != null; }
             catch { return false; }
         }
 
@@ -246,7 +244,7 @@ namespace MicroMod
         {
             if (gameInputState)
             {
-                if (MicroUtility.InputDisableWindowAbbreviation == GUI.GetNameOfFocusedControl() || MicroUtility.InputDisableWindowName == GUI.GetNameOfFocusedControl())
+                if (InputDisableWindowAbbreviation == GUI.GetNameOfFocusedControl() || InputDisableWindowName == GUI.GetNameOfFocusedControl())
                 {
                     GameManager.Instance.Game.Input.Disable();
                     return false;
@@ -256,7 +254,7 @@ namespace MicroMod
             }
             else
             {
-                if ((MicroUtility.InputDisableWindowAbbreviation != GUI.GetNameOfFocusedControl() && MicroUtility.InputDisableWindowName != GUI.GetNameOfFocusedControl()) || !showGuiFlight)
+                if (InputDisableWindowAbbreviation != GUI.GetNameOfFocusedControl() && InputDisableWindowName != GUI.GetNameOfFocusedControl() || !showGuiFlight)
                 {
                     GameManager.Instance.Game.Input.Enable();
                     return true;
@@ -301,9 +299,9 @@ namespace MicroMod
         /// <param name="minor">Specified minor version (0.X.0)</param>
         /// <param name="patch">Specified patch version (0.0.X)</param>
         /// <returns>True = installed mod is older. False = installed mod has the same version or it's newer or version isn't declared or version declared is gibberish that cannot be parsed</returns>
-        internal static bool IsModOlderThan (string modId, int major, int minor, int patch)
+        internal static bool IsModOlderThan(string modId, int major, int minor, int patch)
         {
-            var modVersion = MicroUtility.GetModVersion(modId);
+            var modVersion = GetModVersion(modId);
 
             if (!modVersion.HasValue || modVersion.Value == (0, 0, 0))
                 return false;
@@ -323,133 +321,5 @@ namespace MicroMod
             else
                 return false;
         }
-    }
-
-    public static class AeroForces
-    {
-        private static readonly List<Type> liftForces = new()
-        {
-            PhysicsForceDisplaySystem.MODULE_DRAG_BODY_LIFT_TYPE,
-            PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_LIFT_TYPE
-        };
-
-        private static readonly List<Type> dragForces = new()
-        {
-            PhysicsForceDisplaySystem.MODULE_DRAG_DRAG_TYPE,
-            PhysicsForceDisplaySystem.MODULE_LIFTINGSURFACE_DRAG_TYPE
-        };
-
-        public static double TotalLift
-        {
-            get
-            {
-                double toReturn = 0.0;
-
-                IEnumerable<PartComponent> parts = MicroUtility.ActiveVessel?.SimulationObject?.PartOwner?.Parts;
-                if (parts == null || !MicroUtility.ActiveVessel.IsInAtmosphere)
-                {
-                    return toReturn;
-                }
-
-                foreach (PartComponent part in parts)
-                {
-                    foreach (IForce force in part.SimulationObject.Rigidbody.Forces)
-                    {
-                        if (liftForces.Contains(force.GetType()))
-                        {
-                            toReturn += force.RelativeForce.magnitude;
-                        }
-                    }
-                }
-
-                return toReturn;
-            }
-        }
-
-        public static double TotalDrag
-        {
-            get
-            {
-                double toReturn = 0.0;
-
-                IEnumerable<PartComponent> parts = MicroUtility.ActiveVessel?.SimulationObject?.PartOwner?.Parts;
-                if (parts == null || !MicroUtility.ActiveVessel.IsInAtmosphere)
-                    return toReturn;
-
-                foreach (PartComponent part in parts)
-                {
-                    foreach (IForce force in part.SimulationObject.Rigidbody.Forces)
-                    {
-                        if (dragForces.Contains(force.GetType()))
-                        {
-                            toReturn += force.RelativeForce.magnitude;
-                        }
-                    }
-                }
-
-                return toReturn;
-            }
-        }
-
-        public static double AngleOfAttack
-        {
-            get
-            {
-                double aoe = 0.0;
-
-                ISimulationObjectView simulationViewIfLoaded = GameManager.Instance.Game.ViewController.GetSimulationViewIfLoaded(MicroUtility.ActiveVessel.SimulationObject);
-                if (simulationViewIfLoaded != null)
-                {
-                    Vector3d normalized = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(MicroUtility.ActiveVessel.SurfaceVelocity).normalized;
-                    Vector up = simulationViewIfLoaded.Model.Vessel.ControlTransform.up;
-                    Vector3 lhs = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(up);
-                    Vector right = simulationViewIfLoaded.Model.Vessel.ControlTransform.right;
-                    Vector3 rhs = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(right);
-                    Vector3 lhs2 = normalized;
-                    Vector3 normalized2 = Vector3.Cross(lhs2, rhs).normalized;
-                    Vector3 rhs2 = Vector3.Cross(lhs2, normalized2);
-                    aoe = Vector3.Dot(lhs, normalized2);
-                    aoe = Math.Asin(aoe) * 57.295780181884766;
-                    if (double.IsNaN(aoe))
-                    {
-                        aoe = 0.0;
-                    }                    
-                }
-
-                return aoe;
-            }
-        }
-
-        public static double SideSlip
-        {
-            get
-            {
-                double sideSlip = 0.0;
-
-                ISimulationObjectView simulationViewIfLoaded = GameManager.Instance.Game.ViewController.GetSimulationViewIfLoaded(MicroUtility.ActiveVessel.SimulationObject);
-                if (simulationViewIfLoaded != null)
-                {
-                    Vector3d normalized = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(MicroUtility.ActiveVessel.SurfaceVelocity).normalized;
-                    Vector up = simulationViewIfLoaded.Model.Vessel.ControlTransform.up;
-                    Vector3 lhs = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(up);
-                    Vector right = simulationViewIfLoaded.Model.Vessel.ControlTransform.right;
-                    Vector3 rhs = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(right);
-                    Vector3 lhs2 = normalized;
-                    Vector3 normalized2 = Vector3.Cross(lhs2, rhs).normalized;
-                    Vector3 rhs2 = Vector3.Cross(lhs2, normalized2);
-
-                    sideSlip = Vector3.Dot(lhs, rhs2);
-                    sideSlip = Math.Asin(sideSlip) * 57.295780181884766;
-                    if (double.IsNaN(sideSlip))
-                    {
-                        sideSlip = 0.0;
-                    }                    
-                }
-
-                return sideSlip;
-            }
-        }
-
-
-    }
+    }    
 }

@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using Newtonsoft.Json;
-using System.Runtime.CompilerServices;
 
 namespace MicroMod
 {
