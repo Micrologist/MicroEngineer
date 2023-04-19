@@ -1246,9 +1246,9 @@ namespace MicroMod
             MicroEntries.Add(new Maneuver_UniversalTimeAtSoiEncounter());
             MicroEntries.Add(new Maneuver_orbitPercent());
             MicroEntries.Add(new Maneuver_period());
-
             MicroEntries.Add(new AngleOfAttack());
             MicroEntries.Add(new SideSlip());
+            MicroEntries.Add(new PhaseAngle());
 
 
 
