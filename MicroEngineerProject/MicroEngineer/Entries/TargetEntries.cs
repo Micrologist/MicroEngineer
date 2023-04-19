@@ -1,5 +1,4 @@
 ﻿using KSP.Sim.impl;
-using UnityEngine;
 
 namespace MicroMod
 {
@@ -727,83 +726,37 @@ namespace MicroMod
     {
         public PhaseAngle()
         {
-            Name = "Phase angle";
+            Name = "Phase Angle";
             Description = "";
             Category = MicroEntryCategory.Accepted2;
             Unit = "°";
             Formatting = "{0:N2}";
         }
 
-        private double? GetPhaseAngle()
-        {
-            // If Target is the body that vessel is orbiting, there is no phase angle
-            if (MicroUtility.ActiveVessel.Orbit.referenceBody == MicroUtility.ActiveVessel.TargetObject.CelestialBody)
-                return null;
-
-            (CelestialBodyComponent referenceBody, Vector3 localPosition) from = (MicroUtility.ActiveVessel.Orbit.referenceBody, MicroUtility.ActiveVessel.Orbit.Position.localPosition);
-            (CelestialBodyComponent referenceBody, Vector3 localPosition) to = (MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody, MicroUtility.ActiveVessel.TargetObject.Orbit.Position.localPosition);
-
-            // We search for the common celestial body that both ActiveVessel and TargetObject are orbiting and then calculate the phase angle
-            bool commonReferenceBodyFound = false;
-            
-            // Set a limit for common reference body lookups. There should always be a common reference body so this shouldn't be needed, but just to be safe.
-            int numberOfLoopTries = 3;
-
-            // Outer loop => TargetObject (to)
-            for (int i = 0; i < numberOfLoopTries; i++)
-            {
-                from.referenceBody = MicroUtility.ActiveVessel.Orbit.referenceBody;
-                from.localPosition = MicroUtility.ActiveVessel.Orbit.Position.localPosition;
-
-                // Inner lookp => ActiveVessel (from)
-                for (int j = 0; j < numberOfLoopTries; j++)
-                {
-                    if (from.referenceBody == to.referenceBody)
-                    {
-                        commonReferenceBodyFound = true;
-                        break;
-                    }
-
-                    // referenceBody.Orbit is null when referenceBody is a star (i.e. Kerbol). Lookup should end here since the star isn't orbiting anything (yet!)
-                    if (from.referenceBody.Orbit == null)
-                        break;
-
-                    // Set the reference body one level up
-                    from.localPosition = from.referenceBody.Position.localPosition + from.localPosition;
-                    from.referenceBody = from.referenceBody.referenceBody;
-                }                
-
-                if (commonReferenceBodyFound)
-                    break;
-
-                if (to.referenceBody.Orbit == null)
-                    break;
-
-                // Set the reference body one level up
-                to.localPosition = to.referenceBody.Position.localPosition + to.localPosition;
-                to.referenceBody = to.referenceBody.referenceBody;
-            }            
-
-            if (commonReferenceBodyFound)
-            {
-                double phase = Vector3d.SignedAngle(to.localPosition, from.localPosition, Vector3d.up);
-                return Math.Round(phase, 1);
-            }
-            else
-                return null;
-        }
-
         public override void RefreshData()
         {
-            if (MicroUtility.TargetExists())
-            {
-                EntryValue = this.GetPhaseAngle();
-            }            
+            EntryValue = MicroUtility.TargetExists() ? TransferInfo.GetPhaseAngle() : null;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
     }
 
+    public class TransferAngle : TargetEntry
+    {
+        public TransferAngle()
+        {
+            Name = "Transfer Angle";
+            Description = "";
+            Category = MicroEntryCategory.Accepted2;
+            Unit = "°";
+            Formatting = "{0:N2}";
+        }
 
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.TargetExists() ? TransferInfo.GetTransferAngle() : null;
+        }
 
+        public override string ValueDisplay => base.ValueDisplay;
+    }
 }
