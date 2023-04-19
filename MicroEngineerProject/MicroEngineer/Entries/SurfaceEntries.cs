@@ -5,26 +5,7 @@ namespace MicroMod
 {
     public class SurfaceEntry : MicroEntry
     { }
-
-    public class Body : SurfaceEntry
-    {
-        public Body()
-        {
-            Name = "Body";
-            Description = "Shows the body that vessel is currently at.";
-            Category = MicroEntryCategory.Surface;
-            Unit = null;
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = MicroUtility.ActiveVessel.mainBody.bodyName;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
+    
     public class Situation : SurfaceEntry
     {
         public Situation()
@@ -175,6 +156,25 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
+    public class AltitudeFromScenery : SurfaceEntry
+    {
+        public AltitudeFromScenery()
+        {
+            Name = "Altitude (Scenery)";
+            Description = "";
+            Category = MicroEntryCategory.Surface;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.AltitudeFromScenery;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
     public class HorizontalVelocity : SurfaceEntry
     {
         public HorizontalVelocity()
@@ -208,6 +208,82 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = MicroUtility.ActiveVessel.VerticalSrfSpeed;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class AtmosphericTemperature : SurfaceEntry
+    {
+        public AtmosphericTemperature()
+        {
+            Name = "Static ambient temp.";
+            Description = "";
+            Category = MicroEntryCategory.Surface;
+            Unit = "K";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.AtmosphericTemperature;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class ExternalTemperature : SurfaceEntry
+    {
+        public ExternalTemperature()
+        {
+            Name = "External temperature";
+            Description = "";
+            Category = MicroEntryCategory.Surface;
+            Unit = "K";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.ExternalTemperature;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class DynamicPressure_kPa : SurfaceEntry
+    {
+        public DynamicPressure_kPa()
+        {
+            Name = "Dynamic Pressure";
+            Description = "";
+            Category = MicroEntryCategory.Surface;
+            Unit = "kPa";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.DynamicPressure_kPa;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class StaticPressure_kPa : SurfaceEntry
+    {
+        public StaticPressure_kPa()
+        {
+            Name = "Static Pressure";
+            Description = "";
+            Category = MicroEntryCategory.Surface;
+            Unit = "kPa";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.StaticPressure_kPa;
         }
 
         public override string ValueDisplay => base.ValueDisplay;

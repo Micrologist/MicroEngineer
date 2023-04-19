@@ -140,6 +140,7 @@ namespace MicroMod
         Target,
         Maneuver,
         Stage,
+        Body,
         Misc,
         OAB,
         New,
