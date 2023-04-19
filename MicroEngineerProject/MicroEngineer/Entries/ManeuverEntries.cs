@@ -17,7 +17,7 @@ namespace MicroMod
             Description = "Shows the projected apoapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m";
-            Formatting = null;
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -28,16 +28,7 @@ namespace MicroMod
                 .ApoapsisArl;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class ProjectedPe : ManeuverEntry
@@ -48,7 +39,7 @@ namespace MicroMod
             Description = "Shows the projected periapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m";
-            Formatting = null;
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -59,16 +50,7 @@ namespace MicroMod
                 .PeriapsisArl;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return MicroUtility.MetersToDistanceString((double)EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class DeltaVRequired : ManeuverEntry
@@ -92,16 +74,7 @@ namespace MicroMod
                          null;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class ManeuverPrograde : ManeuverEntry

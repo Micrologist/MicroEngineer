@@ -58,11 +58,6 @@ namespace MicroMod
             return result;
         }
 
-        public static string MetersToDistanceString(double heightInMeters)
-        {
-            return $"{heightInMeters:N0}";
-        }
-
         public static string SecondsToTimeString(double seconds, bool addSpacing = true, bool returnLastUnit = false)
         {
             if (seconds == double.PositiveInfinity)
