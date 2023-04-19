@@ -1249,8 +1249,8 @@ namespace MicroMod
             MicroEntries.Add(new AngleOfAttack());
             MicroEntries.Add(new SideSlip());
             MicroEntries.Add(new PhaseAngle());
-
             MicroEntries.Add(new TransferAngle());
+            MicroEntries.Add(new Throttle());
 
 
 

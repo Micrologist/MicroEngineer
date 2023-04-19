@@ -312,4 +312,23 @@ namespace MicroMod
 
         public override string ValueDisplay => base.ValueDisplay;
     }
+
+    public class Throttle : VesselEntry
+    {
+        public Throttle()
+        {
+            Name = "Throttle";
+            Description = "";
+            Category = MicroEntryCategory.Accepted2;
+            Unit = "%";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = MicroUtility.ActiveVessel.flightCtrlState.mainThrottle * 100;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
 }
