@@ -161,7 +161,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.SecondsToTimeString((double)EntryValue);
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -171,7 +171,7 @@ namespace MicroMod
         public SoiTransition()
         {
             Name = "SOI Trans.";
-            Description = "Shows the amount of time it will take to transition to another Sphere of Influence.";
+            Description = "Shows the amount of time it will take to transition to another Sphere Of Influence.";
             Category = MicroEntryCategory.Orbital;
             Unit = "s";
             Formatting = null;
@@ -198,8 +198,8 @@ namespace MicroMod
     {
         public OrbitalSpeed()
         {
-            Name = "Orbital Velocity";
-            Description = "";
+            Name = "Orbital Speed";
+            Description = "Shows the vessel's orbital speed";
             Category = MicroEntryCategory.Orbital;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -218,7 +218,7 @@ namespace MicroMod
         public EccentricAnomaly()
         {
             Name = "Eccentric Anomaly";
-            Description = "";
+            Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the vessel is.";
             Category = MicroEntryCategory.Orbital;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -246,7 +246,7 @@ namespace MicroMod
         public MeanAnomaly()
         {
             Name = "Mean Anomaly";
-            Description = "";
+            Description = "Parameter used to describe the position of an object in its orbit around the celestial body.";
             Category = MicroEntryCategory.Orbital;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -274,7 +274,7 @@ namespace MicroMod
         public TrueAnomaly()
         {
             Name = "True Anomaly";
-            Description = "";
+            Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
             Category = MicroEntryCategory.Orbital;
             Unit = "°";
             Formatting = "{0:N1}";
@@ -302,7 +302,7 @@ namespace MicroMod
         public ObT()
         {
             Name = "Orbit Time";
-            Description = "Shows orbit time in seconds from the Periapsis";
+            Description = "Shows orbit time in seconds from the Periapsis.";
             Category = MicroEntryCategory.Orbital;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -320,7 +320,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -330,7 +330,7 @@ namespace MicroMod
         public ArgumentOfPeriapsis()
         {
             Name = "Argument of Pe.";
-            Description = "";
+            Description = "Angle from the line of the ascending node on the equatorial plane to the point of periapsis passage.";
             Category = MicroEntryCategory.Orbital;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -349,7 +349,7 @@ namespace MicroMod
         public LongitudeOfAscendingNode()
         {
             Name = "LAN Ω";
-            Description = "";
+            Description = "Longitude of Ascending Node is an angle from a specified reference direction, called the origin of longitude, to the direction of the ascending node, as measured in a specified reference plane.";
             Category = MicroEntryCategory.Orbital;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -368,7 +368,7 @@ namespace MicroMod
         public SemiMajorAxis()
         {
             Name = "Semi Major Axis";
-            Description = "";
+            Description = "Shows the distance from the center of an orbit to the farthest edge.";
             Category = MicroEntryCategory.Orbital;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -387,7 +387,7 @@ namespace MicroMod
         public SemiMinorAxis()
         {
             Name = "Semi Minor Axis";
-            Description = "";
+            Description = "Shows the distance from the center of an orbit to the nearest edge.";
             Category = MicroEntryCategory.Orbital;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -406,7 +406,7 @@ namespace MicroMod
         public OrbitalEnergy()
         {
             Name = "Orbital Energy";
-            Description = "";
+            Description = "Constant sum of two orbiting bodies' mutual potential energy and their total kinetic energy divided by the reduced mass.";
             Category = MicroEntryCategory.Orbital;
             Unit = "kJ";
             Formatting = "{0:N0}";
@@ -425,7 +425,7 @@ namespace MicroMod
         public SemiLatusRectum()
         {
             Name = "Semi Latus Rectum";
-            Description = "";
+            Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
             Category = MicroEntryCategory.Orbital;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -444,7 +444,7 @@ namespace MicroMod
         public OrbitPercent()
         {
             Name = "Orbit Percent";
-            Description = "";
+            Description = "Percent of the orbit completed.";
             Category = MicroEntryCategory.Orbital;
             Unit = "%";
             Formatting = "{0:N2}";
@@ -463,7 +463,7 @@ namespace MicroMod
         public OrbitRadius()
         {
             Name = "Orbit Radius";
-            Description = "";
+            Description = "Length from the center of the ellipse to the object.";
             Category = MicroEntryCategory.Orbital;
             Unit = "m";
             Formatting = "{0:N0}";

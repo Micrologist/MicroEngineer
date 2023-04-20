@@ -434,7 +434,7 @@ namespace MicroMod
                 Logger.LogError(ex);
             }
         }
-        private int _selectedNode = 0;
+
 		/// <summary>
         /// Draws all windows that are toggled and popped out
         /// </summary>
@@ -452,59 +452,6 @@ namespace MicroMod
 
             windowToDraw.DrawWindowFooter();
 
-            // TEMP - MOVE SOMEWHERE ELSE WHEN DONE
-            /*
-            if (windowToDraw.Name == "Maneuver")
-            {
-                if (GUILayout.Button("Delete"))
-                {
-                    // OLD - DOESN'T WORK
-                    var activeVesselPlan2 = GameManager.Instance.Game.SpaceSimulation.Maneuvers.GetNodesForVessel(MicroUtility.ActiveVessel.GlobalId);
-                    if (activeVesselPlan2 != null)
-                    {
-                        var node = activeVesselPlan2.FirstOrDefault();
-                        if (node != null)
-                        {
-                            
-                            GameManager.Instance.Game.SpaceSimulation.Maneuvers.RemoveNodesFromVessel(MicroUtility.ActiveVessel.GlobalId, new List<ManeuverNodeData> { node });
-                        }
-                    }
-
-                    // THIS WORKS!
-                    var _activeVesselPlan = MicroUtility.ActiveVessel.SimulationObject.FindComponent<ManeuverPlanComponent>();
-                    List<ManeuverNodeData> nodeData = new List<ManeuverNodeData>();
-                    nodeData.Add(_activeVesselPlan.ActiveNode);
-                    
-                    foreach (ManeuverNodeData node in _activeVesselPlan.GetNodes())
-                    {
-                        if (!nodeData.Contains(node) && (!_activeVesselPlan.ActiveNode.IsOnManeuverTrajectory || _activeVesselPlan.ActiveNode.Time < node.Time))
-                            nodeData.Add(node);
-                    }
-                    GameManager.Instance.Game.SpaceSimulation.Maneuvers.RemoveNodesFromVessel(MicroUtility.ActiveVessel.GlobalId, nodeData);
-                    
-
-
-                    var _activeVesselPlan = MicroUtility.ActiveVessel.SimulationObject.FindComponent<ManeuverPlanComponent>();
-                    List<ManeuverNodeData> nodeData = new List<ManeuverNodeData>();
-
-                    var nodeToDelete = _activeVesselPlan.GetNodes()[_selectedNode];
-                    nodeData.Add(nodeToDelete);
-
-                    foreach (ManeuverNodeData node in _activeVesselPlan.GetNodes())
-                    {
-                        if (!nodeData.Contains(node) && (!nodeToDelete.IsOnManeuverTrajectory || nodeToDelete.Time < node.Time))
-                            nodeData.Add(node);
-                    }
-                    GameManager.Instance.Game.SpaceSimulation.Maneuvers.RemoveNodesFromVessel(MicroUtility.ActiveVessel.GlobalId, nodeData);
-
-
-
-                    //this.RemoveNodesFromVessel(this._activeVesselPlan.ActiveNode.RelatedSimID, nodeData);
-                    //this.NormalizedManeuverTime = ManeuverProvider.NORMALIZED_MANEUVER_BOUND;
-                }
-            }*/
-
-            // END TEMP
             DrawSectionEnd(windowToDraw);
         }
         private void DrawSettingsWindow(int windowIndex)

@@ -123,7 +123,7 @@ namespace MicroMod
         public AltitudeAsl()
         {
             Name = "Altitude (Sea Lvl)";
-            Description = "Shows the vessel's altitude Above Sea Level";
+            Description = "Shows the vessel's altitude above sea level.";
             Category = MicroEntryCategory.Surface;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -142,7 +142,7 @@ namespace MicroMod
         public AltitudeAgl()
         {
             Name = "Altitude (Ground)";
-            Description = "Shows the vessel's altitude Above Ground Level";
+            Description = "Shows the vessel's altitude above ground Level.";
             Category = MicroEntryCategory.Surface;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -161,7 +161,7 @@ namespace MicroMod
         public AltitudeFromScenery()
         {
             Name = "Altitude (Scenery)";
-            Description = "";
+            Description = "Shows the vessel's altitude above scenery.";
             Category = MicroEntryCategory.Surface;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -218,7 +218,7 @@ namespace MicroMod
         public AtmosphericTemperature()
         {
             Name = "Static ambient temp.";
-            Description = "";
+            Description = "Temperature measured outside the vessel. The sensor which detects SAT must be carefully sited to ensure that airflow over it does not affect the indicated temperature.";
             Category = MicroEntryCategory.Surface;
             Unit = "K";
             Formatting = "{0:N0}";
@@ -236,8 +236,8 @@ namespace MicroMod
     {
         public ExternalTemperature()
         {
-            Name = "External temperature";
-            Description = "";
+            Name = "Total air temp.";
+            Description = "Measured by means of a sensor positioned in the airflow, kinetic heating will result, raising the temperature measured above the Static ambient temperature.";
             Category = MicroEntryCategory.Surface;
             Unit = "K";
             Formatting = "{0:N0}";
@@ -256,7 +256,7 @@ namespace MicroMod
         public DynamicPressure_kPa()
         {
             Name = "Dynamic Pressure";
-            Description = "";
+            Description = "Dynamic Pressure (q) is a defined property of a moving flow of gas. It describes how much pressure the airflow is having on the vessel.";
             Category = MicroEntryCategory.Surface;
             Unit = "kPa";
             Formatting = "{0:N2}";
@@ -275,7 +275,7 @@ namespace MicroMod
         public StaticPressure_kPa()
         {
             Name = "Static Pressure";
-            Description = "";
+            Description = "Static pressure is a term used to define the amount of pressure exerted by a fluid that is not moving - ambient pressure.";
             Category = MicroEntryCategory.Surface;
             Unit = "kPa";
             Formatting = "{0:N2}";

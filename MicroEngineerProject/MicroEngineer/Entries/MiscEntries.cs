@@ -1,7 +1,4 @@
 ﻿using KSP.Sim;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MicroMod
 {
@@ -26,7 +23,7 @@ namespace MicroMod
         public AutopilotStatus_IsEnabled()
         {
             Name = "Autopilot";
-            Description = "";
+            Description = "Is autopilot enabled or disabled.";
             Category = MicroEntryCategory.Misc;
             Unit = null;
             Formatting = null;
@@ -45,7 +42,7 @@ namespace MicroMod
         public AutopilotStatus_Mode()
         {
             Name = "Autopilot Mode";
-            Description = "";
+            Description = "Mode vessel's autopilot is using: stability assist, prograde, retrograde, normal, etc.";
             Category = MicroEntryCategory.Misc;
             Unit = null;
             Formatting = null;
@@ -64,7 +61,7 @@ namespace MicroMod
         public TimeSinceLaunch()
         {
             Name = "Time since launch";
-            Description = "";
+            Description = "Time since the vessel launched.";
             Category = MicroEntryCategory.Misc;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -82,17 +79,17 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
-    
+
     public class GravityForPos : MiscEntry
     {
         public GravityForPos()
         {
             Name = "Local Gravity";
-            Description = "";
+            Description = "Local gravity vessel is experiencing.";
             Category = MicroEntryCategory.Misc;
             Unit = "ms2";
             Formatting = "{0:N3}";
@@ -111,10 +108,10 @@ namespace MicroMod
         public LaunchTime()
         {
             Name = "Launch Time";
-            Description = "";
+            Description = "Universal Time when vessel was launched.";
             Category = MicroEntryCategory.Misc;
             Unit = "s";
-            Formatting = null;
+            Formatting = "{0:N3}";
         }
 
         public override void RefreshData()
@@ -129,7 +126,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -139,7 +136,7 @@ namespace MicroMod
         public AltimeterMode()
         {
             Name = "Altimeter Mode";
-            Description = "";
+            Description = "Mode vessel's altimeter is using: Sea Level or Ground Level.";
             Category = MicroEntryCategory.Misc;
             Unit = null;
             Formatting = null;
@@ -158,7 +155,7 @@ namespace MicroMod
         public SpeedMode()
         {
             Name = "Speed Mode";
-            Description = "";
+            Description = "Mode vessel's velocity meter is using: Orbit, Surface or Target.";
             Category = MicroEntryCategory.Misc;
             Unit = null;
             Formatting = null;
@@ -177,7 +174,7 @@ namespace MicroMod
         public StartUT()
         {
             Name = "Start UT";
-            Description = "";
+            Description = "Time passed since vessel was launched.";
             Category = MicroEntryCategory.Misc;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -195,7 +192,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -205,7 +202,7 @@ namespace MicroMod
         public EndUT()
         {
             Name = "UT";
-            Description = "";
+            Description = "Universal Time.";
             Category = MicroEntryCategory.Misc;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -223,7 +220,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -233,7 +230,7 @@ namespace MicroMod
         public UniversalTimeAtClosestApproach()
         {
             Name = "UT Close.App.";
-            Description = "";
+            Description = "Universal Time at closest approach.";
             Category = MicroEntryCategory.Misc;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -261,7 +258,7 @@ namespace MicroMod
         public UniversalTimeAtSoiEncounter()
         {
             Name = "UT SOI Enc.";
-            Description = "";
+            Description = "Universal Time at the point of transfer to another sphere of influence.";
             Category = MicroEntryCategory.Misc;
             Unit = "s";
             Formatting = "{0:N0}";

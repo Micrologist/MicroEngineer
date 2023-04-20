@@ -14,7 +14,7 @@ namespace MicroMod
         public ProjectedAp()
         {
             Name = "Projected Ap.";
-            Description = "Shows the projected apoapsis vessel will have after completing the maneuver.";
+            Description = "Projected Apoapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -36,7 +36,7 @@ namespace MicroMod
         public ProjectedPe()
         {
             Name = "Projected Pe.";
-            Description = "Shows the projected periapsis vessel will have after completing the maneuver.";
+            Description = "Projected Periapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -58,7 +58,7 @@ namespace MicroMod
         public DeltaVRequired()
         {
             Name = "∆v required";
-            Description = "Shows the delta velocity needed to complete the maneuver.";
+            Description = "Delta velocity needed to complete the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -82,7 +82,7 @@ namespace MicroMod
         public ManeuverPrograde()
         {
             Name = "∆v Prograde";
-            Description = "";
+            Description = "Prograde/Retrograde component of the total change in velocity.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -102,7 +102,7 @@ namespace MicroMod
         public ManeuverNormal()
         {
             Name = "∆v Normal";
-            Description = "";
+            Description = "Normal component of the total change in velocity.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -122,7 +122,7 @@ namespace MicroMod
         public ManeuverRadial()
         {
             Name = "∆v Radial";
-            Description = "";
+            Description = "Radial component of the total change in velocity.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -142,7 +142,7 @@ namespace MicroMod
         public TimeToNode()
         {
             Name = "Time to Node";
-            Description = "Shows the time until vessel reaches the maneuver node.";
+            Description = "Time until vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = null;
@@ -171,7 +171,7 @@ namespace MicroMod
         public BurnTime()
         {
             Name = "Burn Time";
-            Description = "Shows the length of time needed to complete the maneuver node.";
+            Description = "Length of time needed to complete the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = null;
@@ -203,7 +203,7 @@ namespace MicroMod
         public Maneuver_EccentricAnomaly()
         {
             Name = "Eccentric Anomaly";
-            Description = "";
+            Description = "Eccentric Anomaly vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -234,7 +234,7 @@ namespace MicroMod
         public Maneuver_EndUT()
         {
             Name = "UT";
-            Description = "";
+            Description = "Universal Time when vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = "{0:N3}";
@@ -265,7 +265,7 @@ namespace MicroMod
         public Maneuver_MeanAnomaly()
         {
             Name = "Mean Anomaly";
-            Description = "";
+            Description = "Mean Anomaly vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -296,7 +296,7 @@ namespace MicroMod
         public Maneuver_ObT()
         {
             Name = "Orbit Time";
-            Description = "Shows orbit time in seconds from the Periapsis";
+            Description = "Shows orbit time in seconds from the Periapsis when vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -327,7 +327,7 @@ namespace MicroMod
         public Maneuver_ArgumentOfPeriapsis()
         {
             Name = "Argument of Pe.";
-            Description = "";
+            Description = "Argument of Periapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -349,7 +349,7 @@ namespace MicroMod
         public Maneuver_Eccentricity()
         {
             Name = "Eccentricity";
-            Description = "Shows the vessel's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
+            Description = "The eccentricity of the vessel's orbit after the burn.";
             Category = MicroEntryCategory.Maneuver;
             Unit = null;
             Formatting = "{0:N3}";
@@ -371,7 +371,7 @@ namespace MicroMod
         public Maneuver_Inclination()
         {
             Name = "Inclination";
-            Description = "Shows the vessel's orbital inclination relative to the equator.";
+            Description = "The inclination of the vessel's orbit after the burn.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "°";
             Formatting = "{0:N3}";
@@ -393,7 +393,7 @@ namespace MicroMod
         public Maneuver_LongitudeOfAscendingNode()
         {
             Name = "LAN Ω";
-            Description = "";
+            Description = "Longitude of Ascending Node vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -415,7 +415,7 @@ namespace MicroMod
         public Maneuver_SemiMajorAxis()
         {
             Name = "Semi Major Axis";
-            Description = "";
+            Description = "Semi Major Axis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -437,7 +437,7 @@ namespace MicroMod
         public Maneuver_SemiMinorAxis()
         {
             Name = "Semi Minor Axis";
-            Description = "";
+            Description = "Semi Minor Axis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -459,7 +459,7 @@ namespace MicroMod
         public Maneuver_OrbitalEnergy()
         {
             Name = "Orbital Energy";
-            Description = "";
+            Description = "Orbital Energy vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "kJ";
             Formatting = "{0:N0}";
@@ -481,7 +481,7 @@ namespace MicroMod
         public Maneuver_SemiLatusRectum()
         {
             Name = "Semi Latus Rectum";
-            Description = "";
+            Description = "Semi Latus Rectum vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -503,7 +503,7 @@ namespace MicroMod
         public Maneuver_TimeToAp()
         {
             Name = "Time to Ap.";
-            Description = "Shows the time until the vessel reaches apoapsis, the highest point of the orbit.";
+            Description = "Shows the Time to Apoapsis vessel will have after reaching the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = null;
@@ -534,7 +534,7 @@ namespace MicroMod
         public Maneuver_TimeToPe()
         {
             Name = "Time to Pe.";
-            Description = "Shows the time until the vessel reaches periapsis, the lowest point of the orbit.";
+            Description = "Shows the Time to Periapsis vessel will have after reaching the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = null;
@@ -565,7 +565,7 @@ namespace MicroMod
         public Maneuver_TrueAnomaly()
         {
             Name = "True Anomaly";
-            Description = "";
+            Description = "True Anomaly vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "°";
             Formatting = "{0:N1}";
@@ -596,7 +596,7 @@ namespace MicroMod
         public Maneuver_UniversalTimeAtClosestApproach()
         {
             Name = "UT Close.App.";
-            Description = "";
+            Description = "Universal Time at the point of closest approach.";
             Category = MicroEntryCategory.Maneuver;
             Unit = null;
             Formatting = null;
@@ -627,7 +627,7 @@ namespace MicroMod
         public Maneuver_UniversalTimeAtSoiEncounter()
         {
             Name = "UT SOI Enc.";
-            Description = "";
+            Description = "Universal Time at the point of transition to another Sphere Of Influence.";
             Category = MicroEntryCategory.Maneuver;
             Unit = null;
             Formatting = null;
@@ -658,7 +658,7 @@ namespace MicroMod
         public Maneuver_OrbitPercent()
         {
             Name = "Orbit percent";
-            Description = "";
+            Description = "Orbit percent vessel will have passed after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "%";
             Formatting = "{0:N2}";
@@ -680,7 +680,7 @@ namespace MicroMod
         public Maneuver_Period()
         {
             Name = "Period";
-            Description = "Shows the amount of time it will take to complete a full orbit.";
+            Description = "The period of the vessel's orbit after the burn.";
             Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = null;
