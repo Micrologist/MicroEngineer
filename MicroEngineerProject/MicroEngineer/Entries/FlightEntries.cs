@@ -152,8 +152,8 @@ namespace MicroMod
     {
         public AngleOfAttack()
         {
-            Name = "Angle of Attack";
-            Description = "";
+            Name = "AoA";
+            Description = "Angle of Attack specifies the angle between the chord line of the wing and the vector representing the relative motion between the aircraft and the atmosphere.";
             Category = MicroEntryCategory.Flight;
             Unit = "°";
             Formatting = "{0:N3}";
@@ -172,7 +172,7 @@ namespace MicroMod
         public SideSlip()
         {
             Name = "Sideslip";
-            Description = "";
+            Description = "A slip is an aerodynamic state where an aircraft is moving somewhat sideways as well as forward relative to the oncoming airflow or relative wind.";
             Category = MicroEntryCategory.Flight;
             Unit = "°";
             Formatting = "{0:N3}";
@@ -190,8 +190,8 @@ namespace MicroMod
     {
         public DragCoefficient()
         {
-            Name = "DragCoefficient";
-            Description = "";
+            Name = "Drag Coefficient";
+            Description = "Dimensionless quantity that is used to quantify the drag or resistance of an object in a fluid environment, such as air or water.";
             Category = MicroEntryCategory.Flight;
             Unit = null;
             Formatting = "{0:N2}";
@@ -209,8 +209,8 @@ namespace MicroMod
     {
         public ExposedArea()
         {
-            Name = "ExposedArea";
-            Description = "";
+            Name = "Exposed Area";
+            Description = "The surface area that interacts with the working fluid or gas.";
             Category = MicroEntryCategory.Flight;
             Unit = null; // TODO
             Formatting = "{0:N2}";
@@ -229,7 +229,7 @@ namespace MicroMod
         public Heading()
         {
             Name = "Heading";
-            Description = "";
+            Description = "Heading of a vessel is the compass direction in which the craft's nose is pointed.";
             Category = MicroEntryCategory.Flight;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -248,7 +248,7 @@ namespace MicroMod
         public Pitch_HorizonRelative()
         {
             Name = "Pitch";
-            Description = "";
+            Description = "Lateral axis passes through an aircraft from wingtip to wingtip. Rotation about this axis is called pitch (moving up-down).";
             Category = MicroEntryCategory.Flight;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -267,7 +267,7 @@ namespace MicroMod
         public Roll_HorizonRelative()
         {
             Name = "Roll";
-            Description = "";
+            Description = "Longitudinal axis passes through the aircraft from nose to tail. Rotation about this axis is called roll (rotating left-right).";
             Category = MicroEntryCategory.Flight;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -286,7 +286,7 @@ namespace MicroMod
         public Yaw_HorizonRelative()
         {
             Name = "Yaw";
-            Description = "";
+            Description = "Vertical axis passes through an aircraft from top to bottom. Rotation about this axis is called yaw (moving left-right).";
             Category = MicroEntryCategory.Flight;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -305,7 +305,7 @@ namespace MicroMod
         public Zenith()
         {
             Name = "Zenith";
-            Description = "";
+            Description = "The zenith is an imaginary point directly above a particular location, on the celestial sphere. \"Above\" means in the vertical direction opposite to the gravity direction.";
             Category = MicroEntryCategory.Flight;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -324,7 +324,7 @@ namespace MicroMod
         public SoundSpeed()
         {
             Name = "Speed of sound";
-            Description = "";
+            Description = "Distance travelled per unit of time by a sound wave as it propagates through the air.";
             Category = MicroEntryCategory.Flight;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -343,7 +343,7 @@ namespace MicroMod
         public GeeForce()
         {
             Name = "G-Force";
-            Description = "";
+            Description = "Measurement of the type of force per unit mass – typically acceleration – that causes a perception of weight, with a g-force of 1 g equal to the conventional value of gravitational acceleration on Earth/Kerbin.";
             Category = MicroEntryCategory.Flight;
             Unit = "g";
             Formatting = "{0:N3}";

@@ -28,7 +28,7 @@ namespace MicroMod
         public Mass()
         {
             Name = "Mass";
-            Description = "Shows the total mass of the vessel.";
+            Description = "Total mass of the vessel.";
             Category = MicroEntryCategory.Vessel;
             Unit = "kg";
             Formatting = "{0:N0}";
@@ -47,7 +47,7 @@ namespace MicroMod
         public TotalDeltaVActual()
         {
             Name = "Total ∆v";
-            Description = "Shows the vessel's total delta velocity.";
+            Description = "Vessel's total delta velocity.";
             Category = MicroEntryCategory.Vessel;
             Unit = "m/s";
             Formatting = "{0:N0}";
@@ -66,7 +66,7 @@ namespace MicroMod
         public TotalDeltaVASL()
         {
             Name = "Total ∆v ASL";
-            Description = "Shows the total delta velocity of the vessel At Sea Level.";
+            Description = "Total delta velocity of the vessel At Sea Level.";
             Category = MicroEntryCategory.Vessel;
             Unit = "m/s";
             Formatting = "{0:N0}";
@@ -86,7 +86,7 @@ namespace MicroMod
         public TotalDeltaVVac()
         {
             Name = "Total ∆v Vac";
-            Description = "Shows the total delta velocity of the vessel in vacuum.";
+            Description = "Total delta velocity of the vessel in vacuum.";
             Category = MicroEntryCategory.Vessel;
             Unit = "m/s";
             Formatting = "{0:N0}";
@@ -105,7 +105,7 @@ namespace MicroMod
         public StageThrustActual()
         {
             Name = "Thrust";
-            Description = "Shows the vessel's actual thrust.";
+            Description = "Vessel's actual thrust.";
             Category = MicroEntryCategory.Vessel;
             Unit = "N";
             Formatting = "{0:N0}";
@@ -124,7 +124,7 @@ namespace MicroMod
         public StageThrustASL()
         {
             Name = "Thrust (ASL)";
-            Description = "Shows the vessel's actual thrust.";
+            Description = "Vessel's thrust At Sea Level.";
             Category = MicroEntryCategory.Vessel;
             Unit = "N";
             Formatting = "{0:N0}";
@@ -143,7 +143,7 @@ namespace MicroMod
         public StageThrustVac()
         {
             Name = "Thrust (Vacuum)";
-            Description = "Shows the vessel's actual thrust.";
+            Description = "Vessel's thrust in vacuum.";
             Category = MicroEntryCategory.Vessel;
             Unit = "N";
             Formatting = "{0:N0}";
@@ -162,7 +162,7 @@ namespace MicroMod
         public StageTWRActual()
         {
             Name = "TWR";
-            Description = "Shows the vessel's StageThrustActual to Weight Ratio.";
+            Description = "Vessel's Thrust to Weight Ratio.";
             Category = MicroEntryCategory.Vessel;
             Unit = null;
             Formatting = "{0:N2}";
@@ -181,7 +181,7 @@ namespace MicroMod
         public StageTWRASL()
         {
             Name = "TWR (ASL)";
-            Description = "";
+            Description = "Vessel's Thrust to Weight Ratio At Sea Level.";
             Category = MicroEntryCategory.Vessel;
             Unit = null;
             Formatting = "{0:N2}";
@@ -200,7 +200,7 @@ namespace MicroMod
         public StageTWRVac()
         {
             Name = "TWR (Vacuum)";
-            Description = "";
+            Description = "Vessel's Thrust to Weight Ratio in vacuum.";
             Category = MicroEntryCategory.Vessel;
             Unit = null;
             Formatting = "{0:N2}";
@@ -219,7 +219,7 @@ namespace MicroMod
         public PartsCount()
         {
             Name = "Parts";
-            Description = "";
+            Description = "Number of parts vessel is constructed of.";
             Category = MicroEntryCategory.Vessel;
             Unit = null;
             Formatting = null;
@@ -238,7 +238,7 @@ namespace MicroMod
         public TotalBurnTime()
         {
             Name = "Total Burn Time";
-            Description = "";
+            Description = "Burn Time vessel can sustain with 100% thrust.";
             Category = MicroEntryCategory.Vessel;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -266,7 +266,7 @@ namespace MicroMod
         public StageISPActual()
         {
             Name = "ISP (Actual)";
-            Description = "";
+            Description = "Specific impulse (ISP) is a measure of how efficiently a reaction mass engine creates thrust.";
             Category = MicroEntryCategory.Vessel;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -285,7 +285,7 @@ namespace MicroMod
         public StageISPAsl()
         {
             Name = "ISP (ASL)";
-            Description = "";
+            Description = "Specific impulse At Sea Level.";
             Category = MicroEntryCategory.Vessel;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -304,7 +304,7 @@ namespace MicroMod
         public StageISPVac()
         {
             Name = "ISP (Vacuum)";
-            Description = "";
+            Description = "Specific impulse in vacuum.";
             Category = MicroEntryCategory.Vessel;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -323,7 +323,7 @@ namespace MicroMod
         public Throttle()
         {
             Name = "Throttle";
-            Description = "";
+            Description = "Vessel's current throttle in %.";
             Category = MicroEntryCategory.Vessel;
             Unit = "%";
             Formatting = "{0:N0}";
@@ -342,7 +342,7 @@ namespace MicroMod
         public FuelPercentage()
         {
             Name = "Vessel Fuel";
-            Description = "";
+            Description = "Vessel's fuel percentage left.";
             Category = MicroEntryCategory.Vessel;
             Unit = "%";
             Formatting = "{0:N1}";
@@ -361,7 +361,7 @@ namespace MicroMod
         public StageFuelPercentage()
         {
             Name = "Stage Fuel";
-            Description = "";
+            Description = "Stage fuel percentage left.";
             Category = MicroEntryCategory.Vessel;
             Unit = "%";
             Formatting = "{0:N1}";
@@ -380,7 +380,7 @@ namespace MicroMod
         public TotalCommandCrewCapacity()
         {
             Name = "Command Crew Capacity";
-            Description = "";
+            Description = "Crew capacity of all parts.";
             Category = MicroEntryCategory.Vessel;
             Unit = null;
             Formatting = "{0:N0}";

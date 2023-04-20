@@ -137,18 +137,12 @@ namespace MicroMod
         }
     }
 
-
-
-
-
-    ////////////////////////        NEW     ENTRIES         ////////////////////////
-
     public class Target_AltitudeFromSeaLevel : TargetEntry
     {
         public Target_AltitudeFromSeaLevel()
         {
             Name = "Altitude (Sea)";
-            Description = "";
+            Description = "Shows the target's altitude above sea level.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -167,7 +161,7 @@ namespace MicroMod
         public Target_Name()
         {
             Name = "Name";
-            Description = "";
+            Description = "Target's name.";
             Category = MicroEntryCategory.Target;
             Unit = null;
             Formatting = null;
@@ -186,7 +180,7 @@ namespace MicroMod
         public Target_EccentricAnomaly()
         {
             Name = "Eccentric Anomaly";
-            Description = "";
+            Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the target is.";
             Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -214,7 +208,7 @@ namespace MicroMod
         public Target_MeanAnomaly()
         {
             Name = "Mean Anomaly";
-            Description = "";
+            Description = "Parameter used to describe the position of the target in its orbit around the celestial body.";
             Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -242,7 +236,7 @@ namespace MicroMod
         public Target_ObT()
         {
             Name = "Orbit Time";
-            Description = "";
+            Description = "Shows orbit time in seconds from the Periapsis.";
             Category = MicroEntryCategory.Target;
             Unit = "s";
             Formatting = "{0:N3}";
@@ -260,7 +254,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -270,7 +264,7 @@ namespace MicroMod
         public Target_ArgumentOfPeriapsis()
         {
             Name = "Argument of Pe.";
-            Description = "";
+            Description = "Angle from the line of the ascending node on the equatorial plane to the point of periapsis passage.";
             Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -327,7 +321,7 @@ namespace MicroMod
         public Target_LongitudeOfAscendingNode()
         {
             Name = "LAN Ω";
-            Description = "Shows the target's Longitude Of Ascending Node";
+            Description = "Shows the target's Longitude Of Ascending Node.";
             Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -346,7 +340,7 @@ namespace MicroMod
         public Target_SemiMajorAxis()
         {
             Name = "Semi Major Axis";
-            Description = "";
+            Description = "Shows the distance from the center of an orbit to the farthest edge.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -365,7 +359,7 @@ namespace MicroMod
         public Target_ReferenceBodyConstants_Radius()
         {
             Name = "Body Radius";
-            Description = "";
+            Description = "Radius of the body that target is orbiting.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -384,7 +378,7 @@ namespace MicroMod
         public Target_ReferenceBodyConstants_StandardGravitationParameter()
         {
             Name = "Std. Grav. Param.";
-            Description = "";
+            Description = "Product of the gravitational constant G and the mass M of the body target is orbiting.";
             Category = MicroEntryCategory.Target;
             Unit = "μ";
             Formatting = "{0:e4}";
@@ -403,7 +397,7 @@ namespace MicroMod
         public Target_SemiLatusRectum()
         {
             Name = "Semi Latus Rectum";
-            Description = "";
+            Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -422,7 +416,7 @@ namespace MicroMod
         public Target_SemiMinorAxis()
         {
             Name = "Semi Minor Axis";
-            Description = "";
+            Description = "Shows the distance from the center of an orbit to the nearest edge.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -441,7 +435,7 @@ namespace MicroMod
         public Target_TrueAnomaly()
         {
             Name = "True Anomaly";
-            Description = "";
+            Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
             Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N1}";
@@ -469,7 +463,7 @@ namespace MicroMod
         public Target_Period()
         {
             Name = "Period";
-            Description = "Shows the amount of time it will take to complete a full orbit.";
+            Description = "Shows the amount of time it will take the target to complete a full orbit.";
             Category = MicroEntryCategory.Target;
             Unit = "s";
             Formatting = null;
@@ -487,7 +481,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.SecondsToTimeString((double)EntryValue);
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -497,7 +491,7 @@ namespace MicroMod
         public Target_OrbitRadius()
         {
             Name = "Orbit Radius";
-            Description = "";
+            Description = "Length from the center of the ellipse to the object.";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -516,7 +510,7 @@ namespace MicroMod
         public Target_Obtvelocity()
         {
             Name = "Orbital Speed";
-            Description = "";
+            Description = "Shows the target's orbital speed.";
             Category = MicroEntryCategory.Target;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -535,7 +529,7 @@ namespace MicroMod
         public DistanceAtCloseApproach1()
         {
             Name = "CloseAppDist-1";
-            Description = "";
+            Description = "Close approach distance to target (1).";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -556,7 +550,7 @@ namespace MicroMod
         public TimeToCloseApproach1()
         {
             Name = "CloseAppTime-1";
-            Description = "";
+            Description = "Close approach time to target (1).";
             Category = MicroEntryCategory.Target;
             Unit = "s";
             Formatting = null;
@@ -576,7 +570,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.SecondsToTimeString((double)EntryValue);
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -586,7 +580,7 @@ namespace MicroMod
         public RelativeSpeedAtCloseApproach1()
         {
             Name = "CloseAppSpeed-1";
-            Description = "";
+            Description = "Close approach relative speed to target (1).";
             Category = MicroEntryCategory.Target;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -607,7 +601,7 @@ namespace MicroMod
         public DistanceAtCloseApproach2()
         {
             Name = "CloseAppDist-2";
-            Description = "";
+            Description = "Close approach distance to target (2).";
             Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
@@ -628,7 +622,7 @@ namespace MicroMod
         public TimeToCloseApproach2()
         {
             Name = "CloseAppTime-2";
-            Description = "";
+            Description = "Close approach time to target (2).";
             Category = MicroEntryCategory.Target;
             Unit = "s";
             Formatting = null;
@@ -648,7 +642,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.SecondsToTimeString((double)EntryValue);
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -658,7 +652,7 @@ namespace MicroMod
         public RelativeSpeedAtCloseApproach2()
         {
             Name = "CloseAppSpeed-2";
-            Description = "";
+            Description = "Close approach relative speed to target (2).";
             Category = MicroEntryCategory.Target;
             Unit = "m/s";
             Formatting = "{0:N1}";
@@ -679,7 +673,7 @@ namespace MicroMod
         public PhaseAngle()
         {
             Name = "Phase Angle";
-            Description = "";
+            Description = "Angle between your vessel, the reference body and the target. How much \"ahead\" or \"behind\" in phase you are with the target.";
             Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N2}";
@@ -698,7 +692,7 @@ namespace MicroMod
         public TransferAngle()
         {
             Name = "Transfer Angle";
-            Description = "";
+            Description = "Phase angle needed for an optimal Hohmann transfer orbit. Use a circular orbit for a more accurate value.";
             Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N2}";
