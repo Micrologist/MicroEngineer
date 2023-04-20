@@ -1081,7 +1081,7 @@ namespace MicroMod
 			MicroEntries = new List<MicroEntry>();
 
             #region Vessel entries
-            MicroEntries.Add(new Vessel());
+            MicroEntries.Add(new VesselName());
             MicroEntries.Add(new Mass());
             MicroEntries.Add(new TotalDeltaVActual());
             MicroEntries.Add(new StageThrustActual());
@@ -1215,7 +1215,7 @@ namespace MicroMod
             MicroEntries.Add(new Target_SemiMinorAxis());
             MicroEntries.Add(new Target_TrueAnomaly());
             MicroEntries.Add(new Target_Period());
-            MicroEntries.Add(new Target_radius());
+            MicroEntries.Add(new Target_OrbitRadius());
             MicroEntries.Add(new Target_AltitudeFromSeaLevel());
             MicroEntries.Add(new Target_Name());
             MicroEntries.Add(new Target_Obtvelocity());
@@ -1247,8 +1247,8 @@ namespace MicroMod
             MicroEntries.Add(new Maneuver_TrueAnomaly());
             MicroEntries.Add(new Maneuver_UniversalTimeAtClosestApproach());
             MicroEntries.Add(new Maneuver_UniversalTimeAtSoiEncounter());
-            MicroEntries.Add(new Maneuver_orbitPercent());
-            MicroEntries.Add(new Maneuver_period());
+            MicroEntries.Add(new Maneuver_OrbitPercent());
+            MicroEntries.Add(new Maneuver_Period());
             MicroEntries.Add(new AngleOfAttack());
             MicroEntries.Add(new SideSlip());
             MicroEntries.Add(new PhaseAngle());

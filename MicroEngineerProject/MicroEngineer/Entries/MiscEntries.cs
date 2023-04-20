@@ -63,7 +63,7 @@ namespace MicroMod
     {
         public TimeSinceLaunch()
         {
-            Name = "Time since Launch";
+            Name = "Time since launch";
             Description = "";
             Category = MicroEntryCategory.Misc;
             Unit = "s";
@@ -204,7 +204,7 @@ namespace MicroMod
     {
         public EndUT()
         {
-            Name = "Universal Time";
+            Name = "UT";
             Description = "";
             Category = MicroEntryCategory.Misc;
             Unit = "s";
@@ -232,7 +232,7 @@ namespace MicroMod
     {
         public UniversalTimeAtClosestApproach()
         {
-            Name = "UT Closest Appr.";
+            Name = "UT Close.App.";
             Description = "";
             Category = MicroEntryCategory.Misc;
             Unit = "s";
