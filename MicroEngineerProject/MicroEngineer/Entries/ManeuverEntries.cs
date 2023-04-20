@@ -204,7 +204,7 @@ namespace MicroMod
         {
             Name = "Eccentric Anomaly";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -233,9 +233,9 @@ namespace MicroMod
     {
         public Maneuver_EndUT()
         {
-            Name = "EndUT";
+            Name = "UT";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = "{0:N3}";
         }
@@ -266,7 +266,7 @@ namespace MicroMod
         {
             Name = "Mean Anomaly";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -296,10 +296,10 @@ namespace MicroMod
         public Maneuver_ObT()
         {
             Name = "Orbit Time";
-            Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Description = "Shows orbit time in seconds from the Periapsis";
+            Category = MicroEntryCategory.Maneuver;
             Unit = "s";
-            Formatting = null;
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -326,11 +326,11 @@ namespace MicroMod
     {
         public Maneuver_ArgumentOfPeriapsis()
         {
-            Name = "Argument of Periapsis";
+            Name = "Argument of Pe.";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Category = MicroEntryCategory.Maneuver;
+            Unit = "°";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
@@ -350,7 +350,7 @@ namespace MicroMod
         {
             Name = "Eccentricity";
             Description = "Shows the vessel's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = null;
             Formatting = "{0:N3}";
         }
@@ -372,7 +372,7 @@ namespace MicroMod
         {
             Name = "Inclination";
             Description = "Shows the vessel's orbital inclination relative to the equator.";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "°";
             Formatting = "{0:N3}";
         }
@@ -392,11 +392,11 @@ namespace MicroMod
     {
         public Maneuver_LongitudeOfAscendingNode()
         {
-            Name = "LAN";
+            Name = "LAN Ω";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Category = MicroEntryCategory.Maneuver;
+            Unit = "°";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
@@ -416,7 +416,7 @@ namespace MicroMod
         {
             Name = "Semi Major Axis";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -438,7 +438,7 @@ namespace MicroMod
         {
             Name = "Semi Minor Axis";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -460,9 +460,9 @@ namespace MicroMod
         {
             Name = "Orbital Energy";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Category = MicroEntryCategory.Maneuver;
+            Unit = "kJ";
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -480,9 +480,9 @@ namespace MicroMod
     {
         public Maneuver_SemiLatusRectum()
         {
-            Name = "Semi Latus Rectum ℓ";
+            Name = "Semi Latus Rectum";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -504,7 +504,7 @@ namespace MicroMod
         {
             Name = "Time to Ap.";
             Description = "Shows the time until the vessel reaches apoapsis, the highest point of the orbit.";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = null;
         }
@@ -535,7 +535,7 @@ namespace MicroMod
         {
             Name = "Time to Pe.";
             Description = "Shows the time until the vessel reaches periapsis, the lowest point of the orbit.";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = null;
         }
@@ -566,9 +566,9 @@ namespace MicroMod
         {
             Name = "True Anomaly";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "°";
-            Formatting = "{0:N2}";
+            Formatting = "{0:N1}";
         }
 
         public override void RefreshData()
@@ -595,9 +595,9 @@ namespace MicroMod
     {
         public Maneuver_UniversalTimeAtClosestApproach()
         {
-            Name = "UT Closest Appr.";
+            Name = "UT Close.App.";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = null;
             Formatting = null;
         }
@@ -626,9 +626,9 @@ namespace MicroMod
     {
         public Maneuver_UniversalTimeAtSoiEncounter()
         {
-            Name = "UT SOI Enc";
+            Name = "UT SOI Enc.";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = null;
             Formatting = null;
         }
@@ -653,13 +653,13 @@ namespace MicroMod
         }
     }
 
-    public class Maneuver_orbitPercent : ManeuverEntry
+    public class Maneuver_OrbitPercent : ManeuverEntry
     {
-        public Maneuver_orbitPercent()
+        public Maneuver_OrbitPercent()
         {
             Name = "Orbit percent";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "%";
             Formatting = "{0:N2}";
         }
@@ -675,13 +675,13 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class Maneuver_period : ManeuverEntry
+    public class Maneuver_Period : ManeuverEntry
     {
-        public Maneuver_period()
+        public Maneuver_Period()
         {
             Name = "Period";
             Description = "Shows the amount of time it will take to complete a full orbit.";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Maneuver;
             Unit = "s";
             Formatting = null;
         }

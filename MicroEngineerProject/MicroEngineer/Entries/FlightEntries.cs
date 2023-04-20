@@ -154,7 +154,7 @@ namespace MicroMod
         {
             Name = "Angle of Attack";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Flight;
             Unit = "°";
             Formatting = "{0:N3}";
         }
@@ -173,7 +173,7 @@ namespace MicroMod
         {
             Name = "Sideslip";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Flight;
             Unit = "°";
             Formatting = "{0:N3}";
         }

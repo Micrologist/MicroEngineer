@@ -147,9 +147,9 @@ namespace MicroMod
     {
         public Target_AltitudeFromSeaLevel()
         {
-            Name = "[T] Altitude (Sea)";
+            Name = "Altitude (Sea)";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -166,9 +166,9 @@ namespace MicroMod
     {
         public Target_Name()
         {
-            Name = "[T] Name";
+            Name = "Name";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = null;
             Formatting = null;
         }
@@ -185,10 +185,10 @@ namespace MicroMod
     {
         public Target_EccentricAnomaly()
         {
-            Name = "[T] Eccentric Anomaly";
+            Name = "Eccentric Anomaly";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = null;
+            Category = MicroEntryCategory.Target;
+            Unit = "°";
             Formatting = "{0:N2}";
         }
 
@@ -213,9 +213,9 @@ namespace MicroMod
     {
         public Target_MeanAnomaly()
         {
-            Name = "[T] Mean Anomaly";
+            Name = "Mean Anomaly";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -241,9 +241,9 @@ namespace MicroMod
     {
         public Target_ObT()
         {
-            Name = "[T] Orbit Time";
+            Name = "Orbit Time";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "s";
             Formatting = "{0:N3}";
         }
@@ -269,11 +269,11 @@ namespace MicroMod
     {
         public Target_ArgumentOfPeriapsis()
         {
-            Name = "[T] Arg. of Pe.";
+            Name = "Argument of Pe.";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Category = MicroEntryCategory.Target;
+            Unit = "°";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
@@ -288,9 +288,9 @@ namespace MicroMod
     {
         public Target_Eccentricity()
         {
-            Name = "[T] Eccentricity";
+            Name = "Eccentricity";
             Description = "Shows the target's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = null;
             Formatting = "{0:N3}";
         }
@@ -307,9 +307,9 @@ namespace MicroMod
     {
         public Target_Inclination()
         {
-            Name = "[T] Inclination";
+            Name = "Inclination";
             Description = "Shows the target's orbital inclination relative to the equator.";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N3}";
         }
@@ -326,11 +326,11 @@ namespace MicroMod
     {
         public Target_LongitudeOfAscendingNode()
         {
-            Name = "[T] LAN";
+            Name = "LAN Ω";
             Description = "Shows the target's Longitude Of Ascending Node";
-            Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Category = MicroEntryCategory.Target;
+            Unit = "°";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
@@ -345,9 +345,9 @@ namespace MicroMod
     {
         public Target_SemiMajorAxis()
         {
-            Name = "[T] Semi Major Axis";
+            Name = "Semi Major Axis";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -364,11 +364,11 @@ namespace MicroMod
     {
         public Target_ReferenceBodyConstants_Radius()
         {
-            Name = "[T] Ref.Bod.Con.Radius";
+            Name = "Body Radius";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Category = MicroEntryCategory.Target;
+            Unit = "m";
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -383,16 +383,16 @@ namespace MicroMod
     {
         public Target_ReferenceBodyConstants_StandardGravitationParameter()
         {
-            Name = "[T] Ref.Bod.Con.GPar";
+            Name = "Std. Grav. Param.";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Category = MicroEntryCategory.Target;
+            Unit = "μ";
+            Formatting = "{0:e4}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.referenceBody.gravParameter;
+            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.referenceBody?.gravParameter;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -402,11 +402,11 @@ namespace MicroMod
     {
         public Target_SemiLatusRectum()
         {
-            Name = "[T] Semi Latus Rectum";
+            Name = "Semi Latus Rectum";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Category = MicroEntryCategory.Target;
+            Unit = "m";
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -421,11 +421,11 @@ namespace MicroMod
     {
         public Target_SemiMinorAxis()
         {
-            Name = "[T] Semi Minor Axis";
+            Name = "Semi Minor Axis";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N3}";
+            Category = MicroEntryCategory.Target;
+            Unit = "m";
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -440,11 +440,11 @@ namespace MicroMod
     {
         public Target_TrueAnomaly()
         {
-            Name = "[T] True Anomaly";
+            Name = "True Anomaly";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
-            Unit = null;
-            Formatting = "{0:N2}";
+            Category = MicroEntryCategory.Target;
+            Unit = "°";
+            Formatting = "{0:N1}";
         }
 
         public override void RefreshData()
@@ -468,9 +468,9 @@ namespace MicroMod
     {
         public Target_Period()
         {
-            Name = "[T] Period";
+            Name = "Period";
             Description = "Shows the amount of time it will take to complete a full orbit.";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "s";
             Formatting = null;
         }
@@ -492,20 +492,20 @@ namespace MicroMod
         }
     }
 
-    public class Target_radius : TargetEntry
+    public class Target_OrbitRadius : TargetEntry
     {
-        public Target_radius()
+        public Target_OrbitRadius()
         {
-            Name = "[T] Orbit Radius";
+            Name = "Orbit Radius";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit.radius;
+            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.radius;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -515,9 +515,9 @@ namespace MicroMod
     {
         public Target_Obtvelocity()
         {
-            Name = "[T] Orbital Speed";
+            Name = "Orbital Speed";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -534,9 +534,9 @@ namespace MicroMod
     {
         public DistanceAtCloseApproach1()
         {
-            Name = "CloseApp1 Dist";
+            Name = "CloseAppDist-1";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -555,9 +555,9 @@ namespace MicroMod
     {
         public TimeToCloseApproach1()
         {
-            Name = "CloseApp1 Time";
+            Name = "CloseAppTime-1";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "s";
             Formatting = null;
         }
@@ -585,9 +585,9 @@ namespace MicroMod
     {
         public RelativeSpeedAtCloseApproach1()
         {
-            Name = "CloseApp1 Speed";
+            Name = "CloseAppSpeed-1";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -606,9 +606,9 @@ namespace MicroMod
     {
         public DistanceAtCloseApproach2()
         {
-            Name = "CloseApp2 Dist";
+            Name = "CloseAppDist-2";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -627,9 +627,9 @@ namespace MicroMod
     {
         public TimeToCloseApproach2()
         {
-            Name = "CloseApp2 Time";
+            Name = "CloseAppTime-2";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "s";
             Formatting = null;
         }
@@ -657,9 +657,9 @@ namespace MicroMod
     {
         public RelativeSpeedAtCloseApproach2()
         {
-            Name = "CloseApp2 Speed";
+            Name = "CloseAppSpeed-2";
             Description = "";
-            Category = MicroEntryCategory.Accepted;
+            Category = MicroEntryCategory.Target;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -680,7 +680,7 @@ namespace MicroMod
         {
             Name = "Phase Angle";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -699,7 +699,7 @@ namespace MicroMod
         {
             Name = "Transfer Angle";
             Description = "";
-            Category = MicroEntryCategory.Accepted2;
+            Category = MicroEntryCategory.Target;
             Unit = "°";
             Formatting = "{0:N2}";
         }

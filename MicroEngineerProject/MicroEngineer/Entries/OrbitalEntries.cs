@@ -48,7 +48,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.SecondsToTimeString((double)EntryValue);
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -95,7 +95,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.SecondsToTimeString((double)EntryValue);
+                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -302,7 +302,7 @@ namespace MicroMod
         public ObT()
         {
             Name = "Orbit Time";
-            Description = "";
+            Description = "Shows orbit time in seconds from the Periapsis";
             Category = MicroEntryCategory.Orbital;
             Unit = "s";
             Formatting = "{0:N0}";
@@ -329,7 +329,7 @@ namespace MicroMod
     {
         public ArgumentOfPeriapsis()
         {
-            Name = "Argument of Pe. ω";
+            Name = "Argument of Pe.";
             Description = "";
             Category = MicroEntryCategory.Orbital;
             Unit = "°";
@@ -367,7 +367,7 @@ namespace MicroMod
     {
         public SemiMajorAxis()
         {
-            Name = "Semi Major Axis <i>a</i>";
+            Name = "Semi Major Axis";
             Description = "";
             Category = MicroEntryCategory.Orbital;
             Unit = "m";
@@ -386,7 +386,7 @@ namespace MicroMod
     {
         public SemiMinorAxis()
         {
-            Name = "Semi Minor Axis <i>b</i>";
+            Name = "Semi Minor Axis";
             Description = "";
             Category = MicroEntryCategory.Orbital;
             Unit = "m";
@@ -424,7 +424,7 @@ namespace MicroMod
     {
         public SemiLatusRectum()
         {
-            Name = "Semi Latus Rectum ℓ";
+            Name = "Semi Latus Rectum";
             Description = "";
             Category = MicroEntryCategory.Orbital;
             Unit = "m";
