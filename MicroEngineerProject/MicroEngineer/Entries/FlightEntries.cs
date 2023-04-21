@@ -11,6 +11,7 @@ namespace MicroMod
             Name = "Speed";
             Description = "Shows the vessel's total velocity.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -30,6 +31,7 @@ namespace MicroMod
             Name = "Mach Number";
             Description = "Shows the ratio of vessel's speed and local speed of sound.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = null;
             Formatting = "{0:N2}";
         }
@@ -49,6 +51,7 @@ namespace MicroMod
             Name = "Atm. Density";
             Description = "Shows the atmospheric density.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = "g/L";
             Formatting = "{0:N3}";
         }
@@ -68,6 +71,7 @@ namespace MicroMod
             Name = "Total Lift";
             Description = "Shows the total lift force produced by the vessel.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = "N";
             Formatting = "{0:N0}";
         }
@@ -97,6 +101,7 @@ namespace MicroMod
             Name = "Total Drag";
             Description = "Shows the total drag force exerted on the vessel.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = "N";
             Formatting = "{0:N0}";
         }
@@ -126,6 +131,7 @@ namespace MicroMod
             Name = "Lift / Drag";
             Description = "Shows the ratio of total lift and drag forces.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = null;
             Formatting = "{0:N2}";
         }
@@ -155,6 +161,7 @@ namespace MicroMod
             Name = "AoA";
             Description = "Angle of Attack specifies the angle between the chord line of the wing and the vector representing the relative motion between the aircraft and the atmosphere.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = "°";
             Formatting = "{0:N3}";
         }
@@ -174,6 +181,7 @@ namespace MicroMod
             Name = "Sideslip";
             Description = "A slip is an aerodynamic state where an aircraft is moving somewhat sideways as well as forward relative to the oncoming airflow or relative wind.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N3}";
         }
@@ -193,6 +201,7 @@ namespace MicroMod
             Name = "Drag Coefficient";
             Description = "Dimensionless quantity that is used to quantify the drag or resistance of an object in a fluid environment, such as air or water.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = false;
             Unit = null;
             Formatting = "{0:N2}";
         }
@@ -212,6 +221,7 @@ namespace MicroMod
             Name = "Exposed Area";
             Description = "The surface area that interacts with the working fluid or gas.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = false;
             Unit = null; // TODO
             Formatting = "{0:N2}";
         }
@@ -231,6 +241,7 @@ namespace MicroMod
             Name = "Heading";
             Description = "Heading of a vessel is the compass direction in which the craft's nose is pointed.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -250,6 +261,7 @@ namespace MicroMod
             Name = "Pitch";
             Description = "Lateral axis passes through an aircraft from wingtip to wingtip. Rotation about this axis is called pitch (moving up-down).";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -269,6 +281,7 @@ namespace MicroMod
             Name = "Roll";
             Description = "Longitudinal axis passes through the aircraft from nose to tail. Rotation about this axis is called roll (rotating left-right).";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -288,6 +301,7 @@ namespace MicroMod
             Name = "Yaw";
             Description = "Vertical axis passes through an aircraft from top to bottom. Rotation about this axis is called yaw (moving left-right).";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -307,6 +321,7 @@ namespace MicroMod
             Name = "Zenith";
             Description = "The zenith is an imaginary point directly above a particular location, on the celestial sphere. \"Above\" means in the vertical direction opposite to the gravity direction.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -326,6 +341,7 @@ namespace MicroMod
             Name = "Speed of sound";
             Description = "Distance travelled per unit of time by a sound wave as it propagates through the air.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = false;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -345,6 +361,7 @@ namespace MicroMod
             Name = "G-Force";
             Description = "Measurement of the type of force per unit mass – typically acceleration – that causes a perception of weight, with a g-force of 1 g equal to the conventional value of gravitational acceleration on Earth/Kerbin.";
             Category = MicroEntryCategory.Flight;
+            IsDefault = true;
             Unit = "g";
             Formatting = "{0:N3}";
         }

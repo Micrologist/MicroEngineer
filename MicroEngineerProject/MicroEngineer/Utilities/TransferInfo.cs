@@ -106,11 +106,16 @@ namespace MicroMod
 
         public static double? GetTransferAngle()
         {
-            double ellipseA = (_toOrbit.semiMajorAxis + _fromOrbit.semiMajorAxis) / 2;
-            double time = Mathf.PI * Mathf.Sqrt((float)((ellipseA) * (ellipseA) * (ellipseA)) / ((float)_toOrbit.referenceBody.Mass * 6.67e-11f));
-            double transfer = 180 - ((time / _toOrbit.period) * 360);
-            while (transfer < -180) { transfer += 360; }
-            return Math.Round(transfer, 1);
+            if (CalculateParameters())
+            {
+                double ellipseA = (_toOrbit.semiMajorAxis + _fromOrbit.semiMajorAxis) / 2;
+                double time = Mathf.PI * Mathf.Sqrt((float)((ellipseA) * (ellipseA) * (ellipseA)) / ((float)_toOrbit.referenceBody.Mass * 6.67e-11f));
+                double transfer = 180 - ((time / _toOrbit.period) * 360);
+                while (transfer < -180) { transfer += 360; }
+                return Math.Round(transfer, 1);
+            }
+            else
+                return null;
         }
     }
 }

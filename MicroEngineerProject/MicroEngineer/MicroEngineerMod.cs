@@ -9,6 +9,7 @@ using KSP.UI.Binding;
 using KSP.Sim.DeltaV;
 using KSP.Messages;
 using KSP.Sim.impl;
+using System.Reflection;
 
 namespace MicroMod
 {
@@ -420,7 +421,12 @@ namespace MicroMod
                     window.DrawWindowHeader();
 
                     foreach (MicroEntry entry in window.Entries)
+                    {
+                        if (entry.HideWhenNoData && entry.ValueDisplay == "-")
+                            continue;
                         DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
+                    }
+                        
 
                     window.DrawWindowFooter();
 
@@ -448,7 +454,11 @@ namespace MicroMod
             windowToDraw.DrawWindowHeader();
             
             foreach (MicroEntry entry in windowToDraw.Entries)
+            {
+                if (entry.HideWhenNoData && entry.ValueDisplay == "-")
+                    continue;
                 DrawEntry(entry.Name, entry.ValueDisplay, entry.Unit);
+            }
 
             windowToDraw.DrawWindowFooter();
 
@@ -1025,186 +1035,22 @@ namespace MicroMod
         /// </summary>
         private void InitializeEntries()
 		{
-			MicroEntries = new List<MicroEntry>();
+			MicroEntries = new List<MicroEntry>(); 
 
-            #region Vessel entries
-            MicroEntries.Add(new VesselName());
-            MicroEntries.Add(new Mass());
-            MicroEntries.Add(new TotalDeltaVActual());
-            MicroEntries.Add(new StageThrustActual());
-            MicroEntries.Add(new StageTWRActual());
-			#endregion
-            #region Orbital entries
-            MicroEntries.Add(new Apoapsis());
-            MicroEntries.Add(new TimeToApoapsis());
-            MicroEntries.Add(new Periapsis());
-            MicroEntries.Add(new TimeToPeriapsis());
-            MicroEntries.Add(new Inclination());
-            MicroEntries.Add(new Eccentricity());
-            MicroEntries.Add(new Period());
-            MicroEntries.Add(new SoiTransition());
-            #endregion
-            #region Surface entries            
-            MicroEntries.Add(new Situation());
-            MicroEntries.Add(new Latitude());
-            MicroEntries.Add(new Longitude());
-            MicroEntries.Add(new Biome());
-            MicroEntries.Add(new AltitudeAsl());
-            MicroEntries.Add(new AltitudeAgl());
-            MicroEntries.Add(new HorizontalVelocity());
-            MicroEntries.Add(new VerticalVelocity());
-            #endregion
-            #region Flight entries
-            MicroEntries.Add(new Speed());
-            MicroEntries.Add(new MachNumber());
-            MicroEntries.Add(new AtmosphericDensity());
-            MicroEntries.Add(new TotalLift());
-            MicroEntries.Add(new TotalDrag());
-            MicroEntries.Add(new LiftDivDrag());
-            #endregion
-            #region Flight entries
-            MicroEntries.Add(new TargetApoapsis());
-            MicroEntries.Add(new TargetPeriapsis());
-            MicroEntries.Add(new DistanceToTarget());
-            MicroEntries.Add(new RelativeSpeed());
-            MicroEntries.Add(new RelativeInclination());
-            #endregion
-            #region Maneuver entries
-            MicroEntries.Add(new ProjectedAp());
-            MicroEntries.Add(new ProjectedPe());
-            MicroEntries.Add(new DeltaVRequired());
-            MicroEntries.Add(new TimeToNode());
-            MicroEntries.Add(new BurnTime());
-            #endregion
-            #region Stage entries
-            MicroEntries.Add(new StageInfo());
-            #endregion
-            #region Misc entries
-            MicroEntries.Add(new Separator());
-            #endregion
-            #region OAB entries
-            MicroEntries.Add(new TotalBurnTime_OAB());
-            MicroEntries.Add(new TotalDeltaVASL_OAB());
-            MicroEntries.Add(new TotalDeltaVActual_OAB());
-            MicroEntries.Add(new TotalDeltaVVac_OAB());
-            MicroEntries.Add(new Torque());
-            MicroEntries.Add(new StageInfo_OAB());
-            #endregion
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            Type[] types = assembly.GetTypes();
 
-            #region Body entries
-            MicroEntries.Add(new Body());
-            #endregion
+            // Exclude base classes
+            Type[] excludedTypes = new [] { typeof(MicroEntry), typeof(BodyEntry), typeof(FlightEntry), typeof(ManeuverEntry), typeof(MiscEntry), typeof(OabStageInfoEntry), typeof(OrbitalEntry), typeof(StageInfoEntry), typeof(SurfaceEntry), typeof(TargetEntry), typeof(VesselEntry) };
+            
+            Type[] entryTypes = types.Where(t => typeof(MicroEntry).IsAssignableFrom(t) && !excludedTypes.Contains(t)).ToArray();
 
-            #region New entries
-            MicroEntries.Add(new AltitudeFromScenery());
-            MicroEntries.Add(new AtmosphericTemperature());
-            MicroEntries.Add(new DynamicPressure_kPa());
-            MicroEntries.Add(new ExposedArea());
-            MicroEntries.Add(new ExternalTemperature());
-            MicroEntries.Add(new FuelPercentage());
-            MicroEntries.Add(new Heading());
-            MicroEntries.Add(new Pitch_HorizonRelative());
-            MicroEntries.Add(new Roll_HorizonRelative());
-            MicroEntries.Add(new Yaw_HorizonRelative());
-            MicroEntries.Add(new DragCoefficient());
-            MicroEntries.Add(new OrbitalSpeed());
-            MicroEntries.Add(new SoundSpeed());
-            MicroEntries.Add(new StageFuelPercentage());
-            MicroEntries.Add(new StaticPressure_kPa());
-            MicroEntries.Add(new TimeSinceLaunch());
-            MicroEntries.Add(new TotalCommandCrewCapacity());
-            MicroEntries.Add(new Zenith());
-            MicroEntries.Add(new AltimeterMode());
-            MicroEntries.Add(new GeeForce());
-            MicroEntries.Add(new GravityForPos());
-            MicroEntries.Add(new LaunchTime());
-            MicroEntries.Add(new SpeedMode());
-            MicroEntries.Add(new AutopilotStatus_IsEnabled());
-            MicroEntries.Add(new AutopilotStatus_Mode());
-            MicroEntries.Add(new EccentricAnomaly());
-            MicroEntries.Add(new EndUT());
-            MicroEntries.Add(new MeanAnomaly());
-            MicroEntries.Add(new ObT());
-            MicroEntries.Add(new ArgumentOfPeriapsis());
-            MicroEntries.Add(new LongitudeOfAscendingNode());
-            MicroEntries.Add(new SemiMajorAxis());
-            MicroEntries.Add(new SemiMinorAxis());
-            MicroEntries.Add(new OrbitalEnergy());
-            MicroEntries.Add(new ReferenceBodyConstants_Radius());
-            MicroEntries.Add(new ReferenceBodyConstants_StandardGravitationParameter());
-            MicroEntries.Add(new SemiLatusRectum());
-            MicroEntries.Add(new StartUT());
-            MicroEntries.Add(new TrueAnomaly());
-            MicroEntries.Add(new UniversalTimeAtClosestApproach());
-            MicroEntries.Add(new UniversalTimeAtSoiEncounter());
-            MicroEntries.Add(new OrbitPercent());
-            MicroEntries.Add(new OrbitRadius());
-            MicroEntries.Add(new ManeuverPrograde());
-            MicroEntries.Add(new ManeuverNormal());
-            MicroEntries.Add(new ManeuverRadial());
-            MicroEntries.Add(new DistanceAtCloseApproach1());
-            MicroEntries.Add(new TimeToCloseApproach1());
-            MicroEntries.Add(new RelativeSpeedAtCloseApproach1());
-            MicroEntries.Add(new DistanceAtCloseApproach2());
-            MicroEntries.Add(new TimeToCloseApproach2());
-            MicroEntries.Add(new RelativeSpeedAtCloseApproach2());
-            MicroEntries.Add(new Target_EccentricAnomaly());
-            MicroEntries.Add(new Target_MeanAnomaly());
-            MicroEntries.Add(new Target_ObT());
-            MicroEntries.Add(new Target_ArgumentOfPeriapsis());
-            MicroEntries.Add(new Target_Eccentricity());
-            MicroEntries.Add(new Target_Inclination());
-            MicroEntries.Add(new Target_LongitudeOfAscendingNode());
-            MicroEntries.Add(new Target_SemiMajorAxis());
-            MicroEntries.Add(new Target_ReferenceBodyConstants_Radius());
-            MicroEntries.Add(new Target_ReferenceBodyConstants_StandardGravitationParameter());
-            MicroEntries.Add(new Target_SemiLatusRectum());
-            MicroEntries.Add(new Target_SemiMinorAxis());
-            MicroEntries.Add(new Target_TrueAnomaly());
-            MicroEntries.Add(new Target_Period());
-            MicroEntries.Add(new Target_OrbitRadius());
-            MicroEntries.Add(new Target_AltitudeFromSeaLevel());
-            MicroEntries.Add(new Target_Name());
-            MicroEntries.Add(new Target_Obtvelocity());
-            MicroEntries.Add(new PartsCount());
-            MicroEntries.Add(new TotalBurnTime());
-            MicroEntries.Add(new TotalDeltaVASL());
-            MicroEntries.Add(new TotalDeltaVVac());
-            MicroEntries.Add(new StageISPAsl());
-            MicroEntries.Add(new StageISPActual());
-            MicroEntries.Add(new StageISPVac());
-            MicroEntries.Add(new StageTWRASL());
-            MicroEntries.Add(new StageTWRVac());
-            MicroEntries.Add(new StageThrustASL());
-            MicroEntries.Add(new StageThrustVac());
-            MicroEntries.Add(new Maneuver_EccentricAnomaly());
-            MicroEntries.Add(new Maneuver_EndUT());
-            MicroEntries.Add(new Maneuver_MeanAnomaly());
-            MicroEntries.Add(new Maneuver_ObT());
-            MicroEntries.Add(new Maneuver_ArgumentOfPeriapsis());
-            MicroEntries.Add(new Maneuver_Eccentricity());
-            MicroEntries.Add(new Maneuver_Inclination());
-            MicroEntries.Add(new Maneuver_LongitudeOfAscendingNode());
-            MicroEntries.Add(new Maneuver_SemiMajorAxis());
-            MicroEntries.Add(new Maneuver_SemiMinorAxis());
-            MicroEntries.Add(new Maneuver_OrbitalEnergy());
-            MicroEntries.Add(new Maneuver_SemiLatusRectum());
-            MicroEntries.Add(new Maneuver_TimeToAp());
-            MicroEntries.Add(new Maneuver_TimeToPe());
-            MicroEntries.Add(new Maneuver_TrueAnomaly());
-            MicroEntries.Add(new Maneuver_UniversalTimeAtClosestApproach());
-            MicroEntries.Add(new Maneuver_UniversalTimeAtSoiEncounter());
-            MicroEntries.Add(new Maneuver_OrbitPercent());
-            MicroEntries.Add(new Maneuver_Period());
-            MicroEntries.Add(new AngleOfAttack());
-            MicroEntries.Add(new SideSlip());
-            MicroEntries.Add(new PhaseAngle());
-            MicroEntries.Add(new TransferAngle());
-            MicroEntries.Add(new Throttle());
-
-
-
-            #endregion
+            foreach (Type entryType in entryTypes)
+            {
+                MicroEntry entry = Activator.CreateInstance(entryType) as MicroEntry;
+                if (entry != null)
+                    MicroEntries.Add(entry);
+            }
         }
 
         /// <summary>
@@ -1268,7 +1114,7 @@ namespace MicroMod
 					MainWindow = MainWindow.Vessel,
                     //EditorRect = null,
                     FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
-					Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Vessel).ToList()
+					Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Vessel && entry.IsDefault).ToList()
 				});
 
                 MicroWindows.Add(new BaseWindow
@@ -1286,7 +1132,7 @@ namespace MicroMod
                     MainWindow = MainWindow.Orbital,
                     //EditorRect = null,
                     FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
-                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Orbital).ToList()
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Orbital && entry.IsDefault).ToList()
                 });
 
                 MicroWindows.Add(new BaseWindow
@@ -1304,7 +1150,7 @@ namespace MicroMod
                     MainWindow = MainWindow.Surface,
                     //EditorRect = null,
                     FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
-                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Surface).ToList()
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Surface && entry.IsDefault).ToList()
                 });
 
                 MicroWindows.Add(new BaseWindow
@@ -1322,7 +1168,7 @@ namespace MicroMod
                     MainWindow = MainWindow.Flight,
                     //EditorRect = null,
                     FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
-                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Flight).ToList()
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Flight && entry.IsDefault).ToList()
                 });
 
                 MicroWindows.Add(new BaseWindow
@@ -1340,7 +1186,7 @@ namespace MicroMod
                     MainWindow = MainWindow.Target,
                     //EditorRect = null,
                     FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
-                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Target).ToList()
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Target && entry.IsDefault).ToList()
                 });
 
                 MicroWindows.Add(new ManeuverWindow
@@ -1359,7 +1205,7 @@ namespace MicroMod
                     MainWindow = MainWindow.Maneuver,
                     //EditorRect = null,
                     FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
-                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Maneuver).ToList()
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Maneuver && entry.IsDefault).ToList()
                 });
 
                 MicroWindows.Add(new BaseWindow
@@ -1377,7 +1223,7 @@ namespace MicroMod
                     MainWindow = MainWindow.Stage,
                     //EditorRect = null,
                     FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
-                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Stage).ToList()
+                    Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.Stage && entry.IsDefault).ToList()
                 });
 
                 InitializeStageInfoOABWindow();
@@ -1404,7 +1250,7 @@ namespace MicroMod
                 IsLocked = false, // Not used
                 MainWindow = MainWindow.StageInfoOAB,
                 EditorRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, 0, 0),
-                Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.OAB).ToList()
+                Entries = Enumerable.Where(MicroEntries, entry => entry.Category == MicroEntryCategory.OAB && entry.IsDefault).ToList()
             });
         }
 

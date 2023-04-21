@@ -11,6 +11,7 @@ namespace MicroMod
             Name = "Body";
             Description = "Shows the body that vessel is currently at.";
             Category = MicroEntryCategory.Body;
+            IsDefault = false;
             Unit = null;
             Formatting = null;
         }
@@ -30,6 +31,7 @@ namespace MicroMod
             Name = "Body Radius";
             Description = "Body's radius.";
             Category = MicroEntryCategory.Body;
+            IsDefault = false;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -49,6 +51,7 @@ namespace MicroMod
             Name = "Std. Grav. Param.";
             Description = "Product of the gravitational constant G and the mass M of the body.";
             Category = MicroEntryCategory.Body;
+            IsDefault = false;
             Unit = "μ";
             Formatting = "{0:e4}";
         }
