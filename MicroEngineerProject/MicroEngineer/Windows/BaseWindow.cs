@@ -12,6 +12,8 @@ namespace MicroMod
         [JsonProperty]
         internal string Name;
         [JsonProperty]
+        internal int LayoutVersion;
+        [JsonProperty]
         internal string Abbreviation;
         [JsonProperty]
         internal string Description; // not used
@@ -142,10 +144,7 @@ namespace MicroMod
         Stage,
         Body,
         Misc,
-        OAB,
-        New,
-        Accepted,
-        Accepted2
+        OAB
     }
 
     /// <summary>
