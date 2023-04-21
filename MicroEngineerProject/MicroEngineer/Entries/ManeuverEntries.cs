@@ -9,52 +9,6 @@ namespace MicroMod
         internal int SelectedNodeIndex = 0;
     }
 
-    public class ProjectedAp : ManeuverEntry
-    {
-        public ProjectedAp()
-        {
-            Name = "Projected Ap.";
-            Description = "Projected Apoapsis vessel will have after completing the maneuver.";
-            Category = MicroEntryCategory.Maneuver;
-            IsDefault = true;
-            Unit = "m";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
-                .Where(p => p.ActivePatch == true)
-                .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .ApoapsisArl;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class ProjectedPe : ManeuverEntry
-    {
-        public ProjectedPe()
-        {
-            Name = "Projected Pe.";
-            Description = "Projected Periapsis vessel will have after completing the maneuver.";
-            Category = MicroEntryCategory.Maneuver;
-            IsDefault = true;
-            Unit = "m";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
-                .Where(p => p.ActivePatch == true)
-                .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .PeriapsisArl;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
     public class DeltaVRequired : ManeuverEntry
     {
         public DeltaVRequired()
@@ -203,16 +157,16 @@ namespace MicroMod
         }
     }
 
-    public class Maneuver_EccentricAnomaly : ManeuverEntry
+    public class ProjectedAp : ManeuverEntry
     {
-        public Maneuver_EccentricAnomaly()
+        public ProjectedAp()
         {
-            Name = "Eccentric Anomaly";
-            Description = "Eccentric Anomaly vessel will have after completing the maneuver.";
+            Name = "Projected Ap.";
+            Description = "Projected Apoapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
-            IsDefault = false;
-            Unit = "°";
-            Formatting = "{0:N2}";
+            IsDefault = true;
+            Unit = "m";
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -220,31 +174,22 @@ namespace MicroMod
             EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .EccentricAnomaly;
+                .ApoapsisArl;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class Maneuver_EndUT : ManeuverEntry
+    public class ProjectedPe : ManeuverEntry
     {
-        public Maneuver_EndUT()
+        public ProjectedPe()
         {
-            Name = "UT";
-            Description = "Universal Time when vessel reaches the maneuver node.";
+            Name = "Projected Pe.";
+            Description = "Projected Periapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
-            IsDefault = false;
-            Unit = "s";
-            Formatting = "{0:N3}";
+            IsDefault = true;
+            Unit = "m";
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -252,7 +197,30 @@ namespace MicroMod
             EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .EndUT;
+                .PeriapsisArl;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_TimeToAp : ManeuverEntry
+    {
+        public Maneuver_TimeToAp()
+        {
+            Name = "Time to Ap.";
+            Description = "Shows the Time to Apoapsis vessel will have after reaching the maneuver node.";
+            Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .TimeToAp;
         }
 
         public override string ValueDisplay
@@ -263,6 +231,148 @@ namespace MicroMod
                     return "-";
 
                 return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Maneuver_TimeToPe : ManeuverEntry
+    {
+        public Maneuver_TimeToPe()
+        {
+            Name = "Time to Pe.";
+            Description = "Shows the Time to Periapsis vessel will have after reaching the maneuver node.";
+            Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .TimeToPe;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Maneuver_Inclination : ManeuverEntry
+    {
+        public Maneuver_Inclination()
+        {
+            Name = "Inclination";
+            Description = "The inclination of the vessel's orbit after the burn.";
+            Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
+            Unit = "°";
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .OrbitalElements.Inclination;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_Eccentricity : ManeuverEntry
+    {
+        public Maneuver_Eccentricity()
+        {
+            Name = "Eccentricity";
+            Description = "The eccentricity of the vessel's orbit after the burn.";
+            Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
+            Unit = null;
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .OrbitalElements.Eccentricity;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Maneuver_Period : ManeuverEntry
+    {
+        public Maneuver_Period()
+        {
+            Name = "Period";
+            Description = "The period of the vessel's orbit after the burn.";
+            Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .period;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Maneuver_TrueAnomaly : ManeuverEntry
+    {
+        public Maneuver_TrueAnomaly()
+        {
+            Name = "True Anomaly";
+            Description = "True Anomaly vessel will have after completing the maneuver.";
+            Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
+            Unit = "°";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .TrueAnomaly;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
             }
         }
     }
@@ -299,16 +409,16 @@ namespace MicroMod
         }
     }
 
-    public class Maneuver_ObT : ManeuverEntry
+    public class Maneuver_EccentricAnomaly : ManeuverEntry
     {
-        public Maneuver_ObT()
+        public Maneuver_EccentricAnomaly()
         {
-            Name = "Orbit Time";
-            Description = "Shows orbit time in seconds from the Periapsis when vessel reaches the maneuver node.";
+            Name = "Eccentric Anomaly";
+            Description = "Eccentric Anomaly vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
-            Unit = "s";
-            Formatting = "{0:N0}";
+            Unit = "°";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
@@ -316,7 +426,7 @@ namespace MicroMod
             EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .ObT;
+                .EccentricAnomaly;
         }
 
         public override string ValueDisplay
@@ -326,9 +436,32 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
             }
         }
+    }
+
+    public class Maneuver_LongitudeOfAscendingNode : ManeuverEntry
+    {
+        public Maneuver_LongitudeOfAscendingNode()
+        {
+            Name = "LAN Ω";
+            Description = "Longitude of Ascending Node vessel will have after completing the maneuver.";
+            Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
+            Unit = "°";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .OrbitalElements.LongitudeOfAscendingNode;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Maneuver_ArgumentOfPeriapsis : ManeuverEntry
@@ -354,62 +487,16 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class Maneuver_Eccentricity : ManeuverEntry
+    public class Maneuver_SemiLatusRectum : ManeuverEntry
     {
-        public Maneuver_Eccentricity()
+        public Maneuver_SemiLatusRectum()
         {
-            Name = "Eccentricity";
-            Description = "The eccentricity of the vessel's orbit after the burn.";
-            Category = MicroEntryCategory.Maneuver;
-            IsDefault = true;
-            Unit = null;
-            Formatting = "{0:N3}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
-                .Where(p => p.ActivePatch == true)
-                .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .OrbitalElements.Eccentricity;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class Maneuver_Inclination : ManeuverEntry
-    {
-        public Maneuver_Inclination()
-        {
-            Name = "Inclination";
-            Description = "The inclination of the vessel's orbit after the burn.";
-            Category = MicroEntryCategory.Maneuver;
-            IsDefault = true;
-            Unit = "°";
-            Formatting = "{0:N3}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
-                .Where(p => p.ActivePatch == true)
-                .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .OrbitalElements.Inclination;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class Maneuver_LongitudeOfAscendingNode : ManeuverEntry
-    {
-        public Maneuver_LongitudeOfAscendingNode()
-        {
-            Name = "LAN Ω";
-            Description = "Longitude of Ascending Node vessel will have after completing the maneuver.";
+            Name = "Semi Latus Rectum";
+            Description = "Semi Latus Rectum vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
-            Unit = "°";
-            Formatting = "{0:N2}";
+            Unit = "m";
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
@@ -417,7 +504,7 @@ namespace MicroMod
             EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .OrbitalElements.LongitudeOfAscendingNode;
+                .SemiLatusRectum;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -492,15 +579,15 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class Maneuver_SemiLatusRectum : ManeuverEntry
+    public class Maneuver_ObT : ManeuverEntry
     {
-        public Maneuver_SemiLatusRectum()
+        public Maneuver_ObT()
         {
-            Name = "Semi Latus Rectum";
-            Description = "Semi Latus Rectum vessel will have after completing the maneuver.";
+            Name = "Orbit Time";
+            Description = "Shows orbit time in seconds from the Periapsis when vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
-            Unit = "m";
+            Unit = "s";
             Formatting = "{0:N0}";
         }
 
@@ -509,86 +596,54 @@ namespace MicroMod
             EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .SemiLatusRectum;
+                .ObT;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Maneuver_OrbitPercent : ManeuverEntry
+    {
+        public Maneuver_OrbitPercent()
+        {
+            Name = "Orbit percent";
+            Description = "Orbit percent vessel will have passed after completing the maneuver.";
+            Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
+            Unit = "%";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+                .Where(p => p.ActivePatch == true)
+                .ElementAtOrDefault(base.SelectedNodeIndex)?
+                .orbitPercent * 100;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class Maneuver_TimeToAp : ManeuverEntry
+    public class Maneuver_EndUT : ManeuverEntry
     {
-        public Maneuver_TimeToAp()
+        public Maneuver_EndUT()
         {
-            Name = "Time to Ap.";
-            Description = "Shows the Time to Apoapsis vessel will have after reaching the maneuver node.";
-            Category = MicroEntryCategory.Maneuver;
-            IsDefault = true;
-            Unit = "s";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
-                .Where(p => p.ActivePatch == true)
-                .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .TimeToAp;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
-    }
-
-    public class Maneuver_TimeToPe : ManeuverEntry
-    {
-        public Maneuver_TimeToPe()
-        {
-            Name = "Time to Pe.";
-            Description = "Shows the Time to Periapsis vessel will have after reaching the maneuver node.";
-            Category = MicroEntryCategory.Maneuver;
-            IsDefault = true;
-            Unit = "s";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
-                .Where(p => p.ActivePatch == true)
-                .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .TimeToPe;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
-    }
-
-    public class Maneuver_TrueAnomaly : ManeuverEntry
-    {
-        public Maneuver_TrueAnomaly()
-        {
-            Name = "True Anomaly";
-            Description = "True Anomaly vessel will have after completing the maneuver.";
+            Name = "UT";
+            Description = "Universal Time when vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
-            Unit = "°";
-            Formatting = "{0:N1}";
+            Unit = "s";
+            Formatting = "{0:N3}";
         }
 
         public override void RefreshData()
@@ -596,7 +651,7 @@ namespace MicroMod
             EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .TrueAnomaly;
+                .EndUT;
         }
 
         public override string ValueDisplay
@@ -606,7 +661,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -661,61 +716,6 @@ namespace MicroMod
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .UniversalTimeAtSoiEncounter;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
-    }
-
-    public class Maneuver_OrbitPercent : ManeuverEntry
-    {
-        public Maneuver_OrbitPercent()
-        {
-            Name = "Orbit percent";
-            Description = "Orbit percent vessel will have passed after completing the maneuver.";
-            Category = MicroEntryCategory.Maneuver;
-            IsDefault = false;
-            Unit = "%";
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
-                .Where(p => p.ActivePatch == true)
-                .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .orbitPercent * 100;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class Maneuver_Period : ManeuverEntry
-    {
-        public Maneuver_Period()
-        {
-            Name = "Period";
-            Description = "The period of the vessel's orbit after the burn.";
-            Category = MicroEntryCategory.Maneuver;
-            IsDefault = true;
-            Unit = "s";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
-                .Where(p => p.ActivePatch == true)
-                .ElementAtOrDefault(base.SelectedNodeIndex)?
-                .period;
         }
 
         public override string ValueDisplay
