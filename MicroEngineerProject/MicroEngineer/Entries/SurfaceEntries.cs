@@ -5,6 +5,106 @@ namespace MicroMod
 {
     public class SurfaceEntry : MicroEntry
     { }
+
+    public class AltitudeAgl : SurfaceEntry
+    {
+        public AltitudeAgl()
+        {
+            Name = "Altitude (Ground)";
+            Description = "Shows the vessel's altitude above ground Level.";
+            Category = MicroEntryCategory.Surface;
+            IsDefault = true;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.AltitudeFromTerrain;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class AltitudeAsl : SurfaceEntry
+    {
+        public AltitudeAsl()
+        {
+            Name = "Altitude (Sea Lvl)";
+            Description = "Shows the vessel's altitude above sea level.";
+            Category = MicroEntryCategory.Surface;
+            IsDefault = true;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.AltitudeFromSeaLevel;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class AltitudeFromScenery : SurfaceEntry
+    {
+        public AltitudeFromScenery()
+        {
+            Name = "Altitude (Scenery)";
+            Description = "Shows the vessel's altitude above scenery.";
+            Category = MicroEntryCategory.Surface;
+            IsDefault = false;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.AltitudeFromScenery;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class VerticalVelocity : SurfaceEntry
+    {
+        public VerticalVelocity()
+        {
+            Name = "Vertical Vel.";
+            Description = "Shows the vessel's vertical velocity (up/down).";
+            Category = MicroEntryCategory.Surface;
+            IsDefault = true;
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.VerticalSrfSpeed;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class HorizontalVelocity : SurfaceEntry
+    {
+        public HorizontalVelocity()
+        {
+            Name = "Horizontal Vel.";
+            Description = "Shows the vessel's horizontal velocity across a celestial body's surface.";
+            Category = MicroEntryCategory.Surface;
+            IsDefault = true;
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.HorizontalSrfSpeed;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
     
     public class Situation : SurfaceEntry
     {
@@ -31,6 +131,35 @@ namespace MicroMod
                     return "-";
 
                 return Utility.SituationToString((VesselSituations)EntryValue);
+            }
+        }
+    }
+
+    public class Biome : SurfaceEntry
+    {
+        public Biome()
+        {
+            Name = "Biome";
+            Description = "Shows the biome currently below the vessel.";
+            Category = MicroEntryCategory.Surface;
+            IsDefault = true;
+            Unit = null;
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.SimulationObject.Telemetry.SurfaceBiome;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return Utility.BiomeToString((BiomeSurfaceData)EntryValue);
             }
         }
     }
@@ -93,130 +222,41 @@ namespace MicroMod
         }
     }
 
-    public class Biome : SurfaceEntry
+    public class DynamicPressure_kPa : SurfaceEntry
     {
-        public Biome()
+        public DynamicPressure_kPa()
         {
-            Name = "Biome";
-            Description = "Shows the biome currently below the vessel.";
-            Category = MicroEntryCategory.Surface;
-            IsDefault = true;
-            Unit = null;
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.SimulationObject.Telemetry.SurfaceBiome;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return Utility.BiomeToString((BiomeSurfaceData)EntryValue);
-            }
-        }
-    }
-
-    public class AltitudeAsl : SurfaceEntry
-    {
-        public AltitudeAsl()
-        {
-            Name = "Altitude (Sea Lvl)";
-            Description = "Shows the vessel's altitude above sea level.";
-            Category = MicroEntryCategory.Surface;
-            IsDefault = true;
-            Unit = "m";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.AltitudeFromSeaLevel;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class AltitudeAgl : SurfaceEntry
-    {
-        public AltitudeAgl()
-        {
-            Name = "Altitude (Ground)";
-            Description = "Shows the vessel's altitude above ground Level.";
-            Category = MicroEntryCategory.Surface;
-            IsDefault = true;
-            Unit = "m";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.AltitudeFromTerrain;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class AltitudeFromScenery : SurfaceEntry
-    {
-        public AltitudeFromScenery()
-        {
-            Name = "Altitude (Scenery)";
-            Description = "Shows the vessel's altitude above scenery.";
+            Name = "Dynamic Pressure";
+            Description = "Dynamic Pressure (q) is a defined property of a moving flow of gas. It describes how much pressure the airflow is having on the vessel.";
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
-            Unit = "m";
-            Formatting = "{0:N0}";
+            Unit = "kPa";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.AltitudeFromScenery;
+            EntryValue = Utility.ActiveVessel.DynamicPressure_kPa;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class HorizontalVelocity : SurfaceEntry
+    public class StaticPressure_kPa : SurfaceEntry
     {
-        public HorizontalVelocity()
+        public StaticPressure_kPa()
         {
-            Name = "Horizontal Vel.";
-            Description = "Shows the vessel's horizontal velocity across a celestial body's surface.";
+            Name = "Static Pressure";
+            Description = "Static pressure is a term used to define the amount of pressure exerted by a fluid that is not moving - ambient pressure.";
             Category = MicroEntryCategory.Surface;
-            IsDefault = true;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
+            IsDefault = false;
+            Unit = "kPa";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.HorizontalSrfSpeed;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class VerticalVelocity : SurfaceEntry
-    {
-        public VerticalVelocity()
-        {
-            Name = "Vertical Vel.";
-            Description = "Shows the vessel's vertical velocity (up/down).";
-            Category = MicroEntryCategory.Surface;
-            IsDefault = true;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.VerticalSrfSpeed;
+            EntryValue = Utility.ActiveVessel.StaticPressure_kPa;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -260,45 +300,5 @@ namespace MicroMod
         }
 
         public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class DynamicPressure_kPa : SurfaceEntry
-    {
-        public DynamicPressure_kPa()
-        {
-            Name = "Dynamic Pressure";
-            Description = "Dynamic Pressure (q) is a defined property of a moving flow of gas. It describes how much pressure the airflow is having on the vessel.";
-            Category = MicroEntryCategory.Surface;
-            IsDefault = false;
-            Unit = "kPa";
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.DynamicPressure_kPa;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class StaticPressure_kPa : SurfaceEntry
-    {
-        public StaticPressure_kPa()
-        {
-            Name = "Static Pressure";
-            Description = "Static pressure is a term used to define the amount of pressure exerted by a fluid that is not moving - ambient pressure.";
-            Category = MicroEntryCategory.Surface;
-            IsDefault = false;
-            Unit = "kPa";
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.StaticPressure_kPa;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
+    }    
 }

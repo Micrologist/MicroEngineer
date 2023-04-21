@@ -44,114 +44,24 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class AtmosphericDensity : FlightEntry
+    public class GeeForce : FlightEntry
     {
-        public AtmosphericDensity()
+        public GeeForce()
         {
-            Name = "Atm. Density";
-            Description = "Shows the atmospheric density.";
+            Name = "G-Force";
+            Description = "Measurement of the type of force per unit mass – typically acceleration – that causes a perception of weight, with a g-force of 1 g equal to the conventional value of gravitational acceleration on Earth/Kerbin.";
             Category = MicroEntryCategory.Flight;
             IsDefault = true;
-            Unit = "g/L";
+            Unit = "g";
             Formatting = "{0:N3}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.SimulationObject.Telemetry.AtmosphericDensity;
+            EntryValue = Utility.ActiveVessel.geeForce;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class TotalLift : FlightEntry
-    {
-        public TotalLift()
-        {
-            Name = "Total Lift";
-            Description = "Shows the total lift force produced by the vessel.";
-            Category = MicroEntryCategory.Flight;
-            IsDefault = true;
-            Unit = "N";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = AeroForces.TotalLift;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                double toReturn = (double)EntryValue * 1000;
-                return String.IsNullOrEmpty(base.Formatting) ? toReturn.ToString() : String.Format(base.Formatting, toReturn);
-            }
-        }
-    }
-
-    public class TotalDrag : FlightEntry
-    {
-        public TotalDrag()
-        {
-            Name = "Total Drag";
-            Description = "Shows the total drag force exerted on the vessel.";
-            Category = MicroEntryCategory.Flight;
-            IsDefault = true;
-            Unit = "N";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = AeroForces.TotalDrag;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                double toReturn = (double)EntryValue * 1000;
-                return String.IsNullOrEmpty(base.Formatting) ? toReturn.ToString() : String.Format(base.Formatting, toReturn);
-            }
-        }
-    }
-
-    public class LiftDivDrag : FlightEntry
-    {
-        public LiftDivDrag()
-        {
-            Name = "Lift / Drag";
-            Description = "Shows the ratio of total lift and drag forces.";
-            Category = MicroEntryCategory.Flight;
-            IsDefault = true;
-            Unit = null;
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = AeroForces.TotalLift / AeroForces.TotalDrag;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                double toReturn = (double)EntryValue * 1000;
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
-            }
-        }
     }
 
     public class AngleOfAttack : FlightEntry
@@ -189,46 +99,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = AeroForces.SideSlip;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class DragCoefficient : FlightEntry
-    {
-        public DragCoefficient()
-        {
-            Name = "Drag Coefficient";
-            Description = "Dimensionless quantity that is used to quantify the drag or resistance of an object in a fluid environment, such as air or water.";
-            Category = MicroEntryCategory.Flight;
-            IsDefault = false;
-            Unit = null;
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.DragCoefficient;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class ExposedArea : FlightEntry
-    {
-        public ExposedArea()
-        {
-            Name = "Exposed Area";
-            Description = "The surface area that interacts with the working fluid or gas.";
-            Category = MicroEntryCategory.Flight;
-            IsDefault = false;
-            Unit = null; // TODO
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.ExposedArea;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -334,6 +204,156 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
+    public class TotalLift : FlightEntry
+    {
+        public TotalLift()
+        {
+            Name = "Total Lift";
+            Description = "Shows the total lift force produced by the vessel.";
+            Category = MicroEntryCategory.Flight;
+            IsDefault = true;
+            Unit = "N";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = AeroForces.TotalLift;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                double toReturn = (double)EntryValue * 1000;
+                return String.IsNullOrEmpty(base.Formatting) ? toReturn.ToString() : String.Format(base.Formatting, toReturn);
+            }
+        }
+    }
+
+    public class TotalDrag : FlightEntry
+    {
+        public TotalDrag()
+        {
+            Name = "Total Drag";
+            Description = "Shows the total drag force exerted on the vessel.";
+            Category = MicroEntryCategory.Flight;
+            IsDefault = true;
+            Unit = "N";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = AeroForces.TotalDrag;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                double toReturn = (double)EntryValue * 1000;
+                return String.IsNullOrEmpty(base.Formatting) ? toReturn.ToString() : String.Format(base.Formatting, toReturn);
+            }
+        }
+    }
+
+    public class LiftDivDrag : FlightEntry
+    {
+        public LiftDivDrag()
+        {
+            Name = "Lift / Drag";
+            Description = "Shows the ratio of total lift and drag forces.";
+            Category = MicroEntryCategory.Flight;
+            IsDefault = true;
+            Unit = null;
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = AeroForces.TotalLift / AeroForces.TotalDrag;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                double toReturn = (double)EntryValue * 1000;
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
+            }
+        }
+    }    
+
+    public class DragCoefficient : FlightEntry
+    {
+        public DragCoefficient()
+        {
+            Name = "Drag Coefficient";
+            Description = "Dimensionless quantity that is used to quantify the drag or resistance of an object in a fluid environment, such as air or water.";
+            Category = MicroEntryCategory.Flight;
+            IsDefault = false;
+            Unit = null;
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.DragCoefficient;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class ExposedArea : FlightEntry
+    {
+        public ExposedArea()
+        {
+            Name = "Exposed Area";
+            Description = "The surface area that interacts with the working fluid or gas.";
+            Category = MicroEntryCategory.Flight;
+            IsDefault = false;
+            Unit = null; // TODO
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.ExposedArea;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class AtmosphericDensity : FlightEntry
+    {
+        public AtmosphericDensity()
+        {
+            Name = "Atm. Density";
+            Description = "Shows the atmospheric density.";
+            Category = MicroEntryCategory.Flight;
+            IsDefault = true;
+            Unit = "g/L";
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.SimulationObject.Telemetry.AtmosphericDensity;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
     public class SoundSpeed : FlightEntry
     {
         public SoundSpeed()
@@ -353,26 +373,4 @@ namespace MicroMod
 
         public override string ValueDisplay => base.ValueDisplay;
     }
-
-    public class GeeForce : FlightEntry
-    {
-        public GeeForce()
-        {
-            Name = "G-Force";
-            Description = "Measurement of the type of force per unit mass – typically acceleration – that causes a perception of weight, with a g-force of 1 g equal to the conventional value of gravitational acceleration on Earth/Kerbin.";
-            Category = MicroEntryCategory.Flight;
-            IsDefault = true;
-            Unit = "g";
-            Formatting = "{0:N3}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.geeForce;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-
 }

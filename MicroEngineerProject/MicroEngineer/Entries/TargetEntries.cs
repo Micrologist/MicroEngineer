@@ -5,6 +5,26 @@ namespace MicroMod
     public class TargetEntry : MicroEntry
     { }
 
+    public class Target_Name : TargetEntry
+    {
+        public Target_Name()
+        {
+            Name = "Name";
+            Description = "Target's name.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = true;
+            Unit = null;
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TargetObject?.DisplayName;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
     public class TargetApoapsis : TargetEntry
     {
         public TargetApoapsis()
@@ -162,41 +182,61 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class Target_Name : TargetEntry
+    public class Target_Inclination : TargetEntry
     {
-        public Target_Name()
+        public Target_Inclination()
         {
-            Name = "Name";
-            Description = "Target's name.";
+            Name = "Inclination";
+            Description = "Shows the target's orbital inclination relative to the equator.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = null;
-            Formatting = null;
+            Unit = "°";
+            Formatting = "{0:N3}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.TargetObject?.DisplayName;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.inclination;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class Target_EccentricAnomaly : TargetEntry
+    public class Target_Eccentricity : TargetEntry
     {
-        public Target_EccentricAnomaly()
+        public Target_Eccentricity()
         {
-            Name = "Eccentric Anomaly";
-            Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the target is.";
+            Name = "Eccentricity";
+            Description = "Shows the target's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "°";
-            Formatting = "{0:N2}";
+            Unit = null;
+            Formatting = "{0:N3}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.EccentricAnomaly;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.eccentricity;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Target_Period : TargetEntry
+    {
+        public Target_Period()
+        {
+            Name = "Period";
+            Description = "Shows the amount of time it will take the target to complete a full orbit.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = true;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.period;
         }
 
         public override string ValueDisplay
@@ -206,7 +246,56 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class Target_Obtvelocity : TargetEntry
+    {
+        public Target_Obtvelocity()
+        {
+            Name = "Orbital Speed";
+            Description = "Shows the target's orbital speed.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = true;
+            Unit = "m/s";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TargetObject?.ObtVelocity.magnitude;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Target_TrueAnomaly : TargetEntry
+    {
+        public Target_TrueAnomaly()
+        {
+            Name = "True Anomaly";
+            Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = false;
+            Unit = "°";
+            Formatting = "{0:N1}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.TrueAnomaly;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.RadiansToDegrees((double)EntryValue));
             }
         }
     }
@@ -240,6 +329,135 @@ namespace MicroMod
         }
     }
 
+    public class Target_EccentricAnomaly : TargetEntry
+    {
+        public Target_EccentricAnomaly()
+        {
+            Name = "Eccentric Anomaly";
+            Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the target is.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = false;
+            Unit = "°";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.EccentricAnomaly;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
+            }
+        }
+    }
+
+    public class Target_LongitudeOfAscendingNode : TargetEntry
+    {
+        public Target_LongitudeOfAscendingNode()
+        {
+            Name = "LAN Ω";
+            Description = "Shows the target's Longitude Of Ascending Node.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = false;
+            Unit = "°";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.longitudeOfAscendingNode;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Target_ArgumentOfPeriapsis : TargetEntry
+    {
+        public Target_ArgumentOfPeriapsis()
+        {
+            Name = "Argument of Pe.";
+            Description = "Angle from the line of the ascending node on the equatorial plane to the point of periapsis passage.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = false;
+            Unit = "°";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.argumentOfPeriapsis;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Target_SemiLatusRectum : TargetEntry
+    {
+        public Target_SemiLatusRectum()
+        {
+            Name = "Semi Latus Rectum";
+            Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = false;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.SemiLatusRectum;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Target_SemiMajorAxis : TargetEntry
+    {
+        public Target_SemiMajorAxis()
+        {
+            Name = "Semi Major Axis";
+            Description = "Shows the distance from the center of an orbit to the farthest edge.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = false;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.semiMajorAxis;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Target_SemiMinorAxis : TargetEntry
+    {
+        public Target_SemiMinorAxis()
+        {
+            Name = "Semi Minor Axis";
+            Description = "Shows the distance from the center of an orbit to the nearest edge.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = false;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.SemiMinorAxis;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
     public class Target_ObT : TargetEntry
     {
         public Target_ObT()
@@ -267,106 +485,6 @@ namespace MicroMod
                 return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
-    }
-
-    public class Target_ArgumentOfPeriapsis : TargetEntry
-    {
-        public Target_ArgumentOfPeriapsis()
-        {
-            Name = "Argument of Pe.";
-            Description = "Angle from the line of the ascending node on the equatorial plane to the point of periapsis passage.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = false;
-            Unit = "°";
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.argumentOfPeriapsis;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class Target_Eccentricity : TargetEntry
-    {
-        public Target_Eccentricity()
-        {
-            Name = "Eccentricity";
-            Description = "Shows the target's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = false;
-            Unit = null;
-            Formatting = "{0:N3}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.eccentricity;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class Target_Inclination : TargetEntry
-    {
-        public Target_Inclination()
-        {
-            Name = "Inclination";
-            Description = "Shows the target's orbital inclination relative to the equator.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = true;
-            Unit = "°";
-            Formatting = "{0:N3}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.inclination;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class Target_LongitudeOfAscendingNode : TargetEntry
-    {
-        public Target_LongitudeOfAscendingNode()
-        {
-            Name = "LAN Ω";
-            Description = "Shows the target's Longitude Of Ascending Node.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = false;
-            Unit = "°";
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.longitudeOfAscendingNode;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class Target_SemiMajorAxis : TargetEntry
-    {
-        public Target_SemiMajorAxis()
-        {
-            Name = "Semi Major Axis";
-            Description = "Shows the distance from the center of an orbit to the farthest edge.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = false;
-            Unit = "m";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.semiMajorAxis;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Target_ReferenceBodyConstants_Radius : TargetEntry
@@ -409,104 +527,6 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class Target_SemiLatusRectum : TargetEntry
-    {
-        public Target_SemiLatusRectum()
-        {
-            Name = "Semi Latus Rectum";
-            Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = false;
-            Unit = "m";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.SemiLatusRectum;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class Target_SemiMinorAxis : TargetEntry
-    {
-        public Target_SemiMinorAxis()
-        {
-            Name = "Semi Minor Axis";
-            Description = "Shows the distance from the center of an orbit to the nearest edge.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = false;
-            Unit = "m";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.SemiMinorAxis;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class Target_TrueAnomaly : TargetEntry
-    {
-        public Target_TrueAnomaly()
-        {
-            Name = "True Anomaly";
-            Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = false;
-            Unit = "°";
-            Formatting = "{0:N1}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.TrueAnomaly;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.RadiansToDegrees((double)EntryValue));
-            }
-        }
-    }
-
-    public class Target_Period : TargetEntry
-    {
-        public Target_Period()
-        {
-            Name = "Period";
-            Description = "Shows the amount of time it will take the target to complete a full orbit.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = true;
-            Unit = "s";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.period;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
-    }
-
     public class Target_OrbitRadius : TargetEntry
     {
         public Target_OrbitRadius()
@@ -527,21 +547,41 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class Target_Obtvelocity : TargetEntry
+    public class PhaseAngle : TargetEntry
     {
-        public Target_Obtvelocity()
+        public PhaseAngle()
         {
-            Name = "Orbital Speed";
-            Description = "Shows the target's orbital speed.";
+            Name = "Phase Angle";
+            Description = "Angle between your vessel, the reference body and the target. How much \"ahead\" or \"behind\" in phase you are with the target.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "m/s";
-            Formatting = "{0:N1}";
+            Unit = "°";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.TargetObject?.ObtVelocity.magnitude;
+            EntryValue = Utility.TargetExists() ? TransferInfo.GetPhaseAngle() : null;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class TransferAngle : TargetEntry
+    {
+        public TransferAngle()
+        {
+            Name = "Transfer Angle";
+            Description = "Phase angle needed for an optimal Hohmann transfer orbit. Use a circular orbit for a more accurate value.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = true;
+            Unit = "°";
+            Formatting = "{0:N2}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.TargetExists() ? TransferInfo.GetTransferAngle() : null;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -698,46 +738,6 @@ namespace MicroMod
             bool? isValid = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
 
             EntryValue = isValid != null && isValid == true ? EntryValue = Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeSpeed : null;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }    
-
-    public class PhaseAngle : TargetEntry
-    {
-        public PhaseAngle()
-        {
-            Name = "Phase Angle";
-            Description = "Angle between your vessel, the reference body and the target. How much \"ahead\" or \"behind\" in phase you are with the target.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = true;
-            Unit = "°";
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.TargetExists() ? TransferInfo.GetPhaseAngle() : null;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class TransferAngle : TargetEntry
-    {
-        public TransferAngle()
-        {
-            Name = "Transfer Angle";
-            Description = "Phase angle needed for an optimal Hohmann transfer orbit. Use a circular orbit for a more accurate value.";
-            Category = MicroEntryCategory.Target;
-            IsDefault = true;
-            Unit = "°";
-            Formatting = "{0:N2}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.TargetExists() ? TransferInfo.GetTransferAngle() : null;
         }
 
         public override string ValueDisplay => base.ValueDisplay;

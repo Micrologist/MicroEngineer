@@ -1177,7 +1177,7 @@ namespace MicroMod
                     Abbreviation = "TGT",
                     Description = "Flight entries",
                     IsEditorActive = false,
-                    IsFlightActive = false,
+                    IsFlightActive = true,
                     IsMapActive = false,
                     IsEditorPoppedOut = false,
                     IsFlightPoppedOut = false,

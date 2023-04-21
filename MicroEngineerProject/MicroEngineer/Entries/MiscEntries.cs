@@ -19,6 +19,142 @@ namespace MicroMod
         }
     }
 
+    public class GravityForPos : MiscEntry
+    {
+        public GravityForPos()
+        {
+            Name = "Local Gravity";
+            Description = "Local gravity vessel is experiencing.";
+            Category = MicroEntryCategory.Misc;
+            IsDefault = false;
+            Unit = "ms2";
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.gravityForPos.magnitude;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class EndUT : MiscEntry
+    {
+        public EndUT()
+        {
+            Name = "UT";
+            Description = "Universal Time.";
+            Category = MicroEntryCategory.Misc;
+            IsDefault = false;
+            Unit = "s";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbit.EndUT;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class StartUT : MiscEntry
+    {
+        public StartUT()
+        {
+            Name = "Start UT";
+            Description = "Time passed since vessel was launched.";
+            Category = MicroEntryCategory.Misc;
+            IsDefault = false;
+            Unit = "s";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbit.StartUT;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class LaunchTime : MiscEntry
+    {
+        public LaunchTime()
+        {
+            Name = "Launch Time";
+            Description = "Universal Time when vessel was launched.";
+            Category = MicroEntryCategory.Misc;
+            IsDefault = false;
+            Unit = "s";
+            Formatting = "{0:N3}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.launchTime;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
+    public class TimeSinceLaunch : MiscEntry
+    {
+        public TimeSinceLaunch()
+        {
+            Name = "Time since launch";
+            Description = "Time since the vessel launched.";
+            Category = MicroEntryCategory.Misc;
+            IsDefault = false;
+            Unit = "s";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.TimeSinceLaunch;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
     public class AutopilotStatus_IsEnabled : MiscEntry
     {
         public AutopilotStatus_IsEnabled()
@@ -59,84 +195,6 @@ namespace MicroMod
         public override string ValueDisplay => EntryValue != null ? (AutopilotMode)EntryValue == AutopilotMode.StabilityAssist ? "Stability" : EntryValue.ToString() : null;
     }
 
-    public class TimeSinceLaunch : MiscEntry
-    {
-        public TimeSinceLaunch()
-        {
-            Name = "Time since launch";
-            Description = "Time since the vessel launched.";
-            Category = MicroEntryCategory.Misc;
-            IsDefault = false;
-            Unit = "s";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.TimeSinceLaunch;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
-    }
-
-    public class GravityForPos : MiscEntry
-    {
-        public GravityForPos()
-        {
-            Name = "Local Gravity";
-            Description = "Local gravity vessel is experiencing.";
-            Category = MicroEntryCategory.Misc;
-            IsDefault = false;
-            Unit = "ms2";
-            Formatting = "{0:N3}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.gravityForPos.magnitude;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class LaunchTime : MiscEntry
-    {
-        public LaunchTime()
-        {
-            Name = "Launch Time";
-            Description = "Universal Time when vessel was launched.";
-            Category = MicroEntryCategory.Misc;
-            IsDefault = false;
-            Unit = "s";
-            Formatting = "{0:N3}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.launchTime;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
-    }
-
     public class AltimeterMode : MiscEntry
     {
         public AltimeterMode()
@@ -175,64 +233,6 @@ namespace MicroMod
         }
 
         public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class StartUT : MiscEntry
-    {
-        public StartUT()
-        {
-            Name = "Start UT";
-            Description = "Time passed since vessel was launched.";
-            Category = MicroEntryCategory.Misc;
-            IsDefault = false;
-            Unit = "s";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbit.StartUT;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
-    }
-
-    public class EndUT : MiscEntry
-    {
-        public EndUT()
-        {
-            Name = "UT";
-            Description = "Universal Time.";
-            Category = MicroEntryCategory.Misc;
-            IsDefault = false;
-            Unit = "s";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbit.EndUT;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class UniversalTimeAtClosestApproach : MiscEntry

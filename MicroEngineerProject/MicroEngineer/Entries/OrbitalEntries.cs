@@ -26,6 +26,26 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
+    public class Periapsis : OrbitalEntry
+    {
+        public Periapsis()
+        {
+            Name = "Periapsis";
+            Description = "Vessel's periapsis height relative to the sea level. Periapsis is the lowest point of an orbit.";
+            Category = MicroEntryCategory.Orbital;
+            IsDefault = true;
+            Unit = "m";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbit.PeriapsisArl;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
     public class TimeToApoapsis : OrbitalEntry
     {
         public TimeToApoapsis()
@@ -53,26 +73,6 @@ namespace MicroMod
                 return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
-    }
-
-    public class Periapsis : OrbitalEntry
-    {
-        public Periapsis()
-        {
-            Name = "Periapsis";
-            Description = "Vessel's periapsis height relative to the sea level. Periapsis is the lowest point of an orbit.";
-            Category = MicroEntryCategory.Orbital;
-            IsDefault = true;
-            Unit = "m";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbit.PeriapsisArl;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class TimeToPeriapsis : OrbitalEntry
@@ -173,35 +173,6 @@ namespace MicroMod
         }
     }
 
-    public class SoiTransition : OrbitalEntry
-    {
-        public SoiTransition()
-        {
-            Name = "SOI Trans.";
-            Description = "Shows the amount of time it will take to transition to another Sphere Of Influence.";
-            Category = MicroEntryCategory.Orbital;
-            IsDefault = false;
-            Unit = "s";
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return (double)EntryValue >= 0 ? Utility.SecondsToTimeString((double)EntryValue) : "-";
-            }
-        }
-    }
-
     public class OrbitalSpeed : OrbitalEntry
     {
         public OrbitalSpeed()
@@ -222,21 +193,21 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class EccentricAnomaly : OrbitalEntry
+    public class TrueAnomaly : OrbitalEntry
     {
-        public EccentricAnomaly()
+        public TrueAnomaly()
         {
-            Name = "Eccentric Anomaly";
-            Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the vessel is.";
+            Name = "True Anomaly";
+            Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "°";
-            Formatting = "{0:N2}";
+            Formatting = "{0:N1}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.Orbit.EccentricAnomaly;
+            EntryValue = Utility.ActiveVessel.Orbit.TrueAnomaly;
         }
 
         public override string ValueDisplay
@@ -246,7 +217,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.RadiansToDegrees((double)EntryValue));
             }
         }
     }
@@ -280,21 +251,21 @@ namespace MicroMod
         }
     }
 
-    public class TrueAnomaly : OrbitalEntry
+    public class EccentricAnomaly : OrbitalEntry
     {
-        public TrueAnomaly()
+        public EccentricAnomaly()
         {
-            Name = "True Anomaly";
-            Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
+            Name = "Eccentric Anomaly";
+            Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the vessel is.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "°";
-            Formatting = "{0:N1}";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.Orbit.TrueAnomaly;
+            EntryValue = Utility.ActiveVessel.Orbit.EccentricAnomaly;
         }
 
         public override string ValueDisplay
@@ -304,38 +275,29 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.RadiansToDegrees((double)EntryValue));
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, (double)EntryValue * PatchedConicsOrbit.Rad2Deg);
             }
         }
     }
 
-    public class ObT : OrbitalEntry
+    public class LongitudeOfAscendingNode : OrbitalEntry
     {
-        public ObT()
+        public LongitudeOfAscendingNode()
         {
-            Name = "Orbit Time";
-            Description = "Shows orbit time in seconds from the Periapsis.";
+            Name = "LAN Ω";
+            Description = "Longitude of Ascending Node is an angle from a specified reference direction, called the origin of longitude, to the direction of the ascending node, as measured in a specified reference plane.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "s";
-            Formatting = "{0:N0}";
+            Unit = "°";
+            Formatting = "{0:N2}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.Orbit.ObT;
+            EntryValue = Utility.ActiveVessel.Orbit.OrbitalElements.LongitudeOfAscendingNode;
         }
 
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class ArgumentOfPeriapsis : OrbitalEntry
@@ -358,21 +320,21 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class LongitudeOfAscendingNode : OrbitalEntry
+    public class SemiLatusRectum : OrbitalEntry
     {
-        public LongitudeOfAscendingNode()
+        public SemiLatusRectum()
         {
-            Name = "LAN Ω";
-            Description = "Longitude of Ascending Node is an angle from a specified reference direction, called the origin of longitude, to the direction of the ascending node, as measured in a specified reference plane.";
+            Name = "Semi Latus Rectum";
+            Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "°";
-            Formatting = "{0:N2}";
+            Unit = "m";
+            Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.Orbit.OrbitalElements.LongitudeOfAscendingNode;
+            EntryValue = Utility.ActiveVessel.Orbit.SemiLatusRectum;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -438,24 +400,33 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class SemiLatusRectum : OrbitalEntry
+    public class ObT : OrbitalEntry
     {
-        public SemiLatusRectum()
+        public ObT()
         {
-            Name = "Semi Latus Rectum";
-            Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
+            Name = "Orbit Time";
+            Description = "Shows orbit time in seconds from the Periapsis.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "m";
+            Unit = "s";
             Formatting = "{0:N0}";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.Orbit.SemiLatusRectum;
+            EntryValue = Utility.ActiveVessel.Orbit.ObT;
         }
 
-        public override string ValueDisplay => base.ValueDisplay;
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
     }
 
     public class OrbitPercent : OrbitalEntry
@@ -497,4 +468,33 @@ namespace MicroMod
 
         public override string ValueDisplay => base.ValueDisplay;
     }
+
+    public class SoiTransition : OrbitalEntry
+    {
+        public SoiTransition()
+        {
+            Name = "SOI Trans.";
+            Description = "Shows the amount of time it will take to transition to another Sphere Of Influence.";
+            Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
+            Unit = "s";
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return (double)EntryValue >= 0 ? Utility.SecondsToTimeString((double)EntryValue) : "-";
+            }
+        }
+    }  
 }

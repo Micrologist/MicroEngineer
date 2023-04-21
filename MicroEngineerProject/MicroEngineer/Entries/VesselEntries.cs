@@ -105,6 +105,35 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
+    public class TotalBurnTime : VesselEntry
+    {
+        public TotalBurnTime()
+        {
+            Name = "Total Burn Time";
+            Description = "Burn Time vessel can sustain with 100% thrust.";
+            Category = MicroEntryCategory.Vessel;
+            IsDefault = false;
+            Unit = "s";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.TotalBurnTime;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
+            }
+        }
+    }
+
     public class StageThrustActual : VesselEntry
     {
         public StageThrustActual()
@@ -225,55 +254,6 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
-    public class PartsCount : VesselEntry
-    {
-        public PartsCount()
-        {
-            Name = "Parts";
-            Description = "Number of parts vessel is constructed of.";
-            Category = MicroEntryCategory.Vessel;
-            IsDefault = true;
-            Unit = null;
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.VesselDeltaV?.PartInfo?.Count;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
-
-    public class TotalBurnTime : VesselEntry
-    {
-        public TotalBurnTime()
-        {
-            Name = "Total Burn Time";
-            Description = "Burn Time vessel can sustain with 100% thrust.";
-            Category = MicroEntryCategory.Vessel;
-            IsDefault = false;
-            Unit = "s";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.VesselDeltaV?.TotalBurnTime;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
-    }
-
     public class StageISPActual : VesselEntry
     {
         public StageISPActual()
@@ -332,26 +312,6 @@ namespace MicroMod
         }
 
         public override string ValueDisplay => base.ValueDisplay;
-    }    
-
-    public class Throttle : VesselEntry
-    {
-        public Throttle()
-        {
-            Name = "Throttle";
-            Description = "Vessel's current throttle in %.";
-            Category = MicroEntryCategory.Vessel;
-            IsDefault = false;
-            Unit = "%";
-            Formatting = "{0:N0}";
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.flightCtrlState.mainThrottle * 100;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class FuelPercentage : VesselEntry
@@ -394,6 +354,46 @@ namespace MicroMod
         public override string ValueDisplay => base.ValueDisplay;
     }
 
+    public class PartsCount : VesselEntry
+    {
+        public PartsCount()
+        {
+            Name = "Parts";
+            Description = "Number of parts vessel is constructed of.";
+            Category = MicroEntryCategory.Vessel;
+            IsDefault = true;
+            Unit = null;
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.PartInfo?.Count;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+
+    public class Throttle : VesselEntry
+    {
+        public Throttle()
+        {
+            Name = "Throttle";
+            Description = "Vessel's current throttle in %.";
+            Category = MicroEntryCategory.Vessel;
+            IsDefault = false;
+            Unit = "%";
+            Formatting = "{0:N0}";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.flightCtrlState.mainThrottle * 100;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+    
     public class TotalCommandCrewCapacity : VesselEntry
     {
         public TotalCommandCrewCapacity()
