@@ -1,7 +1,7 @@
 ﻿
 namespace MicroMod
 {
-    public class BodyEntry : MicroEntry
+    public class BodyEntry : BaseEntry
     { }
 
     public class Body : BodyEntry

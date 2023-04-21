@@ -59,7 +59,7 @@ namespace MicroMod
         [JsonProperty]
         internal Rect FlightRect;
         [JsonProperty]
-        internal List<MicroEntry> Entries;
+        internal List<BaseEntry> Entries;
 
         /// <summary>
         /// Moves entry upwards in the window. Does nothing if it's already first.
@@ -105,14 +105,14 @@ namespace MicroMod
         /// Adds an entry to the window to the last position
         /// </summary>
         /// <param name="entry"></param>
-        internal void AddEntry(MicroEntry entry) => Entries.Add(entry);
+        internal void AddEntry(BaseEntry entry) => Entries.Add(entry);
 
         /// <summary>
         /// Grabs new data for each entry in the window
         /// </summary>
         internal void RefreshEntryData()
         {
-            foreach (MicroEntry entry in Entries)
+            foreach (BaseEntry entry in Entries)
                 entry.RefreshData();
         }
 
@@ -125,7 +125,7 @@ namespace MicroMod
             if (Entries == null || Entries.Count == 0)
                 return;
 
-            foreach (MicroEntry entry in Entries)
+            foreach (BaseEntry entry in Entries)
                 entry.RefreshData();
         }
     }

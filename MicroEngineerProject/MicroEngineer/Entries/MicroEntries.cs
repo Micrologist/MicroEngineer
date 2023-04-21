@@ -1,5 +1,4 @@
-﻿using KSP.Sim.impl;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace MicroMod
 {
@@ -7,7 +6,7 @@ namespace MicroMod
     /// Base class for all Entries (values that can be attached to windows)
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class MicroEntry
+    public class BaseEntry
     {
         [JsonProperty]
         public string Name;

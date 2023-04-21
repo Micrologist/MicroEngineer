@@ -2,7 +2,7 @@
 
 namespace MicroMod
 {
-    public class TargetEntry : MicroEntry
+    public class TargetEntry : BaseEntry
     { }
 
     public class Target_Name : TargetEntry

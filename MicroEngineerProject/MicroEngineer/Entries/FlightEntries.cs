@@ -1,7 +1,7 @@
 ﻿
 namespace MicroMod
 {
-    public class FlightEntry : MicroEntry
+    public class FlightEntry : BaseEntry
     { }
 
     public class Speed : FlightEntry

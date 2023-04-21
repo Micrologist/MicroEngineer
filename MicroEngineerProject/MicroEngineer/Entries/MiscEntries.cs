@@ -2,7 +2,7 @@
 
 namespace MicroMod
 {
-    public class MiscEntry : MicroEntry
+    public class MiscEntry : BaseEntry
     { }
 
     public class Separator : MiscEntry
