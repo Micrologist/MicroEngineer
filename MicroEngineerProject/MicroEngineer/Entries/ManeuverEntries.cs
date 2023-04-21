@@ -16,6 +16,7 @@ namespace MicroMod
             Name = "Projected Ap.";
             Description = "Projected Apoapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -38,6 +39,7 @@ namespace MicroMod
             Name = "Projected Pe.";
             Description = "Projected Periapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -60,6 +62,7 @@ namespace MicroMod
             Name = "∆v required";
             Description = "Delta velocity needed to complete the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -84,6 +87,7 @@ namespace MicroMod
             Name = "∆v Prograde";
             Description = "Prograde/Retrograde component of the total change in velocity.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -104,6 +108,7 @@ namespace MicroMod
             Name = "∆v Normal";
             Description = "Normal component of the total change in velocity.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -124,6 +129,7 @@ namespace MicroMod
             Name = "∆v Radial";
             Description = "Radial component of the total change in velocity.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -144,6 +150,7 @@ namespace MicroMod
             Name = "Time to Node";
             Description = "Time until vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
             Unit = "s";
             Formatting = null;
         }
@@ -173,6 +180,7 @@ namespace MicroMod
             Name = "Burn Time";
             Description = "Length of time needed to complete the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
             Unit = "s";
             Formatting = null;
         }
@@ -195,9 +203,6 @@ namespace MicroMod
         }
     }
 
-
-    // NEW ENTRIES
-
     public class Maneuver_EccentricAnomaly : ManeuverEntry
     {
         public Maneuver_EccentricAnomaly()
@@ -205,6 +210,7 @@ namespace MicroMod
             Name = "Eccentric Anomaly";
             Description = "Eccentric Anomaly vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -236,6 +242,7 @@ namespace MicroMod
             Name = "UT";
             Description = "Universal Time when vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "s";
             Formatting = "{0:N3}";
         }
@@ -267,6 +274,7 @@ namespace MicroMod
             Name = "Mean Anomaly";
             Description = "Mean Anomaly vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -298,6 +306,7 @@ namespace MicroMod
             Name = "Orbit Time";
             Description = "Shows orbit time in seconds from the Periapsis when vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "s";
             Formatting = "{0:N0}";
         }
@@ -329,6 +338,7 @@ namespace MicroMod
             Name = "Argument of Pe.";
             Description = "Argument of Periapsis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -351,6 +361,7 @@ namespace MicroMod
             Name = "Eccentricity";
             Description = "The eccentricity of the vessel's orbit after the burn.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
             Unit = null;
             Formatting = "{0:N3}";
         }
@@ -373,6 +384,7 @@ namespace MicroMod
             Name = "Inclination";
             Description = "The inclination of the vessel's orbit after the burn.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
             Unit = "°";
             Formatting = "{0:N3}";
         }
@@ -395,6 +407,7 @@ namespace MicroMod
             Name = "LAN Ω";
             Description = "Longitude of Ascending Node vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -417,6 +430,7 @@ namespace MicroMod
             Name = "Semi Major Axis";
             Description = "Semi Major Axis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -439,6 +453,7 @@ namespace MicroMod
             Name = "Semi Minor Axis";
             Description = "Semi Minor Axis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -461,6 +476,7 @@ namespace MicroMod
             Name = "Orbital Energy";
             Description = "Orbital Energy vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "kJ";
             Formatting = "{0:N0}";
         }
@@ -483,6 +499,7 @@ namespace MicroMod
             Name = "Semi Latus Rectum";
             Description = "Semi Latus Rectum vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -505,6 +522,7 @@ namespace MicroMod
             Name = "Time to Ap.";
             Description = "Shows the Time to Apoapsis vessel will have after reaching the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
             Unit = "s";
             Formatting = null;
         }
@@ -536,6 +554,7 @@ namespace MicroMod
             Name = "Time to Pe.";
             Description = "Shows the Time to Periapsis vessel will have after reaching the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
             Unit = "s";
             Formatting = null;
         }
@@ -567,6 +586,7 @@ namespace MicroMod
             Name = "True Anomaly";
             Description = "True Anomaly vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N1}";
         }
@@ -598,6 +618,7 @@ namespace MicroMod
             Name = "UT Close.App.";
             Description = "Universal Time at the point of closest approach.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = null;
             Formatting = null;
         }
@@ -629,6 +650,7 @@ namespace MicroMod
             Name = "UT SOI Enc.";
             Description = "Universal Time at the point of transition to another Sphere Of Influence.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = null;
             Formatting = null;
         }
@@ -660,6 +682,7 @@ namespace MicroMod
             Name = "Orbit percent";
             Description = "Orbit percent vessel will have passed after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = false;
             Unit = "%";
             Formatting = "{0:N2}";
         }
@@ -682,6 +705,7 @@ namespace MicroMod
             Name = "Period";
             Description = "The period of the vessel's orbit after the burn.";
             Category = MicroEntryCategory.Maneuver;
+            IsDefault = true;
             Unit = "s";
             Formatting = null;
         }
@@ -705,6 +729,4 @@ namespace MicroMod
             }
         }
     }
-
-
 }

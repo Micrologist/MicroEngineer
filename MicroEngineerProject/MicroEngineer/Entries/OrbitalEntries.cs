@@ -13,6 +13,7 @@ namespace MicroMod
             Name = "Apoapsis";
             Description = "Vessel's apoapsis height relative to the sea level. Apoapsis is the highest point of an orbit.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = true;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -32,6 +33,7 @@ namespace MicroMod
             Name = "Time to Ap.";
             Description = "Shows the time until the vessel reaches apoapsis, the highest point of the orbit.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = true;
             Unit = "s";
             Formatting = null;
         }
@@ -60,6 +62,7 @@ namespace MicroMod
             Name = "Periapsis";
             Description = "Vessel's periapsis height relative to the sea level. Periapsis is the lowest point of an orbit.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = true;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -79,6 +82,7 @@ namespace MicroMod
             Name = "Time to Pe.";
             Description = "Shows the time until the vessel reaches periapsis, the lowest point of the orbit.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = true;
             Unit = "s";
             Formatting = null;
         }
@@ -107,6 +111,7 @@ namespace MicroMod
             Name = "Inclination";
             Description = "Shows the vessel's orbital inclination relative to the equator.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = true;
             Unit = "°";
             Formatting = "{0:N3}";
         }
@@ -126,6 +131,7 @@ namespace MicroMod
             Name = "Eccentricity";
             Description = "Shows the vessel's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = true;
             Unit = null;
             Formatting = "{0:N3}";
         }
@@ -145,6 +151,7 @@ namespace MicroMod
             Name = "Period";
             Description = "Shows the amount of time it will take to complete a full orbit.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = true;
             Unit = "s";
             Formatting = null;
         }
@@ -173,6 +180,7 @@ namespace MicroMod
             Name = "SOI Trans.";
             Description = "Shows the amount of time it will take to transition to another Sphere Of Influence.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "s";
             Formatting = null;
         }
@@ -201,6 +209,7 @@ namespace MicroMod
             Name = "Orbital Speed";
             Description = "Shows the vessel's orbital speed";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = true;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -220,6 +229,7 @@ namespace MicroMod
             Name = "Eccentric Anomaly";
             Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the vessel is.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -248,6 +258,7 @@ namespace MicroMod
             Name = "Mean Anomaly";
             Description = "Parameter used to describe the position of an object in its orbit around the celestial body.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -276,6 +287,7 @@ namespace MicroMod
             Name = "True Anomaly";
             Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N1}";
         }
@@ -304,6 +316,7 @@ namespace MicroMod
             Name = "Orbit Time";
             Description = "Shows orbit time in seconds from the Periapsis.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "s";
             Formatting = "{0:N0}";
         }
@@ -332,6 +345,7 @@ namespace MicroMod
             Name = "Argument of Pe.";
             Description = "Angle from the line of the ascending node on the equatorial plane to the point of periapsis passage.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -351,6 +365,7 @@ namespace MicroMod
             Name = "LAN Ω";
             Description = "Longitude of Ascending Node is an angle from a specified reference direction, called the origin of longitude, to the direction of the ascending node, as measured in a specified reference plane.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "°";
             Formatting = "{0:N2}";
         }
@@ -370,6 +385,7 @@ namespace MicroMod
             Name = "Semi Major Axis";
             Description = "Shows the distance from the center of an orbit to the farthest edge.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -389,6 +405,7 @@ namespace MicroMod
             Name = "Semi Minor Axis";
             Description = "Shows the distance from the center of an orbit to the nearest edge.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -408,6 +425,7 @@ namespace MicroMod
             Name = "Orbital Energy";
             Description = "Constant sum of two orbiting bodies' mutual potential energy and their total kinetic energy divided by the reduced mass.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "kJ";
             Formatting = "{0:N0}";
         }
@@ -427,6 +445,7 @@ namespace MicroMod
             Name = "Semi Latus Rectum";
             Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -446,6 +465,7 @@ namespace MicroMod
             Name = "Orbit Percent";
             Description = "Percent of the orbit completed.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "%";
             Formatting = "{0:N2}";
         }
@@ -465,6 +485,7 @@ namespace MicroMod
             Name = "Orbit Radius";
             Description = "Length from the center of the ellipse to the object.";
             Category = MicroEntryCategory.Orbital;
+            IsDefault = false;
             Unit = "m";
             Formatting = "{0:N0}";
         }

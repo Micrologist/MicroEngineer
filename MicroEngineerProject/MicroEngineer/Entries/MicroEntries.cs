@@ -15,6 +15,9 @@ namespace MicroMod
         public string Description;
         [JsonProperty]
         public MicroEntryCategory Category;
+        public bool IsDefault;
+        [JsonProperty]
+        public bool HideWhenNoData;
         [JsonProperty]
         public string Unit;
         [JsonProperty]
@@ -37,25 +40,5 @@ namespace MicroMod
         }
 
         public virtual void RefreshData() { }
-    }
-
-
-    public class StageInfo : MicroEntry
-    {
-        public StageInfo()
-        {
-            Name = "Stage Info";
-            Description = "Stage Info object, not implemented yet."; // TODO Stage Info display and description
-            Category = MicroEntryCategory.Stage;
-            Unit = null;
-            Formatting = null;
-        }
-
-        public override void RefreshData()
-        {
-            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo;
-        }
-
-        public override string ValueDisplay => base.ValueDisplay;
-    }
+    }    
 }

@@ -13,6 +13,7 @@ namespace MicroMod
             Name = "Situation";
             Description = "Shows the vessel's current situation: Landed, Flying, Orbiting, etc.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = true;
             Unit = null;
             Formatting = null;
         }
@@ -41,6 +42,7 @@ namespace MicroMod
             Name = "Latitude";
             Description = "Shows the vessel's latitude position around the celestial body. Latitude is the angle from the equator towards the poles.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = true;
             Formatting = null;
         }
 
@@ -69,6 +71,7 @@ namespace MicroMod
             Name = "Longitude";
             Description = "Shows the vessel's longitude position around the celestial body. Longitude is the angle from the body's prime meridian to the current meridian.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = true;
             Formatting = null;
         }
 
@@ -97,6 +100,7 @@ namespace MicroMod
             Name = "Biome";
             Description = "Shows the biome currently below the vessel.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = true;
             Unit = null;
             Formatting = null;
         }
@@ -125,6 +129,7 @@ namespace MicroMod
             Name = "Altitude (Sea Lvl)";
             Description = "Shows the vessel's altitude above sea level.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = true;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -144,6 +149,7 @@ namespace MicroMod
             Name = "Altitude (Ground)";
             Description = "Shows the vessel's altitude above ground Level.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = true;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -163,6 +169,7 @@ namespace MicroMod
             Name = "Altitude (Scenery)";
             Description = "Shows the vessel's altitude above scenery.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = false;
             Unit = "m";
             Formatting = "{0:N0}";
         }
@@ -182,6 +189,7 @@ namespace MicroMod
             Name = "Horizontal Vel.";
             Description = "Shows the vessel's horizontal velocity across a celestial body's surface.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = true;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -201,6 +209,7 @@ namespace MicroMod
             Name = "Vertical Vel.";
             Description = "Shows the vessel's vertical velocity (up/down).";
             Category = MicroEntryCategory.Surface;
+            IsDefault = true;
             Unit = "m/s";
             Formatting = "{0:N1}";
         }
@@ -220,6 +229,7 @@ namespace MicroMod
             Name = "Static ambient temp.";
             Description = "Temperature measured outside the vessel. The sensor which detects SAT must be carefully sited to ensure that airflow over it does not affect the indicated temperature.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = false;
             Unit = "K";
             Formatting = "{0:N0}";
         }
@@ -239,6 +249,7 @@ namespace MicroMod
             Name = "Total air temp.";
             Description = "Measured by means of a sensor positioned in the airflow, kinetic heating will result, raising the temperature measured above the Static ambient temperature.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = false;
             Unit = "K";
             Formatting = "{0:N0}";
         }
@@ -258,6 +269,7 @@ namespace MicroMod
             Name = "Dynamic Pressure";
             Description = "Dynamic Pressure (q) is a defined property of a moving flow of gas. It describes how much pressure the airflow is having on the vessel.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = false;
             Unit = "kPa";
             Formatting = "{0:N2}";
         }
@@ -277,6 +289,7 @@ namespace MicroMod
             Name = "Static Pressure";
             Description = "Static pressure is a term used to define the amount of pressure exerted by a fluid that is not moving - ambient pressure.";
             Category = MicroEntryCategory.Surface;
+            IsDefault = false;
             Unit = "kPa";
             Formatting = "{0:N2}";
         }
