@@ -22,7 +22,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .ApoapsisArl;
@@ -44,7 +44,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .PeriapsisArl;
@@ -66,10 +66,10 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            List<ManeuverNodeData> nodes = Utility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
 
             EntryValue = (nodes == null || nodes.Count == 0) ? null :
-                         (nodes.Count == 1) ? (MicroUtility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - MicroUtility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude :
+                         (nodes.Count == 1) ? (Utility.ActiveVessel.Orbiter.ManeuverPlanSolver.GetVelocityAfterFirstManeuver(out double ut).vector - Utility.ActiveVessel.Orbit.GetOrbitalVelocityAtUTZup(ut)).magnitude :
                          (nodes.Count >= base.SelectedNodeIndex + 1) ? nodes[base.SelectedNodeIndex].BurnRequiredDV :
                          null;
         }
@@ -90,7 +90,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            List<ManeuverNodeData> nodes = Utility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
             EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.BurnVector.z;
         }
 
@@ -110,7 +110,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            List<ManeuverNodeData> nodes = Utility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
             EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.BurnVector.y;
         }
 
@@ -130,7 +130,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            List<ManeuverNodeData> nodes = Utility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
             EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.BurnVector.x;
         }
 
@@ -150,7 +150,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            List<ManeuverNodeData> nodes = Utility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
             EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
         }
 
@@ -161,7 +161,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -179,7 +179,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            List<ManeuverNodeData> nodes = MicroUtility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            List<ManeuverNodeData> nodes = Utility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
             EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.BurnDuration;
         }
 
@@ -190,7 +190,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -211,7 +211,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .EccentricAnomaly;
@@ -242,7 +242,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .EndUT;
@@ -255,7 +255,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -273,7 +273,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .MeanAnomaly;
@@ -304,7 +304,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .ObT;
@@ -317,7 +317,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -335,7 +335,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .OrbitalElements.ArgumentOfPeriapsis;
@@ -357,7 +357,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .OrbitalElements.Eccentricity;
@@ -379,7 +379,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .OrbitalElements.Inclination;
@@ -401,7 +401,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .OrbitalElements.LongitudeOfAscendingNode;
@@ -423,7 +423,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .OrbitalElements.SemiMajorAxis;
@@ -445,7 +445,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .SemiMinorAxis;
@@ -467,7 +467,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .OrbitalEnergy;
@@ -489,7 +489,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .SemiLatusRectum;
@@ -511,7 +511,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .TimeToAp;
@@ -524,7 +524,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -542,7 +542,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .TimeToPe;
@@ -555,7 +555,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -573,7 +573,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .TrueAnomaly;
@@ -604,7 +604,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .UniversalTimeAtClosestApproach;
@@ -617,7 +617,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -635,7 +635,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .UniversalTimeAtSoiEncounter;
@@ -648,7 +648,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -666,7 +666,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .orbitPercent * 100;
@@ -688,7 +688,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
+            EntryValue = Utility.ActiveVessel.Orbiter?.ManeuverPlanSolver?.PatchedConicsList?
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .period;
@@ -701,7 +701,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }

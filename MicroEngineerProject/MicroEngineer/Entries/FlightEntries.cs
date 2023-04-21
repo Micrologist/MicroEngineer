@@ -17,7 +17,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.SurfaceVelocity.magnitude;
+            EntryValue = Utility.ActiveVessel.SurfaceVelocity.magnitude;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -36,7 +36,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.SimulationObject.Telemetry.MachNumber;
+            EntryValue = Utility.ActiveVessel.SimulationObject.Telemetry.MachNumber;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -55,7 +55,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.SimulationObject.Telemetry.AtmosphericDensity;
+            EntryValue = Utility.ActiveVessel.SimulationObject.Telemetry.AtmosphericDensity;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -199,7 +199,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.DragCoefficient;
+            EntryValue = Utility.ActiveVessel.DragCoefficient;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -218,7 +218,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.ExposedArea;
+            EntryValue = Utility.ActiveVessel.ExposedArea;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -237,7 +237,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Heading;
+            EntryValue = Utility.ActiveVessel.Heading;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -256,7 +256,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Pitch_HorizonRelative;
+            EntryValue = Utility.ActiveVessel.Pitch_HorizonRelative;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -275,7 +275,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Roll_HorizonRelative;
+            EntryValue = Utility.ActiveVessel.Roll_HorizonRelative;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -294,7 +294,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Yaw_HorizonRelative;
+            EntryValue = Utility.ActiveVessel.Yaw_HorizonRelative;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -313,7 +313,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Zenith;
+            EntryValue = Utility.ActiveVessel.Zenith;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -332,7 +332,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.SoundSpeed;
+            EntryValue = Utility.ActiveVessel.SoundSpeed;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -351,7 +351,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.geeForce;
+            EntryValue = Utility.ActiveVessel.geeForce;
         }
 
         public override string ValueDisplay => base.ValueDisplay;

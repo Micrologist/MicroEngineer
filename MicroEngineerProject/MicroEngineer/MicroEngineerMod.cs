@@ -59,7 +59,7 @@ namespace MicroMod
             InitializeCelestialBodies();
 			
 			// Load window positions and states from disk, if file exists
-			MicroUtility.LoadLayout(MicroWindows);
+			Utility.LoadLayout(MicroWindows);
 
             BackwardCompatibilityInitializations();            
 
@@ -94,7 +94,7 @@ namespace MicroMod
                 InitializeStageInfoOABWindow();
 
             // Preserve backward compatibility with SpaceWarp 1.0.1
-            if (MicroUtility.IsModOlderThan("SpaceWarp", 1, 1, 0))
+            if (Utility.IsModOlderThan("SpaceWarp", 1, 1, 0))
             {
                 Logger.LogInfo("Space Warp older version detected. Loading old Styles.");
                 Styles.SetStylesForOldSpaceWarpSkin();
@@ -107,7 +107,7 @@ namespace MicroMod
             if (stageOabWindow.Entries.Find(e => e.Name == "Torque") == null)
             {
                 stageOabWindow.Entries.Add(this.MicroEntries.Find(e => e.Name == "Torque"));
-                MicroUtility.SaveLayout(this.MicroWindows);
+                Utility.SaveLayout(this.MicroWindows);
             }
         }
 
@@ -116,22 +116,22 @@ namespace MicroMod
         /// </summary>
         private void SubscribeToMessages()
         {
-            MicroUtility.RefreshGameManager();
+            Utility.RefreshGameManager();
 
             // While in OAB we use the VesselDeltaVCalculationMessage event to refresh data as it's triggered a lot less frequently than Update()
-            MicroUtility.MessageCenter.Subscribe<VesselDeltaVCalculationMessage>(new Action<MessageCenterMessage>(this.RefreshStagingDataOAB));
+            Utility.MessageCenter.Subscribe<VesselDeltaVCalculationMessage>(new Action<MessageCenterMessage>(this.RefreshStagingDataOAB));
             
             // We are loading layout state when entering Flight or OAB game state
-            MicroUtility.MessageCenter.Subscribe<GameStateEnteredMessage>(new Action<MessageCenterMessage>(this.GameStateEntered));
+            Utility.MessageCenter.Subscribe<GameStateEnteredMessage>(new Action<MessageCenterMessage>(this.GameStateEntered));
             
             // We are saving layout state when exiting from Flight or OAB game state
-            MicroUtility.MessageCenter.Subscribe<GameStateLeftMessage>(new Action<MessageCenterMessage>(this.GameStateLeft));
+            Utility.MessageCenter.Subscribe<GameStateLeftMessage>(new Action<MessageCenterMessage>(this.GameStateLeft));
 
             // Sets the selected node index to the newly created node
-            MicroUtility.MessageCenter.Subscribe<ManeuverCreatedMessage>(new Action<MessageCenterMessage>(this.OnManeuverCreatedMessage));
+            Utility.MessageCenter.Subscribe<ManeuverCreatedMessage>(new Action<MessageCenterMessage>(this.OnManeuverCreatedMessage));
 
             // Resets node index
-            MicroUtility.MessageCenter.Subscribe<ManeuverRemovedMessage>(new Action<MessageCenterMessage>(this.OnManeuverRemovedMessage));
+            Utility.MessageCenter.Subscribe<ManeuverRemovedMessage>(new Action<MessageCenterMessage>(this.OnManeuverRemovedMessage));
         }
         
         private void OnManeuverCreatedMessage(MessageCenterMessage message)
@@ -150,15 +150,15 @@ namespace MicroMod
         {
             Logger.LogInfo("Message triggered: GameStateEnteredMessage");
 
-            MicroUtility.RefreshGameManager();
-            if (MicroUtility.GameState.GameState == GameState.FlightView || MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder || MicroUtility.GameState.GameState == GameState.Map3DView)
+            Utility.RefreshGameManager();
+            if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
-                MicroUtility.LoadLayout(MicroWindows);
+                Utility.LoadLayout(MicroWindows);
 
-                if(MicroUtility.GameState.GameState == GameState.FlightView || MicroUtility.GameState.GameState == GameState.Map3DView)
+                if(Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                     _showGuiFlight = MicroWindows.Find(w => w.MainWindow == MainWindow.MainGui).IsFlightActive;
 
-                if(MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder)
+                if(Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {
                     _showGuiOAB = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
                     InitializeCelestialBodies();
@@ -171,15 +171,15 @@ namespace MicroMod
         {
             Logger.LogInfo("Message triggered: GameStateLeftMessage");
 
-            MicroUtility.RefreshGameManager();
-            if (MicroUtility.GameState.GameState == GameState.FlightView || MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder || MicroUtility.GameState.GameState == GameState.Map3DView)
+            Utility.RefreshGameManager();
+            if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
-                MicroUtility.SaveLayout(MicroWindows);
+                Utility.SaveLayout(MicroWindows);
 
-                if (MicroUtility.GameState.GameState == GameState.FlightView || MicroUtility.GameState.GameState == GameState.Map3DView)
+                if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                     _showGuiFlight = false;
 
-                if (MicroUtility.GameState.GameState == GameState.VehicleAssemblyBuilder)
+                if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                     _showGuiOAB = false;
             }
         }
@@ -194,14 +194,14 @@ namespace MicroMod
             VesselDeltaVCalculationMessage msg = (VesselDeltaVCalculationMessage)obj;
             if (msg.DeltaVComponent.Ship == null || !msg.DeltaVComponent.Ship.IsLaunchAssembly()) return;
 
-            MicroUtility.RefreshGameManager();
-            if (MicroUtility.GameState.GameState != GameState.VehicleAssemblyBuilder) return;            
+            Utility.RefreshGameManager();
+            if (Utility.GameState.GameState != GameState.VehicleAssemblyBuilder) return;            
 
-            MicroUtility.RefreshStagesOAB();
+            Utility.RefreshStagesOAB();
 
             BaseWindow stageWindow = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
 
-            if (MicroUtility.VesselDeltaVComponentOAB?.StageInfo == null)
+            if (Utility.VesselDeltaVComponentOAB?.StageInfo == null)
             {
                 stageWindow.Entries.Find(e => e.Name == "Stage Info (OAB)").EntryValue = null;
                 return;
@@ -213,10 +213,10 @@ namespace MicroMod
 
         public void Update()
         {
-            MicroUtility.RefreshGameManager();
+            Utility.RefreshGameManager();
 
             // Perform OAB updates only if we're in OAB
-            if (MicroUtility.GameState != null && MicroUtility.GameState.IsObjectAssembly)
+            if (Utility.GameState != null && Utility.GameState.IsObjectAssembly)
             {
                 // Do updates every 1 sec
                 if (Time.time - _lastUpdate > 1)
@@ -230,11 +230,11 @@ namespace MicroMod
             }
 
             // Perform flight UI updates only if we're in Flight or Map view
-            if (MicroUtility.GameState != null && (MicroUtility.GameState.GameState == GameState.FlightView || MicroUtility.GameState.GameState == GameState.Map3DView))
+            if (Utility.GameState != null && (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView))
             {
-                MicroUtility.RefreshActiveVesselAndCurrentManeuver();
+                Utility.RefreshActiveVesselAndCurrentManeuver();
 
-                if (MicroUtility.ActiveVessel == null)
+                if (Utility.ActiveVessel == null)
                     return;
 
                 // Refresh all active windows' entries
@@ -248,8 +248,8 @@ namespace MicroMod
         {
             GUI.skin = Styles.SpaceWarpUISkin;
 
-            MicroUtility.RefreshGameManager();
-            if (MicroUtility.GameState?.GameState == GameState.VehicleAssemblyBuilder)
+            Utility.RefreshGameManager();
+            if (Utility.GameState?.GameState == GameState.VehicleAssemblyBuilder)
                 OnGUI_OAB();
             else
                 OnGUI_Flight();
@@ -258,9 +258,9 @@ namespace MicroMod
         #region Flight scene UI and logic
         private void OnGUI_Flight()
 		{
-            _gameInputState = MicroUtility.ToggleGameInputOnControlInFocus(_gameInputState, _showGuiFlight);
+            _gameInputState = Utility.ToggleGameInputOnControlInFocus(_gameInputState, _showGuiFlight);
 
-            if (!_showGuiFlight || MicroUtility.ActiveVessel == null) return;
+            if (!_showGuiFlight || Utility.ActiveVessel == null) return;
 
             BaseWindow mainGui = MicroWindows.Find(window => window.MainWindow == MainWindow.MainGui);
 
@@ -273,7 +273,7 @@ namespace MicroMod
                 Styles.MainWindowStyle,
 				GUILayout.Height(0)
 			);
-            mainGui.FlightRect.position = MicroUtility.ClampToScreen(mainGui.FlightRect.position, mainGui.FlightRect.size);
+            mainGui.FlightRect.position = Utility.ClampToScreen(mainGui.FlightRect.position, mainGui.FlightRect.size);
 
             // Draw all other popped out windows
             foreach (var (window, index) in MicroWindows
@@ -282,11 +282,11 @@ namespace MicroMod
 				.Where(x => x.window.MainWindow != MainWindow.Settings && x.window.MainWindow != MainWindow.Stage && x.window.MainWindow != MainWindow.MainGui)) // MainGUI, Settings and Stage are special, they'll be drawn separately
 			{
 				// Skip drawing of Target window if there's no active target
-				if (window.MainWindow == MainWindow.Target && !MicroUtility.TargetExists())
+				if (window.MainWindow == MainWindow.Target && !Utility.TargetExists())
 					continue;
 
 				// Skip drawing of Maneuver window if there's no active maneuver
-				if (window.MainWindow == MainWindow.Maneuver && !MicroUtility.ManeuverExists())
+				if (window.MainWindow == MainWindow.Maneuver && !Utility.ManeuverExists())
 					continue;
 
 				// If window is locked set alpha to 80%
@@ -307,7 +307,7 @@ namespace MicroMod
                 if (window.IsLocked)
                     GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, 1);
 
-                window.FlightRect.position = MicroUtility.ClampToScreen(window.FlightRect.position, window.FlightRect.size);
+                window.FlightRect.position = Utility.ClampToScreen(window.FlightRect.position, window.FlightRect.size);
             }
 
 			// Draw popped out Settings
@@ -324,7 +324,7 @@ namespace MicroMod
 					GUILayout.Width(Styles.WindowWidth)
 					);
 
-                MicroWindows[settingsIndex].FlightRect.position = MicroUtility.ClampToScreen(MicroWindows[settingsIndex].FlightRect.position, MicroWindows[settingsIndex].FlightRect.size);
+                MicroWindows[settingsIndex].FlightRect.position = Utility.ClampToScreen(MicroWindows[settingsIndex].FlightRect.position, MicroWindows[settingsIndex].FlightRect.size);
             }
 
             // Draw popped out Stages
@@ -341,7 +341,7 @@ namespace MicroMod
                     GUILayout.Width(Styles.WindowWidth)
 					);
 
-                MicroWindows[stageIndex].FlightRect.position = MicroUtility.ClampToScreen(MicroWindows[stageIndex].FlightRect.position, MicroWindows[stageIndex].FlightRect.size);
+                MicroWindows[stageIndex].FlightRect.position = Utility.ClampToScreen(MicroWindows[stageIndex].FlightRect.position, MicroWindows[stageIndex].FlightRect.size);
             }
 
 			// Draw Edit Window
@@ -408,11 +408,11 @@ namespace MicroMod
 
                 {
                     // Skip drawing of Target window if there's no active target
-                    if (window.MainWindow == MainWindow.Target && !MicroUtility.TargetExists())
+                    if (window.MainWindow == MainWindow.Target && !Utility.TargetExists())
                         continue;
 
                     // Skip drawing of Maneuver window if there's no active maneuver
-                    if (window.MainWindow == MainWindow.Maneuver && !MicroUtility.ManeuverExists())
+                    if (window.MainWindow == MainWindow.Maneuver && !Utility.ManeuverExists())
                         continue;
 
                     DrawSectionHeader(window.Name, ref window.IsFlightPoppedOut, window.IsLocked, "");
@@ -463,10 +463,10 @@ namespace MicroMod
             GUILayout.Space(10);
 			GUILayout.BeginHorizontal();
 			if (GUILayout.Button("SAVE LAYOUT", Styles.NormalBtnStyle))
-				MicroUtility.SaveLayout(MicroWindows);
+				Utility.SaveLayout(MicroWindows);
 			GUILayout.Space(5);
 			if (GUILayout.Button("LOAD LAYOUT", Styles.NormalBtnStyle))
-				MicroUtility.LoadLayout(MicroWindows);			
+				Utility.LoadLayout(MicroWindows);			
 			GUILayout.Space(5);
 			if (GUILayout.Button("RESET", Styles.NormalBtnStyle))
 				ResetLayout();
@@ -581,7 +581,7 @@ namespace MicroMod
 			GUILayout.Space(16);
 			GUILayout.Label($"{stageInfo.TWRActual.ToString(twrFormatString)}", Styles.ValueLabelStyle, GUILayout.Width(40));
 			GUILayout.Space(16);
-			string burnTime = MicroUtility.SecondsToTimeString(stageInfo.StageBurnTime, false);
+			string burnTime = Utility.SecondsToTimeString(stageInfo.StageBurnTime, false);
 			string lastUnit = "s";
 			if (burnTime.Contains('h'))
 			{
@@ -633,10 +633,10 @@ namespace MicroMod
             {
                 selectedWindowId = selectedWindowId > 0 ? selectedWindowId - 1 : editableWindows.Count - 1;
             }
-            GUI.SetNextControlName(MicroUtility.InputDisableWindowAbbreviation);
+            GUI.SetNextControlName(Utility.InputDisableWindowAbbreviation);
             editableWindows[selectedWindowId].Abbreviation = GUILayout.TextField(editableWindows[selectedWindowId].Abbreviation, Styles.WindowSelectionAbbrevitionTextFieldStyle);
-            editableWindows[selectedWindowId].Abbreviation = MicroUtility.ValidateAbbreviation(editableWindows[selectedWindowId].Abbreviation);
-            GUI.SetNextControlName(MicroUtility.InputDisableWindowName);
+            editableWindows[selectedWindowId].Abbreviation = Utility.ValidateAbbreviation(editableWindows[selectedWindowId].Abbreviation);
+            GUI.SetNextControlName(Utility.InputDisableWindowName);
             editableWindows[selectedWindowId].Name = GUILayout.TextField(editableWindows[selectedWindowId].Name, Styles.WindowSelectionTextFieldStyle);
             if (GUILayout.Button(">", Styles.OneCharacterBtnStyle))
             {
@@ -820,7 +820,7 @@ namespace MicroMod
                 Styles.StageOABWindowStyle,
                 GUILayout.Height(0)
                 );
-            stageInfoOAB.EditorRect.position = MicroUtility.ClampToScreen(stageInfoOAB.EditorRect.position, stageInfoOAB.EditorRect.size);
+            stageInfoOAB.EditorRect.position = Utility.ClampToScreen(stageInfoOAB.EditorRect.position, stageInfoOAB.EditorRect.size);
 
             // Draw window for selecting CelestialBody for a stage
             // -1 -> no selection of CelestialBody is taking place
@@ -943,7 +943,7 @@ namespace MicroMod
 
                 GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVVac), Styles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label("m/s", Styles.UnitLabelStyleStageOAB, GUILayout.Width(30));
-                GUILayout.Label(MicroUtility.SecondsToTimeString(stages[stageIndex].StageBurnTime, true, true), Styles.ValueLabelStyle, GUILayout.Width(110));
+                GUILayout.Label(Utility.SecondsToTimeString(stages[stageIndex].StageBurnTime, true, true), Styles.ValueLabelStyle, GUILayout.Width(110));
                 GUILayout.Space(20);
                 GUILayout.BeginVertical();
                 GUILayout.FlexibleSpace();

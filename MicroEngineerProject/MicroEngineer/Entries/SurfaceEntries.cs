@@ -19,7 +19,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Situation;
+            EntryValue = Utility.ActiveVessel.Situation;
         }
 
         public override string ValueDisplay
@@ -29,7 +29,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.SituationToString((VesselSituations)EntryValue);
+                return Utility.SituationToString((VesselSituations)EntryValue);
             }
         }
     }
@@ -46,8 +46,8 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Latitude;
-            Unit = MicroUtility.ActiveVessel.Latitude < 0 ? "S" : "N";
+            EntryValue = Utility.ActiveVessel.Latitude;
+            Unit = Utility.ActiveVessel.Latitude < 0 ? "S" : "N";
         }
 
         public override string ValueDisplay
@@ -57,7 +57,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.DegreesToDMS((double)EntryValue);
+                return Utility.DegreesToDMS((double)EntryValue);
             }
         }
     }
@@ -74,8 +74,8 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Longitude;
-            Unit = MicroUtility.ActiveVessel.Longitude < 0 ? "W" : "E";
+            EntryValue = Utility.ActiveVessel.Longitude;
+            Unit = Utility.ActiveVessel.Longitude < 0 ? "W" : "E";
         }
 
         public override string ValueDisplay
@@ -85,7 +85,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.DegreesToDMS((double)EntryValue);
+                return Utility.DegreesToDMS((double)EntryValue);
             }
         }
     }
@@ -103,7 +103,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.SimulationObject.Telemetry.SurfaceBiome;
+            EntryValue = Utility.ActiveVessel.SimulationObject.Telemetry.SurfaceBiome;
         }
 
         public override string ValueDisplay
@@ -113,7 +113,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return MicroUtility.BiomeToString((BiomeSurfaceData)EntryValue);
+                return Utility.BiomeToString((BiomeSurfaceData)EntryValue);
             }
         }
     }
@@ -131,7 +131,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.AltitudeFromSeaLevel;
+            EntryValue = Utility.ActiveVessel.AltitudeFromSeaLevel;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -150,7 +150,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.AltitudeFromTerrain;
+            EntryValue = Utility.ActiveVessel.AltitudeFromTerrain;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -169,7 +169,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.AltitudeFromScenery;
+            EntryValue = Utility.ActiveVessel.AltitudeFromScenery;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -188,7 +188,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.HorizontalSrfSpeed;
+            EntryValue = Utility.ActiveVessel.HorizontalSrfSpeed;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -207,7 +207,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VerticalSrfSpeed;
+            EntryValue = Utility.ActiveVessel.VerticalSrfSpeed;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -226,7 +226,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.AtmosphericTemperature;
+            EntryValue = Utility.ActiveVessel.AtmosphericTemperature;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -245,7 +245,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.ExternalTemperature;
+            EntryValue = Utility.ActiveVessel.ExternalTemperature;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -264,7 +264,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.DynamicPressure_kPa;
+            EntryValue = Utility.ActiveVessel.DynamicPressure_kPa;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -283,7 +283,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.StaticPressure_kPa;
+            EntryValue = Utility.ActiveVessel.StaticPressure_kPa;
         }
 
         public override string ValueDisplay => base.ValueDisplay;

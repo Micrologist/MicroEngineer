@@ -24,7 +24,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalBurnTime;
+            EntryValue = Utility.VesselDeltaVComponentOAB?.TotalBurnTime;
         }
 
         public override string ValueDisplay
@@ -35,7 +35,7 @@ namespace MicroMod
                     return "-";
 
                 if (UseDHMSFormatting)
-                    return MicroUtility.SecondsToTimeString((double)EntryValue);
+                    return Utility.SecondsToTimeString((double)EntryValue);
                 else
                     return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
             }
@@ -54,7 +54,7 @@ namespace MicroMod
         }
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalDeltaVASL;
+            EntryValue = Utility.VesselDeltaVComponentOAB?.TotalDeltaVASL;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -72,7 +72,7 @@ namespace MicroMod
         }
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalDeltaVActual;
+            EntryValue = Utility.VesselDeltaVComponentOAB?.TotalDeltaVActual;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -90,7 +90,7 @@ namespace MicroMod
         }
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.VesselDeltaVComponentOAB?.TotalDeltaVVac;
+            EntryValue = Utility.VesselDeltaVComponentOAB?.TotalDeltaVVac;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -180,9 +180,9 @@ namespace MicroMod
 
             ((List<DeltaVStageInfo_OAB>)EntryValue).Clear();
 
-            if (MicroUtility.VesselDeltaVComponentOAB?.StageInfo == null) return;
+            if (Utility.VesselDeltaVComponentOAB?.StageInfo == null) return;
 
-            foreach (var stage in MicroUtility.VesselDeltaVComponentOAB.StageInfo)
+            foreach (var stage in Utility.VesselDeltaVComponentOAB.StageInfo)
             {
                 ((List<DeltaVStageInfo_OAB>)EntryValue).Add(new DeltaVStageInfo_OAB
                 {
