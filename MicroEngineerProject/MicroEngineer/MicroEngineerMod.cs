@@ -1219,6 +1219,7 @@ namespace MicroMod
                 MicroWindows.Add(new BaseWindow
                 {
                     Name = "MainGui",
+                    LayoutVersion = Utility.CurrentLayoutVersion,
                     Abbreviation = null,
                     Description = "Main GUI",
                     IsEditorActive = false,
