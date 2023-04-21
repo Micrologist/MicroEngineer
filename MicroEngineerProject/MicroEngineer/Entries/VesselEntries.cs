@@ -1,7 +1,7 @@
 ﻿
 namespace MicroMod
 {
-    public class VesselEntry : MicroEntry
+    public class VesselEntry : BaseEntry
     { }
 
     public class VesselName : VesselEntry

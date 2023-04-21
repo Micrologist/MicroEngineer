@@ -3,7 +3,7 @@ using KSP.Sim.impl;
 
 namespace MicroMod
 {
-    public class OrbitalEntry : MicroEntry
+    public class OrbitalEntry : BaseEntry
     { }
 
     public class Apoapsis : OrbitalEntry

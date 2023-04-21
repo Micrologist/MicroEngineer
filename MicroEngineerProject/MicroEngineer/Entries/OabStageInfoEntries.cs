@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 
 namespace MicroMod
 {
-    public class OabStageInfoEntry : MicroEntry
+    public class OabStageInfoEntry : BaseEntry
     { }
 
     public class TotalBurnTime_OAB : OabStageInfoEntry

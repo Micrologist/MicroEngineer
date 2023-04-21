@@ -3,7 +3,7 @@ using static KSP.Rendering.Planets.PQSData;
 
 namespace MicroMod
 {
-    public class SurfaceEntry : MicroEntry
+    public class SurfaceEntry : BaseEntry
     { }
 
     public class AltitudeAgl : SurfaceEntry

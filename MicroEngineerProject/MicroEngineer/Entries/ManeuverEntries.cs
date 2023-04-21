@@ -4,7 +4,7 @@ using KSP.Sim.Maneuver;
 
 namespace MicroMod
 {
-    public class ManeuverEntry : MicroEntry
+    public class ManeuverEntry : BaseEntry
     {
         internal int SelectedNodeIndex = 0;
     }

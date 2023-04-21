@@ -1,7 +1,7 @@
 ﻿
 namespace MicroMod
 {
-    public class StageInfoEntry: MicroEntry
+    public class StageInfoEntry: BaseEntry
     { }
 
     public class StageInfo : StageInfoEntry
