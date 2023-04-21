@@ -49,8 +49,6 @@ namespace MicroMod
         // If game input is enabled or disabled (used for locking controls when user is editing a text field
         private bool _gameInputState = true;
 
-        private float _lastUpdate = 0;
-
         public override void OnInitialized()
 		{
             Styles.InitializeStyles();
@@ -133,6 +131,9 @@ namespace MicroMod
 
             // Resets node index
             Utility.MessageCenter.Subscribe<ManeuverRemovedMessage>(new Action<MessageCenterMessage>(this.OnManeuverRemovedMessage));
+
+            // Torque update for StageInfoOAB
+            Utility.MessageCenter.Subscribe<PartManipulationCompletedMessage>(new Action<MessageCenterMessage>(this.OnPartManipulationCompletedMessage));
         }
         
         private void OnManeuverCreatedMessage(MessageCenterMessage message)
@@ -145,6 +146,12 @@ namespace MicroMod
         {
             var maneuverWindow = MicroWindows.Find(w => w.GetType() == typeof(ManeuverWindow)) as ManeuverWindow;
             maneuverWindow.OnManeuverRemovedMessage(message);
+        }
+
+        private void OnPartManipulationCompletedMessage(MessageCenterMessage obj)
+        {
+            Torque torque = (Torque)MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Torque");
+            torque.RefreshData();
         }
 
         private void GameStateEntered(MessageCenterMessage obj)
@@ -215,20 +222,6 @@ namespace MicroMod
         public void Update()
         {
             Utility.RefreshGameManager();
-
-            // Perform OAB updates only if we're in OAB
-            if (Utility.GameState != null && Utility.GameState.IsObjectAssembly)
-            {
-                // Do updates every 1 sec
-                if (Time.time - _lastUpdate > 1)
-                {
-                    _lastUpdate = Time.time;
-
-                    Torque torque = (Torque)MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Torque");
-                    if (torque.IsActive)
-                        torque.RefreshData();
-                }
-            }
 
             // Perform flight UI updates only if we're in Flight or Map view
             if (Utility.GameState != null && (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView))
