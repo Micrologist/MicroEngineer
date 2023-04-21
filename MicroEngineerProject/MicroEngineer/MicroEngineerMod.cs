@@ -88,10 +88,6 @@ namespace MicroMod
 
         private void BackwardCompatibilityInitializations()
         {
-            // Preserve backward compatibility with 0.6.0. If user previously saved the layout and then upgraded without deleting the original folder, then StageInfoOAB window will be wiped by LoadLayout(). So, we add it manually now.
-            if (MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB) == null)
-                InitializeStageInfoOABWindow();
-
             // Preserve backward compatibility with SpaceWarp 1.0.1
             if (Utility.IsModOlderThan("SpaceWarp", 1, 1, 0))
             {
@@ -100,14 +96,6 @@ namespace MicroMod
             }
             else
                 Logger.LogInfo("Space Warp new version detected. Loading new Styles.");
-
-            // Preserve backward compatibility with 0.7.2. If user previously saved the layout and then upgraded without deleting the original folder, then the Torque entry won't be in the loaded StageOAB window. So, we add it manually now.
-            BaseWindow stageOabWindow = MicroWindows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
-            if (stageOabWindow.Entries.Find(e => e.Name == "Torque") == null)
-            {
-                stageOabWindow.Entries.Add(this.MicroEntries.Find(e => e.Name == "Torque"));
-                Utility.SaveLayout(this.MicroWindows);
-            }
         }
 
         /// <summary>
