@@ -17,7 +17,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.mainBody.bodyName;
+            EntryValue = Utility.ActiveVessel.mainBody.bodyName;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -36,7 +36,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.ReferenceBodyConstants.Radius;
+            EntryValue = Utility.ActiveVessel.Orbit.ReferenceBodyConstants.Radius;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -55,7 +55,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.ReferenceBodyConstants.StandardGravitationParameter;
+            EntryValue = Utility.ActiveVessel.Orbit.ReferenceBodyConstants.StandardGravitationParameter;
         }
 
         public override string ValueDisplay => base.ValueDisplay;

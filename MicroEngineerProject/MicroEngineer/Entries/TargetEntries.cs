@@ -18,7 +18,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.ApoapsisArl;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.ApoapsisArl;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -37,7 +37,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.PeriapsisArl;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.PeriapsisArl;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -56,7 +56,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit != null ? (MicroUtility.ActiveVessel.Orbit.Position - MicroUtility.ActiveVessel.TargetObject.Orbit.Position).magnitude : null;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit != null ? (Utility.ActiveVessel.Orbit.Position - Utility.ActiveVessel.TargetObject.Orbit.Position).magnitude : null;
         }
 
         public override string ValueDisplay
@@ -67,7 +67,7 @@ namespace MicroMod
                     return "-";
 
                 // return value only if vessel and target are in the same SOI
-                return MicroUtility.ActiveVessel.Orbit.referenceBody == MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody ?
+                return Utility.ActiveVessel.Orbit.referenceBody == Utility.ActiveVessel.TargetObject.Orbit.referenceBody ?
                     String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue) : "-";
             }
         }
@@ -86,7 +86,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit != null ? (MicroUtility.ActiveVessel.Orbit.relativeVelocity - MicroUtility.ActiveVessel.TargetObject.Orbit.relativeVelocity).magnitude : null;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit != null ? (Utility.ActiveVessel.Orbit.relativeVelocity - Utility.ActiveVessel.TargetObject.Orbit.relativeVelocity).magnitude : null;
         }
 
         public override string ValueDisplay
@@ -97,7 +97,7 @@ namespace MicroMod
                     return "-";
 
                 // return value only if vessel and target are in the same SOI
-                if (MicroUtility.ActiveVessel.Orbit.referenceBody != MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody)
+                if (Utility.ActiveVessel.Orbit.referenceBody != Utility.ActiveVessel.TargetObject.Orbit.referenceBody)
                     return "-";
 
                 return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
@@ -118,7 +118,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.AscendingNodeTarget.Inclination;
+            EntryValue = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.AscendingNodeTarget.Inclination;
         }
 
         public override string ValueDisplay
@@ -129,7 +129,7 @@ namespace MicroMod
                     return "-";
 
                 // return value only if vessel and target are in the same SOI
-                if (MicroUtility.ActiveVessel.Orbit.referenceBody != MicroUtility.ActiveVessel.TargetObject?.Orbit?.referenceBody)
+                if (Utility.ActiveVessel.Orbit.referenceBody != Utility.ActiveVessel.TargetObject?.Orbit?.referenceBody)
                     return "-";
 
                 return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
@@ -150,7 +150,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.AltitudeFromSeaLevel;
+            EntryValue = Utility.ActiveVessel.TargetObject?.AltitudeFromSeaLevel;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -169,7 +169,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.DisplayName;
+            EntryValue = Utility.ActiveVessel.TargetObject?.DisplayName;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -188,7 +188,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.EccentricAnomaly;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.EccentricAnomaly;
         }
 
         public override string ValueDisplay
@@ -216,7 +216,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.MeanAnomaly;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.MeanAnomaly;
         }
 
         public override string ValueDisplay
@@ -244,7 +244,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.ObT;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.ObT;
         }
 
         public override string ValueDisplay
@@ -254,7 +254,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -272,7 +272,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.argumentOfPeriapsis;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.argumentOfPeriapsis;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -291,7 +291,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.eccentricity;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.eccentricity;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -310,7 +310,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.inclination;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.inclination;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -329,7 +329,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.longitudeOfAscendingNode;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.longitudeOfAscendingNode;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -348,7 +348,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.semiMajorAxis;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.semiMajorAxis;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -367,7 +367,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.referenceBody?.radius;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.referenceBody?.radius;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -386,7 +386,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.referenceBody?.gravParameter;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.referenceBody?.gravParameter;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -405,7 +405,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.SemiLatusRectum;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.SemiLatusRectum;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -424,7 +424,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.SemiMinorAxis;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.SemiMinorAxis;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -443,7 +443,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.TrueAnomaly;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.TrueAnomaly;
         }
 
         public override string ValueDisplay
@@ -453,7 +453,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, MicroUtility.RadiansToDegrees((double)EntryValue));
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.RadiansToDegrees((double)EntryValue));
             }
         }
     }
@@ -471,7 +471,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.period;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.period;
         }
 
         public override string ValueDisplay
@@ -481,7 +481,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -499,7 +499,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.Orbit?.radius;
+            EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.radius;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -518,7 +518,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TargetObject?.ObtVelocity.magnitude;
+            EntryValue = Utility.ActiveVessel.TargetObject?.ObtVelocity.magnitude;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -537,9 +537,9 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
+            bool? isValid = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
 
-            EntryValue = isValid != null && isValid == true ? MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.RelativeDistance : null;
+            EntryValue = isValid != null && isValid == true ? Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.RelativeDistance : null;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -558,9 +558,9 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
+            bool? isValid = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
 
-            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.UniversalTime - MicroUtility.UniversalTime : null;
+            EntryValue = isValid != null && isValid == true ? EntryValue = Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.UniversalTime - Utility.UniversalTime : null;
         }
 
         public override string ValueDisplay
@@ -570,7 +570,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -588,9 +588,9 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
+            bool? isValid = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
 
-            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.RelativeSpeed : null;
+            EntryValue = isValid != null && isValid == true ? EntryValue = Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.RelativeSpeed : null;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -609,9 +609,9 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
+            bool? isValid = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
 
-            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeDistance : null;
+            EntryValue = isValid != null && isValid == true ? EntryValue = Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeDistance : null;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -630,9 +630,9 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
+            bool? isValid = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
 
-            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.UniversalTime - MicroUtility.UniversalTime : null;
+            EntryValue = isValid != null && isValid == true ? EntryValue = Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.UniversalTime - Utility.UniversalTime : null;
         }
 
         public override string ValueDisplay
@@ -642,7 +642,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -660,9 +660,9 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            bool? isValid = MicroUtility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
+            bool? isValid = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
 
-            EntryValue = isValid != null && isValid == true ? EntryValue = MicroUtility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeSpeed : null;
+            EntryValue = isValid != null && isValid == true ? EntryValue = Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.RelativeSpeed : null;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -681,7 +681,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.TargetExists() ? TransferInfo.GetPhaseAngle() : null;
+            EntryValue = Utility.TargetExists() ? TransferInfo.GetPhaseAngle() : null;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -700,7 +700,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.TargetExists() ? TransferInfo.GetTransferAngle() : null;
+            EntryValue = Utility.TargetExists() ? TransferInfo.GetTransferAngle() : null;
         }
 
         public override string ValueDisplay => base.ValueDisplay;

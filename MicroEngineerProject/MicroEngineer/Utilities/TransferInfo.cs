@@ -19,7 +19,7 @@ namespace MicroMod
         private static bool CalculateParameters()
         {
             // If Target is the body that vessel is orbiting, there is no phase angle
-            if (MicroUtility.ActiveVessel.Orbit.referenceBody == MicroUtility.ActiveVessel.TargetObject.CelestialBody)
+            if (Utility.ActiveVessel.Orbit.referenceBody == Utility.ActiveVessel.TargetObject.CelestialBody)
             {
                 _fromLocalPosition = null;
                 _toLocalPosition = null;
@@ -28,8 +28,8 @@ namespace MicroMod
                 return false;
             }
 
-            (CelestialBodyComponent referenceBody, Vector3 localPosition, IKeplerOrbit currentOrbit) from = (MicroUtility.ActiveVessel.Orbit.referenceBody, MicroUtility.ActiveVessel.Orbit.Position.localPosition, MicroUtility.ActiveVessel.Orbit);
-            (CelestialBodyComponent referenceBody, Vector3 localPosition, IKeplerOrbit currentOrbit) to = (MicroUtility.ActiveVessel.TargetObject.Orbit.referenceBody, MicroUtility.ActiveVessel.TargetObject.Orbit.Position.localPosition, MicroUtility.ActiveVessel.TargetObject.Orbit);
+            (CelestialBodyComponent referenceBody, Vector3 localPosition, IKeplerOrbit currentOrbit) from = (Utility.ActiveVessel.Orbit.referenceBody, Utility.ActiveVessel.Orbit.Position.localPosition, Utility.ActiveVessel.Orbit);
+            (CelestialBodyComponent referenceBody, Vector3 localPosition, IKeplerOrbit currentOrbit) to = (Utility.ActiveVessel.TargetObject.Orbit.referenceBody, Utility.ActiveVessel.TargetObject.Orbit.Position.localPosition, Utility.ActiveVessel.TargetObject.Orbit);
 
             // We search for the common celestial body that both ActiveVessel and TargetObject are orbiting and then calculate the phase angle
             bool commonReferenceBodyFound = false;
@@ -40,9 +40,9 @@ namespace MicroMod
             // Outer loop => TargetObject (to)
             for (int i = 0; i < numberOfLoopTries; i++)
             {
-                from.referenceBody = MicroUtility.ActiveVessel.Orbit.referenceBody;
-                from.localPosition = MicroUtility.ActiveVessel.Orbit.Position.localPosition;
-                from.currentOrbit = MicroUtility.ActiveVessel.Orbit;
+                from.referenceBody = Utility.ActiveVessel.Orbit.referenceBody;
+                from.localPosition = Utility.ActiveVessel.Orbit.Position.localPosition;
+                from.currentOrbit = Utility.ActiveVessel.Orbit;
 
                 // Inner lookp => ActiveVessel (from)
                 for (int j = 0; j < numberOfLoopTries; j++)

@@ -17,7 +17,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.DisplayName;
+            EntryValue = Utility.ActiveVessel.DisplayName;
         }
 
         public override string ValueDisplay => EntryValue?.ToString();
@@ -36,7 +36,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.totalMass * 1000;
+            EntryValue = Utility.ActiveVessel.totalMass * 1000;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -55,7 +55,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalDeltaVActual;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.TotalDeltaVActual;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -74,7 +74,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalDeltaVASL;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.TotalDeltaVASL;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -94,7 +94,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalDeltaVVac;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.TotalDeltaVVac;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -113,7 +113,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo.FirstOrDefault()?.ThrustActual * 1000;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo.FirstOrDefault()?.ThrustActual * 1000;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -132,7 +132,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.ThrustASL * 1000;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.ThrustASL * 1000;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -151,7 +151,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.ThrustVac * 1000;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.ThrustVac * 1000;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -170,7 +170,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo.FirstOrDefault()?.TWRActual;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo.FirstOrDefault()?.TWRActual;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -189,7 +189,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.TWRASL;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.TWRASL;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -208,7 +208,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.TWRVac;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.TWRVac;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -227,7 +227,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.PartInfo?.Count;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.PartInfo?.Count;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -246,7 +246,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.TotalBurnTime;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.TotalBurnTime;
         }
 
         public override string ValueDisplay
@@ -256,7 +256,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -274,7 +274,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.IspActual;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.IspActual;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -293,7 +293,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.IspASL;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.IspASL;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -312,7 +312,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.IspVac;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo?.FirstOrDefault()?.IspVac;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -331,7 +331,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.flightCtrlState.mainThrottle * 100;
+            EntryValue = Utility.ActiveVessel.flightCtrlState.mainThrottle * 100;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -350,7 +350,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.FuelPercentage;
+            EntryValue = Utility.ActiveVessel.FuelPercentage;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -369,7 +369,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.StageFuelPercentage;
+            EntryValue = Utility.ActiveVessel.StageFuelPercentage;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -388,7 +388,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.TotalCommandCrewCapacity;
+            EntryValue = Utility.ActiveVessel.TotalCommandCrewCapacity;
         }
 
         public override string ValueDisplay => base.ValueDisplay;

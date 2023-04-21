@@ -19,7 +19,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.ApoapsisArl;
+            EntryValue = Utility.ActiveVessel.Orbit.ApoapsisArl;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -38,7 +38,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = (MicroUtility.ActiveVessel.Situation == VesselSituations.Landed || MicroUtility.ActiveVessel.Situation == VesselSituations.PreLaunch) ? 0f : MicroUtility.ActiveVessel.Orbit.TimeToAp;
+            EntryValue = (Utility.ActiveVessel.Situation == VesselSituations.Landed || Utility.ActiveVessel.Situation == VesselSituations.PreLaunch) ? 0f : Utility.ActiveVessel.Orbit.TimeToAp;
         }
 
         public override string ValueDisplay
@@ -48,7 +48,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -66,7 +66,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.PeriapsisArl;
+            EntryValue = Utility.ActiveVessel.Orbit.PeriapsisArl;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -85,7 +85,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.TimeToPe;
+            EntryValue = Utility.ActiveVessel.Orbit.TimeToPe;
         }
 
         public override string ValueDisplay
@@ -95,7 +95,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -113,7 +113,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.inclination;
+            EntryValue = Utility.ActiveVessel.Orbit.inclination;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -132,7 +132,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.eccentricity;
+            EntryValue = Utility.ActiveVessel.Orbit.eccentricity;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -151,7 +151,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.period;
+            EntryValue = Utility.ActiveVessel.Orbit.period;
         }
 
         public override string ValueDisplay
@@ -161,7 +161,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -179,7 +179,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime;
+            EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime;
         }
 
         public override string ValueDisplay
@@ -189,7 +189,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return (double)EntryValue >= 0 ? MicroUtility.SecondsToTimeString((double)EntryValue) : "-";
+                return (double)EntryValue >= 0 ? Utility.SecondsToTimeString((double)EntryValue) : "-";
             }
         }
     }
@@ -207,7 +207,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.OrbitalSpeed;
+            EntryValue = Utility.ActiveVessel.OrbitalSpeed;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -226,7 +226,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.EccentricAnomaly;
+            EntryValue = Utility.ActiveVessel.Orbit.EccentricAnomaly;
         }
 
         public override string ValueDisplay
@@ -254,7 +254,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.MeanAnomaly;
+            EntryValue = Utility.ActiveVessel.Orbit.MeanAnomaly;
         }
 
         public override string ValueDisplay
@@ -282,7 +282,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.TrueAnomaly;
+            EntryValue = Utility.ActiveVessel.Orbit.TrueAnomaly;
         }
 
         public override string ValueDisplay
@@ -292,7 +292,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, MicroUtility.RadiansToDegrees((double)EntryValue));
+                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.RadiansToDegrees((double)EntryValue));
             }
         }
     }
@@ -310,7 +310,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.ObT;
+            EntryValue = Utility.ActiveVessel.Orbit.ObT;
         }
 
         public override string ValueDisplay
@@ -320,7 +320,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(base.Formatting) ? MicroUtility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, MicroUtility.SecondsToTimeString((double)EntryValue, true, false));
+                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
             }
         }
     }
@@ -338,7 +338,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.OrbitalElements.ArgumentOfPeriapsis;
+            EntryValue = Utility.ActiveVessel.Orbit.OrbitalElements.ArgumentOfPeriapsis;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -357,7 +357,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.OrbitalElements.LongitudeOfAscendingNode;
+            EntryValue = Utility.ActiveVessel.Orbit.OrbitalElements.LongitudeOfAscendingNode;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -376,7 +376,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.OrbitalElements.SemiMajorAxis;
+            EntryValue = Utility.ActiveVessel.Orbit.OrbitalElements.SemiMajorAxis;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -395,7 +395,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.SemiMinorAxis;
+            EntryValue = Utility.ActiveVessel.Orbit.SemiMinorAxis;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -414,7 +414,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.OrbitalEnergy / 1000.0;
+            EntryValue = Utility.ActiveVessel.Orbit.OrbitalEnergy / 1000.0;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -433,7 +433,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.SemiLatusRectum;
+            EntryValue = Utility.ActiveVessel.Orbit.SemiLatusRectum;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -452,7 +452,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.orbitPercent * 100;
+            EntryValue = Utility.ActiveVessel.Orbit.orbitPercent * 100;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -471,7 +471,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.Orbit.radius;
+            EntryValue = Utility.ActiveVessel.Orbit.radius;
         }
 
         public override string ValueDisplay => base.ValueDisplay;

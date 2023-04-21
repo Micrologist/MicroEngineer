@@ -26,8 +26,8 @@ namespace MicroMod
             {
                 double toReturn = 0.0;
 
-                IEnumerable<PartComponent> parts = MicroUtility.ActiveVessel?.SimulationObject?.PartOwner?.Parts;
-                if (parts == null || !MicroUtility.ActiveVessel.IsInAtmosphere)
+                IEnumerable<PartComponent> parts = Utility.ActiveVessel?.SimulationObject?.PartOwner?.Parts;
+                if (parts == null || !Utility.ActiveVessel.IsInAtmosphere)
                 {
                     return toReturn;
                 }
@@ -53,8 +53,8 @@ namespace MicroMod
             {
                 double toReturn = 0.0;
 
-                IEnumerable<PartComponent> parts = MicroUtility.ActiveVessel?.SimulationObject?.PartOwner?.Parts;
-                if (parts == null || !MicroUtility.ActiveVessel.IsInAtmosphere)
+                IEnumerable<PartComponent> parts = Utility.ActiveVessel?.SimulationObject?.PartOwner?.Parts;
+                if (parts == null || !Utility.ActiveVessel.IsInAtmosphere)
                     return toReturn;
 
                 foreach (PartComponent part in parts)
@@ -78,10 +78,10 @@ namespace MicroMod
             {
                 double aoe = 0.0;
 
-                ISimulationObjectView simulationViewIfLoaded = GameManager.Instance.Game.ViewController.GetSimulationViewIfLoaded(MicroUtility.ActiveVessel.SimulationObject);
+                ISimulationObjectView simulationViewIfLoaded = GameManager.Instance.Game.ViewController.GetSimulationViewIfLoaded(Utility.ActiveVessel.SimulationObject);
                 if (simulationViewIfLoaded != null)
                 {
-                    Vector3d normalized = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(MicroUtility.ActiveVessel.SurfaceVelocity).normalized;
+                    Vector3d normalized = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(Utility.ActiveVessel.SurfaceVelocity).normalized;
                     Vector up = simulationViewIfLoaded.Model.Vessel.ControlTransform.up;
                     Vector3 lhs = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(up);
                     Vector right = simulationViewIfLoaded.Model.Vessel.ControlTransform.right;
@@ -107,10 +107,10 @@ namespace MicroMod
             {
                 double sideSlip = 0.0;
 
-                ISimulationObjectView simulationViewIfLoaded = GameManager.Instance.Game.ViewController.GetSimulationViewIfLoaded(MicroUtility.ActiveVessel.SimulationObject);
+                ISimulationObjectView simulationViewIfLoaded = GameManager.Instance.Game.ViewController.GetSimulationViewIfLoaded(Utility.ActiveVessel.SimulationObject);
                 if (simulationViewIfLoaded != null)
                 {
-                    Vector3d normalized = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(MicroUtility.ActiveVessel.SurfaceVelocity).normalized;
+                    Vector3d normalized = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(Utility.ActiveVessel.SurfaceVelocity).normalized;
                     Vector up = simulationViewIfLoaded.Model.Vessel.ControlTransform.up;
                     Vector3 lhs = GameManager.Instance.Game.UniverseView.PhysicsSpace.VectorToPhysics(up);
                     Vector right = simulationViewIfLoaded.Model.Vessel.ControlTransform.right;

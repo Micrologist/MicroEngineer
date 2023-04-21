@@ -53,7 +53,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = MicroUtility.ActiveVessel.VesselDeltaV?.StageInfo;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo;
         }
 
         public override string ValueDisplay => base.ValueDisplay;

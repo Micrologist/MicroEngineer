@@ -13,12 +13,12 @@ using SpaceWarp.API.Mods;
 
 namespace MicroMod
 {
-    public static class MicroUtility
+    public static class Utility
     {
         public static VesselComponent ActiveVessel;
         public static ManeuverNodeData CurrentManeuver;
         public static string LayoutPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MicroLayout.json");
-        private static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.MicroUtility");
+        private static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Utility");
         public static GameStateConfiguration GameState;
         public static MessageCenter MessageCenter;
         public static VesselDeltaVComponent VesselDeltaVComponentOAB;
