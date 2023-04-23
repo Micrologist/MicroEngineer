@@ -205,7 +205,7 @@ namespace MicroMod
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Maneuver && entry.IsDefault).ToList()
                 });
 
-                Windows.Add(new EntryWindow
+                Windows.Add(new StageWindow
                 {
                     Name = "Stage",
                     Abbreviation = "STG",
