@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System.Xml;
+using UnityEngine;
 
 namespace MicroMod
 {
@@ -20,7 +22,14 @@ namespace MicroMod
         [JsonProperty]
         public string Unit;
         [JsonProperty]
-        public string Formatting;
+        public byte NumberOfDecimalDigits;
+        [JsonProperty("Formatting")]
+        private string _formatting;
+        public string Formatting
+        {
+            get => String.IsNullOrEmpty(_formatting) ? null : $"{{0:{_formatting}{this.NumberOfDecimalDigits}}}";
+            set => _formatting = value;
+        }        
 
         public virtual object EntryValue { get; set; }
 
@@ -37,6 +46,8 @@ namespace MicroMod
                 return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
             }
         }
+
+        
 
         public virtual void RefreshData() { }
     }    

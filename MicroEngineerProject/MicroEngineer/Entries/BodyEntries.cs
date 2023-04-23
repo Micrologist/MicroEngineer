@@ -33,7 +33,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Body;
             IsDefault = false;
             Unit = "m";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -53,7 +54,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Body;
             IsDefault = false;
             Unit = "μ";
-            Formatting = "{0:e4}";
+            NumberOfDecimalDigits = 4;
+            Formatting = "e";
         }
 
         public override void RefreshData()

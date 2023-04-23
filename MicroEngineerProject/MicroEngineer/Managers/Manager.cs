@@ -9,7 +9,9 @@ namespace MicroMod
     {
         internal List<BaseWindow> Windows;
         internal List<BaseEntry> Entries;
-        private MicroEngineerMod _plugin;
+        internal UI UI;
+        internal MessageManager MessageManager;
+        private MicroEngineerMod _plugin;        
 
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Manager");
 
@@ -286,5 +288,24 @@ namespace MicroMod
 
             return editableWindows.Count - 1;
         }
+
+        internal void ResetLayout()
+        {
+            Windows.Clear();
+            Entries.Clear();
+            Entries = InitializeEntries();
+            Windows = InitializeWindows();
+            UI.Windows = Windows;
+            MessageManager.Windows = Windows; 
+        }
+
+        internal void LoadLayout()
+        {
+            Utility.LoadLayout(Windows);
+            UI.Windows = Windows;
+            MessageManager.Windows = Windows;
+        }
+
+        internal void SaveLayout() => Utility.SaveLayout(Windows);
     }
 }

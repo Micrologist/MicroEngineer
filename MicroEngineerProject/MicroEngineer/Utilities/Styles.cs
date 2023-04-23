@@ -97,6 +97,8 @@ namespace MicroMod
         public static Texture2D EntryBackgroundTexture_BlackTheme_First;
         public static Texture2D EntryBackgroundTexture_BlackTheme_Middle;
         public static Texture2D EntryBackgroundTexture_BlackTheme_Last;
+        public static Texture2D IncreaseDecimalDigitsTexture;
+        public static Texture2D DecreaseDecimalDigitsTexture;
 
         private static Color _nameColor_DarkThemes = new Color(.7f, .75f, .75f, 1);
         private static Color _valueColor_DarkThemes = new Color(.6f, .7f, 1, 1);
@@ -292,7 +294,7 @@ namespace MicroMod
                 fixedHeight = 19,
                 alignment = TextAnchor.MiddleCenter,
                 margin = new RectOffset(0, 5, 9, 0),
-                padding = new RectOffset(0, 0, 3, 0)
+                padding = new RectOffset(0, 0, 0, 0)
             };
 
             OneCharacterHighBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
@@ -347,6 +349,9 @@ namespace MicroMod
             EntryBackground_BlackTheme_Middle.normal.background = EntryBackgroundTexture_BlackTheme_Middle;
             EntryBackground_BlackTheme_Last = new GUIStyle { name = "BlackLast" };
             EntryBackground_BlackTheme_Last.normal.background = EntryBackgroundTexture_BlackTheme_Last;
+
+            IncreaseDecimalDigitsTexture = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/increase-decimal-19.png");
+            DecreaseDecimalDigitsTexture = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/decrease-decimal-19.png");
         }
 
         public static void SetActiveTheme(Theme theme)
