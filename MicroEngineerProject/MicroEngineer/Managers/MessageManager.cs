@@ -78,6 +78,7 @@ namespace MicroMod
             {
                 Utility.LoadLayout(_windows);
                 _manager.Windows = _windows;
+                _ui.Windows = _windows;
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                     _ui.ShowGuiFlight = _windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
