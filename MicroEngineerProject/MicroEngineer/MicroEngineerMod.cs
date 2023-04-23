@@ -18,7 +18,7 @@ namespace MicroMod
 
         public override void OnInitialized()
 		{
-            Styles.InitializeStyles();
+            Styles.Initialize(this);
 
             _manager = new Manager(this);
             _ui = new UI(this, _manager);
@@ -34,7 +34,7 @@ namespace MicroMod
                 isOpen =>
                 {
                     _ui.ShowGuiFlight = isOpen;
-                    _manager.Windows.Find(w => w.MainWindow == MainWindow.MainGui).IsFlightActive = isOpen;
+                    _manager.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
                     GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
 
@@ -45,7 +45,7 @@ namespace MicroMod
                 isOpen =>
                 {
                     _ui.ShowGuiOAB = isOpen;
-                    _manager.Windows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
+                    _manager.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
                     GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
         }

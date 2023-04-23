@@ -1,10 +1,6 @@
 ﻿using BepInEx.Logging;
 using KSP.Game;
-using MicroMod;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using UnityEngine;
 
 namespace MicroMod
@@ -40,7 +36,7 @@ namespace MicroMod
                     return;
 
                 // Refresh all active windows' entries
-                foreach (BaseWindow window in Windows.Where(w => w.IsFlightActive))
+                foreach (EntryWindow window in Windows.Where(w => w.IsFlightActive && w is EntryWindow))
                     window.RefreshData();
             }
         }
@@ -81,44 +77,27 @@ namespace MicroMod
 
             try
             {
-                Windows.Add(new BaseWindow
+                Windows.Add(new MainGuiWindow
                 {
-                    Name = "MainGui",
                     LayoutVersion = Utility.CurrentLayoutVersion,
-                    Abbreviation = null,
-                    Description = "Main GUI",
                     IsEditorActive = false,
                     IsFlightActive = false,
                     IsMapActive = false,
-                    IsEditorPoppedOut = false, // not relevant to Main GUI
-                    IsFlightPoppedOut = false, // not relevant to Main GUI
-                    IsMapPoppedOut = false, // not relevant to Main GUI
-                    IsLocked = false,
-                    MainWindow = MainWindow.MainGui,
                     //EditorRect = null,
                     FlightRect = new Rect(Styles.MainGuiX, Styles.MainGuiY, Styles.WindowWidth, Styles.WindowHeight),
-                    Entries = null
                 });
 
-                Windows.Add(new BaseWindow
+                Windows.Add(new SettingsWIndow
                 {
-                    Name = "Settings",
-                    Abbreviation = "SET",
-                    Description = "Settings",
+                    ActiveTheme = Styles.ActiveTheme,
                     IsEditorActive = false,
                     IsFlightActive = false,
                     IsMapActive = false,
-                    IsEditorPoppedOut = false,
-                    IsFlightPoppedOut = false,
-                    IsMapPoppedOut = false,
-                    IsLocked = false,
-                    MainWindow = MainWindow.Settings,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
-                    Entries = null
+                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight)                    
                 });
 
-                Windows.Add(new BaseWindow
+                Windows.Add(new EntryWindow
                 {
                     Name = "Vessel",
                     Abbreviation = "VES",
@@ -136,7 +115,7 @@ namespace MicroMod
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Vessel && entry.IsDefault).ToList()
                 });
 
-                Windows.Add(new BaseWindow
+                Windows.Add(new EntryWindow
                 {
                     Name = "Orbital",
                     Abbreviation = "ORB",
@@ -154,7 +133,7 @@ namespace MicroMod
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Orbital && entry.IsDefault).ToList()
                 });
 
-                Windows.Add(new BaseWindow
+                Windows.Add(new EntryWindow
                 {
                     Name = "Surface",
                     Abbreviation = "SUR",
@@ -172,7 +151,7 @@ namespace MicroMod
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Surface && entry.IsDefault).ToList()
                 });
 
-                Windows.Add(new BaseWindow
+                Windows.Add(new EntryWindow
                 {
                     Name = "Flight",
                     Abbreviation = "FLT",
@@ -190,7 +169,7 @@ namespace MicroMod
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Flight && entry.IsDefault).ToList()
                 });
 
-                Windows.Add(new BaseWindow
+                Windows.Add(new EntryWindow
                 {
                     Name = "Target",
                     Abbreviation = "TGT",
@@ -213,7 +192,6 @@ namespace MicroMod
                     Name = "Maneuver",
                     Abbreviation = "MAN",
                     Description = "Maneuver entries",
-                    WindowType = typeof(ManeuverWindow),
                     IsEditorActive = false,
                     IsFlightActive = true,
                     IsMapActive = false,
@@ -227,7 +205,7 @@ namespace MicroMod
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Maneuver && entry.IsDefault).ToList()
                 });
 
-                Windows.Add(new BaseWindow
+                Windows.Add(new EntryWindow
                 {
                     Name = "Stage",
                     Abbreviation = "STG",
@@ -245,7 +223,7 @@ namespace MicroMod
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Stage && entry.IsDefault).ToList()
                 });
 
-                Windows.Add(new BaseWindow
+                Windows.Add(new EntryWindow
                 {
                     Name = "Stage (OAB)",
                     Abbreviation = "SOAB",
@@ -275,17 +253,17 @@ namespace MicroMod
         /// Creates a new custom window user can fill with any entry
         /// </summary>
         /// <param name="editableWindows"></param>
-        internal int CreateCustomWindow(List<BaseWindow> editableWindows)
+        internal int CreateCustomWindow(List<EntryWindow> editableWindows)
         {
             // Default window's name will be CustomX where X represents the first not used integer
             int nameID = 1;
-            foreach (BaseWindow window in editableWindows)
+            foreach (EntryWindow window in editableWindows)
             {
                 if (window.Name == "Custom" + nameID)
                     nameID++;
             }
 
-            BaseWindow newWindow = new()
+            EntryWindow newWindow = new()
             {
                 Name = "Custom" + nameID,
                 Abbreviation = nameID.ToString().Length == 1 ? "Cu" + nameID : nameID.ToString().Length == 2 ? "C" + nameID : nameID.ToString(),

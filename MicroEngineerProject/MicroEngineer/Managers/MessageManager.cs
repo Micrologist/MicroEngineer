@@ -63,7 +63,9 @@ namespace MicroMod
 
         private void OnPartManipulationCompletedMessage(MessageCenterMessage obj)
         {
-            Torque torque = (Torque)_windows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Torque");
+            EntryWindow stageInfoOabWindow = _windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+
+            Torque torque = (Torque)_windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Torque");
             torque.RefreshData();
         }
 
@@ -78,11 +80,11 @@ namespace MicroMod
                 _manager.Windows = _windows;
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
-                    _ui.ShowGuiFlight = _windows.Find(w => w.MainWindow == MainWindow.MainGui).IsFlightActive;
+                    _ui.ShowGuiFlight = _windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {
-                    _ui.ShowGuiOAB = _windows.Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
+                    _ui.ShowGuiOAB = _windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
                     _ui.CelestialBodies.GetBodies();
                     _ui.CelestialBodySelectionStageIndex = -1;
                 }
@@ -120,7 +122,7 @@ namespace MicroMod
 
             Utility.RefreshStagesOAB();
 
-            BaseWindow stageWindow = _windows.Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            EntryWindow stageWindow = _windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
 
             if (Utility.VesselDeltaVComponentOAB?.StageInfo == null)
             {

@@ -18,7 +18,7 @@ namespace MicroMod
         public static VesselComponent ActiveVessel;
         public static ManeuverNodeData CurrentManeuver;
         public static string LayoutPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MicroLayout.json");
-        public static int CurrentLayoutVersion = 3;
+        public static int CurrentLayoutVersion = 5;
         private static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Utility");
         public static GameStateConfiguration GameState;
         public static MessageCenter MessageCenter;
@@ -169,9 +169,6 @@ namespace MicroMod
         {
             try
             {
-                // Deactivate the Settings window before saving, because it doesn't make sense to save it in an active state since user cannot click the save button without having the Settings window active
-                windows.Find(w => w.MainWindow == MainWindow.Settings).IsFlightActive = false;
-
                 File.WriteAllText(LayoutPath, JsonConvert.SerializeObject(windows));
                 Logger.LogInfo("SaveLayout successful");
             }
@@ -188,7 +185,7 @@ namespace MicroMod
                 List<BaseWindow> deserializedWindows = JsonConvert.DeserializeObject<List<BaseWindow>>(File.ReadAllText(LayoutPath));
 
                 // Check if user has an old layout version. If it's older, it's not supported, so the default layout will remain active. Once the new layout is saved, it will persist.
-                var MainGui = deserializedWindows.Find(w => w.MainWindow == MainWindow.MainGui);
+                var MainGui = deserializedWindows.OfType<MainGuiWindow>().FirstOrDefault();
                 if (MainGui.LayoutVersion < Utility.CurrentLayoutVersion)
                 {
                     Logger.LogInfo("Loaded layout version is older than the current supported version. Layout will be reset.");
@@ -197,6 +194,9 @@ namespace MicroMod
 
                 windows.Clear();
                 windows.AddRange(deserializedWindows);
+
+                var settingsWindow = windows.Find(w => w.GetType() == typeof(SettingsWIndow)) as SettingsWIndow;
+                settingsWindow.LoadSettings();
 
                 Logger.LogInfo("LoadLayout successful");
             }

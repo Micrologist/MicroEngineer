@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace MicroMod
 {
-    internal class ManeuverWindow : BaseWindow
+    internal class ManeuverWindow : EntryWindow
     {
         private int _selectedNodeIndex = 0;
         private List<ManeuverNodeData> _nodes = new();
