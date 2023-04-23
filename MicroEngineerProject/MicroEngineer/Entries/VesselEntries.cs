@@ -33,7 +33,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = true;
             Unit = "kg";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -53,7 +54,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = true;
             Unit = "m/s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -73,7 +75,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "m/s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -94,7 +97,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "m/s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -114,7 +118,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -143,7 +148,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = true;
             Unit = "N";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -163,7 +169,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "N";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -183,7 +190,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "N";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -203,7 +211,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = null;
-            Formatting = "{0:N2}";
+            NumberOfDecimalDigits = 2;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -223,7 +232,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = null;
-            Formatting = "{0:N2}";
+            NumberOfDecimalDigits = 2;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -243,7 +253,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = null;
-            Formatting = "{0:N2}";
+            NumberOfDecimalDigits = 2;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -263,7 +274,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -283,7 +295,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -303,7 +316,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -323,7 +337,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "%";
-            Formatting = "{0:N1}";
+            NumberOfDecimalDigits = 1;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -343,7 +358,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "%";
-            Formatting = "{0:N1}";
+            NumberOfDecimalDigits = 1;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -383,7 +399,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = "%";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -403,7 +420,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             Unit = null;
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()

@@ -15,7 +15,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
             Unit = "m";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -35,7 +36,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
             Unit = "m";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -55,7 +57,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
             Unit = "m";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -75,7 +78,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
             Unit = "m/s";
-            Formatting = "{0:N1}";
+            NumberOfDecimalDigits = 1;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -95,7 +99,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
             Unit = "m/s";
-            Formatting = "{0:N1}";
+            NumberOfDecimalDigits = 1;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -231,7 +236,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
             Unit = "kPa";
-            Formatting = "{0:N2}";
+            NumberOfDecimalDigits = 2;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -251,7 +257,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
             Unit = "kPa";
-            Formatting = "{0:N2}";
+            NumberOfDecimalDigits = 2;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -271,7 +278,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
             Unit = "K";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -291,7 +299,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
             Unit = "K";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()

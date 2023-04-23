@@ -21,8 +21,10 @@ namespace MicroMod
             Styles.Initialize(this);
 
             _manager = new Manager(this);
-            _ui = new UI(this, _manager);
+            _ui = new UI(this, _manager);            
             _messagesManager = new MessageManager(this, _manager, _ui);
+            _manager.UI = _ui;
+            _manager.MessageManager = _messagesManager;
 
             BackwardCompatibilityInitializations();            
 

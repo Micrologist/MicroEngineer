@@ -162,15 +162,15 @@ namespace MicroMod
             GUILayout.Space(10);
             GUILayout.Label("<b>Layout control</b>");
             if (GUILayout.Button("SAVE LAYOUT", Styles.NormalBtnStyle))
-                Utility.SaveLayout(Windows);
+                _manager.SaveLayout();
             GUILayout.Space(5);
             if (GUILayout.Button("LOAD LAYOUT", Styles.NormalBtnStyle))
-            {
-                Utility.LoadLayout(Windows);
-                _manager.Windows = Windows;
-            }            
+                _manager.LoadLayout();
             if (GUILayout.Button("RESET LAYOUT", Styles.NormalBtnStyle))
-                ResetLayout();
+            {
+                _manager.ResetLayout();
+                _selectedWindowId = 0;
+            }
 
             GUILayout.Space(10);
             GUILayout.Label("<b>Theme</b>");
@@ -480,16 +480,27 @@ namespace MicroMod
             {
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(entry.Name, Styles.NameLabelStyle);
+                GUI.enabled = entry.NumberOfDecimalDigits < 5;
+                if (entry.Formatting != null && GUILayout.Button(Styles.IncreaseDecimalDigitsTexture, Styles.OneCharacterBtnStyle))
+                {
+                    entry.NumberOfDecimalDigits++;
+                }
+                GUI.enabled = entry.NumberOfDecimalDigits > 0;
+                if (entry.Formatting != null && GUILayout.Button(Styles.DecreaseDecimalDigitsTexture, Styles.OneCharacterBtnStyle))
+                {
+                    entry.NumberOfDecimalDigits--;
+                }
+                GUI.enabled = index > 0;
                 if (GUILayout.Button("↑", Styles.OneCharacterBtnStyle))
                 {
-                    if (index > 0)
-                        editableWindows[_selectedWindowId].MoveEntryUp(index);
+                    editableWindows[_selectedWindowId].MoveEntryUp(index);
                 }
+                GUI.enabled = index < editableWindows[_selectedWindowId].Entries.Count - 1;
                 if (GUILayout.Button("↓", Styles.OneCharacterBtnStyle))
                 {
-                    if (index < editableWindows[_selectedWindowId].Entries.Count - 1)
-                        editableWindows[_selectedWindowId].MoveEntryDown(index);
+                    editableWindows[_selectedWindowId].MoveEntryDown(index);
                 }
+                GUI.enabled = true;
                 if (GUILayout.Button("X", Styles.OneCharacterBtnStyle))
                     editableWindows[_selectedWindowId].RemoveEntry(index);
                 GUILayout.EndHorizontal();
@@ -718,13 +729,7 @@ namespace MicroMod
         }
 
         #endregion
-
-        private void ResetLayout()
-        {
-            Windows = _manager.InitializeWindows();
-            _selectedWindowId = 0;
-        }
-
+        
         private void CloseWindow()
         {
             GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(false);

@@ -15,7 +15,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
             Unit = "m";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -35,7 +36,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
             Unit = "m";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -113,7 +115,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
             Unit = "°";
-            Formatting = "{0:N3}";
+            NumberOfDecimalDigits = 3;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -133,7 +136,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
             Unit = null;
-            Formatting = "{0:N3}";
+            NumberOfDecimalDigits = 3;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -182,7 +186,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
             Unit = "m/s";
-            Formatting = "{0:N1}";
+            NumberOfDecimalDigits = 1;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -202,7 +207,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "°";
-            Formatting = "{0:N1}";
+            NumberOfDecimalDigits = 1;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -231,7 +237,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "°";
-            Formatting = "{0:N2}";
+            NumberOfDecimalDigits = 2;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -260,7 +267,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "°";
-            Formatting = "{0:N2}";
+            NumberOfDecimalDigits = 2;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -289,7 +297,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "°";
-            Formatting = "{0:N2}";
+            NumberOfDecimalDigits = 2;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -309,7 +318,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "°";
-            Formatting = "{0:N2}";
+            NumberOfDecimalDigits = 2;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -329,7 +339,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "m";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -349,7 +360,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "m";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -369,7 +381,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "m";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -389,7 +402,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "kJ";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -409,7 +423,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -438,7 +453,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "%";
-            Formatting = "{0:N2}";
+            NumberOfDecimalDigits = 2;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -458,7 +474,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             Unit = "m";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()

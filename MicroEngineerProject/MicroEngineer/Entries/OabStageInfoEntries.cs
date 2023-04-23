@@ -19,7 +19,8 @@ namespace MicroMod
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
             Unit = "s";
-            Formatting = "{0:N1}";
+            NumberOfDecimalDigits = 1;
+            Formatting = "N";
             UseDHMSFormatting = true;
         }
 
@@ -52,7 +53,8 @@ namespace MicroMod
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
             Unit = "m/s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
         public override void RefreshData()
         {
@@ -71,7 +73,8 @@ namespace MicroMod
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
             Unit = "m/s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
         public override void RefreshData()
         {
@@ -90,7 +93,8 @@ namespace MicroMod
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
             Unit = "m/s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
         public override void RefreshData()
         {

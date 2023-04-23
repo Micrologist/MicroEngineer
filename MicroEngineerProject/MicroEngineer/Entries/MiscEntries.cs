@@ -28,7 +28,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             Unit = "ms2";
-            Formatting = "{0:N3}";
+            NumberOfDecimalDigits = 3;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -48,7 +49,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -77,7 +79,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -106,7 +109,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N3}";
+            NumberOfDecimalDigits = 3;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -135,7 +139,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -244,7 +249,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
@@ -273,7 +279,8 @@ namespace MicroMod
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             Unit = "s";
-            Formatting = "{0:N0}";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
         }
 
         public override void RefreshData()
