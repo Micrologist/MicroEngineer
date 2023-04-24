@@ -72,13 +72,15 @@ namespace MicroMod
 
         private void DrawStagesHeader()
         {
+            GUILayout.Space(10);
             GUILayout.BeginHorizontal();
+            GUILayout.Label($"{this.Name}", Styles.WindowTitleLabelStyle);
+            GUILayout.FlexibleSpace();
+            GUILayout.Button(Styles.Settings15Texture, Styles.SettingsBtnStyle);
             // If window is popped out and it's not locked => show the close button. If it's not popped out => show to popup arrow
-            this.IsFlightPoppedOut = this.IsFlightPoppedOut && !this.IsLocked ? !_ui.CloseButton(Styles.CloseBtnRect) : !this.IsFlightPoppedOut ? GUILayout.Button("⇖", Styles.PopoutBtnStyle) : this.IsFlightPoppedOut;
-
-            GUILayout.Label($"<b>{this.Name}</b>");
+            this.IsFlightPoppedOut = this.IsFlightPoppedOut && !this.IsLocked ? !_ui.CloseButton(Styles.CloseBtnStyle) : !this.IsFlightPoppedOut ? GUILayout.Button(Styles.PopoutTexture, Styles.PopoutBtnStyle) : this.IsFlightPoppedOut;
             GUILayout.EndHorizontal();
-            //GUILayout.Space(Styles.SpacingAfterHeader);
+            GUILayout.Space(Styles.NegativeSpacingAfterHeader);
 
             GUILayout.BeginHorizontal(Styles.EntryBackground_First);
             GUILayout.FlexibleSpace();
@@ -89,7 +91,7 @@ namespace MicroMod
             GUILayout.Label($"Burn", Styles.TableHeaderLabelStyle, GUILayout.Width(56));
             GUILayout.Space(5);
             GUILayout.EndHorizontal();
-            GUILayout.Space(Styles.SpacingAfterEntry);
+            GUILayout.Space(Styles.NegativeSpacingAfterEntry);
         }
 
         private void DrawStageEntry(GUIStyle horizontalStyle, int stageID, DeltaVStageInfo stageInfo, string twrFormatString)
@@ -116,7 +118,7 @@ namespace MicroMod
 
             GUILayout.Label($"{burnTime}<color=#{Styles.UnitColorHex}>{lastUnit}</color>", Styles.ValueLabelStyle, GUILayout.Width(56));
             GUILayout.EndHorizontal();
-            GUILayout.Space(Styles.SpacingAfterEntry);
+            GUILayout.Space(Styles.NegativeSpacingAfterEntry);
         }
 
         private void DrawSectionEnd()

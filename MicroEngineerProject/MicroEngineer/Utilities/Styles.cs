@@ -1,4 +1,5 @@
-﻿using SpaceWarp.API.Assets;
+﻿using BepInEx.Logging;
+using SpaceWarp.API.Assets;
 using SpaceWarp.API.UI;
 using UnityEngine;
 
@@ -10,6 +11,8 @@ namespace MicroMod
     public static class Styles
     {
         private static MicroEngineerMod _plugin;
+
+        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Styles");
 
         public static int WindowWidth = 290;
         public static int WindowHeight = 1440;
@@ -36,11 +39,13 @@ namespace MicroMod
         public static GUIStyle UnitLabelStyleStageOAB;
         public static GUIStyle NormalLabelStyle;
         public static GUIStyle TitleLabelStyle;
+        public static GUIStyle WindowTitleLabelStyle;
         public static GUIStyle NormalCenteredLabelStyle;
 
         public static GUIStyle WindowSelectionTextFieldStyle;
         public static GUIStyle WindowSelectionAbbrevitionTextFieldStyle;
 
+        public static GUIStyle CloseMainGuiBtnStyle;
         public static GUIStyle CloseBtnStyle;
         public static GUIStyle SettingsBtnStyle;
         public static GUIStyle SettingsMainGuiBtnStyle;
@@ -69,8 +74,8 @@ namespace MicroMod
 
         public static string UnitColorHex { get => ColorUtility.ToHtmlStringRGBA(_unitColor); }
 
-        public static int SpacingAfterHeader = -12;
-        public static int SpacingAfterEntry = -12;
+        public static int NegativeSpacingAfterHeader = -12;
+        public static int NegativeSpacingAfterEntry = -12;
         public static int SpacingAfterSection = 10;
         public static float SpacingBelowPopout = 15;
 
@@ -79,15 +84,20 @@ namespace MicroMod
         public static float MainGuiX = Screen.width * 0.8f;
         public static float MainGuiY = Screen.height * 0.2f;
 
-        public static Rect CloseBtnRect = new Rect(Styles.WindowWidth - 23, 6, 16, 16);
-        public static Rect SettingsMainBtnBtnRect = new Rect(6, 6, 30, 20);
-        public static Rect SettingsWindowBtnBtnRect = new Rect(Styles.WindowWidth - 23, 6, 20, 20);
+        public static Rect CloseBtnRect = new Rect(Styles.WindowWidth - 23, 6, 16, 16); // TODO check if we need this
+        public static Rect SettingsMainGuiBtnRect = new Rect(6, 6, 30, 20);
+        public static Rect SettingsFlightBtnRect = new Rect(Styles.WindowWidth - 45, 6, 16, 16); // TODO check if we need this
+        public static Rect PopoutBtnRect = new Rect(Styles.WindowWidth - 23, 6, 16, 16); // TODO check if we need this
+        public static Rect SettingsWindowBtnRect = new Rect(Styles.WindowWidth - 23, 6, 20, 20);
         public static Rect CloseBtnStagesOABRect = new Rect(Styles.WindowWidthStageOAB - 23, 6, 16, 16);
         public static Rect CloseBtnSettingsOABRect = new Rect(Styles.WindowWidthSettingsOAB - 23, 6, 16, 16);
         public static Rect SettingsOABRect = new Rect(Styles.WindowWidthStageOAB - 50, 6, 16, 16);
         public static Rect EditWindowRect = new Rect(Screen.width * 0.5f - Styles.WindowWidth / 2, Screen.height * 0.2f, Styles.WindowWidth, 0);
 
-        public static Texture2D SettingsIcon;
+        public static Texture2D Settings20Texture;
+        public static Texture2D Settings15Texture;
+        public static Texture2D CloseButtonTexture;
+        public static Texture2D PopoutTexture;
         public static Texture2D EntryBackgroundTexture_WhiteTheme_First;
         public static Texture2D EntryBackgroundTexture_WhiteTheme_Middle;
         public static Texture2D EntryBackgroundTexture_WhiteTheme_Last;
@@ -118,8 +128,8 @@ namespace MicroMod
         {
             _plugin = plugin;
 
-            InitializeStyles();
             InitializeTextures();
+            InitializeStyles();
             SetActiveTheme(Theme.Gray);
         }
 
@@ -142,7 +152,7 @@ namespace MicroMod
 
             EditWindowStyle = new GUIStyle(PopoutWindowStyle)
             {
-                padding = new RectOffset(8, 8, 30, 8)
+                padding = new RectOffset(8, 8, 10, 8)
             };
 
             StageOABWindowStyle = new GUIStyle(SpaceWarpUISkin.window)
@@ -170,17 +180,6 @@ namespace MicroMod
                 padding = new RectOffset(8, 8, 0, 16),
                 contentOffset = new Vector2(0, -22),
                 fixedWidth = WindowWidthSettingsFlight
-            };
-
-            PopoutBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                contentOffset = new Vector2(0, 2),
-                fixedHeight = 15,
-                fixedWidth = 15,
-                fontSize = 28,
-                clipping = TextClipping.Overflow,
-                margin = new RectOffset(0, 0, 10, 0)
             };
 
             SectionToggleStyle = new GUIStyle(SpaceWarpUISkin.toggle)
@@ -227,6 +226,12 @@ namespace MicroMod
                 contentOffset = new Vector2(0, -20),
             };
 
+            WindowTitleLabelStyle = new GUIStyle(SpaceWarpUISkin.label)
+            {
+                fontStyle = FontStyle.Bold,
+                contentOffset = new Vector2(0, -5)
+            };
+
             NormalCenteredLabelStyle = new GUIStyle(SpaceWarpUISkin.label)
             {
                 fixedWidth = 80,
@@ -252,14 +257,34 @@ namespace MicroMod
                 fixedWidth = 40
             };
 
+            ///// BUTTONS /////
+
+            CloseMainGuiBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
+            {
+                fixedWidth = 20,
+                fixedHeight = 20,
+                padding = new RectOffset(-2, -2, -2, -2)
+            };
+
             CloseBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
             {
-                fontSize = 8
+                fixedWidth = 25,
+                fixedHeight = 15,
+                padding = new RectOffset(-2, -2, -2, -2)
             };
 
             SettingsBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
             {
-                fontSize = 24
+                fixedWidth = 25,
+                fixedHeight = 15,
+                padding = new RectOffset(-2, -2, -2, -2)
+            };
+
+            PopoutBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
+            {                
+                fixedWidth = 25,
+                fixedHeight = 15,
+                padding = new RectOffset(-2, -2, -2, -2)
             };
 
             SettingsMainGuiBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
@@ -268,7 +293,6 @@ namespace MicroMod
                 fixedHeight = 20,
                 padding = new RectOffset(-2, -2, -2, -2)
             };
-
 
             NormalBtnStyle = new GUIStyle(SpaceWarpUISkin.button)
             {
@@ -311,23 +335,6 @@ namespace MicroMod
             {
                 alignment = TextAnchor.MiddleCenter
             };
-        }
-
-        private static void InitializeTextures()
-        {
-            SettingsIcon = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/settings-30.png");
-
-            EntryBackgroundTexture_WhiteTheme_First = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/background_white_first.png");
-            EntryBackgroundTexture_WhiteTheme_Middle = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/background_white_middle.png");
-            EntryBackgroundTexture_WhiteTheme_Last = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/background_white_last.png");
-
-            EntryBackgroundTexture_GrayTheme_First = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/background_darkgray_first.png");
-            EntryBackgroundTexture_GrayTheme_Middle = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/background_darkgray_middle.png");
-            EntryBackgroundTexture_GrayTheme_Last = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/background_darkgray_last.png");
-
-            EntryBackgroundTexture_BlackTheme_First = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/background_black_first.png");
-            EntryBackgroundTexture_BlackTheme_Middle = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/background_black_middle.png");
-            EntryBackgroundTexture_BlackTheme_Last = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/background_black_last.png");
 
             EntryBackground_WhiteTheme_First = new GUIStyle { name = "WhiteFirst" };
             EntryBackground_WhiteTheme_First.normal.background = EntryBackgroundTexture_WhiteTheme_First;
@@ -349,9 +356,42 @@ namespace MicroMod
             EntryBackground_BlackTheme_Middle.normal.background = EntryBackgroundTexture_BlackTheme_Middle;
             EntryBackground_BlackTheme_Last = new GUIStyle { name = "BlackLast" };
             EntryBackground_BlackTheme_Last.normal.background = EntryBackgroundTexture_BlackTheme_Last;
+        }
 
-            IncreaseDecimalDigitsTexture = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/increase-decimal-19.png");
-            DecreaseDecimalDigitsTexture = AssetManager.GetAsset<Texture2D>($"{_plugin.SpaceWarpMetadata.ModID}/images/decrease-decimal-19.png");
+        private static void InitializeTextures()
+        {
+            Settings20Texture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/settings-20.png");
+            Settings15Texture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/settings-15.png");
+            CloseButtonTexture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/close-15.png");
+            PopoutTexture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/popout-15.png");            
+
+            EntryBackgroundTexture_WhiteTheme_First = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_white_first.png");
+            EntryBackgroundTexture_WhiteTheme_Middle = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_white_middle.png");
+            EntryBackgroundTexture_WhiteTheme_Last = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_white_last.png");
+
+            EntryBackgroundTexture_GrayTheme_First = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_darkgray_first.png");
+            EntryBackgroundTexture_GrayTheme_Middle = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_darkgray_middle.png");
+            EntryBackgroundTexture_GrayTheme_Last = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_darkgray_last.png");
+
+            EntryBackgroundTexture_BlackTheme_First = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_black_first.png");
+            EntryBackgroundTexture_BlackTheme_Middle = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_black_middle.png");
+            EntryBackgroundTexture_BlackTheme_Last = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_black_last.png");
+
+            IncreaseDecimalDigitsTexture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/increase-decimal-19.png");
+            DecreaseDecimalDigitsTexture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/decrease-decimal-19.png");            
+        }
+
+        private static Texture2D LoadTexture(string path)
+        {
+            try
+            {
+                return AssetManager.GetAsset<Texture2D>(path);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error loading texture with path: {path}. Full error: \n{ex}");
+                return new Texture2D(20, 20);
+            }
         }
 
         public static void SetActiveTheme(Theme theme)
