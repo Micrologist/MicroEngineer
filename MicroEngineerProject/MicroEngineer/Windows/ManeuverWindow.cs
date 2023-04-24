@@ -16,7 +16,7 @@ namespace MicroMod
             if (_nodes == null || _nodes.Count <= 1)
                 return;
 
-            GUILayout.Space(10);
+            GUILayout.Space(5);
 
             GUILayout.BeginHorizontal();
 
@@ -29,6 +29,7 @@ namespace MicroMod
                 _selectedNodeIndex++;
 
             GUILayout.EndHorizontal();
+            GUILayout.Space(5);
         }
 
         override internal void DrawWindowFooter()
@@ -43,6 +44,7 @@ namespace MicroMod
                 DeleteNodes();
 
             GUILayout.EndHorizontal();
+            GUILayout.Space(-10);
         }
 
         private void DeleteNodes()
