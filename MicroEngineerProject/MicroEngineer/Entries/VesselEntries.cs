@@ -12,7 +12,7 @@ namespace MicroMod
             Description = "Name of the current vessel.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = true;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -32,8 +32,12 @@ namespace MicroMod
             Description = "Total mass of the vessel.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = true;
-            Unit = "kg";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "g";
+            BaseUnit = "kg";
+            KiloUnit = "T";
+            MegaUnit = "kT";
+            GigaUnit = "MT";
+            NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
 
@@ -53,8 +57,12 @@ namespace MicroMod
             Description = "Vessel's total delta velocity.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = true;
-            Unit = "m/s";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm/s";
+            BaseUnit = "m/s";
+            KiloUnit = "km/s";
+            MegaUnit = "Mm/s";
+            GigaUnit = "Gm/s";
+            NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
 
@@ -74,8 +82,12 @@ namespace MicroMod
             Description = "Total delta velocity of the vessel At Sea Level.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "m/s";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm/s";
+            BaseUnit = "m/s";
+            KiloUnit = "km/s";
+            MegaUnit = "Mm/s";
+            GigaUnit = "Gm/s";
+            NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
 
@@ -96,8 +108,12 @@ namespace MicroMod
             Description = "Total delta velocity of the vessel in vacuum.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "m/s";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm/s";
+            BaseUnit = "m/s";
+            KiloUnit = "km/s";
+            MegaUnit = "Mm/s";
+            GigaUnit = "Gm/s";
+            NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
 
@@ -117,7 +133,7 @@ namespace MicroMod
             Description = "Burn Time vessel can sustain with 100% thrust.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
@@ -147,14 +163,18 @@ namespace MicroMod
             Description = "Vessel's actual thrust.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = true;
-            Unit = "N";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "N";
+            BaseUnit = "kN";
+            KiloUnit = "MN";
+            MegaUnit = "GN";
+            GigaUnit = null;
+            NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo.FirstOrDefault()?.ThrustActual * 1000;
+            EntryValue = Utility.ActiveVessel.VesselDeltaV?.StageInfo.FirstOrDefault()?.ThrustActual;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -168,8 +188,12 @@ namespace MicroMod
             Description = "Vessel's thrust At Sea Level.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "N";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "N";
+            BaseUnit = "kN";
+            KiloUnit = "MN";
+            MegaUnit = "GN";
+            GigaUnit = null;
+            NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
 
@@ -189,8 +213,12 @@ namespace MicroMod
             Description = "Vessel's thrust in vacuum.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "N";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "N";
+            BaseUnit = "kN";
+            KiloUnit = "MN";
+            MegaUnit = "GN";
+            GigaUnit = null;
+            NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
 
@@ -210,7 +238,7 @@ namespace MicroMod
             Description = "Vessel's Thrust to Weight Ratio.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = null;
+            BaseUnit = null;
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -231,7 +259,7 @@ namespace MicroMod
             Description = "Vessel's Thrust to Weight Ratio At Sea Level.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = null;
+            BaseUnit = null;
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -252,7 +280,7 @@ namespace MicroMod
             Description = "Vessel's Thrust to Weight Ratio in vacuum.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = null;
+            BaseUnit = null;
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -273,7 +301,7 @@ namespace MicroMod
             Description = "Specific impulse (ISP) is a measure of how efficiently a reaction mass engine creates thrust.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
@@ -294,7 +322,7 @@ namespace MicroMod
             Description = "Specific impulse At Sea Level.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
@@ -315,7 +343,7 @@ namespace MicroMod
             Description = "Specific impulse in vacuum.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
@@ -336,7 +364,7 @@ namespace MicroMod
             Description = "Vessel's fuel percentage left.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "%";
+            BaseUnit = "%";
             NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
@@ -357,7 +385,7 @@ namespace MicroMod
             Description = "Stage fuel percentage left.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "%";
+            BaseUnit = "%";
             NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
@@ -378,7 +406,7 @@ namespace MicroMod
             Description = "Number of parts vessel is constructed of.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = true;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -398,7 +426,7 @@ namespace MicroMod
             Description = "Vessel's current throttle in %.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = "%";
+            BaseUnit = "%";
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
@@ -419,7 +447,7 @@ namespace MicroMod
             Description = "Crew capacity of all parts.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            Unit = null;
+            BaseUnit = null;
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }

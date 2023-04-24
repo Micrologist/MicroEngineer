@@ -14,8 +14,12 @@ namespace MicroMod
             Description = "Vessel's apoapsis height relative to the sea level. Apoapsis is the highest point of an orbit.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -35,8 +39,12 @@ namespace MicroMod
             Description = "Vessel's periapsis height relative to the sea level. Periapsis is the lowest point of an orbit.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -56,7 +64,7 @@ namespace MicroMod
             Description = "Shows the time until the vessel reaches apoapsis, the highest point of the orbit.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            Unit = "s";
+            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -85,7 +93,7 @@ namespace MicroMod
             Description = "Shows the time until the vessel reaches periapsis, the lowest point of the orbit.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            Unit = "s";
+            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -114,7 +122,7 @@ namespace MicroMod
             Description = "Shows the vessel's orbital inclination relative to the equator.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 3;
             Formatting = "N";
         }
@@ -135,7 +143,7 @@ namespace MicroMod
             Description = "Shows the vessel's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            Unit = null;
+            BaseUnit = null;
             NumberOfDecimalDigits = 3;
             Formatting = "N";
         }
@@ -156,7 +164,7 @@ namespace MicroMod
             Description = "Shows the amount of time it will take to complete a full orbit.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            Unit = "s";
+            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -185,7 +193,11 @@ namespace MicroMod
             Description = "Shows the vessel's orbital speed";
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            Unit = "m/s";
+            MiliUnit = "mm/s";
+            BaseUnit = "m/s";
+            KiloUnit = "km/s";
+            MegaUnit = "Mm/s";
+            GigaUnit = "Gm/s";
             NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
@@ -206,8 +218,8 @@ namespace MicroMod
             Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "°";
-            NumberOfDecimalDigits = 1;
+            BaseUnit = "°";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -236,7 +248,7 @@ namespace MicroMod
             Description = "Parameter used to describe the position of an object in its orbit around the celestial body.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -266,7 +278,7 @@ namespace MicroMod
             Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the vessel is.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -296,7 +308,7 @@ namespace MicroMod
             Description = "Longitude of Ascending Node is an angle from a specified reference direction, called the origin of longitude, to the direction of the ascending node, as measured in a specified reference plane.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -317,7 +329,7 @@ namespace MicroMod
             Description = "Angle from the line of the ascending node on the equatorial plane to the point of periapsis passage.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -338,8 +350,12 @@ namespace MicroMod
             Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -359,8 +375,12 @@ namespace MicroMod
             Description = "Shows the distance from the center of an orbit to the farthest edge.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -380,8 +400,12 @@ namespace MicroMod
             Description = "Shows the distance from the center of an orbit to the nearest edge.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -401,8 +425,12 @@ namespace MicroMod
             Description = "Constant sum of two orbiting bodies' mutual potential energy and their total kinetic energy divided by the reduced mass.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "kJ";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mJ";
+            BaseUnit = "J";
+            KiloUnit = "kJ";
+            MegaUnit = "MJ";
+            GigaUnit = "GJ";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -422,8 +450,8 @@ namespace MicroMod
             Description = "Shows orbit time in seconds from the Periapsis.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "s";
-            NumberOfDecimalDigits = 0;
+            BaseUnit = "s";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -452,7 +480,7 @@ namespace MicroMod
             Description = "Percent of the orbit completed.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "%";
+            BaseUnit = "%";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -473,8 +501,12 @@ namespace MicroMod
             Description = "Length from the center of the ellipse to the object.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -494,7 +526,7 @@ namespace MicroMod
             Description = "Shows the amount of time it will take to transition to another Sphere Of Influence.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             Formatting = null;
         }
 

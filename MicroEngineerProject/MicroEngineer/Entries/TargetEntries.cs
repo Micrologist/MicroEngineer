@@ -13,7 +13,7 @@ namespace MicroMod
             Description = "Target's name.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -33,8 +33,12 @@ namespace MicroMod
             Description = "Shows the target's apoapsis height relative to the sea level.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -54,8 +58,12 @@ namespace MicroMod
             Description = "Shows the target's periapsis height relative to the sea level.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -71,12 +79,16 @@ namespace MicroMod
     {
         public DistanceToTarget()
         {
-            Name = "Distance to Target";
+            Name = "Distance to Tgt";
             Description = "Shows the current distance between the vessel and the target.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -107,7 +119,11 @@ namespace MicroMod
             Description = "Shows the relative velocity between the vessel and the target.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "m/s";
+            MiliUnit = "mm/s";
+            BaseUnit = "m/s";
+            KiloUnit = "km/s";
+            MegaUnit = "Mm/s";
+            GigaUnit = "Gm/s";
             NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
@@ -141,7 +157,7 @@ namespace MicroMod
             Description = "Shows the relative inclination between the vessel and the target.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 3;
             Formatting = "N";
         }
@@ -175,8 +191,12 @@ namespace MicroMod
             Description = "Shows the target's altitude above sea level.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -196,7 +216,7 @@ namespace MicroMod
             Description = "Shows the target's orbital inclination relative to the equator.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 3;
             Formatting = "N";
         }
@@ -217,7 +237,7 @@ namespace MicroMod
             Description = "Shows the target's orbital eccentricity which is a measure of how much an elliptical orbit is 'squashed'.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = null;
+            BaseUnit = null;
             NumberOfDecimalDigits = 3;
             Formatting = "N";
         }
@@ -238,7 +258,7 @@ namespace MicroMod
             Description = "Shows the amount of time it will take the target to complete a full orbit.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "s";
+            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -267,7 +287,11 @@ namespace MicroMod
             Description = "Shows the target's orbital speed.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "m/s";
+            MiliUnit = "mm/s";
+            BaseUnit = "m/s";
+            KiloUnit = "km/s";
+            MegaUnit = "Mm/s";
+            GigaUnit = "Gm/s";
             NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
@@ -288,8 +312,8 @@ namespace MicroMod
             Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "°";
-            NumberOfDecimalDigits = 1;
+            BaseUnit = "°";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -318,7 +342,7 @@ namespace MicroMod
             Description = "Parameter used to describe the position of the target in its orbit around the celestial body.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -348,7 +372,7 @@ namespace MicroMod
             Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the target is.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -378,7 +402,7 @@ namespace MicroMod
             Description = "Shows the target's Longitude Of Ascending Node.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -399,7 +423,7 @@ namespace MicroMod
             Description = "Angle from the line of the ascending node on the equatorial plane to the point of periapsis passage.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -420,8 +444,12 @@ namespace MicroMod
             Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -441,8 +469,12 @@ namespace MicroMod
             Description = "Shows the distance from the center of an orbit to the farthest edge.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -462,8 +494,12 @@ namespace MicroMod
             Description = "Shows the distance from the center of an orbit to the nearest edge.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -483,7 +519,7 @@ namespace MicroMod
             Description = "Shows orbit time in seconds from the Periapsis.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             NumberOfDecimalDigits = 3;
             Formatting = "N";
         }
@@ -513,8 +549,12 @@ namespace MicroMod
             Description = "Radius of the body that target is orbiting.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -534,7 +574,7 @@ namespace MicroMod
             Description = "Product of the gravitational constant G and the mass M of the body target is orbiting.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "μ";
+            BaseUnit = "μ";
             NumberOfDecimalDigits = 4;
             Formatting = "e";
         }
@@ -555,8 +595,12 @@ namespace MicroMod
             Description = "Length from the center of the ellipse to the object.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -576,7 +620,7 @@ namespace MicroMod
             Description = "Angle between your vessel, the reference body and the target. How much \"ahead\" or \"behind\" in phase you are with the target.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -597,7 +641,7 @@ namespace MicroMod
             Description = "Phase angle needed for an optimal Hohmann transfer orbit. Use a circular orbit for a more accurate value.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            Unit = "°";
+            BaseUnit = "°";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -619,8 +663,12 @@ namespace MicroMod
             Category = MicroEntryCategory.Target;
             IsDefault = true;
             HideWhenNoData = true;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -643,7 +691,7 @@ namespace MicroMod
             Category = MicroEntryCategory.Target;
             IsDefault = true;
             HideWhenNoData = true;
-            Unit = "s";
+            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -675,7 +723,11 @@ namespace MicroMod
             Category = MicroEntryCategory.Target;
             IsDefault = true;
             HideWhenNoData = true;
-            Unit = "m/s";
+            MiliUnit = "mm/s";
+            BaseUnit = "m/s";
+            KiloUnit = "km/s";
+            MegaUnit = "Mm/s";
+            GigaUnit = "Gm/s";
             NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
@@ -699,8 +751,12 @@ namespace MicroMod
             Category = MicroEntryCategory.Target;
             IsDefault = false;
             HideWhenNoData = true;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -723,7 +779,7 @@ namespace MicroMod
             Category = MicroEntryCategory.Target;
             IsDefault = false;
             HideWhenNoData = true;
-            Unit = "s";
+            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -755,7 +811,11 @@ namespace MicroMod
             Category = MicroEntryCategory.Target;
             IsDefault = false;
             HideWhenNoData = true;
-            Unit = "m/s";
+            MiliUnit = "mm/s";
+            BaseUnit = "m/s";
+            KiloUnit = "km/s";
+            MegaUnit = "Mm/s";
+            GigaUnit = "Gm/s";
             NumberOfDecimalDigits = 1;
             Formatting = "N";
         }

@@ -1,6 +1,5 @@
 ﻿using BepInEx.Logging;
 using KSP.Game;
-using KSP.Sim.DeltaV;
 using KSP.Sim.impl;
 using KSP.UI.Binding;
 using UnityEngine;
@@ -200,11 +199,6 @@ namespace MicroMod
                 settingsWindow.ActiveTheme = Theme.Black;
             }
             GUILayout.EndHorizontal();
-            
-            GUILayout.Space(10);
-            GUILayout.Label("<b>Other</b>");
-            GUILayout.Space(-10);
-            GUILayout.Toggle(true, "use large units for large values", Styles.SectionToggleStyle);
 
             GUI.DragWindow(new Rect(0, 0, Screen.width, Screen.height));
         }
@@ -331,7 +325,7 @@ namespace MicroMod
                         if (window.Entries[i].HideWhenNoData && window.Entries[i].ValueDisplay == "-")
                             continue;
                         GUIStyle s = i == 0 ? Styles.EntryBackground_First : i < window.Entries.Count - 1 ? Styles.EntryBackground_Middle : Styles.EntryBackground_Last;
-                        DrawEntry(s, window.Entries[i].Name, window.Entries[i].ValueDisplay, window.Entries[i].Unit);
+                        DrawEntry(s, window.Entries[i].Name, window.Entries[i].ValueDisplay, window.Entries[i].UnitDisplay);
                     }
 
                     window.DrawWindowFooter();
@@ -366,7 +360,7 @@ namespace MicroMod
                 if (w.Entries[i].HideWhenNoData && w.Entries[i].ValueDisplay == "-")
                     continue;
                 GUIStyle s = i == 0 ? Styles.EntryBackground_First : i < w.Entries.Count - 1 ? Styles.EntryBackground_Middle : Styles.EntryBackground_Last;
-                DrawEntry(s, w.Entries[i].Name, w.Entries[i].ValueDisplay, w.Entries[i].Unit);
+                DrawEntry(s, w.Entries[i].Name, w.Entries[i].ValueDisplay, w.Entries[i].UnitDisplay);
             }
 
             w.DrawWindowFooter();
@@ -631,7 +625,7 @@ namespace MicroMod
                 GUILayout.FlexibleSpace();
                 GUILayout.Label(torque.ValueDisplay, Styles.ValueLabelStyle);
                 GUILayout.Space(5);
-                GUILayout.Label(torque.Unit, Styles.UnitLabelStyle);
+                GUILayout.Label(torque.UnitDisplay, Styles.UnitLabelStyle);
                 GUILayout.EndHorizontal();
             }
 
