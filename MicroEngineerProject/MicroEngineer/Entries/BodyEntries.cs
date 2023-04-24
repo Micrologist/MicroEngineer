@@ -12,7 +12,7 @@ namespace MicroMod
             Description = "Shows the body that vessel is currently at.";
             Category = MicroEntryCategory.Body;
             IsDefault = false;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -32,8 +32,12 @@ namespace MicroMod
             Description = "Body's radius.";
             Category = MicroEntryCategory.Body;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -53,7 +57,7 @@ namespace MicroMod
             Description = "Product of the gravitational constant G and the mass M of the body.";
             Category = MicroEntryCategory.Body;
             IsDefault = false;
-            Unit = "μ";
+            BaseUnit = "μ";
             NumberOfDecimalDigits = 4;
             Formatting = "e";
         }

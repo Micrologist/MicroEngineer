@@ -12,7 +12,7 @@ namespace MicroMod
             Description = "Stage Info object, not implemented yet."; // TODO Stage Info display and description
             Category = MicroEntryCategory.Stage;
             IsDefault = true;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 

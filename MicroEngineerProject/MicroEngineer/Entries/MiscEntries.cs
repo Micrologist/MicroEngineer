@@ -13,9 +13,9 @@ namespace MicroMod
             Description = "It's a separator!";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = "---";
+            BaseUnit = "---";
             Formatting = null;
-            EntryValue = "---------------";
+            EntryValue = "--------------";
         }
     }
 
@@ -27,7 +27,7 @@ namespace MicroMod
             Description = "Local gravity vessel is experiencing.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = "ms2";
+            BaseUnit = "ms2";
             NumberOfDecimalDigits = 3;
             Formatting = "N";
         }
@@ -48,7 +48,7 @@ namespace MicroMod
             Description = "Universal Time.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
@@ -78,7 +78,7 @@ namespace MicroMod
             Description = "Time passed since vessel was launched.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
@@ -108,8 +108,8 @@ namespace MicroMod
             Description = "Universal Time when vessel was launched.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = "s";
-            NumberOfDecimalDigits = 3;
+            BaseUnit = "s";
+            NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
 
@@ -138,7 +138,7 @@ namespace MicroMod
             Description = "Time since the vessel launched.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
@@ -168,7 +168,7 @@ namespace MicroMod
             Description = "Is autopilot enabled or disabled.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -188,7 +188,7 @@ namespace MicroMod
             Description = "Mode vessel's autopilot is using: stability assist, prograde, retrograde, normal, etc.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -208,7 +208,7 @@ namespace MicroMod
             Description = "Mode vessel's altimeter is using: Sea Level or Ground Level.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -228,7 +228,7 @@ namespace MicroMod
             Description = "Mode vessel's velocity meter is using: Orbit, Surface or Target.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -248,7 +248,7 @@ namespace MicroMod
             Description = "Universal Time at closest approach.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
@@ -278,7 +278,7 @@ namespace MicroMod
             Description = "Universal Time at the point of transfer to another sphere of influence.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            Unit = "s";
+            BaseUnit = "s";
             NumberOfDecimalDigits = 0;
             Formatting = "N";
         }

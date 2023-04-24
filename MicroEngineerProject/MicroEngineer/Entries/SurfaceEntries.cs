@@ -14,8 +14,12 @@ namespace MicroMod
             Description = "Shows the vessel's altitude above ground Level.";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -35,8 +39,12 @@ namespace MicroMod
             Description = "Shows the vessel's altitude above sea level.";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -56,8 +64,12 @@ namespace MicroMod
             Description = "Shows the vessel's altitude above scenery.";
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
-            Unit = "m";
-            NumberOfDecimalDigits = 0;
+            MiliUnit = "mm";
+            BaseUnit = "m";
+            KiloUnit = "km";
+            MegaUnit = "Mm";
+            GigaUnit = "Gm";
+            NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
 
@@ -77,7 +89,11 @@ namespace MicroMod
             Description = "Shows the vessel's vertical velocity (up/down).";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
-            Unit = "m/s";
+            MiliUnit = "mm/s";
+            BaseUnit = "m/s";
+            KiloUnit = "km/s";
+            MegaUnit = "Mm/s";
+            GigaUnit = "Gm/s";
             NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
@@ -98,7 +114,11 @@ namespace MicroMod
             Description = "Shows the vessel's horizontal velocity across a celestial body's surface.";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
-            Unit = "m/s";
+            MiliUnit = "mm/s";
+            BaseUnit = "m/s";
+            KiloUnit = "km/s";
+            MegaUnit = "Mm/s";
+            GigaUnit = "Gm/s";
             NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
@@ -119,7 +139,7 @@ namespace MicroMod
             Description = "Shows the vessel's current situation: Landed, Flying, Orbiting, etc.";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -148,7 +168,7 @@ namespace MicroMod
             Description = "Shows the biome currently below the vessel.";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
-            Unit = null;
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -183,7 +203,7 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Latitude;
-            Unit = Utility.ActiveVessel.Latitude < 0 ? "S" : "N";
+            BaseUnit = Utility.ActiveVessel.Latitude < 0 ? "S" : "N";
         }
 
         public override string ValueDisplay
@@ -212,7 +232,7 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Longitude;
-            Unit = Utility.ActiveVessel.Longitude < 0 ? "W" : "E";
+            BaseUnit = Utility.ActiveVessel.Longitude < 0 ? "W" : "E";
         }
 
         public override string ValueDisplay
@@ -235,7 +255,11 @@ namespace MicroMod
             Description = "Dynamic Pressure (q) is a defined property of a moving flow of gas. It describes how much pressure the airflow is having on the vessel.";
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
-            Unit = "kPa";
+            MiliUnit = "Pa";
+            BaseUnit = "kPa";
+            KiloUnit = "MPa";
+            MegaUnit = "GPa";
+            GigaUnit = null;
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -256,7 +280,11 @@ namespace MicroMod
             Description = "Static pressure is a term used to define the amount of pressure exerted by a fluid that is not moving - ambient pressure.";
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
-            Unit = "kPa";
+            MiliUnit = "Pa";
+            BaseUnit = "kPa";
+            KiloUnit = "MPa";
+            MegaUnit = "GPa";
+            GigaUnit = null;
             NumberOfDecimalDigits = 2;
             Formatting = "N";
         }
@@ -277,8 +305,8 @@ namespace MicroMod
             Description = "Temperature measured outside the vessel. The sensor which detects SAT must be carefully sited to ensure that airflow over it does not affect the indicated temperature.";
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
-            Unit = "K";
-            NumberOfDecimalDigits = 0;
+            BaseUnit = "K";
+            NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
 
@@ -298,8 +326,8 @@ namespace MicroMod
             Description = "Measured by means of a sensor positioned in the airflow, kinetic heating will result, raising the temperature measured above the Static ambient temperature.";
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
-            Unit = "K";
-            NumberOfDecimalDigits = 0;
+            BaseUnit = "K";
+            NumberOfDecimalDigits = 1;
             Formatting = "N";
         }
 

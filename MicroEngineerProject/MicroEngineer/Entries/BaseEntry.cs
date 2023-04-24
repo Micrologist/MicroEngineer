@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System.Xml;
-using UnityEngine;
 
 namespace MicroMod
 {
@@ -20,7 +18,15 @@ namespace MicroMod
         [JsonProperty]
         public bool HideWhenNoData;
         [JsonProperty]
-        public string Unit;
+        public string MiliUnit;
+        [JsonProperty]
+        public string BaseUnit;
+        [JsonProperty]
+        public string KiloUnit;
+        [JsonProperty]
+        public string MegaUnit;
+        [JsonProperty]
+        public string GigaUnit;
         [JsonProperty]
         public byte NumberOfDecimalDigits;
         [JsonProperty("Formatting")]
@@ -43,11 +49,81 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
+                if (String.IsNullOrEmpty(this.Formatting))
+                    return EntryValue.ToString();
+
+                if (!double.TryParse(EntryValue.ToString(), out double d))
+                    return EntryValue.ToString(); // This case shouldn't exist, but just to be sure
+
+                if (Math.Abs(d) < 1) // mili
+                {
+                    return !String.IsNullOrEmpty(this.MiliUnit) ? String.Format(Formatting, d * 1000) :
+                        String.Format(Formatting, d);
+                }
+                else if (Math.Abs(d) < 1000000) // base
+                {
+                    return String.Format(Formatting, d);
+                }
+                else if (Math.Abs(d) < 1000000000) // kilo
+                {
+                    return !String.IsNullOrEmpty(this.KiloUnit) ? String.Format(Formatting, d / 1000) :
+                        String.Format(Formatting, d);
+
+                }
+                else if (Math.Abs(d) < 1000000000000) // mega
+                {
+                    return !String.IsNullOrEmpty(this.MegaUnit) ? String.Format(Formatting, d / 1000000) :
+                        !String.IsNullOrEmpty(this.KiloUnit) ? String.Format(Formatting, d / 1000) :
+                        String.Format(Formatting, d);
+
+                }
+                else // giga
+                {
+                    return !String.IsNullOrEmpty(this.GigaUnit) ? String.Format(Formatting, d / 1000000000) :
+                        !String.IsNullOrEmpty(this.MegaUnit) ? String.Format(Formatting, d / 1000000) :
+                        !String.IsNullOrEmpty(this.KiloUnit) ? String.Format(Formatting, d / 1000) :
+                        String.Format(Formatting, d);
+                }
             }
         }
 
-        
+        public virtual string UnitDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "";
+
+                if (String.IsNullOrEmpty(this.Formatting))
+                    return this.BaseUnit ?? "";
+
+                if (!double.TryParse(EntryValue.ToString(), out double d))
+                    return this.BaseUnit ?? ""; // This case shouldn't exist, but just to be sure
+
+                if (d > 0.001 && d < 1) // mili
+                {
+                    return this.MiliUnit ?? this.BaseUnit ?? "";
+                }
+                else if (Math.Abs(d) < 1000000) // base
+                {
+                    return this.BaseUnit ?? "";
+                }
+                else if (Math.Abs(d) < 1000000000) // kilo
+                {
+                    return this.KiloUnit ?? this.BaseUnit ?? "";
+
+                }
+                else if (Math.Abs(d) < 1000000000000) // mega
+                {
+                    return this.MegaUnit ?? this.KiloUnit ?? this.BaseUnit ?? "";
+
+                }
+                else // giga
+                {
+                    return this.GigaUnit ?? this.MegaUnit ?? this.KiloUnit ?? this.BaseUnit ?? "";
+                }
+            }
+        }
 
         public virtual void RefreshData() { }
     }    
