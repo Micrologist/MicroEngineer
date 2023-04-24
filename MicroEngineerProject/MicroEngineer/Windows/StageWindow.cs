@@ -60,7 +60,7 @@ namespace MicroMod
                     DeltaVStageInfo stageInfo = stages[i];
                     if (stageInfo.DeltaVinVac > 0.0001 || stageInfo.DeltaVatASL > 0.0001)
                     {
-                        GUIStyle style = stageBeingDrawn < numberOfNonEmptyStagesToDraw - 1 ? Styles.EntryBackground_Middle : Styles.EntryBackground_Last;
+                        GUIStyle style = stageBeingDrawn++ < numberOfNonEmptyStagesToDraw - 1 ? Styles.EntryBackground_Middle : Styles.EntryBackground_Last;
                         int stageNum = stageCount - stageInfo.Stage;
                         DrawStageEntry(style, stageNum, stageInfo, twrFormatString);
                     }
