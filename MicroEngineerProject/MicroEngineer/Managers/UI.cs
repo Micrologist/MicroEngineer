@@ -486,35 +486,38 @@ namespace MicroMod
             GUILayout.EndHorizontal();
 
             var entries = editableWindows[_selectedWindowId].Entries.ToList();
-            foreach (var (entry, index) in entries.Select((entry, index) => (entry, index)))
+            for (int i = 0; i < entries.Count; i++)
             {
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(entry.Name, Styles.NameLabelStyle);
-                GUI.enabled = entry.NumberOfDecimalDigits < 5;
-                if (entry.Formatting != null && GUILayout.Button(Styles.IncreaseDecimalDigitsTexture, Styles.OneCharacterBtnStyle))
+                GUIStyle backgroundStyle = i == 0 ? Styles.EntryBackground_First : i < entries.Count - 1 ? Styles.EntryBackground_Middle : Styles.EntryBackground_Last;
+
+                GUILayout.BeginHorizontal(backgroundStyle);
+                
+                GUILayout.Label(entries[i].Name, Styles.NameLabelStyle);
+                GUI.enabled = entries[i].NumberOfDecimalDigits < 5;
+                if (entries[i].Formatting != null && GUILayout.Button(Styles.IncreaseDecimalDigitsTexture, Styles.OneCharacterBtnStyle))
                 {
-                    entry.NumberOfDecimalDigits++;
+                    entries[i].NumberOfDecimalDigits++;
                 }
-                GUI.enabled = entry.NumberOfDecimalDigits > 0;
-                if (entry.Formatting != null && GUILayout.Button(Styles.DecreaseDecimalDigitsTexture, Styles.OneCharacterBtnStyle))
+                GUI.enabled = entries[i].NumberOfDecimalDigits > 0;
+                if (entries[i].Formatting != null && GUILayout.Button(Styles.DecreaseDecimalDigitsTexture, Styles.OneCharacterBtnStyle))
                 {
-                    entry.NumberOfDecimalDigits--;
+                    entries[i].NumberOfDecimalDigits--;
                 }
-                GUI.enabled = index > 0;
+                GUI.enabled = i > 0;
                 if (GUILayout.Button("↑", Styles.OneCharacterBtnStyle))
                 {
-                    editableWindows[_selectedWindowId].MoveEntryUp(index);
+                    editableWindows[_selectedWindowId].MoveEntryUp(i);
                 }
-                GUI.enabled = index < editableWindows[_selectedWindowId].Entries.Count - 1;
+                GUI.enabled = i < editableWindows[_selectedWindowId].Entries.Count - 1;
                 if (GUILayout.Button("↓", Styles.OneCharacterBtnStyle))
                 {
-                    editableWindows[_selectedWindowId].MoveEntryDown(index);
+                    editableWindows[_selectedWindowId].MoveEntryDown(i);
                 }
                 GUI.enabled = true;
                 if (GUILayout.Button("X", Styles.OneCharacterBtnStyle))
-                    editableWindows[_selectedWindowId].RemoveEntry(index);
+                    editableWindows[_selectedWindowId].RemoveEntry(i);
                 GUILayout.EndHorizontal();
-                GUILayout.Space(Styles.NegativeSpacingAfterEntry);
+                GUILayout.Space(-4);
             }
             #endregion
 
@@ -546,35 +549,37 @@ namespace MicroMod
             }
             GUILayout.EndHorizontal();
 
-            foreach (var (entry, index) in entriesByCategory.Select((entry, index) => (entry, index)))
+            for (int i = 0; i < entriesByCategory.Count; i++)
             {
-                GUILayout.BeginHorizontal();
-                GUILayout.Label(entry.Name, Styles.NameLabelStyle);
+                GUIStyle backgroundStyle = i == 0 ? Styles.EntryBackground_First : i < entriesByCategory.Count - 1 ? Styles.EntryBackground_Middle : Styles.EntryBackground_Last;
+
+                GUILayout.BeginHorizontal(backgroundStyle);
+                GUILayout.Label(entriesByCategory[i].Name, Styles.NameLabelStyle);
                 if (GUILayout.Button("?", Styles.OneCharacterBtnStyle))
                 {
                     if (!_showTooltip.condition)
-                        _showTooltip = (true, index);
+                        _showTooltip = (true, i);
                     else
                     {
-                        if (_showTooltip.index != index)
-                            _showTooltip = (true, index);
+                        if (_showTooltip.index != i)
+                            _showTooltip = (true, i);
                         else
-                            _showTooltip = (false, index);
+                            _showTooltip = (false, i);
                     }
                 }
                 if (GUILayout.Button("+", Styles.OneCharacterBtnStyle))
                 {
-                    editableWindows[_selectedWindowId].AddEntry(entry);
+                    editableWindows[_selectedWindowId].AddEntry(entriesByCategory[i]);
                 }
                 GUILayout.EndHorizontal();
 
-                if (_showTooltip.condition && _showTooltip.index == index)
+                if (_showTooltip.condition && _showTooltip.index == i)
                 {
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label(entry.Description, Styles.BlueLabelStyle);
+                    GUILayout.Label(entriesByCategory[i].Description, Styles.BlueLabelStyle);
                     GUILayout.EndHorizontal();
                 }
-                GUILayout.Space(Styles.NegativeSpacingAfterEntry);
+                GUILayout.Space(Styles.NegativeSpacingAfterEntry + 7);
             }
             GUILayout.Space(10);
             #endregion

@@ -88,6 +88,7 @@ namespace MicroMod
                     _ui.ShowGuiOAB = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
                     _ui.CelestialBodies.GetBodies();
                     _ui.CelestialBodySelectionStageIndex = -1;
+                    Styles.SetActiveTheme(Theme.Gray); // TODO implement other themes in OAB
                 }
             }
         }
