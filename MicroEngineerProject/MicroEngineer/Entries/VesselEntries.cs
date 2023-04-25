@@ -78,7 +78,7 @@ namespace MicroMod
     {
         public TotalDeltaVASL()
         {
-            Name = "Total ∆v ASL";
+            Name = "Total ∆v (ASL)";
             Description = "Total delta velocity of the vessel At Sea Level.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
@@ -237,7 +237,7 @@ namespace MicroMod
             Name = "TWR";
             Description = "Vessel's Thrust to Weight Ratio.";
             Category = MicroEntryCategory.Vessel;
-            IsDefault = false;
+            IsDefault = true;
             BaseUnit = null;
             NumberOfDecimalDigits = 2;
             Formatting = "N";

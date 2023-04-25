@@ -88,7 +88,7 @@ namespace MicroMod
             KiloUnit = "km";
             MegaUnit = "Mm";
             GigaUnit = "Gm";
-            NumberOfDecimalDigits = 2;
+            NumberOfDecimalDigits = 0;
             Formatting = "N";
         }
 
@@ -440,7 +440,7 @@ namespace MicroMod
     {
         public Target_SemiLatusRectum()
         {
-            Name = "Semi Latus Rectum";
+            Name = "Semi Latus Rect";
             Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;

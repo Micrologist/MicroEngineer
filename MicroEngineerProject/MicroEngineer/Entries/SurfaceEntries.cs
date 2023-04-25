@@ -35,7 +35,7 @@ namespace MicroMod
     {
         public AltitudeAsl()
         {
-            Name = "Altitude (Sea Lvl)";
+            Name = "Altitude (Sea)";
             Description = "Shows the vessel's altitude above sea level.";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;

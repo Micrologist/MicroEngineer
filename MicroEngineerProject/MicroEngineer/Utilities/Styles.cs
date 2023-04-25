@@ -81,7 +81,7 @@ namespace MicroMod
 
         public static float PoppedOutX = Screen.width * 0.6f;
         public static float PoppedOutY = Screen.height * 0.2f;
-        public static float MainGuiX = Screen.width * 0.8f;
+        public static float MainGuiX = Screen.width * 0.7f;
         public static float MainGuiY = Screen.height * 0.2f;
 
         public static Rect CloseBtnRect = new Rect(Styles.WindowWidth - 23, 6, 16, 16); // TODO check if we need this
@@ -201,7 +201,7 @@ namespace MicroMod
 
             UnitLabelStyle = new GUIStyle(SpaceWarpUISkin.label)
             {
-                fixedWidth = 24,
+                fixedWidth = 35,
                 alignment = TextAnchor.MiddleLeft
             };
             UnitLabelStyle.normal.textColor = _unitColor;
@@ -360,6 +360,8 @@ namespace MicroMod
 
         private static void InitializeTextures()
         {
+            // Icons from https://icons8.com
+
             Settings20Texture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/settings-20.png");
             Settings15Texture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/settings-15.png");
             CloseButtonTexture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/close-15.png");
