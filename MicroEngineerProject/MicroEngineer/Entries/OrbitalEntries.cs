@@ -346,7 +346,7 @@ namespace MicroMod
     {
         public SemiLatusRectum()
         {
-            Name = "Semi Latus Rectum";
+            Name = "Semi Latus Rect";
             Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
