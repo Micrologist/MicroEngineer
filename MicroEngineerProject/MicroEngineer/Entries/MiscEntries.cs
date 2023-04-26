@@ -23,7 +23,7 @@ namespace MicroMod
     {
         public GravityForPos()
         {
-            Name = "Local Gravity";
+            Name = "Local gravity";
             Description = "Local gravity vessel is experiencing.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
@@ -104,7 +104,7 @@ namespace MicroMod
     {
         public LaunchTime()
         {
-            Name = "Launch Time";
+            Name = "Launch time";
             Description = "Universal Time when vessel was launched.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
@@ -184,7 +184,7 @@ namespace MicroMod
     {
         public AutopilotStatus_Mode()
         {
-            Name = "Autopilot Mode";
+            Name = "Autopilot mode";
             Description = "Mode vessel's autopilot is using: stability assist, prograde, retrograde, normal, etc.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
@@ -204,7 +204,7 @@ namespace MicroMod
     {
         public AltimeterMode()
         {
-            Name = "Altimeter Mode";
+            Name = "Altimeter mode";
             Description = "Mode vessel's altimeter is using: Sea Level or Ground Level.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
@@ -224,7 +224,7 @@ namespace MicroMod
     {
         public SpeedMode()
         {
-            Name = "Speed Mode";
+            Name = "Speed mode";
             Description = "Mode vessel's velocity meter is using: Orbit, Surface or Target.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
@@ -244,7 +244,7 @@ namespace MicroMod
     {
         public UniversalTimeAtClosestApproach()
         {
-            Name = "UT Close.App.";
+            Name = "UT close.app.";
             Description = "Universal Time at closest approach.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
@@ -274,7 +274,7 @@ namespace MicroMod
     {
         public UniversalTimeAtSoiEncounter()
         {
-            Name = "UT SOI Enc.";
+            Name = "UT SOI enc.";
             Description = "Universal Time at the point of transfer to another sphere of influence.";
             Category = MicroEntryCategory.Misc;
             IsDefault = false;

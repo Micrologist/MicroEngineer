@@ -115,7 +115,7 @@ namespace MicroMod
     {
         public RelativeSpeed()
         {
-            Name = "Rel. Speed";
+            Name = "Rel. speed";
             Description = "Shows the relative velocity between the vessel and the target.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
@@ -153,7 +153,7 @@ namespace MicroMod
     {
         public RelativeInclination()
         {
-            Name = "Rel. Inclination";
+            Name = "Rel. inclination";
             Description = "Shows the relative inclination between the vessel and the target.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
@@ -187,7 +187,7 @@ namespace MicroMod
     {
         public Target_AltitudeFromSeaLevel()
         {
-            Name = "Altitude (Sea)";
+            Name = "Altitude (sea)";
             Description = "Shows the target's altitude above sea level.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
@@ -283,7 +283,7 @@ namespace MicroMod
     {
         public Target_Obtvelocity()
         {
-            Name = "Orbital Speed";
+            Name = "Orbital speed";
             Description = "Shows the target's orbital speed.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
@@ -308,7 +308,7 @@ namespace MicroMod
     {
         public Target_TrueAnomaly()
         {
-            Name = "True Anomaly";
+            Name = "True anomaly";
             Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
@@ -338,7 +338,7 @@ namespace MicroMod
     {
         public Target_MeanAnomaly()
         {
-            Name = "Mean Anomaly";
+            Name = "Mean anomaly";
             Description = "Parameter used to describe the position of the target in its orbit around the celestial body.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
@@ -368,7 +368,7 @@ namespace MicroMod
     {
         public Target_EccentricAnomaly()
         {
-            Name = "Eccentric Anomaly";
+            Name = "Eccentric anomaly";
             Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the target is.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
@@ -440,7 +440,7 @@ namespace MicroMod
     {
         public Target_SemiLatusRectum()
         {
-            Name = "Semi Latus Rect";
+            Name = "Semi latus rect";
             Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
@@ -465,7 +465,7 @@ namespace MicroMod
     {
         public Target_SemiMajorAxis()
         {
-            Name = "Semi Major Axis";
+            Name = "Semi major axis";
             Description = "Shows the distance from the center of an orbit to the farthest edge.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
@@ -490,7 +490,7 @@ namespace MicroMod
     {
         public Target_SemiMinorAxis()
         {
-            Name = "Semi Minor Axis";
+            Name = "Semi minor axis";
             Description = "Shows the distance from the center of an orbit to the nearest edge.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
@@ -515,7 +515,7 @@ namespace MicroMod
     {
         public Target_ObT()
         {
-            Name = "Orbit Time";
+            Name = "Orbit time";
             Description = "Shows orbit time in seconds from the Periapsis.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
@@ -545,7 +545,7 @@ namespace MicroMod
     {
         public Target_ReferenceBodyConstants_Radius()
         {
-            Name = "Body Radius";
+            Name = "Body radius";
             Description = "Radius of the body that target is orbiting.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
@@ -570,7 +570,7 @@ namespace MicroMod
     {
         public Target_ReferenceBodyConstants_StandardGravitationParameter()
         {
-            Name = "Std. Grav. Param.";
+            Name = "Std. grav. param.";
             Description = "Product of the gravitational constant G and the mass M of the body target is orbiting.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
@@ -591,7 +591,7 @@ namespace MicroMod
     {
         public Target_OrbitRadius()
         {
-            Name = "Orbit Radius";
+            Name = "Orbit radius";
             Description = "Length from the center of the ellipse to the object.";
             Category = MicroEntryCategory.Target;
             IsDefault = false;
@@ -616,7 +616,7 @@ namespace MicroMod
     {
         public PhaseAngle()
         {
-            Name = "Phase Angle";
+            Name = "Phase angle";
             Description = "Angle between your vessel, the reference body and the target. How much \"ahead\" or \"behind\" in phase you are with the target.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
@@ -637,7 +637,7 @@ namespace MicroMod
     {
         public TransferAngle()
         {
-            Name = "Transfer Angle";
+            Name = "Transfer angle";
             Description = "Phase angle needed for an optimal Hohmann transfer orbit. Use a circular orbit for a more accurate value.";
             Category = MicroEntryCategory.Target;
             IsDefault = true;
