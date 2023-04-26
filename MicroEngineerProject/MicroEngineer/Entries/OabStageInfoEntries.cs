@@ -72,7 +72,7 @@ namespace MicroMod
     {
         public TotalDeltaVActual_OAB()
         {
-            Name = "Total ∆v actual (OAB)";
+            Name = "Total ∆v Actual (OAB)";
             Description = "Shows the vessel's actual total delta velocity (not used in OAB).";
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
