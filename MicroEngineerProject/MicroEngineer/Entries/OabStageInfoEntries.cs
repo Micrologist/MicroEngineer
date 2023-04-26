@@ -14,7 +14,7 @@ namespace MicroMod
 
         public TotalBurnTime_OAB()
         {
-            Name = "Total Burn Time (OAB)";
+            Name = "Total burn time (OAB)";
             Description = "Shows the total length of burn the vessel can mantain.";
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
@@ -72,7 +72,7 @@ namespace MicroMod
     {
         public TotalDeltaVActual_OAB()
         {
-            Name = "Total ∆v Actual (OAB)";
+            Name = "Total ∆v actual (OAB)";
             Description = "Shows the vessel's actual total delta velocity (not used in OAB).";
             Category = MicroEntryCategory.OAB;
             IsDefault = true;

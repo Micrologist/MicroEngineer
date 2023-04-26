@@ -10,7 +10,7 @@ namespace MicroMod
     {
         public AltitudeAgl()
         {
-            Name = "Altitude (Ground)";
+            Name = "Altitude (ground)";
             Description = "Shows the vessel's altitude above ground Level.";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
@@ -35,7 +35,7 @@ namespace MicroMod
     {
         public AltitudeAsl()
         {
-            Name = "Altitude (Sea)";
+            Name = "Altitude (sea)";
             Description = "Shows the vessel's altitude above sea level.";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
@@ -60,7 +60,7 @@ namespace MicroMod
     {
         public AltitudeFromScenery()
         {
-            Name = "Altitude (Scenery)";
+            Name = "Altitude (scenery)";
             Description = "Shows the vessel's altitude above scenery.";
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
@@ -85,7 +85,7 @@ namespace MicroMod
     {
         public VerticalVelocity()
         {
-            Name = "Vertical Vel.";
+            Name = "Vertical vel.";
             Description = "Shows the vessel's vertical velocity (up/down).";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
@@ -110,7 +110,7 @@ namespace MicroMod
     {
         public HorizontalVelocity()
         {
-            Name = "Horizontal Vel.";
+            Name = "Horizontal vel.";
             Description = "Shows the vessel's horizontal velocity across a celestial body's surface.";
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
@@ -251,7 +251,7 @@ namespace MicroMod
     {
         public DynamicPressure_kPa()
         {
-            Name = "Dynamic Pressure";
+            Name = "Dynamic pressure";
             Description = "Dynamic Pressure (q) is a defined property of a moving flow of gas. It describes how much pressure the airflow is having on the vessel.";
             Category = MicroEntryCategory.Surface;
             IsDefault = false;
@@ -276,7 +276,7 @@ namespace MicroMod
     {
         public StaticPressure_kPa()
         {
-            Name = "Static Pressure";
+            Name = "Static pressure";
             Description = "Static pressure is a term used to define the amount of pressure exerted by a fluid that is not moving - ambient pressure.";
             Category = MicroEntryCategory.Surface;
             IsDefault = false;

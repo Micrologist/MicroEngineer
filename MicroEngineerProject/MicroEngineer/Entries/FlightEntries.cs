@@ -33,7 +33,7 @@ namespace MicroMod
     {
         public MachNumber()
         {
-            Name = "Mach Number";
+            Name = "Mach number";
             Description = "Shows the ratio of vessel's speed and local speed of sound.";
             Category = MicroEntryCategory.Flight;
             IsDefault = true;
@@ -222,7 +222,7 @@ namespace MicroMod
     {
         public TotalLift()
         {
-            Name = "Total Lift";
+            Name = "Total lift";
             Description = "Shows the total lift force produced by the vessel.";
             Category = MicroEntryCategory.Flight;
             IsDefault = true;
@@ -257,7 +257,7 @@ namespace MicroMod
     {
         public TotalDrag()
         {
-            Name = "Total Drag";
+            Name = "Total drag";
             Description = "Shows the total drag force exerted on the vessel.";
             Category = MicroEntryCategory.Flight;
             IsDefault = true;
@@ -323,7 +323,7 @@ namespace MicroMod
     {
         public DragCoefficient()
         {
-            Name = "Drag Coefficient";
+            Name = "Drag coefficient";
             Description = "Dimensionless quantity that is used to quantify the drag or resistance of an object in a fluid environment, such as air or water.";
             Category = MicroEntryCategory.Flight;
             IsDefault = false;
@@ -344,7 +344,7 @@ namespace MicroMod
     {
         public ExposedArea()
         {
-            Name = "Exposed Area";
+            Name = "Exposed area";
             Description = "The surface area that interacts with the working fluid or gas.";
             Category = MicroEntryCategory.Flight;
             IsDefault = false;
@@ -365,7 +365,7 @@ namespace MicroMod
     {
         public AtmosphericDensity()
         {
-            Name = "Atm. Density";
+            Name = "Atm. density";
             Description = "Shows the atmospheric density.";
             Category = MicroEntryCategory.Flight;
             IsDefault = true;

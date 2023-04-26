@@ -189,7 +189,7 @@ namespace MicroMod
     {
         public OrbitalSpeed()
         {
-            Name = "Orbital Speed";
+            Name = "Orbital speed";
             Description = "Shows the vessel's orbital speed";
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
@@ -214,7 +214,7 @@ namespace MicroMod
     {
         public TrueAnomaly()
         {
-            Name = "True Anomaly";
+            Name = "True anomaly";
             Description = "Angle between the direction of periapsis and the current position of the object, as seen from the main focus of the ellipse.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
@@ -244,7 +244,7 @@ namespace MicroMod
     {
         public MeanAnomaly()
         {
-            Name = "Mean Anomaly";
+            Name = "Mean anomaly";
             Description = "Parameter used to describe the position of an object in its orbit around the celestial body.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
@@ -274,7 +274,7 @@ namespace MicroMod
     {
         public EccentricAnomaly()
         {
-            Name = "Eccentric Anomaly";
+            Name = "Eccentric anomaly";
             Description = "Angle at the center of the orbital ellipse from the semi major axis to the line that passes through the center of the ellipse and the point on the auxiliary circle that is the intersection of the line perpendicular to the semi major axis and passes through the point in the orbit where the vessel is.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
@@ -346,7 +346,7 @@ namespace MicroMod
     {
         public SemiLatusRectum()
         {
-            Name = "Semi Latus Rect";
+            Name = "Semi latus rect";
             Description = "Half the length of the chord through one focus, perpendicular to the major axis.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
@@ -371,7 +371,7 @@ namespace MicroMod
     {
         public SemiMajorAxis()
         {
-            Name = "Semi Major Axis";
+            Name = "Semi major axis";
             Description = "Shows the distance from the center of an orbit to the farthest edge.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
@@ -396,7 +396,7 @@ namespace MicroMod
     {
         public SemiMinorAxis()
         {
-            Name = "Semi Minor Axis";
+            Name = "Semi minor axis";
             Description = "Shows the distance from the center of an orbit to the nearest edge.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
@@ -421,7 +421,7 @@ namespace MicroMod
     {
         public OrbitalEnergy()
         {
-            Name = "Orbital Energy";
+            Name = "Orbital energy";
             Description = "Constant sum of two orbiting bodies' mutual potential energy and their total kinetic energy divided by the reduced mass.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
@@ -446,7 +446,7 @@ namespace MicroMod
     {
         public ObT()
         {
-            Name = "Orbit Time";
+            Name = "Orbit time";
             Description = "Shows orbit time in seconds from the Periapsis.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
@@ -476,7 +476,7 @@ namespace MicroMod
     {
         public OrbitPercent()
         {
-            Name = "Orbit Percent";
+            Name = "Orbit percent";
             Description = "Percent of the orbit completed.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
@@ -497,7 +497,7 @@ namespace MicroMod
     {
         public OrbitRadius()
         {
-            Name = "Orbit Radius";
+            Name = "Orbit radius";
             Description = "Length from the center of the ellipse to the object.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
@@ -522,7 +522,7 @@ namespace MicroMod
     {
         public SoiTransition()
         {
-            Name = "SOI Trans.";
+            Name = "SOI trans.";
             Description = "Shows the amount of time it will take to transition to another Sphere Of Influence.";
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;

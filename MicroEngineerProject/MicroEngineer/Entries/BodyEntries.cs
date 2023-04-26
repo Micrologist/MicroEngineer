@@ -28,7 +28,7 @@ namespace MicroMod
     {
         public ReferenceBodyConstants_Radius()
         {
-            Name = "Body Radius";
+            Name = "Body radius";
             Description = "Body's radius.";
             Category = MicroEntryCategory.Body;
             IsDefault = false;
@@ -53,7 +53,7 @@ namespace MicroMod
     {
         public ReferenceBodyConstants_StandardGravitationParameter()
         {
-            Name = "Std. Grav. Param.";
+            Name = "Std. grav. param.";
             Description = "Product of the gravitational constant G and the mass M of the body.";
             Category = MicroEntryCategory.Body;
             IsDefault = false;

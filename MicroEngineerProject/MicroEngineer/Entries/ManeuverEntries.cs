@@ -43,7 +43,7 @@ namespace MicroMod
     {
         public ManeuverPrograde()
         {
-            Name = "∆v Prograde";
+            Name = "∆v prograde";
             Description = "Prograde/Retrograde component of the total change in velocity.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -69,7 +69,7 @@ namespace MicroMod
     {
         public ManeuverNormal()
         {
-            Name = "∆v Normal";
+            Name = "∆v normal";
             Description = "Normal component of the total change in velocity.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -95,7 +95,7 @@ namespace MicroMod
     {
         public ManeuverRadial()
         {
-            Name = "∆v Radial";
+            Name = "∆v radial";
             Description = "Radial component of the total change in velocity.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -121,7 +121,7 @@ namespace MicroMod
     {
         public TimeToNode()
         {
-            Name = "Time to Node";
+            Name = "Time to node";
             Description = "Time until vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
@@ -151,7 +151,7 @@ namespace MicroMod
     {
         public BurnTime()
         {
-            Name = "Burn Time";
+            Name = "Burn time";
             Description = "Length of time needed to complete the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
@@ -381,7 +381,7 @@ namespace MicroMod
     {
         public Maneuver_TrueAnomaly()
         {
-            Name = "True Anomaly";
+            Name = "True anomaly";
             Description = "True Anomaly vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -414,7 +414,7 @@ namespace MicroMod
     {
         public Maneuver_MeanAnomaly()
         {
-            Name = "Mean Anomaly";
+            Name = "Mean anomaly";
             Description = "Mean Anomaly vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -447,7 +447,7 @@ namespace MicroMod
     {
         public Maneuver_EccentricAnomaly()
         {
-            Name = "Eccentric Anomaly";
+            Name = "Eccentric anomaly";
             Description = "Eccentric Anomaly vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -528,7 +528,7 @@ namespace MicroMod
     {
         public Maneuver_SemiLatusRectum()
         {
-            Name = "Semi Latus Rectum";
+            Name = "Semi latus rect";
             Description = "Semi Latus Rectum vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -556,7 +556,7 @@ namespace MicroMod
     {
         public Maneuver_SemiMajorAxis()
         {
-            Name = "Semi Major Axis";
+            Name = "Semi major axis";
             Description = "Semi Major Axis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -584,7 +584,7 @@ namespace MicroMod
     {
         public Maneuver_SemiMinorAxis()
         {
-            Name = "Semi Minor Axis";
+            Name = "Semi minor axis";
             Description = "Semi Minor Axis vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -612,7 +612,7 @@ namespace MicroMod
     {
         public Maneuver_OrbitalEnergy()
         {
-            Name = "Orbital Energy";
+            Name = "Orbital energy";
             Description = "Orbital Energy vessel will have after completing the maneuver.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -640,7 +640,7 @@ namespace MicroMod
     {
         public Maneuver_ObT()
         {
-            Name = "Orbit Time";
+            Name = "Orbit time";
             Description = "Shows orbit time in seconds from the Periapsis when vessel reaches the maneuver node.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -730,7 +730,7 @@ namespace MicroMod
     {
         public Maneuver_UniversalTimeAtClosestApproach()
         {
-            Name = "UT Close.App.";
+            Name = "UT close.app.";
             Description = "Universal Time at the point of closest approach.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
@@ -762,7 +762,7 @@ namespace MicroMod
     {
         public Maneuver_UniversalTimeAtSoiEncounter()
         {
-            Name = "UT SOI Enc.";
+            Name = "UT SOI enc.";
             Description = "Universal Time at the point of transition to another Sphere Of Influence.";
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;

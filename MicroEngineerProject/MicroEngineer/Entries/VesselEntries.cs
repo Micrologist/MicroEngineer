@@ -78,7 +78,7 @@ namespace MicroMod
     {
         public TotalDeltaVASL()
         {
-            Name = "Total ∆v (ASL)";
+            Name = "Total ∆v ASL";
             Description = "Total delta velocity of the vessel At Sea Level.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
@@ -129,7 +129,7 @@ namespace MicroMod
     {
         public TotalBurnTime()
         {
-            Name = "Total Burn Time";
+            Name = "Total burn time";
             Description = "Burn Time vessel can sustain with 100% thrust.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
@@ -209,7 +209,7 @@ namespace MicroMod
     {
         public StageThrustVac()
         {
-            Name = "Thrust (Vacuum)";
+            Name = "Thrust (vacuum)";
             Description = "Vessel's thrust in vacuum.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
@@ -276,7 +276,7 @@ namespace MicroMod
     {
         public StageTWRVac()
         {
-            Name = "TWR (Vacuum)";
+            Name = "TWR (vacuum)";
             Description = "Vessel's Thrust to Weight Ratio in vacuum.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
@@ -339,7 +339,7 @@ namespace MicroMod
     {
         public StageISPVac()
         {
-            Name = "ISP (Vacuum)";
+            Name = "ISP (vacuum)";
             Description = "Specific impulse in vacuum.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
@@ -360,7 +360,7 @@ namespace MicroMod
     {
         public FuelPercentage()
         {
-            Name = "Vessel Fuel";
+            Name = "Vessel fuel";
             Description = "Vessel's fuel percentage left.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
@@ -381,7 +381,7 @@ namespace MicroMod
     {
         public StageFuelPercentage()
         {
-            Name = "Stage Fuel";
+            Name = "Stage fuel";
             Description = "Stage fuel percentage left.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
@@ -443,7 +443,7 @@ namespace MicroMod
     {
         public TotalCommandCrewCapacity()
         {
-            Name = "Command Crew Capacity";
+            Name = "Command crew capacity";
             Description = "Crew capacity of all parts.";
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
