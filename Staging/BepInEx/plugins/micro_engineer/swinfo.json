@@ -1,11 +1,11 @@
 {
     "mod_id": "micro_engineer",
-    "author": "Micrologist",
+    "author": "Micrologist, Falki",
     "name": "Micro Engineer",
     "description": "Get in-flight and VAB information about your current vessel",
     "source": "https://github.com/Micrologist/MicroEngineer",
     "version": "1.0.0",
-	"version_check": "https://raw.githubusercontent.com/Falki-git/MicroEngineer/main/Staging/BepInEx/plugins/micro_engineer/swinfo.json",
+	"version_check": "https://raw.githubusercontent.com/Micrologist/MicroEngineer/main/Staging/BepInEx/plugins/micro_engineer/swinfo.json",
     "dependencies": [
 		{
 		  "id":  "SpaceWarp",
