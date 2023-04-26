@@ -11,7 +11,7 @@ namespace MicroMod
         private MicroEngineerMod _plugin;
         private Manager _manager;
 
-        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.MessageManager");
+        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.UI");
 
         internal List<BaseWindow> Windows;
 
