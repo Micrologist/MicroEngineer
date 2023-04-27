@@ -235,7 +235,7 @@ namespace MicroMod
         {
             float x = Mathf.Clamp(position.x, 0, Screen.width - size.x);
             float y = Mathf.Clamp(position.y, 0, Screen.height - size.y);
-            return new Vector2(x, y);
+            return new Vector2(x, size.y > Screen.height ? position.y : y);
         }
 
         /// <summary>

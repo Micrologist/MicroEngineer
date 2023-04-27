@@ -1,6 +1,7 @@
-﻿using BepInEx.Logging;
-using KSP.Game;
+﻿using KSP.Game;
 using KSP.Messages;
+using KSP.UI.Binding;
+using UnityEngine;
 
 namespace MicroMod
 {
@@ -10,8 +11,6 @@ namespace MicroMod
         private Manager _manager;
         private UI _ui;
         internal List<BaseWindow> Windows;
-
-        private static readonly ManualLogSource _logger = Logger.CreateLogSource("MicroEngineer.MessageManager");
 
         internal MessageManager(MicroEngineerMod plugin, Manager manager, UI ui)
         {
@@ -71,8 +70,6 @@ namespace MicroMod
 
         private void GameStateEntered(MessageCenterMessage obj)
         {
-            _logger.LogInfo("Message triggered: GameStateEnteredMessage");
-
             Utility.RefreshGameManager();
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
@@ -81,11 +78,15 @@ namespace MicroMod
                 _ui.Windows = Windows;
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
+                {
                     _ui.ShowGuiFlight = Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
+                    GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(_ui.ShowGuiFlight);
+                }    
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {
                     _ui.ShowGuiOAB = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
+                    GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(_ui.ShowGuiOAB);
                     _ui.CelestialBodies.GetBodies();
                     _ui.CelestialBodySelectionStageIndex = -1;
                     Styles.SetActiveTheme(Theme.Gray); // TODO implement other themes in OAB
@@ -95,8 +96,6 @@ namespace MicroMod
 
         private void GameStateLeft(MessageCenterMessage obj)
         {
-            _logger.LogInfo("Message triggered: GameStateLeftMessage");
-
             Utility.RefreshGameManager();
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
