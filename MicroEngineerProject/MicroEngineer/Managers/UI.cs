@@ -373,10 +373,6 @@ namespace MicroMod
             GUILayout.Space(10);
             GUILayout.BeginHorizontal();
 
-            // If window is popped out and it's not locked => show the close button. If it's not popped out => show to popup arrow
-            //isPopout = isPopout && !isLocked ? !CloseButton(Styles.CloseBtnRect) : !isPopout ? GUILayout.Button("⇖", Styles.PopoutBtnStyle) : isPopout;
-            //isPopout = isPopout && !isLocked ? !CloseButton(Styles.CloseBtnRect) : !isPopout ? GUILayout.Button("⇖", Styles.PopoutBtnStyle) : isPopout;
-
             GUILayout.Label($"{sectionName}", Styles.WindowTitleLabelStyle);
             GUILayout.FlexibleSpace();            
             if(GUILayout.Button(Styles.Settings15Texture, Styles.SettingsBtnStyle))

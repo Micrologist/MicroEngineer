@@ -29,8 +29,10 @@ namespace MicroMod
         {
             Utility.RefreshGameManager();
 
+            bool isFlightActive = Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
+
             // Perform flight UI updates only if we're in Flight or Map view
-            if (Utility.GameState != null && (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView))
+            if (Utility.GameState != null && (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView) && isFlightActive)
             {
                 Utility.RefreshActiveVesselAndCurrentManeuver();
 
