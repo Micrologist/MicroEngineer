@@ -64,7 +64,7 @@ namespace MicroMod
 
             if (!ShowGuiFlight || Utility.ActiveVessel == null) return;
 
-            MainGuiWindow mainGui = (MainGuiWindow)Windows.Find(w => w is MainGuiWindow); //   window => window.MainWindow == MainWindow.MainGui);
+            MainGuiWindow mainGui = (MainGuiWindow)Windows.Find(w => w is MainGuiWindow);
 
             // Draw main GUI that contains docked windows
             mainGui.FlightRect = GUILayout.Window(
@@ -96,11 +96,10 @@ namespace MicroMod
                 // If window is locked set alpha to 20%
                 if (window.IsLocked)
                     GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, 0.2f);
-
                 window.FlightRect = GUILayout.Window(
-                    index,
+                    GUIUtility.GetControlID(FocusType.Passive),
                     window.FlightRect,
-                    DrawPopoutWindow,
+                    (id) => DrawPopoutWindow(window),
                     "",
                     Styles.PopoutWindowStyle,
                     GUILayout.Height(0),
@@ -345,11 +344,8 @@ namespace MicroMod
         /// Draws all windows that are toggled and popped out
         /// </summary>
         /// <param name="windowIndex"></param>
-        private void DrawPopoutWindow(int windowIndex)
+        private void DrawPopoutWindow(EntryWindow w)
         {
-            List<EntryWindow> entryWindows = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList();
-            EntryWindow w = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList()[windowIndex];
-
             GUILayout.Space(-5);
             DrawSectionHeader(w.Name, ref w.IsFlightPoppedOut, w.IsLocked);
             
