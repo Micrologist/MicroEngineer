@@ -58,7 +58,7 @@ namespace MicroMod
             Category = MicroEntryCategory.Body;
             IsDefault = false;
             BaseUnit = "μ";
-            NumberOfDecimalDigits = 4;
+            NumberOfDecimalDigits = 3;
             Formatting = "e";
         }
 

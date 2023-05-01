@@ -8,7 +8,7 @@ using KSP.UI.Binding;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.0.1")]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.0.2")]
 	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 	public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
