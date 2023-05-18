@@ -91,7 +91,7 @@ namespace MicroMod
 
         internal void OnManeuverCreatedMessage(MessageCenterMessage message)
         {
-            var nodeData = Utility.ActiveVessel.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
+            var nodeData = Utility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
             _selectedNodeIndex = nodeData != null ? nodeData.Count > 0 ? nodeData.Count - 1 : 0 : 0;
         }
 
