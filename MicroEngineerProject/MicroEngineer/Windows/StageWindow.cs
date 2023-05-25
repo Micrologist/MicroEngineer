@@ -23,6 +23,10 @@ namespace MicroMod
                     GUILayout.Height(0)
                     );
 
+                var settings = ui.Windows.Find(w => w is SettingsWIndow) as SettingsWIndow;
+                if (settings.SnapWindows && this.IsBeingDragged)
+                    ui.HandleSnapping(this);
+
                 this.FlightRect.position = Utility.ClampToScreen(this.FlightRect.position, this.FlightRect.size);
             }
             else

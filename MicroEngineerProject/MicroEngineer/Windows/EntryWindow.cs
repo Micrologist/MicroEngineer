@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using UnityEngine;
 
 namespace MicroMod
 {
@@ -35,6 +36,8 @@ namespace MicroMod
         /// </summary>
         [JsonProperty]
         internal bool IsEditable { get => MainWindow != MainWindow.Stage && MainWindow != MainWindow.StageInfoOAB; }
+
+        internal bool IsBeingDragged { get => FlightRect.Contains(Event.current.mousePosition); }
 
         [JsonProperty]
         internal MainWindow MainWindow;

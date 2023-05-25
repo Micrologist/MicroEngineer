@@ -7,6 +7,12 @@ namespace MicroMod
     {
         [JsonProperty]
         internal Theme ActiveTheme { get; set; }
+        [JsonProperty]
+        private bool snapWindows = true;
+        internal bool SnapWindows { get => snapWindows; set => snapWindows = value; }
+        [JsonProperty]
+        private float snapDistance = 10f;
+        internal float SnapDistance { get => snapDistance; set => snapDistance = value; }
 
         internal void LoadSettings()
         {

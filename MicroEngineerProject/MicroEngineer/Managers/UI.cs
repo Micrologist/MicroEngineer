@@ -110,6 +110,11 @@ namespace MicroMod
                 if (window.IsLocked)
                     GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, 1);
 
+                // Snap popped out windows
+                var settings = Windows.Find(w => w is SettingsWIndow) as SettingsWIndow;
+                if (settings.SnapWindows && window.IsBeingDragged)
+                    HandleSnapping(window);
+
                 window.FlightRect.position = Utility.ClampToScreen(window.FlightRect.position, window.FlightRect.size);
             }
 
@@ -419,7 +424,7 @@ namespace MicroMod
         private void DrawEditWindow(int windowIndex)
         {
             List<EntryWindow> editableWindows = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().FindAll(w => w.IsEditable); // Editable windows are all except MainGUI, Settings, Stage and StageInfoOAB
-            List<BaseEntry> entriesByCategory = _manager.Entries.FindAll(e => e.Category == _selectedCategory); // All window stageInfoOabEntries belong to a category, but they can still be placed in any window
+            List<BaseEntry> entriesByCategory = _manager.Entries.FindAll(e => e.Category == _selectedCategory); // All entries belong to a category, but they can still be placed in any window
 
             GUILayout.Space(-5);
             GUILayout.BeginHorizontal();
@@ -747,6 +752,48 @@ namespace MicroMod
         {
             //return GUI.Button(rect, Styles.CloseButtonTexture, Styles.CloseBtnStyle);
             return GUILayout.Button(Styles.CloseButtonTexture, style);
+        }
+
+        internal void HandleSnapping(EntryWindow draggedWindow)
+        {
+            List<EntryWindow> poppedOutWindows = Windows
+                .FindAll(w => typeof(EntryWindow).IsAssignableFrom(w.GetType()))
+                .Cast<EntryWindow>()
+                .Where(w => w.IsFlightActive && w.IsFlightPoppedOut)
+                .ToList();
+
+            var settings = Windows.Find(w => w is SettingsWIndow) as SettingsWIndow;
+
+            foreach (var otherWindow in poppedOutWindows)
+            {
+                if (otherWindow != draggedWindow)
+                {
+                    // Check if the current window is close to any edge of the other window
+                    if (Mathf.Abs(draggedWindow.FlightRect.xMin - otherWindow.FlightRect.xMin) < settings.SnapDistance)
+                        draggedWindow.FlightRect.x = otherWindow.FlightRect.xMin; // Snap to the left edge
+
+                    if (Mathf.Abs(draggedWindow.FlightRect.xMax - otherWindow.FlightRect.xMin) < settings.SnapDistance)
+                        draggedWindow.FlightRect.x = otherWindow.FlightRect.xMin - draggedWindow.FlightRect.width; // Snap to the right edge
+
+                    if (Mathf.Abs(draggedWindow.FlightRect.xMin - otherWindow.FlightRect.xMax) < settings.SnapDistance)
+                        draggedWindow.FlightRect.x = otherWindow.FlightRect.xMax; // Snap to the left edge
+
+                    if (Mathf.Abs(draggedWindow.FlightRect.xMax - otherWindow.FlightRect.xMax) < settings.SnapDistance)
+                        draggedWindow.FlightRect.x = otherWindow.FlightRect.xMax - draggedWindow.FlightRect.width; // Snap to the right edge
+
+                    if (Mathf.Abs(draggedWindow.FlightRect.yMin - otherWindow.FlightRect.yMin) < settings.SnapDistance)
+                        draggedWindow.FlightRect.y = otherWindow.FlightRect.yMin; // Snap to the top edge
+
+                    if (Mathf.Abs(draggedWindow.FlightRect.yMax - otherWindow.FlightRect.yMin) < settings.SnapDistance)
+                        draggedWindow.FlightRect.y = otherWindow.FlightRect.yMin - draggedWindow.FlightRect.height; // Snap to the bottom edge
+
+                    if (Mathf.Abs(draggedWindow.FlightRect.yMin - otherWindow.FlightRect.yMax) < settings.SnapDistance)
+                        draggedWindow.FlightRect.y = otherWindow.FlightRect.yMax; // Snap to the top edge
+
+                    if (Mathf.Abs(draggedWindow.FlightRect.yMax - otherWindow.FlightRect.yMax) < settings.SnapDistance)
+                        draggedWindow.FlightRect.y = otherWindow.FlightRect.yMax - draggedWindow.FlightRect.height; // Snap to the bottom edge
+                }
+            }
         }
     }
 }
