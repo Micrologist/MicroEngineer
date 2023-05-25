@@ -325,5 +325,12 @@ namespace MicroMod
             else
                 return false;
         }
+
+        public static bool AreRectsNear(Rect rect1, Rect rect2)
+        {
+            float distanceX = Mathf.Abs(rect1.center.x - rect2.center.x);
+            float distanceY = Mathf.Abs(rect1.center.y - rect2.center.y);            
+            return (distanceX < rect1.width / 2 + rect2.width / 2 + 100f && distanceY < rect1.height / 2 + rect2.height / 2 + 100f);
+        }
     }    
 }

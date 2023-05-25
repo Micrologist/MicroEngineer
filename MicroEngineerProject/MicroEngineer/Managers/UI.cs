@@ -766,32 +766,40 @@ namespace MicroMod
 
             foreach (var otherWindow in poppedOutWindows)
             {
-                if (otherWindow != draggedWindow)
+                // Check if the current window is close to any edge of the other window
+                if (otherWindow != draggedWindow && Utility.AreRectsNear(draggedWindow.FlightRect, otherWindow.FlightRect))
                 {
-                    // Check if the current window is close to any edge of the other window
+                    // Snap to the left edge
                     if (Mathf.Abs(draggedWindow.FlightRect.xMin - otherWindow.FlightRect.xMin) < settings.SnapDistance)
-                        draggedWindow.FlightRect.x = otherWindow.FlightRect.xMin; // Snap to the left edge
+                        draggedWindow.FlightRect.x = otherWindow.FlightRect.xMin;
 
+                    // Snap to the right edge
                     if (Mathf.Abs(draggedWindow.FlightRect.xMax - otherWindow.FlightRect.xMin) < settings.SnapDistance)
-                        draggedWindow.FlightRect.x = otherWindow.FlightRect.xMin - draggedWindow.FlightRect.width; // Snap to the right edge
+                            draggedWindow.FlightRect.x = otherWindow.FlightRect.xMin - draggedWindow.FlightRect.width;
 
+                    // Snap to the left edge
                     if (Mathf.Abs(draggedWindow.FlightRect.xMin - otherWindow.FlightRect.xMax) < settings.SnapDistance)
-                        draggedWindow.FlightRect.x = otherWindow.FlightRect.xMax; // Snap to the left edge
+                            draggedWindow.FlightRect.x = otherWindow.FlightRect.xMax;
 
+                    // Snap to the right edge
                     if (Mathf.Abs(draggedWindow.FlightRect.xMax - otherWindow.FlightRect.xMax) < settings.SnapDistance)
-                        draggedWindow.FlightRect.x = otherWindow.FlightRect.xMax - draggedWindow.FlightRect.width; // Snap to the right edge
+                            draggedWindow.FlightRect.x = otherWindow.FlightRect.xMax - draggedWindow.FlightRect.width;
 
+                    // Snap to the top edge
                     if (Mathf.Abs(draggedWindow.FlightRect.yMin - otherWindow.FlightRect.yMin) < settings.SnapDistance)
-                        draggedWindow.FlightRect.y = otherWindow.FlightRect.yMin; // Snap to the top edge
+                            draggedWindow.FlightRect.y = otherWindow.FlightRect.yMin;
 
+                    // Snap to the bottom edge
                     if (Mathf.Abs(draggedWindow.FlightRect.yMax - otherWindow.FlightRect.yMin) < settings.SnapDistance)
-                        draggedWindow.FlightRect.y = otherWindow.FlightRect.yMin - draggedWindow.FlightRect.height; // Snap to the bottom edge
+                            draggedWindow.FlightRect.y = otherWindow.FlightRect.yMin - draggedWindow.FlightRect.height;
 
+                    // Snap to the top edge
                     if (Mathf.Abs(draggedWindow.FlightRect.yMin - otherWindow.FlightRect.yMax) < settings.SnapDistance)
-                        draggedWindow.FlightRect.y = otherWindow.FlightRect.yMax; // Snap to the top edge
+                            draggedWindow.FlightRect.y = otherWindow.FlightRect.yMax;
 
+                    // Snap to the bottom edge
                     if (Mathf.Abs(draggedWindow.FlightRect.yMax - otherWindow.FlightRect.yMax) < settings.SnapDistance)
-                        draggedWindow.FlightRect.y = otherWindow.FlightRect.yMax - draggedWindow.FlightRect.height; // Snap to the bottom edge
+                            draggedWindow.FlightRect.y = otherWindow.FlightRect.yMax - draggedWindow.FlightRect.height;
                 }
             }
         }
