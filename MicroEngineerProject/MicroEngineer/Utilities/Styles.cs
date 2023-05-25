@@ -44,6 +44,7 @@ namespace MicroMod
 
         public static GUIStyle WindowSelectionTextFieldStyle;
         public static GUIStyle WindowSelectionAbbrevitionTextFieldStyle;
+        public static GUIStyle InstalledEntryFieldStyle;
 
         public static GUIStyle CloseMainGuiBtnStyle;
         public static GUIStyle CloseBtnStyle;
@@ -245,6 +246,8 @@ namespace MicroMod
             };
             BlueLabelStyle.normal.textColor = _valueColor;
 
+            ///// TEXTFIELDS /////
+
             WindowSelectionTextFieldStyle = new GUIStyle(SpaceWarpUISkin.textField)
             {
                 alignment = TextAnchor.MiddleCenter,
@@ -255,6 +258,12 @@ namespace MicroMod
             {
                 alignment = TextAnchor.MiddleCenter,
                 fixedWidth = 40
+            };
+
+            InstalledEntryFieldStyle = new GUIStyle(SpaceWarpUISkin.textField)
+            {
+                alignment = TextAnchor.MiddleLeft,
+                fixedWidth = 120
             };
 
             ///// BUTTONS /////

@@ -488,8 +488,9 @@ namespace MicroMod
                 GUIStyle backgroundStyle = i == 0 ? Styles.EntryBackground_First : i < entries.Count - 1 ? Styles.EntryBackground_Middle : Styles.EntryBackground_Last;
 
                 GUILayout.BeginHorizontal(backgroundStyle);
-                
-                GUILayout.Label(entries[i].Name, Styles.NameLabelStyle);
+
+                entries[i].Name = GUILayout.TextField(entries[i].Name, Styles.InstalledEntryFieldStyle);
+                GUILayout.FlexibleSpace();
                 GUI.enabled = entries[i].NumberOfDecimalDigits < 5;
                 if (entries[i].Formatting != null && GUILayout.Button(Styles.IncreaseDecimalDigitsTexture, Styles.OneCharacterBtnStyle))
                 {
