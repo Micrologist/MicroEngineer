@@ -7,22 +7,30 @@ namespace MicroMod
 {
     internal class Manager
     {
+        private static Manager _instance;
+
         internal List<BaseWindow> Windows;
         internal List<BaseEntry> Entries;
-        internal UI UI;
-        internal MessageManager MessageManager;
-        private MicroEngineerMod _plugin;        
 
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Manager");
 
-        internal Manager(MicroEngineerMod plugin)
+        public List<string> TextFieldNames = new List<string>();
+
+        internal Manager()
         {
-            _plugin = plugin;
             Entries = InitializeEntries();
             Windows = InitializeWindows();
+        }
 
-            // Load window positions and states from disk, if file exists
-            Utility.LoadLayout(Windows);
+        public static Manager Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new Manager();
+
+                return _instance;
+            }
         }
 
         public void Update()
@@ -297,17 +305,28 @@ namespace MicroMod
             Entries.Clear();
             Entries = InitializeEntries();
             Windows = InitializeWindows();
-            UI.Windows = Windows;
-            MessageManager.Windows = Windows; 
         }
 
         internal void LoadLayout()
         {
             Utility.LoadLayout(Windows);
-            UI.Windows = Windows;
-            MessageManager.Windows = Windows;
         }
 
         internal void SaveLayout() => Utility.SaveLayout(Windows);
+
+        public void PupulateTextFieldNames(List<BaseEntry> entries)
+        {
+            TextFieldNames.Clear();
+            TextFieldNames.Add(Utility.InputDisableWindowAbbreviation);
+            TextFieldNames.Add(Utility.InputDisableWindowName);
+
+            foreach (var entry in entries)
+            {
+                entry.Id = Guid.NewGuid();
+                TextFieldNames.Add(entry.Id.ToString());
+            }
+        }
+
+        public void AddTextFieldName(string name) => TextFieldNames.Add(name);
     }
 }

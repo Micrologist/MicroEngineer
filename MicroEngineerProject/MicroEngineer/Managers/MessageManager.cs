@@ -7,25 +7,26 @@ namespace MicroMod
 {
     internal class MessageManager
     {
-        MicroEngineerMod _plugin;
-        private Manager _manager;
-        private UI _ui;
-        internal List<BaseWindow> Windows;
+        private static MessageManager _instance;
 
-        internal MessageManager(MicroEngineerMod plugin, Manager manager, UI ui)
+        internal MessageManager()
+        { }
+
+        public static MessageManager Instance
         {
-            _plugin = plugin;
-            _manager = manager;
-            _ui = ui;
-            Windows = _manager.Windows;
+            get
+            {
+                if (_instance == null)
+                    _instance = new MessageManager();
 
-            SubscribeToMessages();
+                return _instance;
+            }
         }
 
         /// <summary>
         /// Subscribe to KSP2 messages
         /// </summary>
-        internal void SubscribeToMessages()
+        public void SubscribeToMessages()
         {
             Utility.RefreshGameManager();
 
@@ -50,21 +51,21 @@ namespace MicroMod
 
         private void OnManeuverCreatedMessage(MessageCenterMessage message)
         {
-            var maneuverWindow = Windows.Find(w => w.GetType() == typeof(ManeuverWindow)) as ManeuverWindow;
+            var maneuverWindow = Manager.Instance.Windows.Find(w => w.GetType() == typeof(ManeuverWindow)) as ManeuverWindow;
             maneuverWindow.OnManeuverCreatedMessage(message);
         }
 
         private void OnManeuverRemovedMessage(MessageCenterMessage message)
         {
-            var maneuverWindow = Windows.Find(w => w.GetType() == typeof(ManeuverWindow)) as ManeuverWindow;
+            var maneuverWindow = Manager.Instance.Windows.Find(w => w.GetType() == typeof(ManeuverWindow)) as ManeuverWindow;
             maneuverWindow.OnManeuverRemovedMessage(message);
         }
 
         private void OnPartManipulationCompletedMessage(MessageCenterMessage obj)
         {
-            EntryWindow stageInfoOabWindow = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            EntryWindow stageInfoOabWindow = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
 
-            Torque torque = (Torque)Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Torque");
+            Torque torque = (Torque)Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Torque");
             torque.RefreshData();
         }
 
@@ -73,22 +74,20 @@ namespace MicroMod
             Utility.RefreshGameManager();
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
-                Utility.LoadLayout(Windows);
-                _manager.Windows = Windows;
-                _ui.Windows = Windows;
+                Utility.LoadLayout(Manager.Instance.Windows);
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                 {
-                    _ui.ShowGuiFlight = Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
-                    GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(_ui.ShowGuiFlight);
+                    UI.Instance.ShowGuiFlight = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
+                    GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(UI.Instance.ShowGuiFlight);
                 }    
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {
-                    _ui.ShowGuiOAB = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
-                    GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(_ui.ShowGuiOAB);
-                    _ui.CelestialBodies.GetBodies();
-                    _ui.CelestialBodySelectionStageIndex = -1;
+                    UI.Instance.ShowGuiOAB = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
+                    GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(UI.Instance.ShowGuiOAB);
+                    UI.Instance.CelestialBodies.GetBodies();
+                    UI.Instance.CelestialBodySelectionStageIndex = -1;
                     Styles.SetActiveTheme(Theme.Gray); // TODO implement other themes in OAB
                 }
             }
@@ -99,13 +98,13 @@ namespace MicroMod
             Utility.RefreshGameManager();
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
-                Utility.SaveLayout(Windows);
+                Utility.SaveLayout(Manager.Instance.Windows);
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
-                    _ui.ShowGuiFlight = false;
+                    UI.Instance.ShowGuiFlight = false;
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
-                    _ui.ShowGuiOAB = false;
+                    UI.Instance.ShowGuiOAB = false;
             }
         }
 
@@ -123,7 +122,7 @@ namespace MicroMod
 
             Utility.RefreshStagesOAB();
 
-            EntryWindow stageWindow = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            EntryWindow stageWindow = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
 
             if (Utility.VesselDeltaVComponentOAB?.StageInfo == null)
             {
