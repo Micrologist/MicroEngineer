@@ -12,21 +12,17 @@ namespace MicroMod
 	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
 	public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
-        private Manager _manager;
-        private MessageManager _messagesManager;
-        private UI _ui;
+        public static MicroEngineerMod Instance { get; set; }
 
         public override void OnInitialized()
 		{
-            Styles.Initialize(this);
+            Instance = this;
 
-            _manager = new Manager(this);
-            _ui = new UI(this, _manager);            
-            _messagesManager = new MessageManager(this, _manager, _ui);
-            _manager.UI = _ui;
-            _manager.MessageManager = _messagesManager;
+            Styles.Initialize();
 
-            BackwardCompatibilityInitializations();            
+            MessageManager.Instance.SubscribeToMessages();
+
+            BackwardCompatibilityInitializations();
 
             // Register Flight and OAB buttons
             Appbar.RegisterAppButton(
@@ -35,8 +31,8 @@ namespace MicroMod
                 AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
                 isOpen =>
                 {
-                    _ui.ShowGuiFlight = isOpen;
-                    _manager.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
+                    UI.Instance.ShowGuiFlight = isOpen;
+                    Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
                     GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
 
@@ -46,8 +42,8 @@ namespace MicroMod
                 AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
                 isOpen =>
                 {
-                    _ui.ShowGuiOAB = isOpen;
-                    _manager.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
+                    UI.Instance.ShowGuiOAB = isOpen;
+                    Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
                     GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
         }
@@ -66,12 +62,12 @@ namespace MicroMod
         
         public void Update()
         {
-            _manager?.Update();
+            Manager.Instance.Update();
         }
 
         private void OnGUI()
         {
-            _ui?.OnGUI();
+            UI.Instance.OnGUI();
         }
     }
 }

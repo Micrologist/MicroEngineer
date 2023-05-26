@@ -10,8 +10,6 @@ namespace MicroMod
 
     public static class Styles
     {
-        private static MicroEngineerMod _plugin;
-
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Styles");
 
         public static int WindowWidth = 290;
@@ -125,10 +123,8 @@ namespace MicroMod
 
         public static Theme ActiveTheme;
 
-        public static void Initialize(MicroEngineerMod plugin)
+        public static void Initialize()
         {
-            _plugin = plugin;
-
             InitializeTextures();
             InitializeStyles();
             SetActiveTheme(Theme.Gray);
@@ -371,25 +367,25 @@ namespace MicroMod
         {
             // Icons from https://icons8.com
 
-            Settings20Texture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/settings-20.png");
-            Settings15Texture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/settings-15.png");
-            CloseButtonTexture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/close-15.png");
-            PopoutTexture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/popout-15.png");            
+            Settings20Texture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/settings-20.png");
+            Settings15Texture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/settings-15.png");
+            CloseButtonTexture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/close-15.png");
+            PopoutTexture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/popout-15.png");            
 
-            EntryBackgroundTexture_WhiteTheme_First = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_white_first.png");
-            EntryBackgroundTexture_WhiteTheme_Middle = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_white_middle.png");
-            EntryBackgroundTexture_WhiteTheme_Last = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_white_last.png");
+            EntryBackgroundTexture_WhiteTheme_First = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_white_first.png");
+            EntryBackgroundTexture_WhiteTheme_Middle = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_white_middle.png");
+            EntryBackgroundTexture_WhiteTheme_Last = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_white_last.png");
 
-            EntryBackgroundTexture_GrayTheme_First = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_darkgray_first.png");
-            EntryBackgroundTexture_GrayTheme_Middle = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_darkgray_middle.png");
-            EntryBackgroundTexture_GrayTheme_Last = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_darkgray_last.png");
+            EntryBackgroundTexture_GrayTheme_First = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_darkgray_first.png");
+            EntryBackgroundTexture_GrayTheme_Middle = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_darkgray_middle.png");
+            EntryBackgroundTexture_GrayTheme_Last = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_darkgray_last.png");
 
-            EntryBackgroundTexture_BlackTheme_First = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_black_first.png");
-            EntryBackgroundTexture_BlackTheme_Middle = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_black_middle.png");
-            EntryBackgroundTexture_BlackTheme_Last = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/background_black_last.png");
+            EntryBackgroundTexture_BlackTheme_First = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_black_first.png");
+            EntryBackgroundTexture_BlackTheme_Middle = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_black_middle.png");
+            EntryBackgroundTexture_BlackTheme_Last = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_black_last.png");
 
-            IncreaseDecimalDigitsTexture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/increase-decimal-19.png");
-            DecreaseDecimalDigitsTexture = LoadTexture($"{_plugin.SpaceWarpMetadata.ModID}/images/decrease-decimal-19.png");            
+            IncreaseDecimalDigitsTexture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/increase-decimal-19.png");
+            DecreaseDecimalDigitsTexture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/decrease-decimal-19.png");            
         }
 
         private static Texture2D LoadTexture(string path)

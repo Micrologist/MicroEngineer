@@ -11,7 +11,7 @@ namespace MicroMod
         private bool snapWindows = true;
         internal bool SnapWindows { get => snapWindows; set => snapWindows = value; }
         [JsonProperty]
-        private float snapDistance = 10f;
+        private float snapDistance = 20f;
         internal float SnapDistance { get => snapDistance; set => snapDistance = value; }
 
         internal void LoadSettings()

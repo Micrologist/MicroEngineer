@@ -8,12 +8,8 @@ namespace MicroMod
 {
     internal class UI
     {
-        private MicroEngineerMod _plugin;
-        private Manager _manager;
-
+        private static UI _instance;
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.UI");
-
-        internal List<BaseWindow> Windows;
 
         internal bool ShowGuiFlight;
         internal bool ShowGuiOAB;
@@ -40,11 +36,19 @@ namespace MicroMod
         /// </summary>
         internal MicroCelestialBodies CelestialBodies = new();
 
-        internal UI(MicroEngineerMod plugin, Manager manager)
+        internal UI()
         {
-            _plugin = plugin;
-            _manager = manager;
-            Windows = manager.Windows;
+        }
+
+        public static UI Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new UI();
+
+                return _instance;
+            }
         }
 
         internal void OnGUI()
@@ -64,7 +68,7 @@ namespace MicroMod
 
             if (!ShowGuiFlight || Utility.ActiveVessel == null) return;
 
-            MainGuiWindow mainGui = (MainGuiWindow)Windows.Find(w => w is MainGuiWindow);
+            MainGuiWindow mainGui = (MainGuiWindow)Manager.Instance.Windows.Find(w => w is MainGuiWindow);
 
             // Draw main GUI that contains docked windows
             mainGui.FlightRect = GUILayout.Window(
@@ -77,7 +81,7 @@ namespace MicroMod
             );
             mainGui.FlightRect.position = Utility.ClampToScreen(mainGui.FlightRect.position, mainGui.FlightRect.size);
 
-            List<EntryWindow> entryWindows = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList();
+            List<EntryWindow> entryWindows = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList();
 
             // Draw all other popped out windows
             foreach (var (window, index) in entryWindows
@@ -111,7 +115,7 @@ namespace MicroMod
                     GUI.color = new Color(GUI.color.r, GUI.color.g, GUI.color.b, 1);
 
                 // Snap popped out windows
-                var settings = Windows.Find(w => w is SettingsWIndow) as SettingsWIndow;
+                var settings = Manager.Instance.Windows.Find(w => w is SettingsWIndow) as SettingsWIndow;
                 if (settings.SnapWindows && window.IsBeingDragged)
                     HandleSnapping(window);
 
@@ -161,21 +165,24 @@ namespace MicroMod
             GUILayout.Space(10);
             GUILayout.Label("<b>Edit window entries</b>");
             if (GUILayout.Button("EDIT WINDOWS", Styles.NormalBtnStyle))
+            {
                 _showEditWindow = !_showEditWindow;
+                Manager.Instance.PupulateTextFieldNames(GetEditableWindows()[_selectedWindowId].Entries);
+            }                
 
             GUILayout.Space(10);
             GUILayout.Label("<b>Layout control</b>");
             if (GUILayout.Button("SAVE LAYOUT", Styles.NormalBtnStyle))
             {
-                _manager.SaveLayout();
+                Manager.Instance.SaveLayout();
                 _showGuiSettingsFlight = false;
             }                
             GUILayout.Space(5);
             if (GUILayout.Button("LOAD LAYOUT", Styles.NormalBtnStyle))
-                _manager.LoadLayout();
+                Manager.Instance.LoadLayout();
             if (GUILayout.Button("RESET LAYOUT", Styles.NormalBtnStyle))
             {
-                _manager.ResetLayout();
+                Manager.Instance.ResetLayout();
                 _selectedWindowId = 0;
             }
 
@@ -184,7 +191,7 @@ namespace MicroMod
             GUILayout.Space(-10);
 
             GUILayout.BeginHorizontal();
-            var settingsWindow = Windows.Find(w => w.GetType() == typeof(SettingsWIndow)) as SettingsWIndow;
+            var settingsWindow = Manager.Instance.Windows.Find(w => w.GetType() == typeof(SettingsWIndow)) as SettingsWIndow;
             if (GUILayout.Toggle(Styles.ActiveTheme == Theme.munix, "munix", Styles.SectionToggleStyle))
             {
                 Styles.SetActiveTheme(Theme.munix);
@@ -211,7 +218,7 @@ namespace MicroMod
         {
             if (!ShowGuiOAB) return;
 
-            EntryWindow stageInfoOAB = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            EntryWindow stageInfoOAB = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
             if (stageInfoOAB.Entries.Find(e => e.Name == "Stage Info (OAB)").EntryValue == null) return;
 
             stageInfoOAB.EditorRect = GUILayout.Window(
@@ -266,13 +273,13 @@ namespace MicroMod
         /// <param name="windowID"></param>
         private void FillMainGUI(int windowID)
         {
-            List<EntryWindow> entryWindows = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList();
+            List<EntryWindow> entryWindows = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList();
 
             GUILayout.Space(-15);
             GUILayout.BeginHorizontal();
             if (GUILayout.Button(Styles.Settings20Texture, Styles.SettingsMainGuiBtnStyle))
             {                
-                Rect mainGuiRect = Windows.OfType<MainGuiWindow>().FirstOrDefault().FlightRect;
+                Rect mainGuiRect = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().FlightRect;
                 settingsFlightRect = new Rect(mainGuiRect.x - Styles.WindowWidthSettingsFlight, mainGuiRect.y, Styles.WindowWidthSettingsFlight, 0);
                 _showGuiSettingsFlight = !_showGuiSettingsFlight;
             }
@@ -378,11 +385,12 @@ namespace MicroMod
             GUILayout.FlexibleSpace();            
             if(GUILayout.Button(Styles.Settings15Texture, Styles.SettingsBtnStyle))
             {
-                _selectedWindowId = Windows.
+                _selectedWindowId = Manager.Instance.Windows.
                     FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().
                     FindAll(w => w.IsEditable).
                     FindIndex(w => w.Name == sectionName);
                 _showEditWindow = true;
+                Manager.Instance.PupulateTextFieldNames(GetEditableWindows()[_selectedWindowId].Entries);
             }
             isPopout = isPopout && !isLocked ? !CloseButton(Styles.CloseBtnStyle) : !isPopout ? GUILayout.Button(Styles.PopoutTexture, Styles.PopoutBtnStyle) : isPopout;
             GUILayout.EndHorizontal();
@@ -423,8 +431,8 @@ namespace MicroMod
         /// <param name="windowIndex"></param>
         private void DrawEditWindow(int windowIndex)
         {
-            List<EntryWindow> editableWindows = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().FindAll(w => w.IsEditable); // Editable windows are all except MainGUI, Settings, Stage and StageInfoOAB
-            List<BaseEntry> entriesByCategory = _manager.Entries.FindAll(e => e.Category == _selectedCategory); // All entries belong to a category, but they can still be placed in any window
+            List<EntryWindow> editableWindows = GetEditableWindows();
+            List<BaseEntry> entriesByCategory = Manager.Instance.Entries.FindAll(e => e.Category == _selectedCategory); // All entries belong to a category, but they can still be placed in any window
 
             GUILayout.Space(-5);
             GUILayout.BeginHorizontal();
@@ -440,6 +448,7 @@ namespace MicroMod
             if (GUILayout.Button("<", Styles.OneCharacterHighBtnStyle))
             {
                 _selectedWindowId = _selectedWindowId > 0 ? _selectedWindowId - 1 : editableWindows.Count - 1;
+                Manager.Instance.PupulateTextFieldNames(editableWindows[_selectedWindowId].Entries);
             }
             GUI.SetNextControlName(Utility.InputDisableWindowAbbreviation);
             editableWindows[_selectedWindowId].Abbreviation = GUILayout.TextField(editableWindows[_selectedWindowId].Abbreviation, Styles.WindowSelectionAbbrevitionTextFieldStyle);
@@ -449,6 +458,7 @@ namespace MicroMod
             if (GUILayout.Button(">", Styles.OneCharacterHighBtnStyle))
             {
                 _selectedWindowId = _selectedWindowId < editableWindows.Count - 1 ? _selectedWindowId + 1 : 0;
+                Manager.Instance.PupulateTextFieldNames(editableWindows[_selectedWindowId].Entries);
             }
             GUILayout.EndHorizontal();
             #endregion
@@ -464,13 +474,13 @@ namespace MicroMod
             {
                 if (GUILayout.Button("DEL WINDOW", Styles.NormalBtnStyle))
                 {
-                    Windows.Remove(editableWindows[_selectedWindowId]);
+                    Manager.Instance.Windows.Remove(editableWindows[_selectedWindowId]);
                     editableWindows.Remove(editableWindows[_selectedWindowId]);
                     _selectedWindowId--;
                 }
             }
             if (GUILayout.Button("NEW WINDOW", Styles.NormalBtnStyle))
-                _selectedWindowId = _manager.CreateCustomWindow(editableWindows);
+                _selectedWindowId = Manager.Instance.CreateCustomWindow(editableWindows);
             GUILayout.EndHorizontal();
 
             GUILayout.Space(10);
@@ -489,6 +499,7 @@ namespace MicroMod
 
                 GUILayout.BeginHorizontal(backgroundStyle);
 
+                GUI.SetNextControlName(entries[i].Id.ToString());
                 entries[i].Name = GUILayout.TextField(entries[i].Name, Styles.InstalledEntryFieldStyle);
                 GUILayout.FlexibleSpace();
                 GUI.enabled = entries[i].NumberOfDecimalDigits < 5;
@@ -566,8 +577,9 @@ namespace MicroMod
                     }
                 }
                 if (GUILayout.Button("+", Styles.OneCharacterBtnStyle))
-                {
-                    editableWindows[_selectedWindowId].AddEntry(entriesByCategory[i]);
+                {                    
+                    editableWindows[_selectedWindowId].AddEntry(Activator.CreateInstance(entriesByCategory[i].GetType()) as BaseEntry);
+                    Manager.Instance.PupulateTextFieldNames(editableWindows[_selectedWindowId].Entries);
                 }
                 GUILayout.EndHorizontal();
 
@@ -585,13 +597,18 @@ namespace MicroMod
             GUI.DragWindow(new Rect(0, 0, Styles.WindowWidth, Styles.WindowHeight));
         }
 
+        private List<EntryWindow> GetEditableWindows()
+        {
+            return Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().FindAll(w => w.IsEditable); // Editable windows are all except MainGUI, Settings, Stage and StageInfoOAB
+        }
+
         #endregion
 
         #region OAB scene UI
 
         private void DrawStageInfoOAB(int windowID)
         {
-            EntryWindow stageInfoOabWindow = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            EntryWindow stageInfoOabWindow = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
             List<BaseEntry> stageInfoOabEntries = stageInfoOabWindow.Entries;
 
             GUILayout.BeginHorizontal();            
@@ -707,7 +724,7 @@ namespace MicroMod
             {
                 if (GUILayout.Button(body.DisplayName, Styles.CelestialSelectionBtnStyle))
                 {
-                    StageInfo_OAB stageInfoOab = (StageInfo_OAB)Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Stage Info (OAB)");
+                    StageInfo_OAB stageInfoOab = (StageInfo_OAB)Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Stage Info (OAB)");
                     stageInfoOab.CelestialBodyForStage[CelestialBodySelectionStageIndex] = body.Name;
 
                     // Hide the selection window
@@ -728,7 +745,7 @@ namespace MicroMod
             _showGuiSettingsOAB = !CloseButton(Styles.CloseBtnStyle);
             GUILayout.EndHorizontal();
 
-            EntryWindow stageInfoOabWindow = Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            EntryWindow stageInfoOabWindow = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
             List<BaseEntry> stageInfoOabEntries = stageInfoOabWindow.Entries;
             Torque torqueEntry = (Torque)stageInfoOabEntries.Find(e => e.Name == "Torque");
 
@@ -757,13 +774,13 @@ namespace MicroMod
 
         internal void HandleSnapping(EntryWindow draggedWindow)
         {
-            List<EntryWindow> poppedOutWindows = Windows
+            List<EntryWindow> poppedOutWindows = Manager.Instance.Windows
                 .FindAll(w => typeof(EntryWindow).IsAssignableFrom(w.GetType()))
                 .Cast<EntryWindow>()
                 .Where(w => w.IsFlightActive && w.IsFlightPoppedOut)
                 .ToList();
 
-            var settings = Windows.Find(w => w is SettingsWIndow) as SettingsWIndow;
+            var settings = Manager.Instance.Windows.Find(w => w is SettingsWIndow) as SettingsWIndow;
 
             foreach (var otherWindow in poppedOutWindows)
             {

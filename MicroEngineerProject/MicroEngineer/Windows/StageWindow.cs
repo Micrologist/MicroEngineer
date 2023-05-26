@@ -23,7 +23,7 @@ namespace MicroMod
                     GUILayout.Height(0)
                     );
 
-                var settings = ui.Windows.Find(w => w is SettingsWIndow) as SettingsWIndow;
+                var settings = Manager.Instance.Windows.Find(w => w is SettingsWIndow) as SettingsWIndow;
                 if (settings.SnapWindows && this.IsBeingDragged)
                     ui.HandleSnapping(this);
 

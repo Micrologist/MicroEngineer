@@ -248,7 +248,7 @@ namespace MicroMod
         {
             if (gameInputState)
             {
-                if (InputDisableWindowAbbreviation == GUI.GetNameOfFocusedControl() || InputDisableWindowName == GUI.GetNameOfFocusedControl())
+                if (Manager.Instance.TextFieldNames.Contains(GUI.GetNameOfFocusedControl()))
                 {
                     GameManager.Instance.Game.Input.Disable();
                     return false;
@@ -258,7 +258,7 @@ namespace MicroMod
             }
             else
             {
-                if (InputDisableWindowAbbreviation != GUI.GetNameOfFocusedControl() && InputDisableWindowName != GUI.GetNameOfFocusedControl() || !showGuiFlight)
+                if (!Manager.Instance.TextFieldNames.Contains(GUI.GetNameOfFocusedControl()) || !showGuiFlight)
                 {
                     GameManager.Instance.Game.Input.Enable();
                     return true;
@@ -330,7 +330,7 @@ namespace MicroMod
         {
             float distanceX = Mathf.Abs(rect1.center.x - rect2.center.x);
             float distanceY = Mathf.Abs(rect1.center.y - rect2.center.y);            
-            return (distanceX < rect1.width / 2 + rect2.width / 2 + 100f && distanceY < rect1.height / 2 + rect2.height / 2 + 100f);
+            return (distanceX < rect1.width / 2 + rect2.width / 2 + 50f && distanceY < rect1.height / 2 + rect2.height / 2 + 50f);
         }
     }    
 }
