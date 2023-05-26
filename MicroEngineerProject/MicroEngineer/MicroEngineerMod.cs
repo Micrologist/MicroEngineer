@@ -19,13 +19,14 @@ namespace MicroMod
         public override void OnInitialized()
 		{
             Instance = this;
+            
             GUID = Info.Metadata.GUID;
+            
+            BackwardCompatibilityInitializations();
 
             Styles.Initialize();
 
             MessageManager.Instance.SubscribeToMessages();
-
-            BackwardCompatibilityInitializations();
 
             // Register Flight and OAB buttons
             Appbar.RegisterAppButton(
@@ -47,22 +48,22 @@ namespace MicroMod
                 {
                     UI.Instance.ShowGuiOAB = isOpen;
                     Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
-                    GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
+                    GameObject.Find("BTN-MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
         }
 
         private void BackwardCompatibilityInitializations()
         {
-            // Preserve backward compatibility with SpaceWarp 1.0.1
-            if (Utility.IsModOlderThan("SpaceWarp", 1, 1, 0))
+            // Preserve backward compatibility with SpaceWarp 1.1.x
+            if (Utility.IsModOlderThan("SpaceWarp", 1, 2, 0))
             {
-                Logger.LogInfo("Space Warp older version detected. Loading old Styles.");
-                Styles.SetStylesForOldSpaceWarpSkin();
+                Logger.LogInfo("Older Space Warp version detected. Setting mod GUID to \"micro_engineer\".");
+                GUID = "micro_engineer";
             }
             else
-                Logger.LogInfo("Space Warp new version detected. Loading new Styles.");
+                Logger.LogInfo("New Space Warp version detected. No backward compatibility needed.");
         }
-        
+
         public void Update()
         {
             Manager.Instance.Update();
