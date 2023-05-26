@@ -176,8 +176,7 @@ namespace MicroMod
             {
                 Manager.Instance.SaveLayout();
                 _showGuiSettingsFlight = false;
-            }                
-            GUILayout.Space(5);
+            }
             if (GUILayout.Button("LOAD LAYOUT", Styles.NormalBtnStyle))
                 Manager.Instance.LoadLayout();
             if (GUILayout.Button("RESET LAYOUT", Styles.NormalBtnStyle))
@@ -210,6 +209,11 @@ namespace MicroMod
                 settingsWindow.ActiveTheme = Theme.Black;
             }
             GUILayout.EndHorizontal();
+
+            GUILayout.Space(10);
+            GUILayout.Label("<b>Other</b>");
+            GUILayout.Space(-10);
+            settingsWindow.SnapWindows = GUILayout.Toggle(settingsWindow.SnapWindows, "Window snapping", Styles.SectionToggleStyle);
 
             GUI.DragWindow(new Rect(0, 0, Screen.width, Screen.height));
         }
