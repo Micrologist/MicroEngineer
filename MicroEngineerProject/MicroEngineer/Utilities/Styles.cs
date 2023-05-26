@@ -367,25 +367,25 @@ namespace MicroMod
         {
             // Icons from https://icons8.com
 
-            Settings20Texture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/settings-20.png");
-            Settings15Texture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/settings-15.png");
-            CloseButtonTexture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/close-15.png");
-            PopoutTexture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/popout-15.png");            
+            Settings20Texture = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/settings-20.png");
+            Settings15Texture = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/settings-15.png");
+            CloseButtonTexture = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/close-15.png");
+            PopoutTexture = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/popout-15.png");            
 
-            EntryBackgroundTexture_WhiteTheme_First = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_white_first.png");
-            EntryBackgroundTexture_WhiteTheme_Middle = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_white_middle.png");
-            EntryBackgroundTexture_WhiteTheme_Last = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_white_last.png");
+            EntryBackgroundTexture_WhiteTheme_First = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/background_white_first.png");
+            EntryBackgroundTexture_WhiteTheme_Middle = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/background_white_middle.png");
+            EntryBackgroundTexture_WhiteTheme_Last = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/background_white_last.png");
 
-            EntryBackgroundTexture_GrayTheme_First = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_darkgray_first.png");
-            EntryBackgroundTexture_GrayTheme_Middle = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_darkgray_middle.png");
-            EntryBackgroundTexture_GrayTheme_Last = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_darkgray_last.png");
+            EntryBackgroundTexture_GrayTheme_First = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/background_darkgray_first.png");
+            EntryBackgroundTexture_GrayTheme_Middle = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/background_darkgray_middle.png");
+            EntryBackgroundTexture_GrayTheme_Last = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/background_darkgray_last.png");
 
-            EntryBackgroundTexture_BlackTheme_First = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_black_first.png");
-            EntryBackgroundTexture_BlackTheme_Middle = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_black_middle.png");
-            EntryBackgroundTexture_BlackTheme_Last = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/background_black_last.png");
+            EntryBackgroundTexture_BlackTheme_First = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/background_black_first.png");
+            EntryBackgroundTexture_BlackTheme_Middle = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/background_black_middle.png");
+            EntryBackgroundTexture_BlackTheme_Last = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/background_black_last.png");
 
-            IncreaseDecimalDigitsTexture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/increase-decimal-19.png");
-            DecreaseDecimalDigitsTexture = LoadTexture($"{MicroEngineerMod.Instance.SpaceWarpMetadata.ModID}/images/decrease-decimal-19.png");            
+            IncreaseDecimalDigitsTexture = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/increase-decimal-19.png");
+            DecreaseDecimalDigitsTexture = LoadTexture($"{MicroEngineerMod.Instance.GUID}/images/decrease-decimal-19.png");            
         }
 
         private static Texture2D LoadTexture(string path)

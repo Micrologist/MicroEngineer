@@ -8,15 +8,18 @@ using KSP.UI.Binding;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.0.3")]
-	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
-	public class MicroEngineerMod : BaseSpaceWarpPlugin
+    //[BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.1.0")]    
+    [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
+    public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
         public static MicroEngineerMod Instance { get; set; }
+        public string GUID;
 
         public override void OnInitialized()
 		{
             Instance = this;
+            GUID = Info.Metadata.GUID;
 
             Styles.Initialize();
 
@@ -28,7 +31,7 @@ namespace MicroMod
             Appbar.RegisterAppButton(
                 "Micro Engineer",
                 "BTN-MicroEngineerBtn",
-                AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
+                AssetManager.GetAsset<Texture2D>($"{GUID}/images/icon.png"),
                 isOpen =>
                 {
                     UI.Instance.ShowGuiFlight = isOpen;
@@ -39,7 +42,7 @@ namespace MicroMod
             Appbar.RegisterOABAppButton(
                 "Micro Engineer",
                 "BTN-MicroEngineerOAB",
-                AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
+                AssetManager.GetAsset<Texture2D>($"{GUID}/images/icon.png"),
                 isOpen =>
                 {
                     UI.Instance.ShowGuiOAB = isOpen;
