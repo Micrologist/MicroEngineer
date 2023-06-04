@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using UnityEngine;
 
 namespace MicroMod
 {
@@ -38,7 +39,21 @@ namespace MicroMod
             set => _formatting = value;
         }        
 
-        public virtual object EntryValue { get; set; }
+        private object entryValue;
+        public virtual object EntryValue
+        {
+            get => entryValue;
+
+            set
+            {
+                if (entryValue != value)
+                    OnEntryValueChanged?.Invoke(ValueDisplay);
+                entryValue = value;
+            }
+        }
+
+        public delegate void EntryValueChanged(string value);
+        public event EntryValueChanged OnEntryValueChanged;
 
         /// <summary>
         /// Controls how the value should be displayed. Should be overriden in a inheritet class for a concrete implementation.

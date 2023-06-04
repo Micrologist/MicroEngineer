@@ -168,7 +168,19 @@ namespace MicroMod
             {
                 _showEditWindow = !_showEditWindow;
                 Manager.Instance.PupulateTextFieldNames(GetEditableWindows()[_selectedWindowId].Entries);
-            }                
+            }
+
+            // TEMP for UITK rewrite
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("uitk", Styles.NormalBtnStyle))
+            {
+                if (UitkControllerTest.Instance.IsInitialized)
+                    UitkControllerTest.Instance.Toggle();
+                else
+                    UitkControllerTest.Instance.Initialize();
+            }
+            GUILayout.EndHorizontal();
+            // END OF TEMP
 
             GUILayout.Space(10);
             GUILayout.Label("<b>Layout control</b>");

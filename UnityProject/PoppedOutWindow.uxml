@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="MicroEngineer.uss" />
+    <ui:VisualElement name="root" class="root" style="border-left-color: rgba(237, 208, 147, 0.1); border-right-color: rgba(237, 208, 147, 0.1); border-top-color: rgba(237, 208, 147, 0.1); border-bottom-color: rgba(237, 208, 147, 0.1); padding-top: 2px; padding-left: 2px; padding-right: 2px; padding-bottom: 2px; flex-grow: 0; flex-shrink: 0; border-top-left-radius: 3px; border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;">
+        <ui:VisualElement name="title" class="window-title" style="flex-shrink: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 4px; height: 20px;">
+            <ui:Label text="Window name" display-tooltip-when-elided="true" name="window-name" style="flex-grow: 1; height: 100%; -unity-text-align: middle-left; -unity-font-style: bold;" />
+            <ui:Button display-tooltip-when-elided="true" name="settings-button" style="width: 20px;" />
+            <ui:Button display-tooltip-when-elided="true" name="close-button" style="width: 20px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="header" class="window-header" />
+        <ui:VisualElement name="body" style="background-color: rgb(28, 34, 42); border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-top-right-radius: 5px; border-bottom-right-radius: 5px; padding-left: 1px; padding-right: 1px; padding-top: 2px; padding-bottom: 2px; min-height: 20px; flex-grow: 1; flex-shrink: 1;">
+            <MicroMod.BaseEntryControl entry="Altitude" value="1234566.00" unit="km" />
+            <MicroMod.BaseEntryControl />
+            <MicroMod.TimeEntryControl days="0" hours="0" minutes="1" seconds="5" />
+        </ui:VisualElement>
+        <ui:VisualElement name="footer" class="window-footer" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,142 @@
+.root {
+    width: 200px;
+    background-color: rgb(34, 38, 46);
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 0;
+    padding-bottom: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+.window-title {
+    flex-direction: row;
+    align-items: center;
+    margin-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+}
+
+.unity-button#settings-button {
+    background-image: url('/Packages/com.unity.collab-proxy/Editor/Collaborate/Assets/Icons/more-vert-dark@2x.png');
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.unity-button#close-button {
+    background-image: url('/Packages/com.unity.collab-proxy/Editor/Collaborate/Assets/Icons/clear-dark@2x.png');
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.window-title .unity-button {
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    height: 80%;
+}
+
+.window-title .unity-button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.window-title .unity-button:active {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.entry {
+    font-size: 9px;
+    margin-bottom: 1px;
+    border-left-color: rgba(0, 0, 0, 0.25);
+    border-right-color: rgba(0, 0, 0, 0.25);
+    border-top-color: rgba(0, 0, 0, 0.25);
+    border-bottom-color: rgba(0, 0, 0, 0.25);
+    border-bottom-width: 1px;
+    flex-direction: row;
+    justify-content: space-between;
+    max-height: 12px;
+}
+
+.entry:hover {
+    background-color: rgba(237, 208, 147, 0.1);
+}
+
+.entry__name {
+    width: 50%;
+    -unity-text-align: middle-left;
+}
+
+.entry__value {
+    -unity-font-definition: url('/Assets/Theme/Fonts/JetBrainsMono-Bold SDF.asset');
+    color: rgb(237, 208, 147);
+    -unity-text-align: middle-right;
+    padding-right: 2px;
+    flex-grow: 1;
+    align-items: flex-end;
+    height: 100%;
+}
+
+.entry__unit {
+    flex-shrink: 0;
+    width: 25px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    -unity-text-align: middle-left;
+    height: 100%;
+    font-size: 8px;
+}
+
+.entry__inner-value {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 1px;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.entry__inner-unit {
+    width: 6px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+TimeEntryControl .entry__value {
+    flex-grow: 0;
+}
+
+.window-header {
+    flex-shrink: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 4px;
+    flex-direction: row;
+    align-items: center;
+    -unity-text-align: middle-left;
+    display: none;
+}
+
+.window-footer {
+    flex-shrink: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 4px;
+    padding-bottom: 0;
+    flex-direction: row;
+    align-items: center;
+    -unity-text-align: middle-left;
+    display: none;
+}

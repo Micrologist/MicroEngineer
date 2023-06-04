@@ -2,6 +2,7 @@
 using SpaceWarp.API.Assets;
 using SpaceWarp.API.UI;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace MicroMod
 {
@@ -361,7 +362,31 @@ namespace MicroMod
             EntryBackground_BlackTheme_Middle.normal.background = EntryBackgroundTexture_BlackTheme_Middle;
             EntryBackground_BlackTheme_Last = new GUIStyle { name = "BlackLast" };
             EntryBackground_BlackTheme_Last.normal.background = EntryBackgroundTexture_BlackTheme_Last;
+
+
+
+            // TEMP for UITK rewrite
+            try
+            {
+                uxml = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer/PoppedOutWindow.uxml");
+            }
+            catch (Exception ex) { _logger.LogError(ex); }
+            try
+            {
+                uiDocument = AssetManager.GetAsset<GameObject>($"{MicroEngineerMod.Instance.GUID}/microengineer/UIDocument.prefab");
+            }
+            catch (Exception ex) { _logger.LogError(ex); }
+            try
+            {
+                styleSheet = AssetManager.GetAsset<StyleSheet>($"{MicroEngineerMod.Instance.GUID}/microengineer/MicroEngineer.uss");
+            }
+            catch (Exception ex) { _logger.LogError(ex); }
+            // END OF TEMP
         }
+
+        public static VisualTreeAsset uxml;
+        public static GameObject uiDocument;
+        public static StyleSheet styleSheet;
 
         private static void InitializeTextures()
         {

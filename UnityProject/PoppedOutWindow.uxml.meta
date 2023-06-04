@@ -1,0 +1,10 @@
+fileFormatVersion: 2
+guid: b500a1206f085be44b63e3489efd083b
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: microengineer
+  assetBundleVariant: 
+  script: {fileID: 13804, guid: 0000000000000000e000000000000000, type: 0}
