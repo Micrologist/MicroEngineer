@@ -116,7 +116,7 @@ namespace MicroMod
             }
         }
 
-        public void HandleValueDisplayChanged(string value)
+        public void HandleEntryValueChanged(string value)
         {
             this.Value = value;
         }

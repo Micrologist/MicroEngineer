@@ -54,7 +54,7 @@ namespace MicroMod
             var entry = ((AltitudeAgl)surfaceWindow.Entries[0]);
             var entryControl = new BaseEntryControl();
             entryControl.Name = entry.Name;
-            entry.OnEntryValueChanged += entryControl.HandleValueDisplayChanged;
+            entry.OnEntryValueChanged += entryControl.HandleEntryValueChanged;
             entryControl.Unit = entry.UnitDisplay;
             body.Add(entryControl);
             */
@@ -75,11 +75,11 @@ namespace MicroMod
             foreach (var entry in surfaceWindow.Entries)
             {
                 var control = new BaseEntryControl(entry.Name, entry.ValueDisplay, entry.UnitDisplay);
-                entry.OnEntryValueChanged += control.HandleValueDisplayChanged;
+                entry.OnEntryValueChanged += control.HandleEntryValueChanged;
                 body.Add(control);
             }
 
-            // 6, 7
+            // Latitude, Longitude
             var latEntry = surfaceWindow.Entries[6];
             var longEntry = surfaceWindow.Entries[7];
             var latitude = new LatLonEntryControl(latEntry.Name, 1, 2, 3, "S");
@@ -117,16 +117,6 @@ namespace MicroMod
             */
         }
 
-        // Listener method to handle the updated _value
-        private void HandleValueDisplayChanged(string value)
-        {
-            // Use the updated _value to bind it to the control or perform other actions
-            EntryValue.text = value;
-            //Manager._logger.LogInfo("BaseEntry HandleValueDisplayChanged triggered");
-        }
-
-
-
         public void Toggle()
         {
             if (ShowWindow)
@@ -140,16 +130,6 @@ namespace MicroMod
             ShowWindow = !ShowWindow;
 
             //_window.enabled = !_window.enabled;
-        }
-    }
-
-    public class Test
-    {
-        public void HandleValueDisplayChanged(string value)
-        {
-            // Use the updated _value to bind it to the control or perform other actions
-            //EntryValue.text = _value;
-            //Manager._logger.LogInfo("HandleValueDisplayChanged triggered");
         }
     }
 }
