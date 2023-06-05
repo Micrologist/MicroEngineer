@@ -79,6 +79,15 @@ namespace MicroMod
                 body.Add(control);
             }
 
+            // 6, 7
+            var latEntry = surfaceWindow.Entries[6];
+            var longEntry = surfaceWindow.Entries[7];
+            var latitude = new LatLonEntryControl(latEntry.Name, 1, 2, 3, "S");
+            var longitude = new LatLonEntryControl(longEntry.Name, 33, 42, 7, "W");
+
+            body.Add(latitude);
+            body.Add(longitude);
+
             
             
             

@@ -99,6 +99,8 @@
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
+    flex-grow: 0;
+    flex-shrink: 0;
 }
 
 .entry__inner-unit {
@@ -139,4 +141,17 @@ TimeEntryControl .entry__value {
     align-items: center;
     -unity-text-align: middle-left;
     display: none;
+}
+
+.entry__outer-value {
+    flex-grow: 1;
+    flex-shrink: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
 }

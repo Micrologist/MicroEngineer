@@ -11,6 +11,8 @@
             <MicroMod.BaseEntryControl entry="Altitude" value="1234566.00" unit="km" />
             <MicroMod.BaseEntryControl />
             <MicroMod.TimeEntryControl days="0" hours="0" minutes="1" seconds="5" />
+            <MicroMod.LatLonEntryControl Entry="Latitude" minutes="25" seconds="0" degrees="0" unit="S" />
+            <MicroMod.LatLonEntryControl Entry="Longitude" degrees="33" minutes="8" seconds="3" unit="W" />
         </ui:VisualElement>
         <ui:VisualElement name="footer" class="window-footer" />
     </ui:VisualElement>
