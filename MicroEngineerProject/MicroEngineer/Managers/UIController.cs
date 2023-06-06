@@ -34,11 +34,11 @@ namespace MicroMod
 
         public void Initialize()
         {
-            _window = Window.CreateFromUxml(Styles.uxml, null, null, true);
+            _window = Window.CreateFromUxml(Styles.FlightUi, "surface", MicroEngineerMod.Instance.transform, true);
             IsInitialized = true;
             ShowWindow = true;
 
-            //var x = Styles.uxml.visualElementAssets.FirstOrDefault();
+            //var x = Styles.FlightUi.visualElementAssets.FirstOrDefault();
             var root = _window.rootVisualElement;
 
             root.transform.position = new Vector3(1000, 200, 0);
@@ -47,6 +47,9 @@ namespace MicroMod
 
             EntryWindow surfaceWindow = Manager.Instance.Windows.Find(w => w is EntryWindow && ((EntryWindow)w).Name == "Surface") as EntryWindow;
             //((AltitudeAgl)surfaceWindow.Entries[0])._name = EntryValue;
+
+            var windowTitle = root.Q<Label>("window-name");
+            windowTitle.text = surfaceWindow.Name;
 
             var body = root.Q<VisualElement>("body");
 
@@ -62,21 +65,30 @@ namespace MicroMod
             
             while (body.childCount > 0)
                 body.RemoveAt(0);
-            
-            
+
+
             /*
             foreach (var child in body.Children())
             {
                 child.RemoveFromHierarchy();
             }
             */
-            
 
+            int i = 0;
             foreach (var entry in surfaceWindow.Entries)
             {
+                if (i == 2)
+                    body.Add(new SeparatorEntryControl());
+
+                // skip lat & lon entry for now
+                if (i == 6 || i == 7)
+                    continue;
+
                 var control = new BaseEntryControl(entry.Name, entry.ValueDisplay, entry.UnitDisplay);
                 entry.OnEntryValueChanged += control.HandleEntryValueChanged;
                 body.Add(control);
+                
+                i++;
             }
 
             // Latitude, Longitude

@@ -368,9 +368,11 @@ namespace MicroMod
             // TEMP for UITK rewrite
             try
             {
-                uxml = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer/PoppedOutWindow.uxml");
+                FlightUi = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/PoppedOutWindow.uxml");
             }
             catch (Exception ex) { _logger.LogError(ex); }
+
+            /*
             try
             {
                 uiDocument = AssetManager.GetAsset<GameObject>($"{MicroEngineerMod.Instance.GUID}/microengineer/UIDocument.prefab");
@@ -381,10 +383,11 @@ namespace MicroMod
                 styleSheet = AssetManager.GetAsset<StyleSheet>($"{MicroEngineerMod.Instance.GUID}/microengineer/MicroEngineer.uss");
             }
             catch (Exception ex) { _logger.LogError(ex); }
+            */
             // END OF TEMP
         }
 
-        public static VisualTreeAsset uxml;
+        public static VisualTreeAsset FlightUi;
         public static GameObject uiDocument;
         public static StyleSheet styleSheet;
 
