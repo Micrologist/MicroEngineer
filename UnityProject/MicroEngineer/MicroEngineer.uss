@@ -1,0 +1,340 @@
+.main-gui__header {
+    width: 220px;
+    background-color: rgb(33, 39, 46);
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 0;
+    border-left-color: rgba(237, 208, 147, 0.1);
+    border-right-color: rgba(237, 208, 147, 0.1);
+    border-top-color: rgba(237, 208, 147, 0.1);
+    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 0;
+    flex-shrink: 0;
+    height: 23px;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+}
+
+.maingui-settings-button {
+    background-image: url('/Assets/UI/micro_engineer/icon.png');
+    -unity-background-scale-mode: scale-to-fit;
+    width: 20px;
+    height: 20px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -unity-background-image-tint-color: rgb(192, 199, 213);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.maingui-settings-button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.close-button {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgba(15, 19, 24, 0);
+    background-image: url('/Assets/UI/micro_engineer/k2d2_cross.png');
+}
+
+.close-button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+    background-image: url('/Assets/UI/micro_engineer/k2d2_cross.png');
+}
+
+.window-root {
+    width: 220px;
+    background-color: rgb(33, 39, 46);
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    border-left-color: rgba(237, 208, 147, 0.1);
+    border-right-color: rgba(237, 208, 147, 0.1);
+    border-top-color: rgba(237, 208, 147, 0.1);
+    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    flex-shrink: 0;
+}
+
+.window-title {
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    height: 20px;
+    padding-bottom: 2px;
+    padding-top: 2px;
+}
+
+.window-title:hover {
+    background-color: rgb(66, 69, 132);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.window-title__active {
+    background-color: rgb(74, 81, 173);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.window-title > .arrow {
+    -unity-font-style: normal;
+    -unity-text-outline-width: 0.5px;
+    -unity-text-align: middle-left;
+}
+
+.window-title #window-name {
+    flex-grow: 1;
+    height: 100%;
+    -unity-text-align: middle-left;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 0.5px;
+}
+
+.unity-button#settings-button {
+    background-image: url('/Assets/UI/micro_engineer/k2dt_gear.png');
+    -unity-background-scale-mode: scale-to-fit;
+    width: 15px;
+    height: 15px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    margin-right: 10px;
+    -unity-background-image-tint-color: rgb(192, 199, 213);
+}
+
+.unity-button#popout-button {
+    background-image: none;
+    -unity-background-scale-mode: scale-to-fit;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    height: 15px;
+    width: 15px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    align-items: center;
+    -unity-background-image-tint-color: rgb(192, 199, 213);
+    display: flex;
+}
+
+.unity-button#close-button {
+    background-image: url('/Assets/UI/micro_engineer/k2d2_cross.png');
+    -unity-background-scale-mode: scale-to-fit;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    height: 15px;
+    width: 15px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    align-items: center;
+    -unity-background-image-tint-color: rgb(192, 199, 213);
+    display: flex;
+}
+
+.window-title .unity-button {
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    height: 80%;
+}
+
+.window-title .unity-button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.window-title .unity-button:active {
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.window-header {
+    flex-shrink: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 4px;
+    flex-direction: row;
+    align-items: center;
+    -unity-text-align: middle-left;
+    display: none;
+}
+
+.body {
+    background-color: rgb(28, 34, 42);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    min-height: 20px;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.entry {
+    font-size: 10px;
+    margin-bottom: 1px;
+    border-left-color: rgba(0, 0, 0, 0.25);
+    border-right-color: rgba(0, 0, 0, 0.25);
+    border-top-color: rgba(0, 0, 0, 0.25);
+    border-bottom-color: rgba(0, 0, 0, 0.25);
+    border-bottom-width: 1px;
+    flex-direction: row;
+    justify-content: space-between;
+    max-height: 16px;
+}
+
+.entry:hover {
+    background-color: rgba(237, 208, 147, 0.1);
+}
+
+.entry__name {
+    width: 50%;
+    -unity-text-align: middle-left;
+}
+
+.entry__value {
+    -unity-font-definition: url('/Assets/Theme/Fonts/JetBrainsMono-Bold SDF.asset');
+    color: rgb(237, 208, 147);
+    -unity-text-align: middle-right;
+    padding-right: 2px;
+    flex-grow: 1;
+    align-items: flex-end;
+    height: 100%;
+}
+
+.entry__unit {
+    flex-shrink: 0;
+    width: 25px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 1px;
+    padding-bottom: 0;
+    -unity-text-align: middle-left;
+    height: 100%;
+    font-size: 8px;
+}
+
+.entry__inner-value {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 1px;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.entry__inner-unit {
+    width: 6px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.entry__outer-value {
+    flex-grow: 1;
+    flex-shrink: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+TimeEntryControl .entry__value {
+    flex-grow: 0;
+}
+
+.window-footer {
+    flex-shrink: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 4px;
+    padding-bottom: 0;
+    flex-direction: row;
+    align-items: center;
+    -unity-text-align: middle-left;
+    display: none;
+}
+
+.main-gui__footer {
+    border-left-color: rgba(237, 208, 147, 0.1);
+    border-right-color: rgba(237, 208, 147, 0.1);
+    border-top-color: rgba(237, 208, 147, 0.1);
+    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 0;
+    border-bottom-width: 1px;
+    width: 220px;
+    height: 3px;
+    background-color: rgb(33, 39, 46);
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+}

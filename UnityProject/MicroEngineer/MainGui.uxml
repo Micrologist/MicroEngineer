@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="MicroEngineer.uss" />
+    <ui:VisualElement name="root">
+        <ui:VisualElement name="maingui-header" class="main-gui__header">
+            <ui:Button text="&#10;" display-tooltip-when-elided="true" name="maingui-settings-button" class="maingui-settings-button" />
+            <ui:VisualElement name="settings" style="background-image: url(&apos;/Assets/UI/micro_engineer/icon.png&apos;); width: 18px; height: 18px; display: none;" />
+            <ui:Label text="MICRO.ENGINEER" display-tooltip-when-elided="true" name="micro-engineer" style="-unity-text-align: middle-left; flex-grow: 1; padding-left: 10px;" />
+            <ui:Button text="&#10;" display-tooltip-when-elided="true" name="close-button" class="close-button" />
+        </ui:VisualElement>
+        <ui:VisualElement name="body" />
+        <ui:VisualElement name="footer" class="main-gui__footer" />
+    </ui:VisualElement>
+</ui:UXML>

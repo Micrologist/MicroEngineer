@@ -171,15 +171,19 @@ namespace MicroMod
             }
 
             // TEMP for UITK rewrite
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("uitk", Styles.NormalBtnStyle))
+            GUILayout.Space(10);
+            GUILayout.Label("Uitk test bed");
+            if (GUILayout.Button("popped out window", Styles.NormalBtnStyle))
             {
                 if (UitkControllerTest.Instance.IsInitialized)
                     UitkControllerTest.Instance.Toggle();
                 else
                     UitkControllerTest.Instance.Initialize();
             }
-            GUILayout.EndHorizontal();
+            if (GUILayout.Button("create maingui", Styles.NormalBtnStyle))
+                UitkControllerTest.Instance.CreateMainGui();
+            if (GUILayout.Button("add docked window", Styles.NormalBtnStyle))
+                UitkControllerTest.Instance.AddDockedWindow();
             // END OF TEMP
 
             GUILayout.Space(10);

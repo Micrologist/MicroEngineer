@@ -8,6 +8,9 @@ using UnityEditor.UIElements;
 
 namespace MicroMod
 {
+    /// <summary>
+    /// Temporary class just to test uitk funcionality
+    /// </summary>
     public class UitkControllerTest
     {
         private static UitkControllerTest _instance;
@@ -34,11 +37,11 @@ namespace MicroMod
 
         public void Initialize()
         {
-            _window = Window.CreateFromUxml(Styles.FlightUi, "surface", MicroEngineerMod.Instance.transform, true);
+            _window = Window.CreateFromUxml(Styles.PoppedOutWindow, "surface", MicroEngineerMod.Instance.transform, true);
             IsInitialized = true;
             ShowWindow = true;
 
-            //var x = Styles.FlightUi.visualElementAssets.FirstOrDefault();
+            //var x = Styles.PoppedOutWindow.visualElementAssets.FirstOrDefault();
             var root = _window.rootVisualElement;
 
             root.transform.position = new Vector3(1000, 200, 0);
@@ -98,35 +101,68 @@ namespace MicroMod
             var longitude = new LatLonEntryControl(longEntry.Name, 33, 42, 7, "W");
 
             body.Add(latitude);
-            body.Add(longitude);
-
-            
-            
-            
-
-
-
-            /*
-            var entryName = root.Q<Name>("entry-name");
-            EntryValue = root.Q<Name>("entry-_value");
-            var entryUnit = root.Q<Name>("entry-_unit");
-
-            entryName.text = entry.Name;
-            EntryValue.text = entry.ValueDisplay;
-            entryUnit.text = entry.UnitDisplay;
-            */
-            
-
-
-            //EntryValue.text = surfaceWindow.Entries[0].ValueDisplay;
+            body.Add(longitude);            
 
             var firstVisualElement = root[0];
-            /*
-            var newLabel = new Name() { name = "new _name", text = "text for new _name" };
-            newLabel.visible = true;
-            newLabel.enabledSelf = true;
-            firstVisualElement.Add(newLabel);
-            */
+
+
+            entryWindows = Manager.Instance.Windows.FindAll(w => w is EntryWindow);
+        }
+
+        public void CreateMainGui()
+        {
+            MainGui = Window.CreateFromUxml(Styles.MainGui, "MainGui", MicroEngineerMod.Instance.transform, true);
+            MainGuiRoot = MainGui.rootVisualElement;
+            MainGuiRoot.transform.position = new Vector3(Screen.width / 2, Screen.height / 2, 0);
+        }
+
+        public UIDocument MainGui;
+        public VisualElement DockedWindow;
+        public VisualElement MainGuiRoot;
+        private int i = 0;
+        private List<BaseWindow> entryWindows;
+
+        public void AddDockedWindow()
+        {
+            EntryWindow w;
+            if (i < entryWindows.Count)
+            {
+                w = entryWindows[i] as EntryWindow;
+            }
+            else return;
+
+            DockedWindow = Styles.DockedWindow.CloneTree();
+            
+            var name = DockedWindow.Q<Label>("window-name");
+            name.text = w.Name;
+
+            var body = DockedWindow.Q<VisualElement>("body");
+            while (body.childCount > 0)
+                body.RemoveAt(0);
+
+            int j = 0;
+            foreach (var entry in w.Entries)
+            {
+                if (w.Name == "Surface" && j == 2)
+                    body.Add(new SeparatorEntryControl());
+
+                // skip lat & lon entry for now
+                if (w.Name == "Surface" && (j == 6 || j == 7))
+                    continue;
+                
+                var control = new BaseEntryControl(entry.Name, entry.ValueDisplay, entry.UnitDisplay);
+                entry.OnEntryValueChanged += control.HandleEntryValueChanged;
+                body.Add(control);
+
+                j++;
+            }
+
+            var mainGuiBody = MainGuiRoot.Q<VisualElement>("body");
+            mainGuiBody.Add(DockedWindow);
+            var closeBtn = DockedWindow.Q<VisualElement>("close-button");
+            closeBtn.style.display = DisplayStyle.None;
+
+            i++;
         }
 
         public void Toggle()
