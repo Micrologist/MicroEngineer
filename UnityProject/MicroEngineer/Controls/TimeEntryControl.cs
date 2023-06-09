@@ -6,7 +6,6 @@ namespace MicroMod
 {
     public class TimeEntryControl : VisualElement
     {
-        //These are the classes that you reference on your .uss file.
         public static string UssClassName = "entry";
         public static string UssEntryClassName = UssClassName + "__name";
 

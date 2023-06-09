@@ -207,7 +207,7 @@
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
-    padding-bottom: 4px;
+    padding-bottom: 0;
     flex-direction: row;
     align-items: center;
     -unity-text-align: middle-left;
@@ -337,4 +337,138 @@ TimeEntryControl .entry__value {
     background-color: rgb(33, 39, 46);
     border-bottom-left-radius: 3px;
     border-bottom-right-radius: 3px;
+}
+
+.stage__number {
+    width: 15px;
+    -unity-text-align: middle-left;
+}
+
+.stage__deltav-value {
+    -unity-font-definition: url('/Assets/Theme/Fonts/JetBrainsMono-Bold SDF.asset');
+    color: rgb(237, 208, 147);
+    -unity-text-align: middle-right;
+    padding-right: 2px;
+    align-items: flex-end;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 1px;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    min-width: 50px;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.stage__deltav-unit {
+    -unity-text-align: middle-left;
+    font-size: 8px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 1px;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    min-width: 20px;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.stage__twr {
+    -unity-font-definition: url('/Assets/Theme/Fonts/JetBrainsMono-Bold SDF.asset');
+    color: rgb(237, 208, 147);
+    -unity-text-align: middle-right;
+    padding-right: 2px;
+    align-items: flex-end;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 1px;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    min-width: 45px;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.stage__burn-container {
+    flex-direction: row;
+    justify-content: flex-end;
+    min-width: 70px;
+    flex-grow: 1;
+    flex-shrink: 0;
+}
+
+.stage__burn-value {
+    -unity-font-definition: url('/Assets/Theme/Fonts/JetBrainsMono-Bold SDF.asset');
+    color: rgb(237, 208, 147);
+    -unity-text-align: middle-right;
+    padding-right: 2px;
+    flex-grow: 1;
+    align-items: flex-end;
+    height: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-left: 1px;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.stage__burn-unit {
+    flex-shrink: 0;
+    width: 25px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 1px;
+    padding-bottom: 0;
+    -unity-text-align: middle-left;
+    height: 100%;
+    font-size: 8px;
+    width: 6px;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.stage__header {
+    height: 15px;
+    width: 100%;
+    border-bottom-width: 0;
+    justify-content: flex-start;
+    margin-bottom: 0;
+    display: flex;
+    top: 2px;
+}
+
+.stage__header-stagenumber {
+    -unity-text-align: middle-right;
+    min-width: 15px;
+}
+
+.stage__header-deltav {
+    -unity-text-align: middle-right;
+    min-width: 70px;
+}
+
+.stage__header-twr {
+    -unity-text-align: middle-right;
+    min-width: 45px;
+}
+
+.stage_header-burntime {
+    -unity-text-align: middle-right;
+    min-width: 78px;
 }

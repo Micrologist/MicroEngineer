@@ -1,0 +1,24 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="StageInfoHeader" src="StageInfoHeader.uxml" />
+    <Style src="MicroEngineer.uss" />
+    <ui:VisualElement name="window-root" class="window-root" style="border-top-width: 0; border-bottom-width: 0; border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-top-left-radius: 0; border-top-right-radius: 0;">
+        <ui:VisualElement name="title" class="window-title">
+            <ui:Label text="▼" display-tooltip-when-elided="true" name="title-arrow-down" class="arrow" style="display: flex;" />
+            <ui:Label text="▶" display-tooltip-when-elided="true" name="title-arrow-right" class="arrow" style="display: none;" />
+            <ui:Label text="Surface" display-tooltip-when-elided="true" name="window-name" />
+            <ui:Button display-tooltip-when-elided="true" name="settings-button" />
+            <ui:Button display-tooltip-when-elided="true" name="popout-button" style="background-image: url(&apos;/Assets/UI/micro_engineer/falki_popout.png&apos;);" />
+            <ui:Button display-tooltip-when-elided="true" name="close-button" />
+        </ui:VisualElement>
+        <ui:VisualElement name="header" class="window-header" style="display: flex;">
+            <ui:Instance template="StageInfoHeader" name="StageInfoHeader" />
+        </ui:VisualElement>
+        <ui:VisualElement name="body" class="body">
+            <MicroMod.StageInfoEntryControl stageNumber="4" deltav="896" twr="5" burndays="0" burnhours="0" burnminutes="15" burnseconds="10" />
+            <MicroMod.StageInfoEntryControl burndays="0" deltav="787" stageNumber="3" />
+            <MicroMod.StageInfoEntryControl burndays="0" twr="10" stageNumber="2" />
+            <MicroMod.StageInfoEntryControl burndays="0" stageNumber="1" />
+        </ui:VisualElement>
+        <ui:VisualElement name="footer" class="window-footer" />
+    </ui:VisualElement>
+</ui:UXML>
