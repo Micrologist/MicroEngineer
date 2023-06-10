@@ -1,3 +1,7 @@
+.main-gui_root {
+    width: 220px;
+}
+
 .main-gui__header {
     width: 220px;
     background-color: rgb(33, 39, 46);
@@ -22,6 +26,12 @@
     justify-content: flex-start;
     flex-direction: row;
     align-items: center;
+}
+
+.main-gui__header-title {
+    -unity-text-align: middle-left;
+    flex-grow: 1;
+    padding-left: 10px;
 }
 
 .maingui-settings-button {
@@ -83,6 +93,15 @@
     border-top-width: 1px;
     border-bottom-width: 1px;
     flex-shrink: 0;
+}
+
+.window-root-docked {
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
 }
 
 .window-title {
@@ -471,4 +490,13 @@ TimeEntryControl .entry__value {
 .stage_header-burntime {
     -unity-text-align: middle-right;
     min-width: 78px;
+}
+
+.separator {
+    border-bottom-width: 1px;
+    border-left-color: rgb(237, 208, 147);
+    border-right-color: rgb(237, 208, 147);
+    border-top-color: rgb(237, 208, 147);
+    border-bottom-color: rgb(237, 208, 147);
+    bottom: 2px;
 }
