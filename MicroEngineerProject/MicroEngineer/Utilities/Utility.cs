@@ -10,6 +10,7 @@ using KSP.Messages;
 using KSP.Sim.DeltaV;
 using BepInEx.Bootstrap;
 using SpaceWarp.API.Mods;
+using MicroEngineer.UI;
 
 namespace MicroMod
 {
@@ -57,6 +58,16 @@ namespace MicroMod
             string result = $"{degrees:N0}<color={Styles.UnitColorHex}>°</color> {minutes:00}<color={Styles.UnitColorHex}>'</color> {seconds:00}<color={Styles.UnitColorHex}>\"</color>";
 
             return result;
+        }
+
+        public static LatLonParsed ParseDegreesToDMSFormat(double inputDegree)
+        {
+            var ts = TimeSpan.FromHours(Math.Abs(inputDegree));
+            int degrees = (int)Math.Floor(ts.TotalHours);
+            int minutes = ts.Minutes;
+            int seconds = ts.Seconds;
+
+            return new LatLonParsed () { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
         public static string SecondsToTimeString(double seconds, bool addSpacing = true, bool returnLastUnit = false)
@@ -124,6 +135,33 @@ namespace MicroMod
             }
 
             return result;
+        }
+
+        public static TimeParsed ParseSecondsToTimeFormat(double inputSeconds)
+        {
+            if (inputSeconds == double.PositiveInfinity)
+                return TimeParsed.MaxValue();
+            else if (inputSeconds == double.NegativeInfinity)
+                return TimeParsed.MinValue();
+
+            inputSeconds = Math.Ceiling(inputSeconds);
+
+            int days = (int)(inputSeconds / 21600);
+            int hours = (int)((inputSeconds - days * 21600) / 3600);
+            int minutes = (int)((inputSeconds - hours * 3600 - days * 21600) / 60);
+            int seconds = (int)(inputSeconds - days * 21600 - hours * 3600 - minutes * 60);
+
+            // If inputSeconds is negative, reverse the sign of the higest calculated value
+            if (inputSeconds < 0)
+            {
+                if (days != 0)
+                    days = -days;
+                else if (hours != 0) hours = -hours;
+                else if (minutes != 0) minutes = -minutes;
+                else if (seconds != 0) seconds = -seconds;
+            }
+
+            return new TimeParsed() { Days = days, Hours = hours, Minutes = minutes, Seconds = seconds };
         }
 
         public static string SituationToString(VesselSituations situation)
@@ -209,6 +247,8 @@ namespace MicroMod
             {
                 Logger.LogError("Error trying to LoadLayout. Full error description:\n" + ex);
             }
+
+            FlightSceneController.Instance.InitializeUI(); // TODO temporary
         }
 
         /// <summary>

@@ -1,10 +1,13 @@
-﻿using System;
+﻿using BepInEx.Logging;
+using MicroMod;
 using UnityEngine.UIElements;
 
-namespace MicroMod
+namespace MicroEngineer.UI
 {
     public class BaseEntryControl : VisualElement
     {
+        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.EntryWindowController");
+
         //These are the classes that you reference on your .uss file.
         public static string UssClassName = "entry";
         public static string UssEntryClassName = UssClassName + "__name";
@@ -45,17 +48,26 @@ namespace MicroMod
             set => UnitLabel.text = value;
         }
 
+        public BaseEntryControl(BaseEntry entry) : this()
+        {
+            EntryName = entry.Name;
+            Value = entry.ValueDisplay;
+            Unit = entry.UnitDisplay;
+
+            entry.OnEntryValueChanged += HandleEntryValueChanged;
+        }
+
         public BaseEntryControl(string name, string value) : this()
         {
-            this.EntryName = name;
-            this.Value = value;
-            this.Unit = string.Empty;
+            EntryName = name;
+            Value = value;
+            Unit = string.Empty;
         }
         public BaseEntryControl(string name, string value, string unit) : this()
         {
-            this.EntryName = name;
-            this.Value = value;
-            this.Unit = unit;
+            EntryName = name;
+            Value = value;
+            Unit = unit;
         }
 
         public BaseEntryControl()
@@ -68,7 +80,7 @@ namespace MicroMod
             {
                 //Name that you access with Q<Name>(NameHere)
                 name = "entry-name",
-                text = String.Empty
+                text = string.Empty
             };
             //NameLabel.style.width = new StyleLength(new Length(50, LengthUnit.Percent));
             //Setting it so it will ALWAYS occupy 50% of its parent's width
@@ -78,7 +90,7 @@ namespace MicroMod
             ValueLabel = new Label()
             {
                 name = "entry-value",
-                text = String.Empty
+                text = string.Empty
             };
             //ValueLabel.style.flexGrow = 1;
             //Name occupies 50%, _unit Occupies 20px, this will tell the _value to occupy whats remaining!
@@ -88,7 +100,7 @@ namespace MicroMod
             UnitLabel = new Label()
             {
                 name = "entry-unit",
-                text = String.Empty
+                text = string.Empty
             };
             //UnitLabel.style.width = new StyleLength(new Length(20, LengthUnit.Pixel));
             //Setting it so it will ALWAYS occupy 20px of width
@@ -116,9 +128,11 @@ namespace MicroMod
             }
         }
 
-        public void HandleEntryValueChanged(string value)
+        public void HandleEntryValueChanged(string value, string unit)
         {
-            this.Value = value;
+            Value = value;
+            if (Unit != unit)
+                Unit = unit;
         }
     }
 }

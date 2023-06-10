@@ -195,6 +195,7 @@ namespace MicroMod
         {
             Name = "Latitude";
             Description = "Shows the vessel's latitude position around the celestial body. Latitude is the angle from the equator towards the poles.";
+            EntryType = EntryType.LatitudeLongitude;
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
             Formatting = null;
@@ -224,6 +225,7 @@ namespace MicroMod
         {
             Name = "Longitude";
             Description = "Shows the vessel's longitude position around the celestial body. Longitude is the angle from the body's prime meridian to the current meridian.";
+            EntryType = EntryType.LatitudeLongitude;
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
             Formatting = null;

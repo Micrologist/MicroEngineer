@@ -16,6 +16,7 @@ namespace MicroMod
         {
             Name = "Total burn time (OAB)";
             Description = "Shows the total length of burn the vessel can mantain.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
             BaseUnit = "s";

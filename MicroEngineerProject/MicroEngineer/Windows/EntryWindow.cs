@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MicroMod
 {
-    internal class EntryWindow: BaseWindow
+    public class EntryWindow: BaseWindow
     {
         [JsonProperty]
         internal string Name;

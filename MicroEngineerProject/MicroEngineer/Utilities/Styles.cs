@@ -370,7 +370,7 @@ namespace MicroMod
             {
                 PoppedOutWindow = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/PoppedOutWindow.uxml");
                 MainGui = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/MainGui.uxml");
-                DockedWindow = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/DockedWindow.uxml");
+                DockedWindow = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/EntryWindow.uxml");
             }
             catch (Exception ex) { _logger.LogError(ex); }
 
@@ -496,12 +496,5 @@ namespace MicroMod
                 margin = new RectOffset(0, 30, 0, 5)
             };
         }
-    }
-
-    public enum Theme
-    {
-        munix,
-        Gray,
-        Black
     }
 }

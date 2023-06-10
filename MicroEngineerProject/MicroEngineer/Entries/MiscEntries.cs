@@ -9,13 +9,14 @@ namespace MicroMod
     {
         public Separator()
         {
-            Name = "--------------";
+            Name = "-------------";
             Description = "It's a separator!";
+            EntryType = EntryType.Separator;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "---";
             Formatting = null;
-            EntryValue = "--------------";
+            EntryValue = "-------------";
         }
     }
 
@@ -46,11 +47,12 @@ namespace MicroMod
         {
             Name = "UT";
             Description = "Universal Time.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
             NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -76,11 +78,12 @@ namespace MicroMod
         {
             Name = "Start UT";
             Description = "Time passed since vessel was launched.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
             NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -106,6 +109,7 @@ namespace MicroMod
         {
             Name = "Launch time";
             Description = "Universal Time when vessel was launched.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
@@ -136,6 +140,7 @@ namespace MicroMod
         {
             Name = "Time since launch";
             Description = "Time since the vessel launched.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
@@ -246,6 +251,7 @@ namespace MicroMod
         {
             Name = "UT close.app.";
             Description = "Universal Time at closest approach.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
@@ -276,6 +282,7 @@ namespace MicroMod
         {
             Name = "UT SOI enc.";
             Description = "Universal Time at the point of transfer to another sphere of influence.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";

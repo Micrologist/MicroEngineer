@@ -1,12 +1,11 @@
-﻿using System;
+﻿using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace MicroMod
+namespace MicroEngineer.UI
 {
     public class LatLonEntryControl : VisualElement
     {
-        //These are the classes that you reference on your .uss file.
         public static string UssClassName = "entry";
         public static string UssEntryClassName = UssClassName + "__name";
 
@@ -16,7 +15,6 @@ namespace MicroMod
 
         public static string UssInnerUnitClassName = UssClassName + "__inner-unit";
         public static string UssUnitClassName = UssClassName + "__unit";
-        //public static string UssValueContainerClassName = UssClassName + "__value-container";
 
         public const string UNIT_DEGREE = "°";
         public const string UNIT_MINUTE = "'";
@@ -62,7 +60,7 @@ namespace MicroMod
             set => UnitLabel.text = value;
         }
 
-        public void SetValue(int degrees, int minutes, int seconds)
+        public void SetValue(int degrees, int minutes, int seconds, string direction)
         {
 
             degrees = Mathf.Clamp(degrees, 0, 359);
@@ -70,38 +68,19 @@ namespace MicroMod
             seconds = Mathf.Clamp(seconds, 0, 59);
 
             Degrees = degrees.ToString("0");
-            //DisplayStyle showDegrees = degrees != 0 ? DisplayStyle.Flex : DisplayStyle.None;
-            //DaysValueLabel.style.display = showDays;
-            //DaysUnitLabel.style.display = showDays;
-
             Minutes = minutes.ToString("00");
-            //Hours = days == 0 ? hours.ToString("0") : hours.ToString("00");
-            //DisplayStyle showHours = (days != 0 || hours != 0) ? DisplayStyle.Flex : DisplayStyle.None;
-            //HoursValueLabel.style.display = showHours;
-            //HoursUnitLabel.style.display = showHours;
-
             Seconds = seconds.ToString("00");
-            //Minutes = (hours == 0 && days == 0) ? minutes.ToString("0") : minutes.ToString("00");
-            //DisplayStyle showMinutes = (days != 0 || hours != 0 || minutes != 0) ? DisplayStyle.Flex : DisplayStyle.None;
-            //MinutesValueLabel.style.display = showMinutes;
-            //MinutesUnitLabel.style.display = showMinutes;
-
-            //Seconds = (minutes == 0 && hours == 0 && days == 0) ? seconds.ToString("0") : seconds.ToString("00");
+            Unit = direction;
         }
 
-        public LatLonEntryControl(string entry, int degrees, int minutes, int seconds, string unit) : this()
+        public LatLonEntryControl(BaseEntry entry) : this()
         {
-            this.EntryName = entry;
-            SetValue(degrees, minutes, seconds);
-            this.Unit = unit;
+            EntryName = entry.Name;
 
-            /*
-            this.EntryName = entry;
-            this.Days = days.ToString();
-            this.Hours = hours.ToString();
-            this.Minutes = minutes.ToString();
-            this.Seconds = seconds.ToString();
-            */
+            var latLon = Utility.ParseDegreesToDMSFormat((double?)entry.EntryValue ?? 0);
+            SetValue(latLon.Degrees, latLon.Minutes, latLon.Seconds, entry.BaseUnit);
+
+            entry.OnEntryLatLonChanged += HandleEntryLatLonChanged;
         }
 
         public LatLonEntryControl()
@@ -182,7 +161,7 @@ namespace MicroMod
             UnitLabel = new Label()
             {
                 name = "entry-unit",
-                text = String.Empty
+                text = string.Empty
             };
             UnitLabel.AddToClassList(UssUnitClassName);
             hierarchy.Add(UnitLabel);
@@ -207,13 +186,13 @@ namespace MicroMod
                     entry.SetValue(
                         _degrees.GetValueFromBag(bag, cc),
                         _minutes.GetValueFromBag(bag, cc),
-                        _seconds.GetValueFromBag(bag, cc)
+                        _seconds.GetValueFromBag(bag, cc),
+                        _unit.GetValueFromBag(bag, cc)
                         );
-                    entry.Unit = _unit.GetValueFromBag(bag, cc);
                 }
             }
         }
 
-        // TODO add value change event
+        public void HandleEntryLatLonChanged(int degrees, int minutes, int seconds, string direction) => SetValue(degrees, minutes, seconds, direction);
     }
 }

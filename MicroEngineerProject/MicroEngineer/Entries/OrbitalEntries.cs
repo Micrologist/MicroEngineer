@@ -62,9 +62,10 @@ namespace MicroMod
         {
             Name = "Time to Ap.";
             Description = "Shows the time until the vessel reaches apoapsis, the highest point of the orbit.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            BaseUnit = "s";
+            BaseUnit = null;
             Formatting = null;
         }
 
@@ -91,6 +92,7 @@ namespace MicroMod
         {
             Name = "Time to Pe.";
             Description = "Shows the time until the vessel reaches periapsis, the lowest point of the orbit.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
             BaseUnit = "s";
@@ -162,6 +164,7 @@ namespace MicroMod
         {
             Name = "Period";
             Description = "Shows the amount of time it will take to complete a full orbit.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
             BaseUnit = "s";

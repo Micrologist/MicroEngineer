@@ -123,6 +123,7 @@ namespace MicroMod
         {
             Name = "Time to node";
             Description = "Time until vessel reaches the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
             BaseUnit = "s";
@@ -153,6 +154,7 @@ namespace MicroMod
         {
             Name = "Burn time";
             Description = "Length of time needed to complete the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
             BaseUnit = "s";
@@ -239,6 +241,7 @@ namespace MicroMod
         {
             Name = "Time to Ap.";
             Description = "Shows the Time to Apoapsis vessel will have after reaching the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
             BaseUnit = "s";
@@ -271,6 +274,7 @@ namespace MicroMod
         {
             Name = "Time to Pe.";
             Description = "Shows the Time to Periapsis vessel will have after reaching the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
             BaseUnit = "s";
@@ -351,6 +355,7 @@ namespace MicroMod
         {
             Name = "Period";
             Description = "The period of the vessel's orbit after the burn.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
             BaseUnit = "s";
@@ -646,7 +651,7 @@ namespace MicroMod
             IsDefault = false;
             BaseUnit = "s";
             NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -699,11 +704,12 @@ namespace MicroMod
         {
             Name = "UT";
             Description = "Universal Time when vessel reaches the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
             BaseUnit = "s";
             NumberOfDecimalDigits = 3;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -732,6 +738,7 @@ namespace MicroMod
         {
             Name = "UT close.app.";
             Description = "Universal Time at the point of closest approach.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
             BaseUnit = null;
@@ -764,6 +771,7 @@ namespace MicroMod
         {
             Name = "UT SOI enc.";
             Description = "Universal Time at the point of transition to another Sphere Of Influence.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
             BaseUnit = null;

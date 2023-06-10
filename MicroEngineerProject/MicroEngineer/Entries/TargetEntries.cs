@@ -517,6 +517,7 @@ namespace MicroMod
         {
             Name = "Orbit time";
             Description = "Shows orbit time in seconds from the Periapsis.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Target;
             IsDefault = false;
             BaseUnit = "s";
@@ -688,6 +689,7 @@ namespace MicroMod
         {
             Name = "C.A.Time1";
             Description = "Close approach time to target (1).";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Target;
             IsDefault = true;
             HideWhenNoData = true;
@@ -776,6 +778,7 @@ namespace MicroMod
         {
             Name = "C.A.Time2";
             Description = "Close approach time to target (2).";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Target;
             IsDefault = false;
             HideWhenNoData = true;

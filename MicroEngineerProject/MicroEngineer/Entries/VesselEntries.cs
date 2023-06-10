@@ -21,7 +21,7 @@ namespace MicroMod
             EntryValue = Utility.ActiveVessel.DisplayName;
         }
 
-        public override string ValueDisplay => EntryValue?.ToString();
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Mass : VesselEntry

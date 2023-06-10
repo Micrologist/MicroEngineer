@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using UnityEditor;
 using UnityEditor.Experimental;
 using UnityEditor.UIElements;
+using MicroEngineer.UI;
 
 namespace MicroMod
 {
@@ -97,11 +98,11 @@ namespace MicroMod
             // Latitude, Longitude
             var latEntry = surfaceWindow.Entries[6];
             var longEntry = surfaceWindow.Entries[7];
-            var latitude = new LatLonEntryControl(latEntry.Name, 1, 2, 3, "S");
-            var longitude = new LatLonEntryControl(longEntry.Name, 33, 42, 7, "W");
+            //var latitude = new LatLonEntryControl(latEntry.Name, 1, 2, 3, "S");
+            //var longitude = new LatLonEntryControl(longEntry.Name, 33, 42, 7, "W");
 
-            body.Add(latitude);
-            body.Add(longitude);            
+            //body.Add(latitude);
+            //body.Add(longitude);            
 
             var firstVisualElement = root[0];
 
