@@ -65,7 +65,7 @@ namespace MicroMod
                             OnEntryLatLonChanged?.Invoke(latLon.Degrees, latLon.Minutes, latLon.Seconds, BaseUnit);
                             break;
                         case EntryType.StageInfo:
-                            // TODO
+                            OnStageInfoChanged?.Invoke((List<Stage>)entryValue);
                             break;
                         case EntryType.Separator:
                             break;
@@ -80,9 +80,11 @@ namespace MicroMod
         public delegate void EntryValueChanged(string value, string unit);
         public delegate void EntryTimeValueChanged(int days, int hours, int minutes, int seconds);
         public delegate void EntryLatLonChanged(int degrees, int minutes, int seconds, string direction);
+        public delegate void StageInfoChanged(List<Stage> stages);
         public event EntryValueChanged OnEntryValueChanged;
         public event EntryTimeValueChanged OnEntryTimeValueChanged;
         public event EntryLatLonChanged OnEntryLatLonChanged;
+        public event StageInfoChanged OnStageInfoChanged;
 
         /// <summary>
         /// Controls how the value should be displayed. Should be overriden in a inheritet class for a concrete implementation.

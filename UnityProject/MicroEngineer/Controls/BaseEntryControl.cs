@@ -116,9 +116,11 @@ namespace MicroMod
             }
         }
 
-        public void HandleValueDisplayChanged(string value)
+        public void HandleEntryValueChanged(string value, string unit)
         {
-            this.Value = value;
+            Value = value;
+            if (Unit != unit)
+                Unit = unit;
         }
     }    
 }

@@ -32,6 +32,9 @@
     -unity-text-align: middle-left;
     flex-grow: 1;
     padding-left: 10px;
+    -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/LEDCounter7/led_counter-7 SDF.asset');
+    font-size: 16px;
+    padding-bottom: 0;
 }
 
 .maingui-settings-button {
@@ -230,7 +233,7 @@
     flex-direction: row;
     align-items: center;
     -unity-text-align: middle-left;
-    display: none;
+    display: flex;
 }
 
 .body {
@@ -271,7 +274,7 @@
 }
 
 .entry__value {
-    -unity-font-definition: url('/Assets/Theme/Fonts/JetBrainsMono-Bold SDF.asset');
+    -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
     color: rgb(237, 208, 147);
     -unity-text-align: middle-right;
     padding-right: 2px;
@@ -334,12 +337,12 @@ TimeEntryControl .entry__value {
     flex-shrink: 0;
     padding-left: 0;
     padding-right: 0;
-    padding-top: 4px;
+    padding-top: 0;
     padding-bottom: 0;
     flex-direction: row;
     align-items: center;
     -unity-text-align: middle-left;
-    display: none;
+    display: flex;
 }
 
 .main-gui__footer {
@@ -364,7 +367,7 @@ TimeEntryControl .entry__value {
 }
 
 .stage__deltav-value {
-    -unity-font-definition: url('/Assets/Theme/Fonts/JetBrainsMono-Bold SDF.asset');
+    -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
     color: rgb(237, 208, 147);
     -unity-text-align: middle-right;
     padding-right: 2px;
@@ -399,7 +402,7 @@ TimeEntryControl .entry__value {
 }
 
 .stage__twr {
-    -unity-font-definition: url('/Assets/Theme/Fonts/JetBrainsMono-Bold SDF.asset');
+    -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
     color: rgb(237, 208, 147);
     -unity-text-align: middle-right;
     padding-right: 2px;
@@ -426,7 +429,7 @@ TimeEntryControl .entry__value {
 }
 
 .stage__burn-value {
-    -unity-font-definition: url('/Assets/Theme/Fonts/JetBrainsMono-Bold SDF.asset');
+    -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
     color: rgb(237, 208, 147);
     -unity-text-align: middle-right;
     padding-right: 2px;
@@ -487,7 +490,7 @@ TimeEntryControl .entry__value {
     min-width: 45px;
 }
 
-.stage_header-burntime {
+.stage__header-burntime {
     -unity-text-align: middle-right;
     min-width: 78px;
 }

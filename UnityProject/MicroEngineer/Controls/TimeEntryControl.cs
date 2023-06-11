@@ -68,9 +68,9 @@ namespace MicroMod
         {
 
             days = Mathf.Clamp(days, -9999, 9999);
-            hours = Mathf.Clamp(hours, 0, 23);
-            minutes = Mathf.Clamp(minutes, 0, 59);
-            seconds = Mathf.Clamp(seconds, 0, 59);
+            hours = Mathf.Clamp(hours, -23, 23);
+            minutes = Mathf.Clamp(minutes, -59, 59);
+            seconds = Mathf.Clamp(seconds, -59, 59);
 
             Days = days.ToString("0");
             DisplayStyle showDays = days != 0 ? DisplayStyle.Flex : DisplayStyle.None;

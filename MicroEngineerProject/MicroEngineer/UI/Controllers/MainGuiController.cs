@@ -25,6 +25,7 @@ namespace MicroEngineer.UI
             Root = MainGui.rootVisualElement;
             Body = Root.Q<VisualElement>("body");            
             BuildDockedWindows();
+            Root[0].RegisterCallback<GeometryChangedEvent>(CenterWindow);
         }
 
         public void Update()
@@ -42,10 +43,24 @@ namespace MicroEngineer.UI
 
                 Body.Add(ewc.Root);
                 _logger.LogDebug($"Window {entryWindow.Name} added to root.");
-            }
+            }            
 
-            Root[0].CenterByDefault();        
+            ////Root[0].CenterByDefault();
+            //Root[0].SetDefaultPosition(windowSize =>
+            //{
+            //    return new Vector2((ReferenceResolution.Width - windowSize.x) / 2, (ReferenceResolution.Height - windowSize.y) / 2);
+            //});
         }
+
+        private void CenterWindow(GeometryChangedEvent evt)
+        {
+            if (evt.newRect.width == 0 || evt.newRect.height == 0)
+                return;
+
+            Root[0].transform.position = new Vector2((ReferenceResolution.Width - evt.newRect.width) / 2, (ReferenceResolution.Height - evt.newRect.height) / 2);
+            Root[0].UnregisterCallback<GeometryChangedEvent>(CenterWindow);
+        }
+
 
         private void HandleSettingsButton()
         {

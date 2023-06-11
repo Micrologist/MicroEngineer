@@ -3,7 +3,7 @@
     <ui:VisualElement name="root" class="main-gui_root">
         <ui:VisualElement name="maingui-header" class="main-gui__header">
             <ui:Button text="&#10;" display-tooltip-when-elided="true" name="maingui-settings-button" class="maingui-settings-button" />
-            <ui:Label text="MICRO.ENGINEER" display-tooltip-when-elided="true" name="micro-engineer" class="main-gui__header-title" />
+            <ui:Label text="micro.engineer" display-tooltip-when-elided="true" name="micro-engineer" class="main-gui__header-title" />
             <ui:Button text="&#10;" display-tooltip-when-elided="true" name="close-button" class="close-button" />
         </ui:VisualElement>
         <ui:VisualElement name="body" style="flex-shrink: 0;" />

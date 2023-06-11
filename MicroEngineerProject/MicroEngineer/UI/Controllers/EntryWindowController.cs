@@ -1,4 +1,5 @@
 ﻿using BepInEx.Logging;
+using MicroEngineer.MicroEngineer.UI.Controls;
 using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,7 +19,9 @@ namespace MicroEngineer.UI
         public Button SettingsButton { get; set; }
         public Button PopOutButton { get; set; }
         public Button CloseButton { get; set; }
+        public VisualElement Header { get; set; }
         public VisualElement Body { get; set; }
+        public VisualElement Footer { get; set; }
 
         public EntryWindowController(EntryWindow w)
         {
@@ -34,6 +37,20 @@ namespace MicroEngineer.UI
             _logger.LogDebug($"Creating window: {EntryWindow.Name}.");
 
             Root = Uxmls.Instance.EntryWindow.CloneTree();
+
+            BuildTitle();
+            BuildHeader();
+            BuildBody();
+            BuildFooter();
+
+            if (EntryWindow.IsFlightActive)
+                Expand();
+            else
+                Collapse();
+        }
+
+        private void BuildTitle()
+        {
             Title = Root.Q<VisualElement>("title");
             Title.RegisterCallback<MouseDownEvent>(OnTitleClick);
             TitleArrowDown = Root.Q<VisualElement>("title-arrow-down");
@@ -43,6 +60,26 @@ namespace MicroEngineer.UI
             SettingsButton = Root.Q<Button>("settings-button");
             PopOutButton = Root.Q<Button>("popout-button");
             CloseButton = Root.Q<Button>("close-button");
+
+            if (EntryWindow.IsFlightPoppedOut)
+                PopOutButton.style.display = DisplayStyle.None;
+            else
+                CloseButton.style.display = DisplayStyle.None;
+        }
+
+        private void BuildHeader()
+        {
+            Header = Root.Q<VisualElement>("header");
+
+            if (EntryWindow is StageWindow)
+            {
+                Header.Add(Uxmls.Instance.StageInfoHeader.CloneTree());
+                return;
+            }                
+        }
+
+        private void BuildBody()
+        {
             Body = Root.Q<VisualElement>("body");
 
             foreach (var entry in EntryWindow.Entries)
@@ -63,8 +100,7 @@ namespace MicroEngineer.UI
                         control = new LatLonEntryControl(entry);
                         break;
                     case EntryType.StageInfo:
-                        // TODO
-                        control = new VisualElement();
+                        control = new StageInfoEntriesBuilder(entry);
                         break;
                     case EntryType.Separator:
                         control = new SeparatorEntryControl();
@@ -76,16 +112,11 @@ namespace MicroEngineer.UI
 
                 Body.Add(control);
             }
+        }
 
-            if (EntryWindow.IsFlightPoppedOut)
-                PopOutButton.style.display = DisplayStyle.None;
-            else
-                CloseButton.style.display = DisplayStyle.None;
-
-            if (EntryWindow.IsFlightActive)
-                Expand();
-            else
-                Collapse();
+        private void BuildFooter()
+        {
+            Footer = Root.Q<VisualElement>("footer");
         }
 
         public void Expand()
@@ -93,16 +124,20 @@ namespace MicroEngineer.UI
             Title.AddToClassList("window-title__active");
             TitleArrowDown.style.display = DisplayStyle.Flex;
             TitleArrowRight.style.display = DisplayStyle.None;
+            Header.style.display = DisplayStyle.Flex;
             Body.style.display = DisplayStyle.Flex;
+            Footer.style.display = DisplayStyle.Flex;
+
         }
 
         public void Collapse()
         {
-            // Collapse
             Title.RemoveFromClassList("window-title__active");
             TitleArrowDown.style.display = DisplayStyle.None;
             TitleArrowRight.style.display = DisplayStyle.Flex;
+            Header.style.display = DisplayStyle.None;
             Body.style.display = DisplayStyle.None;
+            Footer.style.display = DisplayStyle.None;
         }
 
         private void OnTitleClick(MouseDownEvent evt)
