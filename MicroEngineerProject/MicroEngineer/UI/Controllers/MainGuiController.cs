@@ -35,10 +35,8 @@ namespace MicroEngineer.UI
 
         public void BuildDockedWindows()
         {
-            foreach (EntryWindow entryWindow in Manager.Instance.Windows.Where(w => w is EntryWindow))
+            foreach (EntryWindow entryWindow in Manager.Instance.Windows.Where(w => w is EntryWindow && !((EntryWindow)w).IsFlightPoppedOut))
             {
-                //TODO only build docked windows
-
                 EntryWindowController ewc = new EntryWindowController(entryWindow);
 
                 Body.Add(ewc.Root);
