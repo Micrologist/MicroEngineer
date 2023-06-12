@@ -13,10 +13,12 @@ namespace MicroEngineer.UI
         public const string MAIN_GUI_PATH = "/microengineer_flightui/microengineer/maingui.uxml";
         public const string ENTRY_WINDOW_PATH = "/microengineer_flightui/microengineer/entrywindow.uxml";
         public const string STAGE_INFO_HEADER_PATH = "/microengineer_flightui/microengineer/stageinfoheader.uxml";
+        public const string BASE_WINDOW_PATH = "/microengineer_flightui/microengineer/basewindow.uxml";
 
         public VisualTreeAsset MainGui;
         public VisualTreeAsset EntryWindow;
         public VisualTreeAsset StageInfoHeader;
+        public VisualTreeAsset BasicWindow;
 
         public static Uxmls Instance
         {
@@ -38,6 +40,7 @@ namespace MicroEngineer.UI
             MainGui = LoadAsset($"{MAIN_GUI_PATH}");
             EntryWindow = LoadAsset($"{ENTRY_WINDOW_PATH}");
             StageInfoHeader = LoadAsset($"{STAGE_INFO_HEADER_PATH}");
+            BasicWindow = LoadAsset($"{BASE_WINDOW_PATH}");
         }
 
         private VisualTreeAsset LoadAsset(string path)

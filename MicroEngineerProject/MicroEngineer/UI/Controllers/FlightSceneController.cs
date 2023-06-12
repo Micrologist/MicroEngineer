@@ -25,27 +25,18 @@ namespace MicroEngineer.UI
 
         public void InitializeUI()
         {
-            MainGui = Window.CreateFromUxml(Uxmls.Instance.MainGui, "MainGui", null, true);//MicroEngineerMod.Instance.transform, true);
+            //Build MainGui
+            MainGui = Window.CreateFromUxml(Uxmls.Instance.MainGui, "MainGui", null, true);
             MainGuiController mainGuiController = MainGui.gameObject.AddComponent<MainGuiController>();
 
+            //Build poppedout windows
             foreach (EntryWindow poppedOutWindow in Manager.Instance.Windows.Where(w => w is EntryWindow && ((EntryWindow)w).IsFlightPoppedOut))
             {
+                var window = Window.CreateFromUxml(Uxmls.Instance.BasicWindow, poppedOutWindow.Name, null, true);
+                var body = window.rootVisualElement.Q<VisualElement>("body");
                 EntryWindowController ewc = new EntryWindowController(poppedOutWindow);
-                var w = Window.CreateFromElement(ewc.Root, poppedOutWindow.Name, null, true);
-                w.rootVisualElement.style.width = 220;
-
-                //var w = Window.CreateFromUxml(Uxmls.Instance.EntryWindow, poppedOutWindow.Name, null, true);
-                //EntryWindowController ctrl = w.gameObject.AddComponent<EntryWindowController>();
-                _logger.LogDebug($"Poppedout window {poppedOutWindow.Name} created.");
+                body.Add(ewc.Root);
             }
-
-            //foreach (EntryWindow poppedOutWindow in Manager.Instance.Windows.Where(w => w is EntryWindow && ((EntryWindow)w).IsFlightPoppedOut))
-            //{
-            //    var window = Window.CreateFromUxml(Uxmls.Instance.MainGui, poppedOutWindow.Name, MicroEngineerMod.Instance.transform, true);
-            //    var body = window.rootVisualElement.Q<VisualElement>("body");
-            //    EntryWindowController ewc = new EntryWindowController(poppedOutWindow);
-            //    body.Add(ewc.Root);
-            //}
         }
     }
 }

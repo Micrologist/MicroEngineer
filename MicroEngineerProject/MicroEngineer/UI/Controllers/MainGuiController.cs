@@ -43,6 +43,7 @@ namespace MicroEngineer.UI
                 _logger.LogDebug($"Window {entryWindow.Name} added to root.");
             }            
 
+            // DOESN'T WORK
             ////Root[0].CenterByDefault();
             //Root[0].SetDefaultPosition(windowSize =>
             //{
