@@ -12,6 +12,7 @@ namespace MicroEngineer.UI
 
         public UIDocument MainGui { get; set; }
         public VisualElement Root { get; set; }
+        public VisualElement Header { get; set; }
         public VisualElement Body { get; set; }
         public bool ShowWindow;
 
@@ -23,14 +24,22 @@ namespace MicroEngineer.UI
             _logger.LogDebug("Entering Start() of MainGuiController");
             MainGui = GetComponent<UIDocument>();
             Root = MainGui.rootVisualElement;
+            Header = Root.Q<VisualElement>("header");
+            BuildMainGuiHeader();
             Body = Root.Q<VisualElement>("body");            
             BuildDockedWindows();
             Root[0].RegisterCallback<GeometryChangedEvent>(CenterWindow);
-        }
+        }        
 
         public void Update()
         {
             return;
+        }
+
+        private void BuildMainGuiHeader()
+        {
+            var mainGuiHeader = Uxmls.Instance.MainGuiHeader.CloneTree();
+            Header.Add(mainGuiHeader);
         }
 
         public void BuildDockedWindows()

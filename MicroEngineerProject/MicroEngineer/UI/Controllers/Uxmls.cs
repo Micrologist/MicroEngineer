@@ -11,14 +11,16 @@ namespace MicroEngineer.UI
         private static readonly ManualLogSource _logger = Logger.CreateLogSource("MicroEngineer.Uxmls");
 
         public const string MAIN_GUI_PATH = "/microengineer_flightui/microengineer/maingui.uxml";
+        public const string MAIN_GUI_HEADER_PATH = "/microengineer_flightui/microengineer/mainguiheader.uxml";
         public const string ENTRY_WINDOW_PATH = "/microengineer_flightui/microengineer/entrywindow.uxml";
         public const string STAGE_INFO_HEADER_PATH = "/microengineer_flightui/microengineer/stageinfoheader.uxml";
         public const string BASE_WINDOW_PATH = "/microengineer_flightui/microengineer/basewindow.uxml";
 
         public VisualTreeAsset MainGui;
+        public VisualTreeAsset MainGuiHeader;
         public VisualTreeAsset EntryWindow;
         public VisualTreeAsset StageInfoHeader;
-        public VisualTreeAsset BasicWindow;
+        public VisualTreeAsset BaseWindow;
 
         public static Uxmls Instance
         {
@@ -38,9 +40,10 @@ namespace MicroEngineer.UI
         public void Initialize()
         {
             MainGui = LoadAsset($"{MAIN_GUI_PATH}");
+            MainGuiHeader = LoadAsset($"{MAIN_GUI_HEADER_PATH}");
             EntryWindow = LoadAsset($"{ENTRY_WINDOW_PATH}");
             StageInfoHeader = LoadAsset($"{STAGE_INFO_HEADER_PATH}");
-            BasicWindow = LoadAsset($"{BASE_WINDOW_PATH}");
+            BaseWindow = LoadAsset($"{BASE_WINDOW_PATH}");
         }
 
         private VisualTreeAsset LoadAsset(string path)

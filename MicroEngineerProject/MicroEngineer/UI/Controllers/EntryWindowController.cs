@@ -52,14 +52,14 @@ namespace MicroEngineer.UI
         private void BuildTitle()
         {
             Title = Root.Q<VisualElement>("title");
-            Title.RegisterCallback<MouseDownEvent>(OnTitleClick);
+            Title.AddManipulator(new Clickable(OnTitleClick));
             TitleArrowDown = Root.Q<VisualElement>("title-arrow-down");
             TitleArrowRight = Root.Q<VisualElement>("title-arrow-right");
             NameLabel = Root.Q<Label>("window-name");
             NameLabel.text = EntryWindow.Name;
             SettingsButton = Root.Q<Button>("settings-button");
             PopOutButton = Root.Q<Button>("popout-button");
-            CloseButton = Root.Q<Button>("close-button");
+            CloseButton = Root.Q<Button>("close-button");            
 
             if (EntryWindow.IsFlightPoppedOut)
                 PopOutButton.style.display = DisplayStyle.None;
@@ -140,7 +140,7 @@ namespace MicroEngineer.UI
             Footer.style.display = DisplayStyle.None;
         }
 
-        private void OnTitleClick(MouseDownEvent evt)
+        private void OnTitleClick(EventBase evt)
         {
             EntryWindow.IsFlightActive = !EntryWindow.IsFlightActive;
 

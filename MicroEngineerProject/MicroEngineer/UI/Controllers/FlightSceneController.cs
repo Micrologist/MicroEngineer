@@ -26,13 +26,13 @@ namespace MicroEngineer.UI
         public void InitializeUI()
         {
             //Build MainGui
-            MainGui = Window.CreateFromUxml(Uxmls.Instance.MainGui, "MainGui", null, true);
+            MainGui = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, "MainGui", null, true);
             MainGuiController mainGuiController = MainGui.gameObject.AddComponent<MainGuiController>();
 
             //Build poppedout windows
             foreach (EntryWindow poppedOutWindow in Manager.Instance.Windows.Where(w => w is EntryWindow && ((EntryWindow)w).IsFlightPoppedOut))
             {
-                var window = Window.CreateFromUxml(Uxmls.Instance.BasicWindow, poppedOutWindow.Name, null, true);
+                var window = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, poppedOutWindow.Name, null, true);
                 var body = window.rootVisualElement.Q<VisualElement>("body");
                 EntryWindowController ewc = new EntryWindowController(poppedOutWindow);
                 body.Add(ewc.Root);
