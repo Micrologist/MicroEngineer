@@ -2,6 +2,7 @@
 using MicroEngineer.MicroEngineer.UI.Controls;
 using MicroMod;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 namespace MicroEngineer.UI
@@ -9,6 +10,7 @@ namespace MicroEngineer.UI
     public class EntryWindowController : MonoBehaviour
     {
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.EntryWindowController");
+        private UnityEvent RebuildUIEvent = new UnityEvent();
 
         public EntryWindow EntryWindow { get; set; }
         public VisualElement Root { get; set; }   
@@ -59,13 +61,15 @@ namespace MicroEngineer.UI
             NameLabel.text = EntryWindow.Name;
             SettingsButton = Root.Q<Button>("settings-button");
             PopOutButton = Root.Q<Button>("popout-button");
-            CloseButton = Root.Q<Button>("close-button");            
+            PopOutButton.RegisterCallback<ClickEvent>(OnPopOutOrCloseButton);
+            CloseButton = Root.Q<Button>("close-button");
+            CloseButton.RegisterCallback<ClickEvent>(OnPopOutOrCloseButton);
 
             if (EntryWindow.IsFlightPoppedOut)
                 PopOutButton.style.display = DisplayStyle.None;
             else
                 CloseButton.style.display = DisplayStyle.None;
-        }
+        }        
 
         private void BuildHeader()
         {
@@ -148,6 +152,12 @@ namespace MicroEngineer.UI
                 Expand();
             else
                 Collapse();
+        }
+
+        private void OnPopOutOrCloseButton(ClickEvent evt)
+        {
+            EntryWindow.IsFlightPoppedOut = !EntryWindow.IsFlightPoppedOut;
+            FlightSceneController.Instance.RebuildUI();
         }
     }
 }

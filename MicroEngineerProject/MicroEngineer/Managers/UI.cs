@@ -123,9 +123,11 @@ namespace MicroMod
             }
 
             // Draw popped out Stages
+            /*
             StageWindow stageWindow= entryWindows.OfType<StageWindow>().FirstOrDefault();
             if (stageWindow.IsFlightActive && stageWindow.IsFlightPoppedOut)
                 stageWindow.DrawWindow(this);
+            */
 
             // Draw Edit Window
             if (_showEditWindow)
@@ -328,9 +330,11 @@ namespace MicroMod
                 GUILayout.Space(-5);
 
                 // Draw Stage window next
+                /*
                 StageWindow stageWindow = entryWindows.OfType<StageWindow>().FirstOrDefault();
                 if (stageWindow.IsFlightActive && !stageWindow.IsFlightPoppedOut)
                     stageWindow.DrawWindow(this);
+                */
 
                 // Draw all other windows
                 foreach (var (window, index) in entryWindows

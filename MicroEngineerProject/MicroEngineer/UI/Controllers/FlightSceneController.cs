@@ -9,8 +9,10 @@ namespace MicroEngineer.UI
     {
         private static FlightSceneController _instance;
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.FlightSceneController");
+        //private UnityEvent RebuildUIEvent;
 
         public UIDocument MainGui;
+        public List<UIDocument> Windows = new ();
 
         public static FlightSceneController Instance
         {
@@ -36,7 +38,19 @@ namespace MicroEngineer.UI
                 var body = window.rootVisualElement.Q<VisualElement>("body");
                 EntryWindowController ewc = new EntryWindowController(poppedOutWindow);
                 body.Add(ewc.Root);
+                Windows.Add(window);
             }
+        }
+
+        public void RebuildUI()
+        {
+            _logger.LogDebug("RebuildUI triggered.");
+            MainGui.gameObject.DestroyGameObject();
+            foreach (var w in Windows)
+                w.gameObject.DestroyGameObject();
+            Windows.Clear();
+
+            InitializeUI();
         }
     }
 }
