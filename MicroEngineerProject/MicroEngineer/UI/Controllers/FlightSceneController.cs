@@ -21,12 +21,11 @@ namespace MicroEngineer.UI
             get => _showGui;
             set
             {
+                _logger.LogDebug($"Inside ShowGui SET. Old value: {_showGui}. New value: {value}");
                 _showGui = value;
-                //ToggleWindowVisibility(value);
-                if (value)
-                    InitializeUI();
-                else
-                    DestroyUI();
+                //ToggleWindowVisibility(value);                
+
+                RebuildUI();
             }            
         }
 
@@ -43,6 +42,7 @@ namespace MicroEngineer.UI
 
         public void InitializeUI()
         {
+            _logger.LogDebug("InitializeUI triggered.");
             //Build MainGui
             MainGui = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, "MainGui", null, true);
             MainGuiController mainGuiController = MainGui.gameObject.AddComponent<MainGuiController>();
@@ -74,14 +74,16 @@ namespace MicroEngineer.UI
         public void DestroyUI()
         {
             _logger.LogDebug("Destroy triggered.");
-            MainGui?.gameObject?.DestroyGameObject();
+            if (MainGui != null && MainGui.gameObject != null)
+                MainGui.gameObject.DestroyGameObject();
             GameObject.Destroy(MainGui);
 
             if (Windows != null)
             {
                 foreach (var w in Windows)
                 {
-                    w.gameObject?.DestroyGameObject();
+                    if (w != null && w.gameObject != null)
+                        w.gameObject?.DestroyGameObject();
                     GameObject.Destroy(w);
                 }
                 Windows.Clear();

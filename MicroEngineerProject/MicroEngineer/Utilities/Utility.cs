@@ -236,9 +236,10 @@ namespace MicroMod
                 var settingsWindow = windows.Find(w => w.GetType() == typeof(SettingsWIndow)) as SettingsWIndow;
                 settingsWindow.LoadSettings();
 
-                FlightSceneController.Instance.RebuildUI();
+                //FlightSceneController.Instance.RebuildUI();
 
                 Logger.LogInfo("LoadLayout successful");
+                Logger.LogDebug($"MainGui.IsFlightActive: {MainGui.IsFlightActive}");
             }
             catch (FileNotFoundException ex)
             {

@@ -1,4 +1,5 @@
-﻿using KSP.Game;
+﻿using BepInEx.Logging;
+using KSP.Game;
 using KSP.Messages;
 using KSP.UI.Binding;
 using MicroEngineer.UI;
@@ -8,6 +9,7 @@ namespace MicroMod
 {
     internal class MessageManager
     {
+        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.MessageManager");
         private static MessageManager _instance;
 
         internal MessageManager()
@@ -79,6 +81,7 @@ namespace MicroMod
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                 {
+                    _logger.LogDebug($"Inside GameStateEntered. MainGuiWindow.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}");
                     FlightSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
                     //UI.Instance.ShowGuiFlight = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
                     GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(FlightSceneController.Instance.ShowGui); //UI.Instance.ShowGuiFlight);

@@ -55,7 +55,7 @@ namespace MicroEngineer.UI
             WindowRoot[0].transform.position = EntryWindow.FlightRect.position;
 
             // Set visibility
-            SetWindowVisibility(Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive);
+            //SetWindowVisibility(Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive);
         }
 
         public void UpdateWindowPosition(PointerUpEvent evt)
