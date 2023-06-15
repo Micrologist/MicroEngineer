@@ -38,7 +38,7 @@ namespace MicroMod
                     FlightSceneController.Instance.ShowGui = isOpen;
                     //UI.Instance.ShowGuiFlight = isOpen;
                     Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
-                    GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
+                    //GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
 
             Appbar.RegisterOABAppButton(

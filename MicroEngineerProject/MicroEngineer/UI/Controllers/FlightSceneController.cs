@@ -1,4 +1,5 @@
 ﻿using BepInEx.Logging;
+using KSP.UI.Binding;
 using MicroMod;
 using UitkForKsp2.API;
 using UnityEngine;
@@ -24,6 +25,8 @@ namespace MicroEngineer.UI
                 _logger.LogDebug($"Inside ShowGui SET. Old value: {_showGui}. New value: {value}");
                 _showGui = value;
                 //ToggleWindowVisibility(value);                
+                
+                GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(value);
 
                 RebuildUI();
             }            

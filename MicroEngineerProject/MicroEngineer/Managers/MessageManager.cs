@@ -84,7 +84,7 @@ namespace MicroMod
                     _logger.LogDebug($"Inside GameStateEntered. MainGuiWindow.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}");
                     FlightSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
                     //UI.Instance.ShowGuiFlight = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
-                    GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(FlightSceneController.Instance.ShowGui); //UI.Instance.ShowGuiFlight);
+                    //GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(FlightSceneController.Instance.ShowGui); //UI.Instance.ShowGuiFlight);
                 }    
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)

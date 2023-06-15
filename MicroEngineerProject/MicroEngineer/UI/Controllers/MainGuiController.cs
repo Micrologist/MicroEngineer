@@ -14,6 +14,7 @@ namespace MicroEngineer.UI
         public UIDocument MainGui { get; set; }
         public VisualElement Root { get; set; }
         public VisualElement Header { get; set; }
+        public Button CloseButton { get; set; }
         public VisualElement Body { get; set; }
 
         public MainGuiController()
@@ -57,14 +58,19 @@ namespace MicroEngineer.UI
         private void BuildMainGuiHeader()
         {
             var mainGuiHeader = Uxmls.Instance.MainGuiHeader.CloneTree();
-            
+
+            CloseButton = mainGuiHeader.Q<Button>("close-button");
+            CloseButton.RegisterCallback<ClickEvent>(OnCloseButton);
+
             // TEMP
+            /*
             Button saveBtn = new Button() { text = "Save" };
             saveBtn.RegisterCallback<ClickEvent>(_ => Utility.SaveLayout(Manager.Instance.Windows));
             mainGuiHeader.Add(saveBtn);
+            */
             // END TEMP
             Header.Add(mainGuiHeader);
-        }
+        }        
 
         public void BuildDockedWindows()
         {
@@ -104,6 +110,13 @@ namespace MicroEngineer.UI
         private void HandleCloseButton()
         {
             throw new NotImplementedException();
+        }
+
+        private void OnCloseButton(ClickEvent evt)
+        {
+            MainGuiWindow.IsFlightActive = false;
+            Utility.SaveLayout(Manager.Instance.Windows);
+            FlightSceneController.Instance.ShowGui = false;
         }
     }
 }
