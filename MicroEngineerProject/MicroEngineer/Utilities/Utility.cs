@@ -236,6 +236,8 @@ namespace MicroMod
                 var settingsWindow = windows.Find(w => w.GetType() == typeof(SettingsWIndow)) as SettingsWIndow;
                 settingsWindow.LoadSettings();
 
+                FlightSceneController.Instance.RebuildUI();
+
                 Logger.LogInfo("LoadLayout successful");
             }
             catch (FileNotFoundException ex)
@@ -248,7 +250,7 @@ namespace MicroMod
                 Logger.LogError("Error trying to LoadLayout. Full error description:\n" + ex);
             }
 
-            FlightSceneController.Instance.InitializeUI(); // TODO temporary
+            //FlightSceneController.Instance.InitializeUI(); // TODO temporary
         }
 
         /// <summary>

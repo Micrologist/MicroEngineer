@@ -1,8 +1,8 @@
 ﻿using BepInEx.Logging;
 using MicroEngineer.MicroEngineer.UI.Controls;
 using MicroMod;
+using UitkForKsp2.API;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UIElements;
 
 namespace MicroEngineer.UI
@@ -10,10 +10,10 @@ namespace MicroEngineer.UI
     public class EntryWindowController : MonoBehaviour
     {
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.EntryWindowController");
-        private UnityEvent RebuildUIEvent = new UnityEvent();
 
         public EntryWindow EntryWindow { get; set; }
-        public VisualElement Root { get; set; }   
+        public VisualElement WindowRoot { get; set; }
+        public VisualElement Root { get; set; }
         public VisualElement Title { get; set; }
         public VisualElement TitleArrowDown { get; set; }
         public VisualElement TitleArrowRight { get; set; }
@@ -25,14 +25,15 @@ namespace MicroEngineer.UI
         public VisualElement Body { get; set; }
         public VisualElement Footer { get; set; }
 
-        public EntryWindowController(EntryWindow w)
+        public EntryWindowController()
+        { }
+
+        public EntryWindowController(EntryWindow w, VisualElement windowRoot)
         {
             EntryWindow = w;
+            WindowRoot = windowRoot;
             Initialize();
         }
-
-        public void Start()
-        { }
 
         public void Initialize()
         {
@@ -49,6 +50,22 @@ namespace MicroEngineer.UI
                 Expand();
             else
                 Collapse();
+
+            WindowRoot[0].RegisterCallback<PointerUpEvent>(UpdateWindowPosition);
+            WindowRoot[0].transform.position = EntryWindow.FlightRect.position;
+
+            // Set visibility
+            SetWindowVisibility(Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive);
+        }
+
+        public void UpdateWindowPosition(PointerUpEvent evt)
+        {
+            _logger.LogDebug($"[{EntryWindow.Name}] OnPointerUpEvent triggered.");
+
+            if (EntryWindow == null)
+                return;
+
+            EntryWindow.FlightRect.position = WindowRoot[0].transform.position;
         }
 
         private void BuildTitle()
@@ -90,7 +107,7 @@ namespace MicroEngineer.UI
             {
                 VisualElement control;
 
-                _logger.LogDebug($"Creating entry: {entry.Name}.");
+                //_logger.LogDebug($"Creating entry: {entry.Name}.");
 
                 switch (entry.EntryType)
                 {
@@ -155,9 +172,18 @@ namespace MicroEngineer.UI
         }
 
         private void OnPopOutOrCloseButton(ClickEvent evt)
-        {
+        {            
             EntryWindow.IsFlightPoppedOut = !EntryWindow.IsFlightPoppedOut;
+            Utility.SaveLayout(Manager.Instance.Windows);
             FlightSceneController.Instance.RebuildUI();
+        }
+
+        public void SetWindowVisibility(bool isVisible)
+        {
+            if (isVisible)
+                Root.style.display = DisplayStyle.Flex;
+            else
+                Root.style.display = DisplayStyle.None;
         }
     }
 }

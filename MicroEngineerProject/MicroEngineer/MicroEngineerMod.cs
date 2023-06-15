@@ -5,6 +5,7 @@ using SpaceWarp.API.Assets;
 using SpaceWarp.API.Mods;
 using SpaceWarp.API.UI.Appbar;
 using KSP.UI.Binding;
+using MicroEngineer.UI;
 
 namespace MicroMod
 {
@@ -34,7 +35,8 @@ namespace MicroMod
                 AssetManager.GetAsset<Texture2D>($"{GUID}/images/icon.png"),
                 isOpen =>
                 {
-                    UI.Instance.ShowGuiFlight = isOpen;
+                    FlightSceneController.Instance.ShowGui = isOpen;
+                    //UI.Instance.ShowGuiFlight = isOpen;
                     Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
                     GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
@@ -70,7 +72,8 @@ namespace MicroMod
 
         private void OnGUI()
         {
-            UI.Instance.OnGUI();
+            return;
+            //UI.Instance.OnGUI();
         }
     }
 }

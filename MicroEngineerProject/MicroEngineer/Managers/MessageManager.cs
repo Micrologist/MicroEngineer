@@ -1,6 +1,7 @@
 ﻿using KSP.Game;
 using KSP.Messages;
 using KSP.UI.Binding;
+using MicroEngineer.UI;
 using UnityEngine;
 
 namespace MicroMod
@@ -78,8 +79,9 @@ namespace MicroMod
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                 {
-                    UI.Instance.ShowGuiFlight = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
-                    GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(UI.Instance.ShowGuiFlight);
+                    FlightSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
+                    //UI.Instance.ShowGuiFlight = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
+                    GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(FlightSceneController.Instance.ShowGui); //UI.Instance.ShowGuiFlight);
                 }    
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)

@@ -1,6 +1,7 @@
 ﻿using BepInEx.Logging;
 using MicroMod;
 using UitkForKsp2.API;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace MicroEngineer.UI
@@ -9,10 +10,25 @@ namespace MicroEngineer.UI
     {
         private static FlightSceneController _instance;
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.FlightSceneController");
+        private bool _showGui = false;
         //private UnityEvent RebuildUIEvent;
 
         public UIDocument MainGui;
         public List<UIDocument> Windows = new ();
+        
+        public bool ShowGui
+        {
+            get => _showGui;
+            set
+            {
+                _showGui = value;
+                //ToggleWindowVisibility(value);
+                if (value)
+                    InitializeUI();
+                else
+                    DestroyUI();
+            }            
+        }
 
         public static FlightSceneController Instance
         {
@@ -23,7 +39,7 @@ namespace MicroEngineer.UI
 
                 return _instance;
             }
-        }
+        }        
 
         public void InitializeUI()
         {
@@ -36,21 +52,51 @@ namespace MicroEngineer.UI
             {
                 var window = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, poppedOutWindow.Name, null, true);
                 var body = window.rootVisualElement.Q<VisualElement>("body");
-                EntryWindowController ewc = new EntryWindowController(poppedOutWindow);
+                EntryWindowController ewc = new EntryWindowController(poppedOutWindow, window.rootVisualElement);
                 body.Add(ewc.Root);
                 Windows.Add(window);
+
+                //EntryWindowController controller = window.gameObject.AddComponent<EntryWindowController>();
+                //window.gameObject.AddComponent<EntryWindowController>();
+                //var controller = window.gameObject.GetComponent<EntryWindowController>();
+                //controller.AttachEntryWindow(poppedOutWindow);
             }
         }
 
         public void RebuildUI()
         {
             _logger.LogDebug("RebuildUI triggered.");
-            MainGui.gameObject.DestroyGameObject();
-            foreach (var w in Windows)
-                w.gameObject.DestroyGameObject();
-            Windows.Clear();
+            DestroyUI();
+            if (ShowGui)
+                InitializeUI();
+        }
 
-            InitializeUI();
+        public void DestroyUI()
+        {
+            _logger.LogDebug("Destroy triggered.");
+            MainGui?.gameObject?.DestroyGameObject();
+            GameObject.Destroy(MainGui);
+
+            if (Windows != null)
+            {
+                foreach (var w in Windows)
+                {
+                    w.gameObject?.DestroyGameObject();
+                    GameObject.Destroy(w);
+                }
+                Windows.Clear();
+            }
+        }
+
+        public void ToggleWindowVisibility(bool isVisible)
+        {
+            MainGui.GetComponent<MainGuiController>().SetWindowVisibility(isVisible);
+
+            foreach (var w in Windows)
+            {
+                var doc = w.GetComponent<EntryWindowController>();
+                doc.SetWindowVisibility(isVisible);
+            }
         }
     }
 }

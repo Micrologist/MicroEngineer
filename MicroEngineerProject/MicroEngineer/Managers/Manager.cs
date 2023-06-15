@@ -97,7 +97,7 @@ namespace MicroMod
                     IsFlightActive = false,
                     IsMapActive = false,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.MainGuiX, Styles.MainGuiY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect() //new Rect(Styles.MainGuiX, Styles.MainGuiY, Styles.WindowWidth, Styles.WindowHeight),
                 });
 
                 Windows.Add(new SettingsWIndow
@@ -107,7 +107,7 @@ namespace MicroMod
                     IsFlightActive = false,
                     IsMapActive = false,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight)                    
+                    FlightRect = new Rect() //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight)                    
                 });
 
                 Windows.Add(new EntryWindow
@@ -124,7 +124,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Vessel,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Vessel && entry.IsDefault).ToList()
                 });
 
@@ -142,7 +142,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Orbital,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Orbital && entry.IsDefault).ToList()
                 });
 
@@ -160,7 +160,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Surface,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Surface && entry.IsDefault).ToList()
                 });
 
@@ -178,7 +178,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Flight,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Flight && entry.IsDefault).ToList()
                 });
 
@@ -196,7 +196,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Target,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Target && entry.IsDefault).ToList()
                 });
 
@@ -214,7 +214,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Maneuver,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Maneuver && entry.IsDefault).ToList()
                 });
 
@@ -232,7 +232,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Stage,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Stage && entry.IsDefault).ToList()
                 });
 
@@ -249,7 +249,7 @@ namespace MicroMod
                     IsMapPoppedOut = false, // Not used
                     IsLocked = false, // Not used
                     MainWindow = MainWindow.StageInfoOAB,
-                    EditorRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, 0, 0),
+                    EditorRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.OAB && entry.IsDefault).ToList()
                 });
 
@@ -290,7 +290,7 @@ namespace MicroMod
                 IsLocked = false,
                 MainWindow = MainWindow.None,
                 //EditorRect = null,
-                FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
                 Entries = new List<BaseEntry>()
             };
 

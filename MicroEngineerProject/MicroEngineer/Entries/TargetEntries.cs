@@ -256,6 +256,7 @@ namespace MicroMod
         {
             Name = "Period";
             Description = "Shows the amount of time it will take the target to complete a full orbit.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Target;
             IsDefault = true;
             BaseUnit = "s";

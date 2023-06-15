@@ -2,9 +2,9 @@
 
 namespace MicroMod
 {
-    internal class MainGuiWindow : BaseWindow
+    public class MainGuiWindow : BaseWindow
     {
         [JsonProperty]
-        internal int LayoutVersion;
+        public int LayoutVersion;
     }
 }
