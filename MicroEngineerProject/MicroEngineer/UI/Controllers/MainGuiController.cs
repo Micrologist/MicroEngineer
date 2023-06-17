@@ -14,15 +14,17 @@ namespace MicroEngineer.UI
         public UIDocument MainGui { get; set; }
         public VisualElement Root { get; set; }
         public VisualElement Header { get; set; }
+        public Button EditWindowsButton { get; set; }
         public Button CloseButton { get; set; }
         public VisualElement Body { get; set; }
+        public UIDocument EditWindows { get; set; }
 
         public MainGuiController()
         { }
 
         public void OnEnable()
         {
-            _logger.LogDebug("Entering Start() of MainGuiController");
+            _logger.LogDebug("Entering OnEnable() of MainGuiController");
             MainGui = GetComponent<UIDocument>();
             Root = MainGui.rootVisualElement;
             Header = Root.Q<VisualElement>("header");
@@ -61,6 +63,9 @@ namespace MicroEngineer.UI
 
             CloseButton = mainGuiHeader.Q<Button>("close-button");
             CloseButton.RegisterCallback<ClickEvent>(OnCloseButton);
+
+            EditWindowsButton = mainGuiHeader.Q<Button>("editwindows-button");
+            EditWindowsButton.RegisterCallback<ClickEvent>(OnOpenEditWindows);
 
             // TEMP
             /*
@@ -117,6 +122,12 @@ namespace MicroEngineer.UI
             MainGuiWindow.IsFlightActive = false;
             Utility.SaveLayout(Manager.Instance.Windows);
             FlightSceneController.Instance.ShowGui = false;
+        }
+
+        private void OnOpenEditWindows(ClickEvent evt)
+        {
+            EditWindows = Window.CreateFromUxml(Uxmls.Instance.EditWindows, "EditWindows", null, true);
+            EditWindowsController editWindowsController = EditWindows.gameObject.AddComponent<EditWindowsController>();
         }
     }
 }
