@@ -6,21 +6,11 @@ namespace MicroEngineer.UI
 {
     public class BaseEntryControl : VisualElement
     {
-        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.EntryWindowController");
-
         //These are the classes that you reference on your .uss file.
         public static string UssClassName = "entry";
         public static string UssEntryClassName = UssClassName + "__name";
         public static string UssValueClassName = UssClassName + "__value";
         public static string UssUnitClassName = UssClassName + "__unit";
-
-        /* TODO delete. Units are set by the BaseEntry model class
-        public const string UNIT_FORCE = "N";
-        public const string UNIT_SPEED = "m/s";
-        public const string UNIT_ACCELERATION = "m/s2";
-        public const string UNIT_DEGREE = "º";
-        public const string UNIT_GEE = "g";
-        */
 
         public Label NameLabel;
         public Label ValueLabel;
