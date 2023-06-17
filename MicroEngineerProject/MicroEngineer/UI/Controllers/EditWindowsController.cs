@@ -3,13 +3,13 @@ using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace MicroEngineer.UI
+namespace MicroEngineer.MicroEngineer.UI.Controllers
 {
     public class EditWindowsController : MonoBehaviour
     {
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.EditWindowsController");
 
-        public UIDocument EditWindows { get; set; }        
+        public UIDocument EditWindows { get; set; }
         public VisualElement Root { get; set; }
         public VisualElement Header { get; set; }
         //public Button CloseButton { get; set; }
