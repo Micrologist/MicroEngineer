@@ -96,17 +96,6 @@ namespace MicroEngineer.UI
                 Root[0].style.display = DisplayStyle.None;
         }
 
-        /*
-        private void CenterWindow(GeometryChangedEvent evt)
-        {
-            if (evt.newRect.width == 0 || evt.newRect.height == 0)
-                return;
-
-            Root[0].transform.position = new Vector2((ReferenceResolution.Width - evt.newRect.width) / 2, (ReferenceResolution.Height - evt.newRect.height) / 2);
-            Root[0].UnregisterCallback<GeometryChangedEvent>(CenterWindow);
-        }
-        */
-
         private void HandleSettingsButton()
         {
             throw new NotImplementedException();
@@ -127,6 +116,9 @@ namespace MicroEngineer.UI
         private void OnOpenEditWindows(ClickEvent evt)
         {
             EditWindows = Window.CreateFromUxml(Uxmls.Instance.EditWindows, "EditWindows", null, true);
+
+            EditWindows.rootVisualElement[0].RegisterCallback<GeometryChangedEvent>((evt) => Utility.CenterWindow(evt, EditWindows.rootVisualElement[0]));
+
             EditWindowsController editWindowsController = EditWindows.gameObject.AddComponent<EditWindowsController>();
         }
     }

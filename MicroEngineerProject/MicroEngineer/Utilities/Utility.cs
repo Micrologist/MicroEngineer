@@ -10,7 +10,8 @@ using KSP.Messages;
 using KSP.Sim.DeltaV;
 using BepInEx.Bootstrap;
 using SpaceWarp.API.Mods;
-using MicroEngineer.UI;
+using UitkForKsp2.API;
+using UnityEngine.UIElements;
 
 namespace MicroMod
 {
@@ -374,6 +375,20 @@ namespace MicroMod
             float distanceX = Mathf.Abs(rect1.center.x - rect2.center.x);
             float distanceY = Mathf.Abs(rect1.center.y - rect2.center.y);            
             return (distanceX < rect1.width / 2 + rect2.width / 2 + 50f && distanceY < rect1.height / 2 + rect2.height / 2 + 50f);
+        }
+
+        /// <summary>
+        /// Centered UITK window on GeometryChangedEvent
+        /// </summary>
+        /// <param name="evt"></param>
+        /// <param name="element">Root element for which width and height will be taken</param>
+        public static void CenterWindow(GeometryChangedEvent evt, VisualElement element)
+        {
+            if (evt.newRect.width == 0 || evt.newRect.height == 0)
+                return;
+
+            element.transform.position = new Vector2((ReferenceResolution.Width - evt.newRect.width) / 2, (ReferenceResolution.Height - evt.newRect.height) / 2);
+            element.UnregisterCallback<GeometryChangedEvent>((evt) => CenterWindow(evt, element));
         }
     }    
 }
