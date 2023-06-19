@@ -60,6 +60,8 @@ namespace MicroMod
             }
         }
 
+        internal void MoveEntryUp(BaseEntry entry) => MoveEntryUp(Entries.IndexOf(entry));
+
         /// <summary>
         /// Moves entry downwards in the window. Does nothing if it's already last.
         /// </summary>
@@ -74,6 +76,8 @@ namespace MicroMod
                 Entries[entryIndex] = temp;
             }
         }
+
+        internal void MoveEntryDown(BaseEntry entry) => MoveEntryDown(Entries.IndexOf(entry));
 
         /// <summary>
         /// Removes entry from the window 
