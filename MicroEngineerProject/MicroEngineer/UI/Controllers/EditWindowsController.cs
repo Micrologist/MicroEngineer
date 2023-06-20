@@ -33,7 +33,8 @@ namespace MicroEngineer.UI
         public Button MoveUp { get; set; }
         public Button MoveDown { get; set; }
 
-
+        // TODO revert button, save button
+        // TODO changed disable uss
 
         public EditWindowsController()
         { }
@@ -58,7 +59,11 @@ namespace MicroEngineer.UI
             DeleteWindow = Root.Q<Button>("delete-window");
             LockWindow = Root.Q<Toggle>("lock-window");
             AddEntry = Root.Q<Button>("add-entry");
+            AddEntry.RegisterCallback<PointerUpEvent>(AddEntryToSelectedWindow);
+            AddEntry.SetEnabled(false);
             RemoveEntry = Root.Q<Button>("remove-entry");
+            RemoveEntry.RegisterCallback<PointerUpEvent>(RemoveEntryFromInstalledWindow);
+            RemoveEntry.SetEnabled(false);
             MoveUp = Root.Q<Button>("move-up");
             MoveUp.RegisterCallback<PointerUpEvent>(MoveEntryUp);
             MoveDown = Root.Q<Button>("move-down");
@@ -72,7 +77,7 @@ namespace MicroEngineer.UI
             //BuildDockedWindows();
 
             //Root[0].RegisterCallback<PointerUpEvent>(UpdateWindowPosition);
-        }       
+        }
 
         public void Update()
         {
@@ -90,6 +95,7 @@ namespace MicroEngineer.UI
         {
             AvailableScrollView.Clear();
             _selectedAvailableEntry = null;
+            AddEntry.SetEnabled(false);
             if (CategoryDropdown.value == null)
                 return;
 
@@ -129,6 +135,7 @@ namespace MicroEngineer.UI
 
             _selectedAvailableEntry = control;
             control.Select();
+            AddEntry.SetEnabled(true);
         }
 
         /// <summary>
@@ -143,6 +150,7 @@ namespace MicroEngineer.UI
                 _selectedAvailableEntry = null;
             }
             control.Unselect();
+            AddEntry.SetEnabled(false);
         }
 
         //// INSTALLED ////
@@ -155,6 +163,7 @@ namespace MicroEngineer.UI
         {
             SelectedWindow.SetValueWithoutNotify(_editableWindows[_selectedWindowId].Name);
             BuildInstalledEntries();
+            RemoveEntry.SetEnabled(false);
         }
 
         private void BuildInstalledEntries()
@@ -196,6 +205,7 @@ namespace MicroEngineer.UI
 
             _selectedInstalledEntry = control;
             control.Select();
+            RemoveEntry.SetEnabled(true);
         }
 
         public void UnselectInstalled(EditWindowsItemControl control)
@@ -206,6 +216,7 @@ namespace MicroEngineer.UI
                 _selectedInstalledEntry = null;
             }
             control.Unselect();
+            RemoveEntry.SetEnabled(false);
         }
 
         private void SelectPreviousWindow(PointerUpEvent evt)
@@ -262,6 +273,23 @@ namespace MicroEngineer.UI
 
             var control = _installedControls[index + 1];
             SelectInstalled(control);
+        }
+
+        private void AddEntryToSelectedWindow(PointerUpEvent evt)
+        {
+            _editableWindows[_selectedWindowId].AddEntry(Activator.CreateInstance(_selectedAvailableEntry.Entry.GetType()) as BaseEntry);
+
+            UnselectAvailable(_selectedAvailableEntry);
+            ResetSelectedWindow();
+            RebuildFlightUI();
+        }
+
+        private void RemoveEntryFromInstalledWindow(PointerUpEvent evt)
+        {
+            _editableWindows[_selectedWindowId].RemoveEntry(_selectedInstalledEntry.Entry);
+            UnselectInstalled(_selectedInstalledEntry);
+            ResetSelectedWindow();
+            RebuildFlightUI();
         }
 
         private void RebuildFlightUI()

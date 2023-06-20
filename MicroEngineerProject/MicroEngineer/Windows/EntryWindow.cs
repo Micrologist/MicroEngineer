@@ -80,6 +80,14 @@ namespace MicroMod
         internal void MoveEntryDown(BaseEntry entry) => MoveEntryDown(Entries.IndexOf(entry));
 
         /// <summary>
+        /// Adds an entry to the window to the last position
+        /// </summary>
+        /// <param name="entry"></param>
+        internal void AddEntry(BaseEntry entry) => Entries.Add(entry);
+
+        internal void RemoveEntry(BaseEntry entry) => Entries.Remove(entry);
+
+        /// <summary>
         /// Removes entry from the window 
         /// </summary>
         /// <param name="entryIndex">Entry's index</param>
@@ -87,13 +95,7 @@ namespace MicroMod
         {
             if (entryIndex < Entries.Count)
                 Entries.RemoveAt(entryIndex);
-        }
-
-        /// <summary>
-        /// Adds an entry to the window to the last position
-        /// </summary>
-        /// <param name="entry"></param>
-        internal void AddEntry(BaseEntry entry) => Entries.Add(entry);
+        }        
 
         /// <summary>
         /// Grabs new data for each entry in the window
