@@ -1,3 +1,9 @@
+:root {
+    --background-grey-1: rgba(33, 39, 46, 0.99);
+    --yellowish-translucent-1: rgba(237, 208, 147, 0.1);
+    --yellowish-1: rgb(237, 208, 147);
+}
+
 .main-gui_root {
     width: 222px;
 }
@@ -13,10 +19,10 @@
     border-bottom-left-radius: 0;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 0;
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 1px;
@@ -269,7 +275,7 @@
 }
 
 .entry:hover {
-    background-color: rgba(237, 208, 147, 0.1);
+    background-color: var(--yellowish-translucent-1);
 }
 
 .entry__name {
@@ -279,7 +285,7 @@
 
 .entry__value {
     -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
-    color: rgb(237, 208, 147);
+    color: var(--yellowish-1);
     -unity-text-align: middle-right;
     padding-right: 2px;
     flex-grow: 1;
@@ -350,10 +356,10 @@ TimeEntryControl .entry__value {
 }
 
 .main-gui__footer {
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 0;
@@ -372,7 +378,7 @@ TimeEntryControl .entry__value {
 
 .stage__deltav-value {
     -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
-    color: rgb(237, 208, 147);
+    color: var(--yellowish-1);
     -unity-text-align: middle-right;
     padding-right: 2px;
     align-items: flex-end;
@@ -407,7 +413,7 @@ TimeEntryControl .entry__value {
 
 .stage__twr {
     -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
-    color: rgb(237, 208, 147);
+    color: var(--yellowish-1);
     -unity-text-align: middle-right;
     padding-right: 2px;
     align-items: flex-end;
@@ -434,7 +440,7 @@ TimeEntryControl .entry__value {
 
 .stage__burn-value {
     -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
-    color: rgb(237, 208, 147);
+    color: var(--yellowish-1);
     -unity-text-align: middle-right;
     padding-right: 2px;
     flex-grow: 1;
@@ -501,10 +507,10 @@ TimeEntryControl .entry__value {
 
 .separator {
     border-bottom-width: 1px;
-    border-left-color: rgb(237, 208, 147);
-    border-right-color: rgb(237, 208, 147);
-    border-top-color: rgb(237, 208, 147);
-    border-bottom-color: rgb(237, 208, 147);
+    border-left-color: var(--yellowish-1);
+    border-right-color: var(--yellowish-1);
+    border-top-color: var(--yellowish-1);
+    border-bottom-color: var(--yellowish-1);
     bottom: 2px;
 }
 
@@ -514,10 +520,10 @@ TimeEntryControl .entry__value {
     border-bottom-left-radius: 0;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 0;
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 1px;
@@ -531,10 +537,10 @@ TimeEntryControl .entry__value {
 
 .basicwindow__body {
     background-color: rgb(33, 39, 46);
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     border-left-width: 1px;
     border-right-width: 1px;
     flex-shrink: 0;
@@ -544,15 +550,15 @@ TimeEntryControl .entry__value {
 }
 
 .basicwindow__footer {
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 0;
     border-bottom-width: 1px;
-    background-color: rgb(33, 39, 46);
+    background-color: rgba(33, 39, 46, 0.78);
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     padding-left: 5px;
@@ -567,15 +573,15 @@ TimeEntryControl .entry__value {
 }
 
 .edit-window__header {
-    background-color: rgb(33, 39, 46);
+    background-color: var(--background-grey-1);
     border-top-left-radius: 5px;
     border-bottom-left-radius: 0;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 0;
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 1px;
@@ -590,11 +596,11 @@ TimeEntryControl .entry__value {
 }
 
 .edit-window__body {
-    background-color: rgb(33, 39, 46);
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    background-color: var(--background-grey-1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     border-left-width: 1px;
     border-right-width: 1px;
     flex-shrink: 0;
@@ -605,6 +611,25 @@ TimeEntryControl .entry__value {
     padding-right: 5px;
     padding-bottom: 5px;
     height: 390px;
+}
+
+.edit-window__footer {
+    background-color: var(--background-grey-1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 0;
+    border-bottom-width: 1px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 0;
+    padding-bottom: 2px;
+    min-height: 8px;
 }
 
 .unity-popup-field__label {
@@ -641,10 +666,10 @@ TimeEntryControl .entry__value {
     border-right-width: 1px;
     border-top-width: 1px;
     border-bottom-width: 1px;
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     height: 20px;
 }
 
@@ -678,10 +703,19 @@ TimeEntryControl .entry__value {
 }
 
 .edit-window__body Button {
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
+}
+
+.edit-window__body Button:disabled {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgba(28, 34, 42, 255);
+    color: rgba(33, 39, 46, 255);
 }
 
 .edit-window__small-button {
@@ -699,10 +733,10 @@ TimeEntryControl .entry__value {
 }
 
 #selected-window > #unity-text-input {
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
     border-top-right-radius: 3px;
@@ -726,16 +760,16 @@ TimeEntryControl .entry__value {
     border-bottom-left-radius: 3px;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     background-color: rgb(15, 19, 24);
     -unity-background-image-tint-color: rgb(255, 255, 255);
 }
 
 .unity-popup-field__label {
-    color: rgba(192, 199, 213, 255);
+    color: rgb(192, 199, 213);
 }
 
 .unity-base-popup-field__text {
@@ -782,10 +816,10 @@ TimeEntryControl .entry__value {
 
 .edit-windows__entry__text #unity-text-input {
     background-color: rgba(0, 0, 0, 0);
-    border-left-color: rgba(237, 208, 147, 0.1);
-    border-right-color: rgba(237, 208, 147, 0.1);
-    border-top-color: rgba(237, 208, 147, 0.1);
-    border-bottom-color: rgba(237, 208, 147, 0.1);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     -unity-text-align: upper-center;
     font-size: 10px;
     border-bottom-width: 0;
@@ -837,4 +871,7 @@ TimeEntryControl .entry__value {
     width: 100%;
     height: 100%;
     background-image: url('/Assets/UI/micro_engineer/decrease-decimal-19.png');
+}
+
+.edit-window__footer {
 }

@@ -45,6 +45,6 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="footer" class="basicwindow__footer" />
+        <ui:VisualElement name="footer" class="edit-window_footer" />
     </ui:VisualElement>
 </ui:UXML>
