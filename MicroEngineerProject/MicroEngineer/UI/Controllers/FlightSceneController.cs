@@ -29,7 +29,7 @@ namespace MicroEngineer.UI
                 GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(value);
 
                 RebuildUI();
-            }            
+            }
         }
 
         public static FlightSceneController Instance

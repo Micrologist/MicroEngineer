@@ -2,6 +2,7 @@
 using KSP.Game;
 using MicroEngineer.UI;
 using System.Reflection;
+using UitkForKsp2.API;
 using UnityEngine;
 
 namespace MicroMod
@@ -97,7 +98,7 @@ namespace MicroMod
                     IsFlightActive = false,
                     IsMapActive = false,
                     //EditorRect = null,
-                    FlightRect = new Rect() //new Rect(Styles.MainGuiX, Styles.MainGuiY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(1350, 160, 0, 0) // About 3/4 of the screen
                 });
 
                 Windows.Add(new SettingsWIndow
@@ -107,7 +108,7 @@ namespace MicroMod
                     IsFlightActive = false,
                     IsMapActive = false,
                     //EditorRect = null,
-                    FlightRect = new Rect() //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight)                    
+                    FlightRect = new Rect(ReferenceResolution.Width/2, ReferenceResolution.Height/2, 0, 0)
                 });
 
                 Windows.Add(new EntryWindow
@@ -124,7 +125,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Vessel,
                     //EditorRect = null,
-                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Vessel && entry.IsDefault).ToList()
                 });
 
@@ -142,7 +143,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Orbital,
                     //EditorRect = null,
-                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Orbital && entry.IsDefault).ToList()
                 });
 
@@ -160,7 +161,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Surface,
                     //EditorRect = null,
-                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Surface && entry.IsDefault).ToList()
                 });
 
@@ -178,7 +179,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Flight,
                     //EditorRect = null,
-                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Flight && entry.IsDefault).ToList()
                 });
 
@@ -188,7 +189,7 @@ namespace MicroMod
                     Abbreviation = "TGT",
                     Description = "Flight entries",
                     IsEditorActive = false,
-                    IsFlightActive = true,
+                    IsFlightActive = false,
                     IsMapActive = false,
                     IsEditorPoppedOut = false,
                     IsFlightPoppedOut = false,
@@ -196,7 +197,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Target,
                     //EditorRect = null,
-                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Target && entry.IsDefault).ToList()
                 });
 
@@ -206,7 +207,7 @@ namespace MicroMod
                     Abbreviation = "MAN",
                     Description = "Maneuver entries",
                     IsEditorActive = false,
-                    IsFlightActive = true,
+                    IsFlightActive = false,
                     IsMapActive = false,
                     IsEditorPoppedOut = false,
                     IsFlightPoppedOut = false,
@@ -214,7 +215,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Maneuver,
                     //EditorRect = null,
-                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Maneuver && entry.IsDefault).ToList()
                 });
 
@@ -224,7 +225,7 @@ namespace MicroMod
                     Abbreviation = "STG",
                     Description = "Stage entries",
                     IsEditorActive = false,
-                    IsFlightActive = true,
+                    IsFlightActive = false,
                     IsMapActive = false,
                     IsEditorPoppedOut = false,
                     IsFlightPoppedOut = false,
@@ -232,7 +233,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Stage,
                     //EditorRect = null,
-                    FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Stage && entry.IsDefault).ToList()
                 });
 
@@ -249,7 +250,7 @@ namespace MicroMod
                     IsMapPoppedOut = false, // Not used
                     IsLocked = false, // Not used
                     MainWindow = MainWindow.StageInfoOAB,
-                    EditorRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, 0, 0),
+                    EditorRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.OAB && entry.IsDefault).ToList()
                 });
 

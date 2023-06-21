@@ -53,16 +53,13 @@ namespace MicroEngineer.UI
 
             WindowRoot[0].RegisterCallback<PointerUpEvent>(UpdateWindowPosition);
             WindowRoot[0].transform.position = EntryWindow.FlightRect.position;
-
-            // Set visibility
-            //SetWindowVisibility(Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive);
         }
 
         public void UpdateWindowPosition(PointerUpEvent evt)
         {
             _logger.LogDebug($"[{EntryWindow.Name}] OnPointerUpEvent triggered.");
 
-            if (EntryWindow == null)
+            if (EntryWindow == null || !EntryWindow.IsFlightPoppedOut)
                 return;
 
             EntryWindow.FlightRect.position = WindowRoot[0].transform.position;
