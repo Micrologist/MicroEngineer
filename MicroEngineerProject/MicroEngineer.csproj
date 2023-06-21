@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <LangVersion>latest</LangVersion>
-    <ImplicitUsings>true</ImplicitUsings>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
-  </PropertyGroup>
-  <ItemGroup>
-	 <PackageReference Include="BepInEx.BaseLib" Version="5.4.21" Publicize="true" />
-    <Reference Include="external_dlls\SpaceWarp.dll" />
-    <Reference Include="external_dlls\UnityEngine.dll" />
-    <Reference Include="external_dlls\UnityEngine.CoreModule.dll" />
-    <Reference Include="external_dlls\Assembly-CSharp.dll" />
-    <Reference Include="external_dlls\NewtonSoft.Json.dll" />
-    <Reference Include="external_dlls\NewtonSoft.Json.dll" />
-    <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>external_dlls\UnityEngine.IMGUIModule.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>external_dlls\UnityEngine.TextRenderingModule.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(ProjectDir)..\Staging\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;powershell start-process &quot;$(ProjectDir)..\Staging\CopyToGameAndRun.bat&quot;" />
-  </Target>
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<LangVersion>latest</LangVersion>
+		<ImplicitUsings>true</ImplicitUsings>
+		<RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="BepInEx.BaseLib" Version="5.4.21" Publicize="true" />
+		<Reference Include="external_dlls\SpaceWarp.dll" />
+		<Reference Include="external_dlls\UnityEngine.dll" />
+		<Reference Include="external_dlls\UnityEngine.CoreModule.dll" />
+		<Reference Include="external_dlls\Assembly-CSharp.dll" />
+		<Reference Include="external_dlls\NewtonSoft.Json.dll" />
+		<Reference Include="external_dlls\NewtonSoft.Json.dll" />
+		<Reference Include="UitkForKsp2">
+		  <HintPath>external_dlls\UitkForKsp2.dll</HintPath>
+		</Reference>
+		<Reference Include="UitkForKsp2.Controls">
+		  <HintPath>external_dlls\UitkForKsp2.Controls.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.IMGUIModule">
+			<HintPath>external_dlls\UnityEngine.IMGUIModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.TextRenderingModule">
+			<HintPath>external_dlls\UnityEngine.TextRenderingModule.dll</HintPath>
+		</Reference>
+		<Reference Include="UnityEngine.UIElementsModule">
+		  <HintPath>external_dlls\UnityEngine.UIElementsModule.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="echo Killing task KSP2_x64.exe&#xD;&#xA;taskkill /f /fi &quot;pid gt 0&quot; /im KSP2_x64.exe&#xD;&#xA;&#xD;&#xA;echo Copying output .dll to &quot;..Kerbal Space Program 2 0.1.2.0 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;D:\Steam\steamapps\common\Kerbal Space Program 2 0.1.2.0 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;&#xD;&#xA;echo Copying output .pdb to &quot;..Kerbal Space Program 2 0.1.2.0 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;xcopy /y &quot;$(TargetDir)$(ProjectName).pdb&quot; &quot;D:\Steam\steamapps\common\Kerbal Space Program 2 0.1.2.0 DEV\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;&#xD;&#xA;echo Starting KSP2_x64.exe&#xD;&#xA;powershell &quot;start-process &quot;&quot;D:\Steam\steamapps\common\Kerbal Space Program 2 0.1.2.0 DEV\KSP2_x64.exe&quot;&quot;&quot;" />
+	</Target>
 </Project>
