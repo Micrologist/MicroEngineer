@@ -9,7 +9,7 @@ namespace MicroMod
     {
         public Separator()
         {
-            Name = "-------------";
+            Name = "Separator";
             Description = "It's a separator!";
             EntryType = EntryType.Separator;
             Category = MicroEntryCategory.Misc;
