@@ -46,6 +46,7 @@ namespace MicroEngineer.UI
             Root = EditWindows.rootVisualElement;
 
             CloseButton = Root.Q<Button>("close-button");
+            CloseButton.RegisterCallback<PointerUpEvent>(_ => CloseWindow());
             AvailableScrollView = Root.Q<ScrollView>("available-scrollview");
             InstalledScrollView = Root.Q<ScrollView>("installed-scrollview");
             CategoryDropdown = Root.Q<DropdownField>("category__dropdown");
@@ -296,6 +297,13 @@ namespace MicroEngineer.UI
         {
             Utility.SaveLayout(Manager.Instance.Windows);
             FlightSceneController.Instance.RebuildUI();
+        }
+
+        public void CloseWindow()
+        {
+            if (EditWindows != null && EditWindows.gameObject != null)
+                EditWindows.gameObject.DestroyGameObject();
+            GameObject.Destroy(EditWindows);
         }
     }
 }

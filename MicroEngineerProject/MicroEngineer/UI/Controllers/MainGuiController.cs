@@ -115,11 +115,20 @@ namespace MicroEngineer.UI
 
         private void OnOpenEditWindows(ClickEvent evt)
         {
-            EditWindows = Window.CreateFromUxml(Uxmls.Instance.EditWindows, "EditWindows", null, true);
+            if (EditWindows == null)
+            {
+                EditWindows = Window.CreateFromUxml(Uxmls.Instance.EditWindows, "EditWindows", null, true);
 
-            EditWindows.rootVisualElement[0].RegisterCallback<GeometryChangedEvent>((evt) => Utility.CenterWindow(evt, EditWindows.rootVisualElement[0]));
+                EditWindows.rootVisualElement[0].RegisterCallback<GeometryChangedEvent>((evt) => Utility.CenterWindow(evt, EditWindows.rootVisualElement[0]));
 
-            EditWindowsController editWindowsController = EditWindows.gameObject.AddComponent<EditWindowsController>();
+                EditWindowsController editWindowsController = EditWindows.gameObject.AddComponent<EditWindowsController>();
+            }
+            else
+            {
+                var controller = EditWindows.GetComponent<EditWindowsController>();
+                controller.CloseWindow();
+                EditWindows = null;
+            }
         }
     }
 }
