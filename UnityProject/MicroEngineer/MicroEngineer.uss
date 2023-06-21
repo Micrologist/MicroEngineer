@@ -84,20 +84,6 @@
     background-color: rgba(255, 255, 255, 0.25);
 }
 
-.close-button {
-    border-left-width: 0;
-    border-right-width: 0;
-    border-top-width: 0;
-    border-bottom-width: 0;
-    background-color: rgba(15, 19, 24, 0);
-    background-image: url('/Assets/UI/micro_engineer/k2d2_cross.png');
-}
-
-.close-button:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-    background-image: url('/Assets/UI/micro_engineer/k2d2_cross.png');
-}
-
 .window-root {
     width: 220px;
     background-color: rgb(33, 39, 46);
@@ -122,8 +108,8 @@
     align-items: center;
     flex-shrink: 0;
     height: 20px;
-    padding-bottom: 2px;
-    padding-top: 0;
+    padding-bottom: 1px;
+    padding-top: 1px;
 }
 
 .window-title:hover {
@@ -156,74 +142,16 @@
     -unity-text-outline-width: 0.5px;
 }
 
-.unity-button#settings-button {
-    background-image: url('/Assets/UI/micro_engineer/k2dt_gear.png');
-    -unity-background-scale-mode: scale-to-fit;
-    width: 15px;
-    height: 15px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    margin-right: 10px;
-    -unity-background-image-tint-color: rgb(192, 199, 213);
-}
-
-.unity-button#popout-button {
-    background-image: none;
-    -unity-background-scale-mode: scale-to-fit;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
-    height: 15px;
-    width: 15px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    align-items: center;
-    -unity-background-image-tint-color: rgb(192, 199, 213);
-    display: flex;
-}
-
-.unity-button#close-button {
-    background-image: url('/Assets/UI/micro_engineer/k2d2_cross.png');
-    -unity-background-scale-mode: scale-to-fit;
-    border-top-left-radius: 3px;
-    border-bottom-left-radius: 3px;
-    border-top-right-radius: 3px;
-    border-bottom-right-radius: 3px;
-    height: 15px;
-    width: 15px;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    align-items: center;
-    -unity-background-image-tint-color: rgb(192, 199, 213);
-    display: flex;
-}
-
 .window-title .unity-button {
     background-color: rgba(0, 0, 0, 0);
     border-left-color: rgba(0, 0, 0, 0);
     border-right-color: rgba(0, 0, 0, 0);
     border-top-color: rgba(0, 0, 0, 0);
     border-bottom-color: rgba(0, 0, 0, 0);
-    height: 80%;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
 }
 
 .window-title .unity-button:hover {
@@ -232,6 +160,98 @@
 
 .window-title .unity-button:active {
     background-color: rgba(255, 255, 255, 0.5);
+}
+
+.settings-button {
+    width: 20px;
+    height: 20px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    -unity-background-scale-mode: scale-to-fit;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    margin-right: 10px;
+}
+
+.settings-button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.settings-button__background {
+    width: 100%;
+    height: 100%;
+    background-image: url('/Assets/UI/micro_engineer/k2dt_gear.png');
+    -unity-background-image-tint-color: rgb(192, 199, 213);
+}
+
+.popout-button {
+    width: 20px;
+    height: 20px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    -unity-background-scale-mode: scale-to-fit;
+    background-color: rgba(0, 0, 0, 0);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.popout-button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.popout-button__background {
+    width: 100%;
+    height: 100%;
+    background-image: url('/Assets/UI/micro_engineer/falki_popout.png');
+    -unity-background-image-tint-color: rgb(192, 199, 213);
+}
+
+.close-button {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgba(15, 19, 24, 0);
+    width: 20px;
+    height: 20px;
+    padding-left: 2px;
+    padding-right: 2px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    -unity-background-scale-mode: scale-to-fit;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.close-button:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+
+.close-button__background {
+    width: 100%;
+    height: 100%;
+    background-image: url('/Assets/UI/micro_engineer/k2d2_cross.png');
+    -unity-background-image-tint-color: rgb(192, 199, 213);
+    -unity-background-scale-mode: scale-to-fit;
 }
 
 .window-header {
@@ -558,7 +578,7 @@ TimeEntryControl .entry__value {
     border-right-width: 1px;
     border-top-width: 0;
     border-bottom-width: 1px;
-    background-color: rgba(33, 39, 46, 0.78);
+    background-color: rgb(33, 39, 46);
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     padding-left: 5px;
@@ -614,22 +634,18 @@ TimeEntryControl .entry__value {
 }
 
 .edit-window__footer {
-    background-color: var(--background-grey-1);
-    border-left-color: var(--yellowish-translucent-1);
-    border-right-color: var(--yellowish-translucent-1);
-    border-top-color: var(--yellowish-translucent-1);
-    border-bottom-color: var(--yellowish-translucent-1);
+    min-height: 8px;
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 0;
     border-bottom-width: 1px;
+    background-color: rgb(33, 39, 46);
+    border-left-color: var(--yellowish-translucent-1);
+    border-right-color: var(--yellowish-translucent-1);
+    border-top-color: var(--yellowish-translucent-1);
+    border-bottom-color: var(--yellowish-translucent-1);
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 0;
-    padding-bottom: 2px;
-    min-height: 8px;
 }
 
 .unity-popup-field__label {
@@ -651,7 +667,6 @@ TimeEntryControl .entry__value {
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    width: 90%;
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
@@ -670,7 +685,17 @@ TimeEntryControl .entry__value {
     border-right-color: var(--yellowish-translucent-1);
     border-top-color: var(--yellowish-translucent-1);
     border-bottom-color: var(--yellowish-translucent-1);
-    height: 20px;
+    width: 100%;
+}
+
+.unity-popup-field__label {
+    color: rgb(192, 199, 213);
+}
+
+.unity-base-popup-field__text {
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    color: rgb(192, 199, 213);
 }
 
 .edit-window__middle-column {
@@ -682,24 +707,6 @@ TimeEntryControl .entry__value {
     flex-shrink: 0;
     flex-grow: 0;
     align-items: center;
-}
-
-#to-start-button {
-    display: none;
-    align-items: stretch;
-    flex-grow: 1;
-    width: 10px;
-    height: 5px;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-left-width: 10px;
-    border-right-width: 10px;
-    border-top-width: 10px;
-    border-bottom-width: 10px;
-    visibility: visible;
-    opacity: 1;
 }
 
 .edit-window__body Button {
@@ -714,8 +721,8 @@ TimeEntryControl .entry__value {
     border-right-width: 0;
     border-top-width: 0;
     border-bottom-width: 0;
-    background-color: rgba(28, 34, 42, 255);
-    color: rgba(33, 39, 46, 255);
+    background-color: rgb(28, 34, 42);
+    color: rgb(33, 39, 46);
 }
 
 .edit-window__small-button {
@@ -729,6 +736,15 @@ TimeEntryControl .entry__value {
     border-bottom-left-radius: 3px;
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
+    color: rgb(192, 199, 213);
+}
+
+#delete-window:disabled {
+    background-color: rgba(15, 19, 24, 0.27);
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
     color: rgb(192, 199, 213);
 }
 
@@ -766,16 +782,6 @@ TimeEntryControl .entry__value {
     border-bottom-color: var(--yellowish-translucent-1);
     background-color: rgb(15, 19, 24);
     -unity-background-image-tint-color: rgb(255, 255, 255);
-}
-
-.unity-popup-field__label {
-    color: rgb(192, 199, 213);
-}
-
-.unity-base-popup-field__text {
-    font-size: 14px;
-    -unity-text-align: middle-center;
-    color: rgb(192, 199, 213);
 }
 
 .edit-windows__entry {
@@ -846,6 +852,12 @@ TimeEntryControl .entry__value {
     margin-right: 5px;
 }
 
+.edit-windows__entry__increase-decimal-background {
+    background-image: url('/Assets/UI/micro_engineer/increase-decimal-19.png');
+    width: 100%;
+    height: 100%;
+}
+
 .edit-windows__entry__decrease-decimal {
     width: 20px;
     border-top-left-radius: 3px;
@@ -861,17 +873,16 @@ TimeEntryControl .entry__value {
     display: flex;
 }
 
-.edit-windows__entry__increase-decimal-background {
-    background-image: url('/Assets/UI/micro_engineer/increase-decimal-19.png');
-    width: 100%;
-    height: 100%;
-}
-
 .edit-windows__entry__decrease-decimal-background {
     width: 100%;
     height: 100%;
     background-image: url('/Assets/UI/micro_engineer/decrease-decimal-19.png');
 }
 
-.edit-window__footer {
+.no-border {
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    background-color: rgba(0, 0, 0, 0);
 }

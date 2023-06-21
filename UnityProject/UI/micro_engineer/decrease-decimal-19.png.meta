@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: f495cb715406a4f4cac351a10a68524d
+guid: cc622487d470f8e45a6e3b5489ab3fa5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -116,5 +116,5 @@ TextureImporter:
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
   userData: 
-  assetBundleName: microengineer_flightui.bundle
+  assetBundleName: 
   assetBundleVariant: 

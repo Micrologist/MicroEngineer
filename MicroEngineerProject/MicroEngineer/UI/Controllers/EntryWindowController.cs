@@ -80,7 +80,12 @@ namespace MicroEngineer.UI
             CloseButton.RegisterCallback<ClickEvent>(OnPopOutOrCloseButton);
 
             if (EntryWindow.IsFlightPoppedOut)
+            {
                 PopOutButton.style.display = DisplayStyle.None;
+
+                if (EntryWindow.IsLocked)
+                    CloseButton.style.display = DisplayStyle.None;
+            }
             else
                 CloseButton.style.display = DisplayStyle.None;
         }        

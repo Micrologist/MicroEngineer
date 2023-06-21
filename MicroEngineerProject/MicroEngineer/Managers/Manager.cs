@@ -291,7 +291,7 @@ namespace MicroMod
                 IsLocked = false,
                 MainWindow = MainWindow.None,
                 //EditorRect = null,
-                FlightRect = new Rect(), //new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                 Entries = new List<BaseEntry>()
             };
 

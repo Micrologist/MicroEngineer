@@ -53,10 +53,22 @@ namespace MicroEngineer.UI
             //Build poppedout windows
             foreach (EntryWindow poppedOutWindow in Manager.Instance.Windows.Where(w => w is EntryWindow && ((EntryWindow)w).IsFlightPoppedOut))
             {
-                var window = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, poppedOutWindow.Name, null, true);
+                var window = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, poppedOutWindow.Name, null, !poppedOutWindow.IsLocked);
+                var header = window.rootVisualElement.Q<VisualElement>("header");
                 var body = window.rootVisualElement.Q<VisualElement>("body");
+                var footer = window.rootVisualElement.Q<VisualElement>("footer");
                 EntryWindowController ewc = new EntryWindowController(poppedOutWindow, window.rootVisualElement);
                 body.Add(ewc.Root);
+
+                if (poppedOutWindow.IsLocked)
+                {
+                    header.AddToClassList("no-border");
+                    body.AddToClassList("no-border");
+                    footer.AddToClassList("no-border");
+                    var entryRoot = body.Q<VisualElement>("window-root");
+                    entryRoot.AddToClassList("no-border");
+                }
+
                 Windows.Add(window);
 
                 //EntryWindowController controller = window.gameObject.AddComponent<EntryWindowController>();

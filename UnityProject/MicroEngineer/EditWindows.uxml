@@ -6,7 +6,9 @@
             <ui:VisualElement name="middle-column" class="edit-window__middle-column" style="height: 20px; flex-shrink: 0; flex-grow: 0; width: 80px;" />
             <ui:Label text="INSTALLED" display-tooltip-when-elided="true" style="flex-grow: 1; -unity-text-align: upper-center; color: rgb(237, 208, 147);" />
             <ui:VisualElement name="right-column" class="edit-window__right-column" style="align-items: center; justify-content: center; height: 100%;">
-                <ui:Button display-tooltip-when-elided="true" name="close-button" class="close-button" />
+                <ui:Button name="close-button" class="close-button">
+                    <ui:VisualElement name="close-button__background" class="close-button__background" />
+                </ui:Button>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="body" class="edit-window__body" style="flex-shrink: 0; flex-direction: column; padding-right: 5px; padding-left: 25px;">
@@ -27,7 +29,7 @@
                     <ui:VisualElement name="options-container" style="flex-direction: row; width: 100%; justify-content: space-between; padding-left: 5px; padding-right: 5px; align-items: center;">
                         <ui:Button text="NEW" display-tooltip-when-elided="true" name="new-window" class="edit-window__small-button" style="width: 37px; height: 20px;" />
                         <ui:Toggle name="lock-window" text="Locked" style="font-size: 10px; -unity-text-align: middle-left; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; height: 20px;" />
-                        <ui:Button text="DEL" display-tooltip-when-elided="true" name="delete-window" class="edit-window__small-button" style="height: 20px; width: 37px;" />
+                        <ui:Button text="DEL" display-tooltip-when-elided="true" name="delete-window" class="edit-window__small-button edit-window__small-button-disabled" style="height: 20px; width: 37px;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="right-column" class="edit-window__right-column" style="height: 100%;" />
@@ -35,7 +37,7 @@
             <ui:VisualElement name="body-body" style="width: 100%; flex-direction: row; justify-content: space-between; height: 300px;">
                 <ui:ScrollView name="available-scrollview" vertical-page-size="10" mode="Vertical" horizontal-scroller-visibility="Hidden" style="flex-grow: 1; background-color: rgb(28, 34, 42); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgba(237, 208, 147, 0.1); border-bottom-color: rgba(237, 208, 147, 0.1); border-top-right-radius: 5px; border-top-left-radius: 5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;" />
                 <ui:VisualElement name="middle-column" class="edit-window__middle-column" style="height: 100%; flex-grow: 0; flex-shrink: 0; padding-left: 5px; padding-right: 5px; align-items: stretch; justify-content: center; width: 80px;">
-                    <ui:Button text="ADD &gt;&gt;" display-tooltip-when-elided="true" name="add-entry" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 5px; font-size: 10px; height: 30px; color: rgb(192, 199, 213);" />
+                    <ui:Button text="ADD &gt;&gt;" display-tooltip-when-elided="true" name="add-entry" class="edit-window__body-Button-disabled" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 5px; font-size: 10px; height: 30px; color: rgb(192, 199, 213);" />
                     <ui:Button text="&lt;&lt; REMOVE" display-tooltip-when-elided="true" name="remove-entry" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 5px; margin-bottom: 0; font-size: 10px; height: 30px; color: rgb(192, 199, 213);" />
                 </ui:VisualElement>
                 <ui:ScrollView name="installed-scrollview" vertical-page-size="10" style="flex-grow: 1; background-color: rgb(28, 34, 42); border-left-color: rgba(237, 208, 147, 0.1); border-right-color: rgba(237, 208, 147, 0.1); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0); border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-bottom-right-radius: 5px; border-bottom-left-radius: 5px; border-top-left-radius: 5px; border-top-right-radius: 5px; flex-direction: column;" />
@@ -45,6 +47,6 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="footer" class="edit-window_footer" />
+        <ui:VisualElement name="footer" class="edit-window__footer" />
     </ui:VisualElement>
 </ui:UXML>

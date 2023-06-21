@@ -57,9 +57,11 @@ namespace MicroEngineer.UI
             NextWindow = Root.Q<Button>("next-window");
             NextWindow.RegisterCallback<PointerUpEvent>(SelectNextWindow);
             NewWindow = Root.Q<Button>("new-window");
-            NewWindow.RegisterCallback<PointerUpEvent>(_ => { _logger.LogDebug("NewWindow clicked"); });
+            NewWindow.RegisterCallback<PointerUpEvent>(CreateNewWindow);
             DeleteWindow = Root.Q<Button>("delete-window");
+            DeleteWindow.RegisterCallback<PointerUpEvent>(DeleteDeletableWindow);
             LockWindow = Root.Q<Toggle>("lock-window");
+            LockWindow.RegisterValueChangedCallback(LockUnlockWindow);
             AddEntry = Root.Q<Button>("add-entry");
             AddEntry.RegisterCallback<PointerUpEvent>(AddEntryToSelectedWindow);
             AddEntry.SetEnabled(false);
@@ -166,6 +168,8 @@ namespace MicroEngineer.UI
             SelectedWindow.SetValueWithoutNotify(_editableWindows[_selectedWindowId].Name);
             BuildInstalledEntries();
             RemoveEntry.SetEnabled(false);
+            DeleteWindow.SetEnabled(_editableWindows[_selectedWindowId].IsDeletable);
+            LockWindow.value = _editableWindows[_selectedWindowId].IsLocked;
         }
 
         private void BuildInstalledEntries()
@@ -304,6 +308,34 @@ namespace MicroEngineer.UI
         private void RenameWindow(ChangeEvent<string> evt)
         {
             _editableWindows[_selectedWindowId].Name = evt.newValue;
+            RebuildFlightUI();
+        }
+
+        private void CreateNewWindow(PointerUpEvent evt)
+        {
+            _selectedWindowId = Manager.Instance.CreateCustomWindow(_editableWindows);
+            ResetSelectedWindow();
+            RebuildFlightUI();
+        }
+
+        private void DeleteDeletableWindow(PointerUpEvent evt)
+        {
+            if (_editableWindows[_selectedWindowId].IsDeletable)
+            {
+                Manager.Instance.Windows.Remove(_editableWindows[_selectedWindowId]);
+                _editableWindows.Remove(_editableWindows[_selectedWindowId]);
+                _selectedWindowId--;
+            }
+            ResetSelectedWindow();
+            RebuildFlightUI();
+        }
+
+        private void LockUnlockWindow(ChangeEvent<bool> evt)
+        {
+            _editableWindows[_selectedWindowId].IsLocked = evt.newValue;
+            if (evt.newValue)
+                _editableWindows[_selectedWindowId].IsFlightActive = true;
+
             RebuildFlightUI();
         }
 
