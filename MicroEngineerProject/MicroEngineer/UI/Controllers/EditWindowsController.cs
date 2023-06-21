@@ -51,6 +51,7 @@ namespace MicroEngineer.UI
             InstalledScrollView = Root.Q<ScrollView>("installed-scrollview");
             CategoryDropdown = Root.Q<DropdownField>("category__dropdown");
             SelectedWindow = Root.Q<TextField>("selected-window");
+            SelectedWindow.RegisterValueChangedCallback(RenameWindow);
             PreviousWindow = Root.Q<Button>("prev-window");
             PreviousWindow.RegisterCallback<PointerUpEvent>(SelectPreviousWindow);
             NextWindow = Root.Q<Button>("next-window");
@@ -179,6 +180,7 @@ namespace MicroEngineer.UI
                 var control = new EditWindowsItemControl(e, false);
                 var textField = control.Q<TextField>();
                 textField.RegisterCallback<MouseDownEvent>(evt => OnInstalledEntryClicked(evt, control));
+                textField.RegisterValueChangedCallback(evt => RenameEntry(evt, control));
                 _installedControls.Add(control);
                 InstalledScrollView.Add(control);
             }
@@ -290,6 +292,18 @@ namespace MicroEngineer.UI
             _editableWindows[_selectedWindowId].RemoveEntry(_selectedInstalledEntry.Entry);
             UnselectInstalled(_selectedInstalledEntry);
             ResetSelectedWindow();
+            RebuildFlightUI();
+        }
+
+        private void RenameEntry(ChangeEvent<string> evt, EditWindowsItemControl control)
+        {
+            control.Entry.Name = evt.newValue;
+            RebuildFlightUI();
+        }
+
+        private void RenameWindow(ChangeEvent<string> evt)
+        {
+            _editableWindows[_selectedWindowId].Name = evt.newValue;
             RebuildFlightUI();
         }
 
