@@ -81,7 +81,7 @@ namespace MicroMod
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                 {
-                    _logger.LogDebug($"Inside GameStateEntered. MainGuiWindow.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}");
+                    _logger.LogDebug($"Inside GameStateEntered. GameState: {Utility.GameState.GameState}. MainGuiWindow.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}");
                     FlightSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
                     //UI.Instance.ShowGuiFlight = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
                     //GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(FlightSceneController.Instance.ShowGui); //UI.Instance.ShowGuiFlight);
@@ -89,11 +89,12 @@ namespace MicroMod
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {
-                    UI.Instance.ShowGuiOAB = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
-                    GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(UI.Instance.ShowGuiOAB);
-                    UI.Instance.CelestialBodies.GetBodies();
-                    UI.Instance.CelestialBodySelectionStageIndex = -1;
-                    Styles.SetActiveTheme(Theme.Gray); // TODO implement other themes in OAB
+                    _logger.LogDebug($"Inside GameStateEntered. GameState: {Utility.GameState.GameState}.");
+                    //UI.Instance.ShowGuiOAB = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
+                    //GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(UI.Instance.ShowGuiOAB);
+                    //UI.Instance.CelestialBodies.GetBodies();
+                    //UI.Instance.CelestialBodySelectionStageIndex = -1;
+                    //Styles.SetActiveTheme(Theme.Gray); // TODO implement other themes in OAB
                 }
             }
         }
@@ -106,10 +107,12 @@ namespace MicroMod
                 Utility.SaveLayout(Manager.Instance.Windows);
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
-                    UI.Instance.ShowGuiFlight = false;
+                    FlightSceneController.Instance.ShowGui = false;
+                //UI.Instance.ShowGuiFlight = false;
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
-                    UI.Instance.ShowGuiOAB = false;
+                    return; // TODO add OAB initialization
+                    //UI.Instance.ShowGuiOAB = false;
             }
         }
 

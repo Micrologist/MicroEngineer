@@ -9,7 +9,7 @@ using MicroEngineer.UI;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.1.0")]    
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.2.0")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
@@ -24,7 +24,7 @@ namespace MicroMod
 
             //BackwardCompatibilityInitializations();
 
-            Styles.Initialize();
+            //Styles.Initialize();
 
             MessageManager.Instance.SubscribeToMessages();
 
