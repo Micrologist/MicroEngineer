@@ -76,11 +76,6 @@ namespace MicroEngineer.UI
             BuildCategoryDropdown();
             GetEditableWindows();
             ResetSelectedWindow();
-
-            //BuildMainGuiHeader();
-            //BuildDockedWindows();
-
-            //Root[0].RegisterCallback<PointerUpEvent>(UpdateWindowPosition);
         }
 
         public void Update()
@@ -88,7 +83,7 @@ namespace MicroEngineer.UI
             return;
         }
 
-        //// AVAILABLE ////
+        //////////////////////   AVAILABLE (LEFT SCROLLVIEW) //////////////////////
         private void BuildCategoryDropdown()
         {
             CategoryDropdown.choices = Enum.GetNames(typeof(MicroEntryCategory)).ToList();
@@ -157,7 +152,8 @@ namespace MicroEngineer.UI
             AddEntry.SetEnabled(false);
         }
 
-        //// INSTALLED ////
+        //////////////////////   INSTALLED (RIGHT SCROLLVIEW) //////////////////////
+
         private void GetEditableWindows()
         {
             _editableWindows = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().FindAll(w => w.IsEditable);
@@ -183,6 +179,11 @@ namespace MicroEngineer.UI
             {
                 var control = new EditWindowsItemControl(e, false);
                 var textField = control.Q<TextField>();
+                var incDecimal = control.Q<Button>("increase-decimal");                
+                var decDecimal = control.Q<Button>("decrease-decimal");
+                incDecimal.RegisterCallback<PointerUpEvent>(_ => IncreaseDecimalDigits(e, incDecimal, decDecimal));
+                decDecimal.RegisterCallback<PointerUpEvent>(_ => DecreaseDecimalDigits(e, incDecimal, decDecimal));
+                CheckIfDecimalButtonsShouldBeEnabled(e, incDecimal, decDecimal);
                 textField.RegisterCallback<MouseDownEvent>(evt => OnInstalledEntryClicked(evt, control));
                 textField.RegisterValueChangedCallback(evt => RenameEntry(evt, control));
                 _installedControls.Add(control);
@@ -337,6 +338,34 @@ namespace MicroEngineer.UI
                 _editableWindows[_selectedWindowId].IsFlightActive = true;
 
             RebuildFlightUI();
+        }
+
+        private void IncreaseDecimalDigits(BaseEntry entry, Button incDecimal, Button decDecimal)
+        {
+            entry.NumberOfDecimalDigits++;
+            CheckIfDecimalButtonsShouldBeEnabled(entry, incDecimal, decDecimal);
+            RebuildFlightUI();
+        }
+
+        private void DecreaseDecimalDigits(BaseEntry entry, Button incDecimal, Button decDecimal)
+        {
+            entry.NumberOfDecimalDigits--;
+            CheckIfDecimalButtonsShouldBeEnabled(entry, incDecimal, decDecimal);
+            RebuildFlightUI();
+        }
+
+        private void CheckIfDecimalButtonsShouldBeEnabled(BaseEntry entry, Button increase, Button decrease)
+        {
+            if (entry.Formatting == null)
+            {
+                increase.SetEnabled(false);
+                decrease.SetEnabled(false);
+            }
+            else
+            {
+                increase.SetEnabled(entry.NumberOfDecimalDigits < 5);
+                decrease.SetEnabled(entry.NumberOfDecimalDigits > 0);
+            }
         }
 
         private void RebuildFlightUI()
