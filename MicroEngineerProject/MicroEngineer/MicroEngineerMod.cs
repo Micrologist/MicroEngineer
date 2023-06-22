@@ -22,7 +22,7 @@ namespace MicroMod
             
             GUID = Info.Metadata.GUID;
 
-            BackwardCompatibilityInitializations();
+            //BackwardCompatibilityInitializations();
 
             Styles.Initialize();
 
