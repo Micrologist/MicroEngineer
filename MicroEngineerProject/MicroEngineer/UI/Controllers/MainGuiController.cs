@@ -40,8 +40,6 @@ namespace MicroEngineer.UI
 
         private void UpdateWindowPosition(PointerUpEvent evt)
         {
-            _logger.LogDebug("OnPointerUpEvent triggered.");
-
             if (MainGuiWindow == null)
                 return;
 
@@ -56,20 +54,10 @@ namespace MicroEngineer.UI
         private void BuildMainGuiHeader()
         {
             var mainGuiHeader = Uxmls.Instance.MainGuiHeader.CloneTree();
-
             CloseButton = mainGuiHeader.Q<Button>("close-button");
             CloseButton.RegisterCallback<ClickEvent>(OnCloseButton);
-
             EditWindowsButton = mainGuiHeader.Q<Button>("editwindows-button");
             EditWindowsButton.RegisterCallback<ClickEvent>(OnOpenEditWindows);
-
-            // TEMP
-            /*
-            Button saveBtn = new Button() { text = "Save" };
-            saveBtn.RegisterCallback<ClickEvent>(_ => Utility.SaveLayout(Manager.Instance.Windows));
-            mainGuiHeader.Add(saveBtn);
-            */
-            // END TEMP
             Header.Add(mainGuiHeader);
         }        
 
@@ -82,24 +70,6 @@ namespace MicroEngineer.UI
                 Body.Add(ewc.Root);
                 _logger.LogDebug($"Window {entryWindow.Name} added to root.");
             }
-        }
-
-        public void SetWindowVisibility(bool isVisible)
-        {
-            if (isVisible)
-                Root[0].style.display = DisplayStyle.Flex;
-            else
-                Root[0].style.display = DisplayStyle.None;
-        }
-
-        private void HandleSettingsButton()
-        {
-            throw new NotImplementedException();
-        }
-
-        private void HandleCloseButton()
-        {
-            throw new NotImplementedException();
         }
 
         private void OnCloseButton(ClickEvent evt)

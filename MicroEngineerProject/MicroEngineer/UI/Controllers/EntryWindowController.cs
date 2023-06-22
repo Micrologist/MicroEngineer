@@ -1,7 +1,6 @@
 ﻿using BepInEx.Logging;
 using MicroEngineer.MicroEngineer.UI.Controls;
 using MicroMod;
-using UitkForKsp2.API;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -57,8 +56,6 @@ namespace MicroEngineer.UI
 
         public void UpdateWindowPosition(PointerUpEvent evt)
         {
-            _logger.LogDebug($"[{EntryWindow.Name}] OnPointerUpEvent triggered.");
-
             if (EntryWindow == null || !EntryWindow.IsFlightPoppedOut)
                 return;
 
@@ -108,8 +105,6 @@ namespace MicroEngineer.UI
             foreach (var entry in EntryWindow.Entries)
             {
                 VisualElement control;
-
-                //_logger.LogDebug($"Creating entry: {entry.Name}.");
 
                 switch (entry.EntryType)
                 {

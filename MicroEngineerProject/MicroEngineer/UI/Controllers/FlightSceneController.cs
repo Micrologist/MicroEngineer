@@ -12,7 +12,6 @@ namespace MicroEngineer.UI
         private static FlightSceneController _instance;
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.FlightSceneController");
         private bool _showGui = false;
-        //private UnityEvent RebuildUIEvent;
 
         public UIDocument MainGui;
         public List<UIDocument> Windows = new ();
@@ -24,7 +23,6 @@ namespace MicroEngineer.UI
             {
                 _logger.LogDebug($"Inside ShowGui SET. Old value: {_showGui}. New value: {value}");
                 _showGui = value;
-                //ToggleWindowVisibility(value);                
                 
                 GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(value);
 
@@ -41,7 +39,7 @@ namespace MicroEngineer.UI
 
                 return _instance;
             }
-        }        
+        }
 
         public void InitializeUI()
         {
@@ -70,11 +68,6 @@ namespace MicroEngineer.UI
                 }
 
                 Windows.Add(window);
-
-                //EntryWindowController controller = window.gameObject.AddComponent<EntryWindowController>();
-                //window.gameObject.AddComponent<EntryWindowController>();
-                //var controller = window.gameObject.GetComponent<EntryWindowController>();
-                //controller.AttachEntryWindow(poppedOutWindow);
             }
         }
 
@@ -88,7 +81,7 @@ namespace MicroEngineer.UI
 
         public void DestroyUI()
         {
-            _logger.LogDebug("Destroy triggered.");
+            _logger.LogDebug("DestroyUI triggered.");
             if (MainGui != null && MainGui.gameObject != null)
                 MainGui.gameObject.DestroyGameObject();
             GameObject.Destroy(MainGui);
@@ -102,17 +95,6 @@ namespace MicroEngineer.UI
                     GameObject.Destroy(w);
                 }
                 Windows.Clear();
-            }
-        }
-
-        public void ToggleWindowVisibility(bool isVisible)
-        {
-            MainGui.GetComponent<MainGuiController>().SetWindowVisibility(isVisible);
-
-            foreach (var w in Windows)
-            {
-                var doc = w.GetComponent<EntryWindowController>();
-                doc.SetWindowVisibility(isVisible);
             }
         }
     }

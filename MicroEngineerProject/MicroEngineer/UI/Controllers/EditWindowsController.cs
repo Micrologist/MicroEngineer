@@ -1,6 +1,5 @@
 ﻿using BepInEx.Logging;
 using MicroMod;
-using UitkForKsp2.API;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -34,7 +33,6 @@ namespace MicroEngineer.UI
         public Button MoveDown { get; set; }
 
         // TODO revert button, save button
-        // TODO changed disable uss
 
         public EditWindowsController()
         { }
@@ -125,8 +123,6 @@ namespace MicroEngineer.UI
         /// </summary>
         public void SelectAvailable(EditWindowsItemControl control)
         {
-            _logger.LogDebug("Select entered");
-
             if (_selectedAvailableEntry != null && _selectedAvailableEntry != control)
             {
                 _selectedAvailableEntry.Unselect();
@@ -143,7 +139,6 @@ namespace MicroEngineer.UI
         /// </summary>
         public void UnselectAvailable(EditWindowsItemControl control)
         {
-            _logger.LogDebug("Unselect entered");
             if (control == _selectedAvailableEntry)
             {
                 _selectedAvailableEntry = null;
@@ -204,8 +199,6 @@ namespace MicroEngineer.UI
 
         public void SelectInstalled(EditWindowsItemControl control)
         {
-            _logger.LogDebug("Select entered");
-
             if (_selectedInstalledEntry != null && _selectedInstalledEntry != control)
             {
                 _selectedInstalledEntry.Unselect();
@@ -218,7 +211,6 @@ namespace MicroEngineer.UI
 
         public void UnselectInstalled(EditWindowsItemControl control)
         {
-            _logger.LogDebug("Unselect entered");
             if (control == _selectedInstalledEntry)
             {
                 _selectedInstalledEntry = null;
