@@ -1,6 +1,6 @@
 # Micro Engineer - a KSP2 plugin
 Displays useful in-flight information about your vessel, your orbital and surface parameters and many other things.
-![Micro Engineer](https://i.imgur.com/I7mZ4oQ.png)
+![Micro Engineer](https://i.imgur.com/Gz7PgWL.png)
 
 # Links
 * Spacedock: https://spacedock.info/mod/3282/Micro%20Engineer
@@ -9,7 +9,7 @@ Displays useful in-flight information about your vessel, your orbital and surfac
 * Contact: [KSP 2 Modding Society](https://discord.com/channels/1078696971088433153/1080340366995239004)
 
 # Description
-A (heavily) KER inspired little mod to give you some additional information on your missions.
+A (heavily) KER inspired mod to give you some additional information on your missions.
 
 You can enable and disable individual sections and pop them out into their own window or create your own window containing only the information you want to see.
 

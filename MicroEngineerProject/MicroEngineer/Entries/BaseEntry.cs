@@ -11,6 +11,7 @@ namespace MicroMod
         [JsonProperty]
         public string Name;
         [JsonProperty]
+        public Guid Id;
         public string Description;
         [JsonProperty]
         public MicroEntryCategory Category;

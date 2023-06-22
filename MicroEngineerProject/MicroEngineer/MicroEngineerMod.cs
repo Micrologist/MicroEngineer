@@ -8,70 +8,70 @@ using KSP.UI.Binding;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.0.3")]
-	[BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
-	public class MicroEngineerMod : BaseSpaceWarpPlugin
+    //[BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.1.0")]    
+    [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
+    public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
-        private Manager _manager;
-        private MessageManager _messagesManager;
-        private UI _ui;
+        public static MicroEngineerMod Instance { get; set; }
+        public string GUID;
 
         public override void OnInitialized()
 		{
-            Styles.Initialize(this);
+            Instance = this;
+            
+            GUID = Info.Metadata.GUID;
+            
+            BackwardCompatibilityInitializations();
 
-            _manager = new Manager(this);
-            _ui = new UI(this, _manager);            
-            _messagesManager = new MessageManager(this, _manager, _ui);
-            _manager.UI = _ui;
-            _manager.MessageManager = _messagesManager;
+            Styles.Initialize();
 
-            BackwardCompatibilityInitializations();            
+            MessageManager.Instance.SubscribeToMessages();
 
             // Register Flight and OAB buttons
             Appbar.RegisterAppButton(
                 "Micro Engineer",
                 "BTN-MicroEngineerBtn",
-                AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
+                AssetManager.GetAsset<Texture2D>($"{GUID}/images/icon.png"),
                 isOpen =>
                 {
-                    _ui.ShowGuiFlight = isOpen;
-                    _manager.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
+                    UI.Instance.ShowGuiFlight = isOpen;
+                    Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
                     GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
 
             Appbar.RegisterOABAppButton(
                 "Micro Engineer",
                 "BTN-MicroEngineerOAB",
-                AssetManager.GetAsset<Texture2D>($"{SpaceWarpMetadata.ModID}/images/icon.png"),
+                AssetManager.GetAsset<Texture2D>($"{GUID}/images/icon.png"),
                 isOpen =>
                 {
-                    _ui.ShowGuiOAB = isOpen;
-                    _manager.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
-                    GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
+                    UI.Instance.ShowGuiOAB = isOpen;
+                    Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
+                    GameObject.Find("BTN-MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
         }
 
         private void BackwardCompatibilityInitializations()
         {
-            // Preserve backward compatibility with SpaceWarp 1.0.1
-            if (Utility.IsModOlderThan("SpaceWarp", 1, 1, 0))
+            // Preserve backward compatibility with SpaceWarp 1.1.x
+            if (Utility.IsModOlderThan("SpaceWarp", 1, 2, 0))
             {
-                Logger.LogInfo("Space Warp older version detected. Loading old Styles.");
-                Styles.SetStylesForOldSpaceWarpSkin();
+                Logger.LogInfo("Older Space Warp version detected. Setting mod GUID to \"micro_engineer\".");
+                GUID = "micro_engineer";
             }
             else
-                Logger.LogInfo("Space Warp new version detected. Loading new Styles.");
+                Logger.LogInfo("New Space Warp version detected. No backward compatibility needed.");
         }
-        
+
         public void Update()
         {
-            _manager?.Update();
+            Manager.Instance.Update();
         }
 
         private void OnGUI()
         {
-            _ui?.OnGUI();
+            UI.Instance.OnGUI();
         }
     }
 }
