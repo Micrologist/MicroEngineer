@@ -63,10 +63,10 @@ namespace MicroEngineer.UI
             LockWindow = Root.Q<Toggle>("lock-window");
             LockWindow.RegisterValueChangedCallback(LockUnlockWindow);
             AddEntry = Root.Q<Button>("add-entry");
-            AddEntry.RegisterCallback<PointerUpEvent>(AddEntryToSelectedWindow);
+            AddEntry.RegisterCallback<PointerUpEvent>(evt => AddEntryToSelectedWindow());
             AddEntry.SetEnabled(false);
             RemoveEntry = Root.Q<Button>("remove-entry");
-            RemoveEntry.RegisterCallback<PointerUpEvent>(RemoveEntryFromInstalledWindow);
+            RemoveEntry.RegisterCallback<PointerUpEvent>(evt => RemoveEntryFromInstalledWindow());
             RemoveEntry.SetEnabled(false);
             MoveUp = Root.Q<Button>("move-up");
             MoveUp.RegisterCallback<PointerUpEvent>(MoveEntryUp);
@@ -115,7 +115,7 @@ namespace MicroEngineer.UI
                 if (control != _selectedAvailableEntry)
                     SelectAvailable(control);
                 else
-                    UnselectAvailable(control);
+                    AddEntryToSelectedWindow(); // double click on control
             }
         }
 
@@ -198,7 +198,7 @@ namespace MicroEngineer.UI
                 if (control != _selectedInstalledEntry)
                     SelectInstalled(control);
                 else
-                    UnselectInstalled(control);
+                    RemoveEntryFromInstalledWindow(); // double click on control
             }
         }
 
@@ -283,7 +283,7 @@ namespace MicroEngineer.UI
             SelectInstalled(control);
         }
 
-        private void AddEntryToSelectedWindow(PointerUpEvent evt)
+        private void AddEntryToSelectedWindow()
         {
             _editableWindows[_selectedWindowId].AddEntry(Activator.CreateInstance(_selectedAvailableEntry.Entry.GetType()) as BaseEntry);
 
@@ -292,7 +292,7 @@ namespace MicroEngineer.UI
             RebuildFlightUI();
         }
 
-        private void RemoveEntryFromInstalledWindow(PointerUpEvent evt)
+        private void RemoveEntryFromInstalledWindow()
         {
             _editableWindows[_selectedWindowId].RemoveEntry(_selectedInstalledEntry.Entry);
             UnselectInstalled(_selectedInstalledEntry);
