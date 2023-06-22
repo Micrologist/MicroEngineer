@@ -12,10 +12,12 @@ namespace MicroEngineer.UI
         private static FlightSceneController _instance;
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.FlightSceneController");
         private bool _showGui = false;
+        private EditWindowsController _editWindowsController;
 
-        public UIDocument MainGui;
+        public UIDocument MainGui { get; set; }
         public List<UIDocument> Windows = new ();
-        
+        public UIDocument EditWindows { get; set; }
+
         public bool ShowGui
         {
             get => _showGui;
@@ -96,6 +98,36 @@ namespace MicroEngineer.UI
                 }
                 Windows.Clear();
             }
+        }
+
+        public void ToggleEditWindows() => ToggleEditWindows(false);
+        public void ToggleEditWindows(bool needToOpenWithSpecificWindowSelected, int editableWindowId = 0)
+        {
+            if (EditWindows == null)
+            {
+                EditWindows = Window.CreateFromUxml(Uxmls.Instance.EditWindows, "EditWindows", null, true);
+
+                EditWindows.rootVisualElement[0].RegisterCallback<GeometryChangedEvent>((evt) => Utility.CenterWindow(evt, EditWindows.rootVisualElement[0]));
+
+                _editWindowsController = EditWindows.gameObject.AddComponent<EditWindowsController>();
+                _editWindowsController.SelectedWindowId = editableWindowId;
+            }
+            else if (needToOpenWithSpecificWindowSelected)
+            {
+                _editWindowsController.SelectedWindowId = editableWindowId;
+                _editWindowsController.ResetSelectedWindow();
+            }
+            else
+            {
+                var controller = EditWindows.GetComponent<EditWindowsController>();
+                controller.CloseWindow();
+                EditWindows = null;
+            }
+        }
+
+        public List<EntryWindow> GetEditableWindows()
+        {
+            return Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().FindAll(w => w.IsEditable);
         }
     }
 }

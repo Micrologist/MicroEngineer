@@ -17,7 +17,6 @@ namespace MicroEngineer.UI
         public Button EditWindowsButton { get; set; }
         public Button CloseButton { get; set; }
         public VisualElement Body { get; set; }
-        public UIDocument EditWindows { get; set; }
 
         public MainGuiController()
         { }
@@ -57,7 +56,7 @@ namespace MicroEngineer.UI
             CloseButton = mainGuiHeader.Q<Button>("close-button");
             CloseButton.RegisterCallback<ClickEvent>(OnCloseButton);
             EditWindowsButton = mainGuiHeader.Q<Button>("editwindows-button");
-            EditWindowsButton.RegisterCallback<ClickEvent>(OnOpenEditWindows);
+            EditWindowsButton.RegisterCallback<ClickEvent>(evt => FlightSceneController.Instance.ToggleEditWindows());
             Header.Add(mainGuiHeader);
         }        
 
@@ -77,24 +76,6 @@ namespace MicroEngineer.UI
             MainGuiWindow.IsFlightActive = false;
             Utility.SaveLayout(Manager.Instance.Windows);
             FlightSceneController.Instance.ShowGui = false;
-        }
-
-        private void OnOpenEditWindows(ClickEvent evt)
-        {
-            if (EditWindows == null)
-            {
-                EditWindows = Window.CreateFromUxml(Uxmls.Instance.EditWindows, "EditWindows", null, true);
-
-                EditWindows.rootVisualElement[0].RegisterCallback<GeometryChangedEvent>((evt) => Utility.CenterWindow(evt, EditWindows.rootVisualElement[0]));
-
-                EditWindowsController editWindowsController = EditWindows.gameObject.AddComponent<EditWindowsController>();
-            }
-            else
-            {
-                var controller = EditWindows.GetComponent<EditWindowsController>();
-                controller.CloseWindow();
-                EditWindows = null;
-            }
         }
     }
 }

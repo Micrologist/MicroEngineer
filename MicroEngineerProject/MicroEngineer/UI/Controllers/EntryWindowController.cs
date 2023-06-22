@@ -52,6 +52,10 @@ namespace MicroEngineer.UI
 
             WindowRoot[0].RegisterCallback<PointerUpEvent>(UpdateWindowPosition);
             WindowRoot[0].transform.position = EntryWindow.FlightRect.position;
+
+            // Hide the settings button if window is not editable (Stage window)
+            if (!EntryWindow.IsEditable)
+                SettingsButton.style.display = DisplayStyle.None;
         }
 
         public void UpdateWindowPosition(PointerUpEvent evt)
@@ -71,6 +75,7 @@ namespace MicroEngineer.UI
             NameLabel = Root.Q<Label>("window-name");
             NameLabel.text = EntryWindow.Name;
             SettingsButton = Root.Q<Button>("settings-button");
+            SettingsButton.RegisterCallback<ClickEvent>(OpenSettingsWindow);            
             PopOutButton = Root.Q<Button>("popout-button");
             PopOutButton.RegisterCallback<ClickEvent>(OnPopOutOrCloseButton);
             CloseButton = Root.Q<Button>("close-button");
@@ -85,7 +90,13 @@ namespace MicroEngineer.UI
             }
             else
                 CloseButton.style.display = DisplayStyle.None;
-        }        
+        }
+
+        private void OpenSettingsWindow(ClickEvent evt)
+        {
+            var editableWindowId = FlightSceneController.Instance.GetEditableWindows().FindIndex(w => w.Name == EntryWindow.Name);
+            FlightSceneController.Instance.ToggleEditWindows(true, editableWindowId);            
+        }
 
         private void BuildHeader()
         {

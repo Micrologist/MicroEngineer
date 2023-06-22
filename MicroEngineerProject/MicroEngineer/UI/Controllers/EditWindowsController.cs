@@ -13,7 +13,8 @@ namespace MicroEngineer.UI
         private EditWindowsItemControl _selectedInstalledEntry;
         private List<EntryWindow> _editableWindows;
         private List<EditWindowsItemControl> _installedControls = new();
-        private int _selectedWindowId = 0;
+        
+        public int SelectedWindowId;
 
         public UIDocument EditWindows { get; set; }
         public VisualElement Root { get; set; }
@@ -37,8 +38,16 @@ namespace MicroEngineer.UI
         public EditWindowsController()
         { }
 
-        public void OnEnable()
+        private void OnEnable()
         {
+            StartCoroutine(StartInitialization());
+        }
+
+        private System.Collections.IEnumerator StartInitialization()
+        {
+            // wait for 1 frame until SelectedWindowId is set in FlightSceneController
+            yield return null;
+
             _logger.LogDebug("Entering OnEnable() of EditWindowsController");
             EditWindows = GetComponent<UIDocument>();
             Root = EditWindows.rootVisualElement;
@@ -72,7 +81,7 @@ namespace MicroEngineer.UI
             MoveDown.RegisterCallback<PointerUpEvent>(MoveEntryDown);
 
             BuildCategoryDropdown();
-            GetEditableWindows();
+            _editableWindows = FlightSceneController.Instance.GetEditableWindows();
             ResetSelectedWindow();
         }
 
@@ -147,20 +156,15 @@ namespace MicroEngineer.UI
             AddEntry.SetEnabled(false);
         }
 
-        //////////////////////   INSTALLED (RIGHT SCROLLVIEW) //////////////////////
+        //////////////////////   INSTALLED (RIGHT SCROLLVIEW) //////////////////////        
 
-        private void GetEditableWindows()
+        public void ResetSelectedWindow()
         {
-            _editableWindows = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().FindAll(w => w.IsEditable);
-        }
-
-        private void ResetSelectedWindow()
-        {
-            SelectedWindow.SetValueWithoutNotify(_editableWindows[_selectedWindowId].Name);
+            SelectedWindow.SetValueWithoutNotify(_editableWindows[SelectedWindowId].Name);
             BuildInstalledEntries();
             RemoveEntry.SetEnabled(false);
-            DeleteWindow.SetEnabled(_editableWindows[_selectedWindowId].IsDeletable);
-            LockWindow.value = _editableWindows[_selectedWindowId].IsLocked;
+            DeleteWindow.SetEnabled(_editableWindows[SelectedWindowId].IsDeletable);
+            LockWindow.value = _editableWindows[SelectedWindowId].IsLocked;
         }
 
         private void BuildInstalledEntries()
@@ -169,7 +173,7 @@ namespace MicroEngineer.UI
             InstalledScrollView.Clear();
             _selectedInstalledEntry = null;
 
-            List<BaseEntry> installedEntries = _editableWindows[_selectedWindowId].Entries;
+            List<BaseEntry> installedEntries = _editableWindows[SelectedWindowId].Entries;
             foreach (var e in installedEntries)
             {
                 var control = new EditWindowsItemControl(e, false);
@@ -221,20 +225,20 @@ namespace MicroEngineer.UI
 
         private void SelectPreviousWindow(PointerUpEvent evt)
         {
-            if (_selectedWindowId > 0)
-                _selectedWindowId--;
+            if (SelectedWindowId > 0)
+                SelectedWindowId--;
             else
-                _selectedWindowId = _editableWindows.Count - 1;
+                SelectedWindowId = _editableWindows.Count - 1;
 
             ResetSelectedWindow();
         }
 
         private void SelectNextWindow(PointerUpEvent evt)
         {
-            if (_selectedWindowId < _editableWindows.Count-1)
-                _selectedWindowId++;
+            if (SelectedWindowId < _editableWindows.Count-1)
+                SelectedWindowId++;
             else
-                _selectedWindowId = 0;
+                SelectedWindowId = 0;
 
             ResetSelectedWindow();
         }
@@ -248,7 +252,7 @@ namespace MicroEngineer.UI
             if (index == 0)
                 return;
 
-            _editableWindows[_selectedWindowId].MoveEntryUp(_selectedInstalledEntry.Entry);
+            _editableWindows[SelectedWindowId].MoveEntryUp(_selectedInstalledEntry.Entry);
             
             ResetSelectedWindow();
             RebuildFlightUI();
@@ -266,7 +270,7 @@ namespace MicroEngineer.UI
             if (index == _installedControls.Count - 1)
                 return;
 
-            _editableWindows[_selectedWindowId].MoveEntryDown(_selectedInstalledEntry.Entry);
+            _editableWindows[SelectedWindowId].MoveEntryDown(_selectedInstalledEntry.Entry);
 
             ResetSelectedWindow();
             RebuildFlightUI();
@@ -277,7 +281,7 @@ namespace MicroEngineer.UI
 
         private void AddEntryToSelectedWindow()
         {
-            _editableWindows[_selectedWindowId].AddEntry(Activator.CreateInstance(_selectedAvailableEntry.Entry.GetType()) as BaseEntry);
+            _editableWindows[SelectedWindowId].AddEntry(Activator.CreateInstance(_selectedAvailableEntry.Entry.GetType()) as BaseEntry);
 
             UnselectAvailable(_selectedAvailableEntry);
             ResetSelectedWindow();
@@ -286,7 +290,7 @@ namespace MicroEngineer.UI
 
         private void RemoveEntryFromInstalledWindow()
         {
-            _editableWindows[_selectedWindowId].RemoveEntry(_selectedInstalledEntry.Entry);
+            _editableWindows[SelectedWindowId].RemoveEntry(_selectedInstalledEntry.Entry);
             UnselectInstalled(_selectedInstalledEntry);
             ResetSelectedWindow();
             RebuildFlightUI();
@@ -300,24 +304,24 @@ namespace MicroEngineer.UI
 
         private void RenameWindow(ChangeEvent<string> evt)
         {
-            _editableWindows[_selectedWindowId].Name = evt.newValue;
+            _editableWindows[SelectedWindowId].Name = evt.newValue;
             RebuildFlightUI();
         }
 
         private void CreateNewWindow(PointerUpEvent evt)
         {
-            _selectedWindowId = Manager.Instance.CreateCustomWindow(_editableWindows);
+            SelectedWindowId = Manager.Instance.CreateCustomWindow(_editableWindows);
             ResetSelectedWindow();
             RebuildFlightUI();
         }
 
         private void DeleteDeletableWindow(PointerUpEvent evt)
         {
-            if (_editableWindows[_selectedWindowId].IsDeletable)
+            if (_editableWindows[SelectedWindowId].IsDeletable)
             {
-                Manager.Instance.Windows.Remove(_editableWindows[_selectedWindowId]);
-                _editableWindows.Remove(_editableWindows[_selectedWindowId]);
-                _selectedWindowId--;
+                Manager.Instance.Windows.Remove(_editableWindows[SelectedWindowId]);
+                _editableWindows.Remove(_editableWindows[SelectedWindowId]);
+                SelectedWindowId--;
             }
             ResetSelectedWindow();
             RebuildFlightUI();
@@ -325,9 +329,9 @@ namespace MicroEngineer.UI
 
         private void LockUnlockWindow(ChangeEvent<bool> evt)
         {
-            _editableWindows[_selectedWindowId].IsLocked = evt.newValue;
+            _editableWindows[SelectedWindowId].IsLocked = evt.newValue;
             if (evt.newValue)
-                _editableWindows[_selectedWindowId].IsFlightActive = true;
+                _editableWindows[SelectedWindowId].IsFlightActive = true;
 
             RebuildFlightUI();
         }
