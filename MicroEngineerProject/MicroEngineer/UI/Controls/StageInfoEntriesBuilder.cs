@@ -1,8 +1,7 @@
-﻿using MicroEngineer.UI;
-using MicroMod;
+﻿using MicroMod;
 using UnityEngine.UIElements;
 
-namespace MicroEngineer.MicroEngineer.UI.Controls
+namespace MicroEngineer.UI
 {
     public class StageInfoEntriesBuilder : VisualElement
     {
