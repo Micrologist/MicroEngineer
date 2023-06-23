@@ -368,9 +368,9 @@ namespace MicroMod
             // TEMP for UITK rewrite
             try
             {
-                PoppedOutWindow = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/PoppedOutWindow.uxml");
-                MainGui = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/MainGui.uxml");
-                DockedWindow = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/EntryWindow.uxml");
+                //PoppedOutWindow = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/PoppedOutWindow.uxml");
+                //MainGui = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/MainGui.uxml");
+                //DockedWindow = AssetManager.GetAsset<VisualTreeAsset>($"{MicroEngineerMod.Instance.GUID}/microengineer_flightui/microengineer/EntryWindow.uxml");
             }
             catch (Exception ex) { _logger.LogError(ex); }
 

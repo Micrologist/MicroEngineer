@@ -33,8 +33,6 @@ namespace MicroEngineer.UI
         public Button MoveUp { get; set; }
         public Button MoveDown { get; set; }
 
-        // TODO revert button, save button
-
         public EditWindowsController()
         { }
 
