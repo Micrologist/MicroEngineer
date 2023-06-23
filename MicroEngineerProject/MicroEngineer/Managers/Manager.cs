@@ -239,16 +239,9 @@ namespace MicroMod
 
                 Windows.Add(new StageInfoOabWindow
                 {
-                    //Name = "Stage (OAB)",
-                    //Abbreviation = "SOAB",
-                    //Description = "Stage Info window for OAB",
                     IsEditorActive = false,
                     IsFlightActive = false, // Not used
                     IsMapActive = false, // Not used
-                    //IsEditorPoppedOut = true, // Not used
-                    //IsFlightPoppedOut = false, // Not used
-                    //IsMapPoppedOut = false, // Not used
-                    //IsLocked = false, // Not used
                     //MainWindow = MainWindow.StageInfoOAB,
                     //EditorRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     //Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.OAB && entry.IsDefault).ToList()

@@ -24,7 +24,7 @@ namespace MicroMod
 
             //BackwardCompatibilityInitializations();
 
-            //Styles.Initialize();
+            Styles.Initialize();
 
             MessageManager.Instance.SubscribeToMessages();
 
