@@ -49,6 +49,7 @@ namespace MicroEngineer.UI
             //Build MainGui
             MainGui = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, "MainGui", null, true);
             MainGuiController mainGuiController = MainGui.gameObject.AddComponent<MainGuiController>();
+            MainGui.rootVisualElement[0].RegisterCallback<PointerMoveEvent>(evt => Utility.ClampToScreenUitk(MainGui.rootVisualElement[0]));
 
             //Build poppedout windows
             foreach (EntryWindow poppedOutWindow in Manager.Instance.Windows.Where(w => w is EntryWindow && ((EntryWindow)w).IsFlightPoppedOut))
@@ -68,6 +69,9 @@ namespace MicroEngineer.UI
                     var entryRoot = body.Q<VisualElement>("window-root");
                     entryRoot.AddToClassList("no-border");
                 }
+
+                //Keep window inside screen bounds
+                window.rootVisualElement[0].RegisterCallback<PointerMoveEvent>(evt => Utility.ClampToScreenUitk(window.rootVisualElement[0]));
 
                 Windows.Add(window);
             }

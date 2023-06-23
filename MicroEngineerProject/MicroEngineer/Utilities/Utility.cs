@@ -282,6 +282,16 @@ namespace MicroMod
             return new Vector2(x, size.y > Screen.height ? position.y : y);
         }
 
+        public static void ClampToScreenUitk(VisualElement root)
+        {
+            var position = root.transform.position;
+            var size = new Vector2(root.worldBound.width, root.worldBound.height);
+
+            float x = Mathf.Clamp(position.x, 0, ReferenceResolution.Width - size.x);
+            float y = Mathf.Clamp(position.y, 0, ReferenceResolution.Height - size.y);
+            root.transform.position = new Vector2(x, size.y > ReferenceResolution.Height ? position.y : y);
+        }
+
         /// <summary>
         /// Check if focus is on an editable text field. If it is, disable input controls. If it's not, reenable controls.
         /// </summary>
