@@ -1,0 +1,34 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="OAB.uss" />
+    <ui:VisualElement name="root">
+        <ui:VisualElement name="titlebar" class="titlebar">
+            <ui:Label text="Stage Info" display-tooltip-when-elided="true" name="title" class="title-label" />
+            <ui:VisualElement name="torque-container" class="torque__container">
+                <ui:Label text="Torque:" display-tooltip-when-elided="true" name="torque-label" class="torque__label" />
+                <ui:Label text="1234.56" display-tooltip-when-elided="true" name="torque-value" class="torque__value" />
+                <ui:Label text="kN" display-tooltip-when-elided="true" name="torque-unit" class="torque__unit" />
+            </ui:VisualElement>
+            <ui:Button name="close-button" class="close-button">
+                <ui:VisualElement name="close-button__background" class="close-button__background" />
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="header" class="header" />
+        <ui:VisualElement name="body" class="body2">
+            <ui:VisualElement name="stage-info-header" class="stage-oab__header">
+                <ui:Label text="#" display-tooltip-when-elided="true" name="stage-number" class="stage-oab__header__number" />
+                <ui:Label text="TWR" display-tooltip-when-elided="true" name="stage-twr" class="stage-oab__header__twr" />
+                <ui:Label text="SLT" display-tooltip-when-elided="true" name="stage-slt" class="stage-oab__header__slt" />
+                <ui:Label text="ASL ∆v" display-tooltip-when-elided="true" name="asl-dv" class="stage-oab__header__asl-dv" />
+                <ui:Label text="Vac ∆v" display-tooltip-when-elided="true" name="vac-dv" class="stage-oab__header__vac-dv" />
+                <ui:Label text="Burn time" display-tooltip-when-elided="true" name="burn-time" class="stage-oab__header__burn-time" />
+                <ui:Label text="Body" display-tooltip-when-elided="true" name="body" class="stage-oab__header__body" />
+            </ui:VisualElement>
+            <MicroEngineer.UI.StageInfoOABEntryControl />
+            <MicroEngineer.UI.StageInfoOABEntryControl />
+            <MicroEngineer.UI.StageInfoOABEntryControl />
+            <MicroEngineer.UI.StageInfoOABEntryControl />
+            <MicroEngineer.UI.StageInfoOABEntryControl bodies="Mun,Kerbin,Minmus,Laythe" />
+        </ui:VisualElement>
+        <ui:VisualElement name="footer" class="edit-window__footer" />
+    </ui:VisualElement>
+</ui:UXML>

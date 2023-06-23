@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
-    <Style src="MicroEngineer.uss" />
+    <Style src="Flight.uss" />
     <ui:VisualElement name="stageinfo-header" class="entry stage__header">
         <ui:Label display-tooltip-when-elided="true" name="stagenumber-header" class="stage__header-stagenumber" />
         <ui:Label display-tooltip-when-elided="true" name="deltav-header" text="∆v" class="stage__header-deltav" />
