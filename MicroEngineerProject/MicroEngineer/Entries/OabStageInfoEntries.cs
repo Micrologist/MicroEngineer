@@ -122,9 +122,6 @@ namespace MicroMod
     /// </summary>    
     public class Torque : OabStageInfoEntry
     {
-        [JsonProperty]
-        internal bool IsActive = false;
-
         public Torque()
         {
             Name = "Torque";
@@ -137,9 +134,6 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            if (!this.IsActive)
-                return;
-
             Vector3d com = GameManager.Instance?.Game?.OAB?.Current?.Stats?.MainAssembly?.CenterOfProperties?.CoM ?? Vector3d.zero;
             Vector3d cot = GameManager.Instance?.Game?.OAB?.Current?.Stats?.MainAssembly?.CenterOfProperties?.CoT ?? Vector3d.zero;
 
@@ -169,7 +163,7 @@ namespace MicroMod
         {
             get
             {
-                if (EntryValue == null || !this.IsActive)
+                if (EntryValue == null)
                     return "-";
 
                 if ((double)EntryValue >= 1.0)
