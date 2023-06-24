@@ -244,7 +244,7 @@ namespace MicroMod
             }
             catch (FileNotFoundException ex)
             {
-                Logger.LogWarning($"Error loading layout. File was not found at the expected location. Full error description:\n" + ex);
+                Logger.LogWarning($"Error loading layout. File was not found at the expected location.\n" + ex.Message);
 
             }
             catch (Exception ex)
