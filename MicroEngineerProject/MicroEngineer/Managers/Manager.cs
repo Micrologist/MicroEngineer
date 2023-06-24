@@ -239,12 +239,11 @@ namespace MicroMod
 
                 Windows.Add(new StageInfoOabWindow
                 {
-                    IsEditorActive = false,
+                    IsEditorActive = true,
                     IsFlightActive = false, // Not used
                     IsMapActive = false, // Not used
-                    //MainWindow = MainWindow.StageInfoOAB,
-                    //EditorRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
-                    //Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.OAB && entry.IsDefault).ToList()
+                    EditorRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 4, 0, 0),
+                    Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.OAB && entry.IsDefault).ToList()
                 });
 
                 return Windows;

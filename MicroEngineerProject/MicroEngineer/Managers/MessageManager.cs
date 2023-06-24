@@ -90,8 +90,13 @@ namespace MicroMod
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {
                     _logger.LogDebug($"Inside GameStateEntered. GameState: {Utility.GameState.GameState}.");
+                    
+                    // TEMP override till app.bar is fixed
+                    //OABSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault().IsEditorActive;
+                    OABSceneController.Instance.ShowGui = true;
+
                     //UI.Instance.ShowGuiOAB = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
-                    //GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(UI.Instance.ShowGuiOAB);
+                    //GameObject.Find("BTN-MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(UI.Instance.ShowGuiOAB);
                     //UI.Instance.CelestialBodies.GetBodies();
                     //UI.Instance.CelestialBodySelectionStageIndex = -1;
                     //Styles.SetActiveTheme(Theme.Gray); // TODO implement other themes in OAB
@@ -111,8 +116,8 @@ namespace MicroMod
                 //UI.Instance.ShowGuiFlight = false;
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
-                    return; // TODO add OAB initialization
-                    //UI.Instance.ShowGuiOAB = false;
+                    OABSceneController.Instance.ShowGui = false;
+                //UI.Instance.ShowGuiOAB = false;
             }
         }
 
@@ -130,7 +135,9 @@ namespace MicroMod
 
             Utility.RefreshStagesOAB();
 
-            EntryWindow stageWindow = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            StageInfoOabWindow stageWindow = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault();
+
+            //EntryWindow stageWindow = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
 
             if (Utility.VesselDeltaVComponentOAB?.StageInfo == null)
             {
@@ -138,8 +145,10 @@ namespace MicroMod
                 return;
             }
 
-            foreach (var entry in stageWindow.Entries)
-                entry.RefreshData();
+            stageWindow.RefreshData();
+
+            //foreach (var entry in stageWindow.Entries)
+            //    entry.RefreshData();
         }
     }
 }
