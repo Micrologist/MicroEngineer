@@ -66,9 +66,7 @@ namespace MicroMod
 
         private void OnPartManipulationCompletedMessage(MessageCenterMessage obj)
         {
-            EntryWindow stageInfoOabWindow = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
-
-            Torque torque = (Torque)Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Torque");
+            var torque = ((StageInfoOabWindow)Manager.Instance.Windows.Find(w => w is StageInfoOabWindow)).Entries.Find(e => e is Torque);
             torque.RefreshData();
         }
 

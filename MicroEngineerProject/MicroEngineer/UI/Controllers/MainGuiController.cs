@@ -23,7 +23,7 @@ namespace MicroEngineer.UI
 
         public void OnEnable()
         {
-            _logger.LogDebug("Entering OnEnable() of MainGuiController");
+            _logger.LogDebug("Entering OnEnable().");
             MainGui = GetComponent<UIDocument>();
             Root = MainGui.rootVisualElement;
             Header = Root.Q<VisualElement>("header");
@@ -43,7 +43,7 @@ namespace MicroEngineer.UI
                 return;
 
             MainGuiWindow.FlightRect.position = Root[0].transform.position;
-        }      
+        }
 
         public void Update()
         {

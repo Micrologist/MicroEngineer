@@ -661,7 +661,7 @@ namespace MicroMod
 
             // Draw Torque
             Torque torque = (Torque)stageInfoOabEntries.Find(e => e.Name == "Torque");
-            if (torque.IsActive)
+            if (true/*torque.IsActive*/)
             {
                 GUILayout.Space(Styles.NegativeSpacingAfterEntry);
                 GUILayout.BeginHorizontal();
@@ -773,7 +773,7 @@ namespace MicroMod
             List<BaseEntry> stageInfoOabEntries = stageInfoOabWindow.Entries;
             Torque torqueEntry = (Torque)stageInfoOabEntries.Find(e => e.Name == "Torque");
 
-            torqueEntry.IsActive = GUILayout.Toggle(torqueEntry.IsActive, "Display Torque (experimental)\nTurn on CoT & CoM for this", Styles.SectionToggleStyle);
+            //torqueEntry.IsActive = GUILayout.Toggle(torqueEntry.IsActive, "Display Torque (experimental)\nTurn on CoT & CoM for this", Styles.SectionToggleStyle);
             GUILayout.Space(15);
         }
 

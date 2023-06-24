@@ -119,7 +119,10 @@ namespace MicroEngineer.UI
             NameLabel.AddToClassList(UssEntryClassName);
             hierarchy.Add(NameLabel);
 
-            ValueContainer = new VisualElement();
+            ValueContainer = new VisualElement()
+            {
+                name = "value-container"
+            };
             ValueContainer.style.flexGrow = 1;
             ValueContainer.style.flexDirection = FlexDirection.Row;
             ValueContainer.style.justifyContent = Justify.FlexEnd;
