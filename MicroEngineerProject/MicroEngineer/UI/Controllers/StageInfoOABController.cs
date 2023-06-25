@@ -106,7 +106,12 @@ namespace MicroEngineer.UI
                 Body.Add(control);
             }
 
-            // TODO insert empty stage if there are no stages
+            // If there are no stages, insert an empty stage
+            if (stages == null || stages.Count == 0)
+            {
+                var control = new StageInfoOABEntryControl();
+                Body.Add(control);
+            }
         }
 
         private void HandleStageInfoChanged(List<DeltaVStageInfo_OAB> stages)

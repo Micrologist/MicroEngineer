@@ -134,6 +134,7 @@ namespace MicroEngineer.UI
 
             Body = bodies;
             BodyDropdown.SetValueWithoutNotify(selectedBody);
+            BodyDropdown.SetEnabled(true);
         }
 
         public StageInfoOABEntryControl(int stageNumber, float twr, float slt, double aslDeltaV, double vacDeltaV, int burnDays, int burnHours, int burnMinutes, int burnSeconds, List<string> bodies, string selectedBody) : this()
@@ -150,7 +151,7 @@ namespace MicroEngineer.UI
             StageNumberLabel = new Label()
             {
                 name = "stage-number",
-                text = "00"
+                text = "-"
             };
             StageNumberLabel.AddToClassList(UssStageNumberClassName);
             hierarchy.Add(StageNumberLabel);
@@ -158,7 +159,8 @@ namespace MicroEngineer.UI
             // TWR
             TwrLabel = new Label()
             {
-                name = "twr-value"
+                name = "twr-value",
+                text = "-"
             };
             TwrLabel.AddToClassList(UssTwrClassName);
             hierarchy.Add(TwrLabel);
@@ -166,7 +168,8 @@ namespace MicroEngineer.UI
             // SLT
             SltLabel = new Label()
             {
-                name = "slt-value"
+                name = "slt-value",
+                text = "-"
             };
             SltLabel.AddToClassList(UssSltClassName);
             hierarchy.Add(SltLabel);
@@ -174,7 +177,8 @@ namespace MicroEngineer.UI
             // ASL DeltaV
             AslDeltaVValueLabel = new Label()
             {
-                name = "asl-deltav-value"
+                name = "asl-deltav-value",
+                text = "-"
             };
             AslDeltaVValueLabel.AddToClassList(UssAslDeltaVValueClassName);
             hierarchy.Add(AslDeltaVValueLabel);
@@ -189,7 +193,8 @@ namespace MicroEngineer.UI
             // Vac DeltaV
             VacDeltaVValueLabel = new Label()
             {
-                name = "vac-deltav-value"
+                name = "vac-deltav-value",
+                text = "-"
             };
             VacDeltaVValueLabel.AddToClassList(UssVacDeltaVValueClassName);
             hierarchy.Add(VacDeltaVValueLabel);
@@ -209,7 +214,8 @@ namespace MicroEngineer.UI
             {
                 BurnDaysValueLabel = new Label()
                 {
-                    name = "burndays-value"
+                    name = "burndays-value",
+                    text = "-"
                 };
                 BurnDaysValueLabel.AddToClassList(UssBurnValueClassName);
                 BurnValueContainer.Add(BurnDaysValueLabel);
@@ -226,7 +232,8 @@ namespace MicroEngineer.UI
             {
                 BurnHoursValueLabel = new Label()
                 {
-                    name = "burnhours-value"
+                    name = "burnhours-value",
+                    text = "-"
                 };
                 BurnHoursValueLabel.AddToClassList(UssBurnValueClassName);
                 BurnValueContainer.Add(BurnHoursValueLabel);
@@ -243,7 +250,8 @@ namespace MicroEngineer.UI
             {
                 BurnMinutesValueLabel = new Label()
                 {
-                    name = "burnminutes-value"
+                    name = "burnminutes-value",
+                    text = "-"
                 };
                 BurnMinutesValueLabel.AddToClassList(UssBurnValueClassName);
                 BurnValueContainer.Add(BurnMinutesValueLabel);
@@ -260,7 +268,8 @@ namespace MicroEngineer.UI
             {
                 BurnSecondsValueLabel = new Label()
                 {
-                    name = "burnseconds-value"
+                    name = "burnseconds-value",
+                    text = "-"
                 };
                 BurnSecondsValueLabel.AddToClassList(UssBurnValueClassName);
                 BurnValueContainer.Add(BurnSecondsValueLabel);
@@ -277,7 +286,8 @@ namespace MicroEngineer.UI
             {
                 name = "body-dropdown",
             };
-            BodyDropdown.SetValueWithoutNotify("Kerbin");
+            BodyDropdown.SetValueWithoutNotify("-");
+            BodyDropdown.SetEnabled(false);
             BodyDropdown.AddToClassList(UssBodyClassName);
             hierarchy.Add(BodyDropdown);
         }

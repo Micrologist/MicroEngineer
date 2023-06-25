@@ -135,8 +135,6 @@ namespace MicroMod
 
             StageInfoOabWindow stageWindow = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault();
 
-            //EntryWindow stageWindow = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
-
             if (Utility.VesselDeltaVComponentOAB?.StageInfo == null)
             {
                 stageWindow.Entries.Find(e => e.Name == "Stage Info (OAB)").EntryValue = null;
@@ -144,9 +142,6 @@ namespace MicroMod
             }
 
             stageWindow.RefreshData();
-
-            //foreach (var entry in stageWindow.Entries)
-            //    entry.RefreshData();
         }
     }
 }
