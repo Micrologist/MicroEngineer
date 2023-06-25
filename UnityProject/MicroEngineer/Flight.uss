@@ -1,6 +1,6 @@
 :root {
     --background-gray-1: rgba(33, 39, 46, 0.99);
-	--background-gray-2: rgba(28, 34, 42, 255);
+    --background-gray-2: rgb(28, 34, 42);
     --yellowish-translucent: rgba(237, 208, 147, 0.1);
     --yellowish: rgb(237, 208, 147);
 }
@@ -269,10 +269,10 @@
 
 .body {
     background-color: rgb(28, 34, 42);
-    border-top-left-radius: 5px;
+    border-top-left-radius: 0;
     border-bottom-left-radius: 5px;
     border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    border-bottom-right-radius: 0;
     padding-left: 1px;
     padding-right: 1px;
     padding-top: 2px;
@@ -392,6 +392,11 @@ TimeEntryControl .entry__value {
     border-bottom-right-radius: 5px;
 }
 
+.stage {
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
 .stage__number {
     width: 15px;
     -unity-text-align: middle-left;
@@ -411,15 +416,13 @@ TimeEntryControl .entry__value {
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    min-width: 50px;
-    flex-grow: 1;
-    flex-shrink: 0;
+    width: 45px;
 }
 
 .stage__deltav-unit {
     -unity-text-align: middle-left;
     font-size: 8px;
-    padding-left: 0;
+    padding-left: 1px;
     padding-right: 0;
     padding-top: 1px;
     padding-bottom: 0;
@@ -427,9 +430,7 @@ TimeEntryControl .entry__value {
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
-    min-width: 20px;
-    flex-grow: 1;
-    flex-shrink: 0;
+    width: 15px;
 }
 
 .stage__twr {
@@ -446,17 +447,15 @@ TimeEntryControl .entry__value {
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    min-width: 45px;
-    flex-grow: 1;
     flex-shrink: 0;
+    width: 50px;
 }
 
 .stage__burn-container {
     flex-direction: row;
     justify-content: flex-end;
-    min-width: 70px;
-    flex-grow: 1;
     flex-shrink: 0;
+    width: 80px;
 }
 
 .stage__burn-value {
@@ -464,7 +463,6 @@ TimeEntryControl .entry__value {
     color: var(--yellowish);
     -unity-text-align: middle-right;
     padding-right: 2px;
-    flex-grow: 1;
     align-items: flex-end;
     height: 100%;
     margin-left: 0;
@@ -504,26 +502,30 @@ TimeEntryControl .entry__value {
     margin-bottom: 0;
     display: flex;
     top: 2px;
+    align-items: flex-start;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
 }
 
 .stage__header-stagenumber {
     -unity-text-align: middle-right;
-    min-width: 15px;
+    width: 18px;
 }
 
 .stage__header-deltav {
     -unity-text-align: middle-right;
-    min-width: 70px;
+    width: 60px;
 }
 
 .stage__header-twr {
     -unity-text-align: middle-right;
-    min-width: 50px;
+    width: 50px;
 }
 
 .stage__header-burntime {
     -unity-text-align: middle-right;
-    min-width: 73px;
+    width: 80px;
 }
 
 .separator {
