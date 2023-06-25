@@ -2,18 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace MicroMod
+namespace MicroEngineer.UI
 {
-    public class TimeEntryControl : VisualElement
+    public class TimeControl : VisualElement
     {
-        public static string UssClassName = "entry";
-        public static string UssEntryClassName = UssClassName + "__name";
-
-        public static string UssOuterValueClassName = UssClassName + "__outer-value";
-        public static string UssInnerValueClassName = UssClassName + "__inner-value";
+        public static string UssClassName = "time-control";
         public static string UssValueClassName = UssClassName + "__value";
-
-        public static string UssInnerUnitClassName = UssClassName + "__inner-unit";
         public static string UssUnitClassName = UssClassName + "__unit";
 
         public const string UNIT_YEAR = "y";
@@ -22,15 +16,6 @@ namespace MicroMod
         public const string UNIT_HOUR = "h";
         public const string UNIT_MINUTE = "m";
         public const string UNIT_SECOND = "s";
-        public const string UNIT_MILLISECOND = "ms";
-
-        public Label NameLabel;
-        public VisualElement ValueContainer;
-        public string EntryName
-        {
-            get => NameLabel.text;
-            set => NameLabel.text = value;
-        }
 
         public Label DaysValueLabel;
         public Label DaysUnitLabel;
@@ -66,153 +51,117 @@ namespace MicroMod
 
         public void SetValue(int days, int hours, int minutes, int seconds)
         {
-
-            days = Mathf.Clamp(days, -9999, 9999);
-            hours = Mathf.Clamp(hours, -23, 23);
-            minutes = Mathf.Clamp(minutes, -59, 59);
-            seconds = Mathf.Clamp(seconds, -59, 59);
-
             Days = days.ToString("0");
             DisplayStyle showDays = days != 0 ? DisplayStyle.Flex : DisplayStyle.None;
             DaysValueLabel.style.display = showDays;
             DaysUnitLabel.style.display = showDays;
 
             Hours = days == 0 ? hours.ToString("0") : hours.ToString("00");
-            DisplayStyle showHours = (days != 0 || hours != 0) ? DisplayStyle.Flex : DisplayStyle.None;
+            DisplayStyle showHours = days != 0 || hours != 0 ? DisplayStyle.Flex : DisplayStyle.None;
             HoursValueLabel.style.display = showHours;
             HoursUnitLabel.style.display = showHours;
 
-            Minutes = (hours == 0 && days == 0) ? minutes.ToString("0") : minutes.ToString("00");
-            DisplayStyle showMinutes = (days != 0 || hours != 0 || minutes != 0) ? DisplayStyle.Flex : DisplayStyle.None;
+            Minutes = hours == 0 && days == 0 ? minutes.ToString("0") : minutes.ToString("00");
+            DisplayStyle showMinutes = days != 0 || hours != 0 || minutes != 0 ? DisplayStyle.Flex : DisplayStyle.None;
             MinutesValueLabel.style.display = showMinutes;
             MinutesUnitLabel.style.display = showMinutes;
 
-            Seconds = (minutes == 0 && hours == 0 && days == 0) ? seconds.ToString("0") : seconds.ToString("00");
+            Seconds = minutes == 0 && hours == 0 && days == 0 ? seconds.ToString("0") : seconds.ToString("00");
         }
 
-        public TimeEntryControl(string entry, int days, int hours, int minutes, int seconds) : this()
+        public TimeControl(int days, int hours, int minutes, int seconds) : this()
         {
             SetValue(days, hours, minutes, seconds);
-
-            /*
-            this.EntryName = entry; // TODO I think we need to do this as well
-            this.Days = days.ToString();
-            this.Hours = hours.ToString();
-            this.Minutes = minutes.ToString();
-            this.Seconds = seconds.ToString();
-            */
         }
 
-        public TimeEntryControl()
+        public TimeControl()
         {
             AddToClassList(UssClassName);
             style.flexDirection = FlexDirection.Row;
 
-            NameLabel = new Label()
-            {
-                name = "entry-name",
-                text = "placeholder"
-            };
-            NameLabel.AddToClassList(UssEntryClassName);
-            hierarchy.Add(NameLabel);
-
-            ValueContainer = new VisualElement()
-            {
-                name ="value-container"
-            };
-            ValueContainer.style.flexGrow = 1;
-            ValueContainer.style.flexDirection = FlexDirection.Row;
-            ValueContainer.style.justifyContent = Justify.FlexEnd;
-            hierarchy.Add(ValueContainer);
-
+            // DAYS
             {
                 DaysValueLabel = new Label()
                 {
                     name = "days-value"
                 };
                 DaysValueLabel.AddToClassList(UssValueClassName);
-                DaysValueLabel.AddToClassList(UssOuterValueClassName);
-                ValueContainer.Add(DaysValueLabel);
+                hierarchy.Add(DaysValueLabel);
                 DaysUnitLabel = new Label()
                 {
                     name = "days-unit",
                     text = UNIT_DAY
                 };
                 DaysUnitLabel.AddToClassList(UssUnitClassName);
-                DaysUnitLabel.AddToClassList(UssInnerUnitClassName);
-                ValueContainer.Add(DaysUnitLabel);
-            }//days
+                hierarchy.Add(DaysUnitLabel);
+            }
 
+            // HOURS
             {
                 HoursValueLabel = new Label()
                 {
                     name = "hours-value"
                 };
                 HoursValueLabel.AddToClassList(UssValueClassName);
-                HoursValueLabel.AddToClassList(UssInnerValueClassName);
-                ValueContainer.Add(HoursValueLabel);
+                hierarchy.Add(HoursValueLabel);
                 HoursUnitLabel = new Label()
                 {
                     name = "hours-unit",
                     text = UNIT_HOUR
                 };
                 HoursUnitLabel.AddToClassList(UssUnitClassName);
-                HoursUnitLabel.AddToClassList(UssInnerUnitClassName);
-                ValueContainer.Add(HoursUnitLabel);
-            }//hours
+                hierarchy.Add(HoursUnitLabel);
+            }
 
+            // MINUTES
             {
                 MinutesValueLabel = new Label()
                 {
                     name = "minutes-value"
                 };
                 MinutesValueLabel.AddToClassList(UssValueClassName);
-                MinutesValueLabel.AddToClassList(UssInnerValueClassName);
-                ValueContainer.Add(MinutesValueLabel);
+                hierarchy.Add(MinutesValueLabel);
                 MinutesUnitLabel = new Label()
                 {
                     name = "minutes-unit",
                     text = UNIT_MINUTE
                 };
                 MinutesUnitLabel.AddToClassList(UssUnitClassName);
-                MinutesUnitLabel.AddToClassList(UssInnerUnitClassName);
-                ValueContainer.Add(MinutesUnitLabel);
+                hierarchy.Add(MinutesUnitLabel);
+            }
 
-            }//minutes
-
+            // SECONDS
             {
                 SecondsValueLabel = new Label()
                 {
                     name = "seconds-value"
                 };
                 SecondsValueLabel.AddToClassList(UssValueClassName);
-                ValueContainer.Add(SecondsValueLabel);
+                hierarchy.Add(SecondsValueLabel);
                 SecondsUnitLabel = new Label()
                 {
                     name = "seconds-unit",
                     text = UNIT_SECOND
                 };
                 SecondsUnitLabel.AddToClassList(UssUnitClassName);
-                ValueContainer.Add(SecondsUnitLabel);
-            }//seconds
+                hierarchy.Add(SecondsUnitLabel);
+            }
         }
 
-        public new class UxmlFactory : UxmlFactory<TimeEntryControl, UxmlTraits> { }
+        public new class UxmlFactory : UxmlFactory<TimeControl, UxmlTraits> { }
         public new class UxmlTraits : VisualElement.UxmlTraits
         {
-            UxmlStringAttributeDescription _entry = new UxmlStringAttributeDescription() { name = "Entry", defaultValue = "Name" };
-            UxmlIntAttributeDescription _days = new UxmlIntAttributeDescription() { name = "days", defaultValue = 12 };
-            UxmlIntAttributeDescription _hours = new UxmlIntAttributeDescription() { name = "hours", defaultValue = 34 };
-            UxmlIntAttributeDescription _minutes = new UxmlIntAttributeDescription() { name = "minutes", defaultValue = 56 };
-            UxmlIntAttributeDescription _seconds = new UxmlIntAttributeDescription() { name = "seconds", defaultValue = 60 };
+            UxmlIntAttributeDescription _days = new UxmlIntAttributeDescription() { name = "days", defaultValue = 123 };
+            UxmlIntAttributeDescription _hours = new UxmlIntAttributeDescription() { name = "hours", defaultValue = 23 };
+            UxmlIntAttributeDescription _minutes = new UxmlIntAttributeDescription() { name = "minutes", defaultValue = 59 };
+            UxmlIntAttributeDescription _seconds = new UxmlIntAttributeDescription() { name = "seconds", defaultValue = 59 };
 
             public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
             {
                 base.Init(ve, bag, cc);
 
-                if (ve is TimeEntryControl entry)
+                if (ve is TimeControl entry)
                 {
-                    entry.EntryName = _entry.GetValueFromBag(bag, cc);
                     entry.SetValue(
                         _days.GetValueFromBag(bag, cc),
                         _hours.GetValueFromBag(bag, cc),

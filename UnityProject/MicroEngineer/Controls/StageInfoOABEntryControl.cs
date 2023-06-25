@@ -109,7 +109,6 @@ namespace MicroEngineer.UI
         {
             get => new List<string>() { BodyDropdown.value };
             set => BodyDropdown.choices = value;
-
         }
 
         public void SetValue(int stageNumber, float twr, float slt, double aslDeltaV, double vacDeltaV, int burnDays, int burnHours, int burnMinutes, int burnSeconds, List<string> bodies)
