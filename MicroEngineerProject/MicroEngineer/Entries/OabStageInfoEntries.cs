@@ -209,6 +209,7 @@ namespace MicroMod
                 var retrieved = Utility.VesselDeltaVComponentOAB.StageInfo[i];
                 var stage = new DeltaVStageInfo_OAB()
                 {
+                    Index = i,
                     DeltaVActual = retrieved.DeltaVActual,
                     DeltaVASL = retrieved.DeltaVatASL,
                     DeltaVVac = retrieved.DeltaVinVac,
@@ -270,14 +271,11 @@ namespace MicroMod
             }
         }
 
-        /// <summary>
-        /// Adds a new string to the CelestialBodyForStage list that corresponds to the HomeWorld, i.e. Kerbin
-        /// </summary>
-        /// <param name="celestialBodies"></param>
-        internal void AddNewCelestialBody(MicroCelestialBodies celestialBodies)
+        public void UpdateCelestialBodyAtIndex(int index, string selectedBodyName)
         {
-            // TODO delete this (for UI class)
-            //this.CelestialBodyForStage.Add(celestialBodies.Bodies.Find(b => b.IsHomeWorld).Name);
+            var body = MicroCelestialBodies.Instance.GetBodyByName(selectedBodyName);
+            CelestialBodyForStage[index] = body;
+            RefreshData();
         }
     }
 
@@ -286,6 +284,11 @@ namespace MicroMod
     /// </summary>
     public class DeltaVStageInfo_OAB
     {
+        /// <summary>
+        /// Index in DeltaVStageInfo_OAB is linked to the CelestialBodyForStage Index.
+        /// When stages are refreshed, DeltaVStageInfo_OAB grabs the CelestialBodyForStage at the same Index.
+        /// </summary>
+        public int Index;
         public double DeltaVActual;
         public double DeltaVASL;
         public double DeltaVVac;

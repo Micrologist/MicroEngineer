@@ -700,8 +700,10 @@ namespace MicroMod
             for (int stageIndex = stages.Count - 1; stageIndex >= 0; stageIndex--)
             {
                 // Check if this stage has a CelestialBody attached. If not, create a new CelestialBody and assign it to HomeWorld (i.e. Kerbin)
+                /*
                 if (stageInfoOab.CelestialBodyForStage.Count == ++celestialIndex)
                     stageInfoOab.AddNewCelestialBody(CelestialBodies);
+                */
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label(String.Format("{0:00}", ((List<DeltaVStageInfo_OAB>)stageInfoOab.EntryValue).Count - stages[stageIndex].Stage), Styles.NameLabelStyle, GUILayout.Width(40));

@@ -1,6 +1,5 @@
 ﻿using BepInEx.Logging;
 using MicroMod;
-using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -16,8 +15,9 @@ namespace MicroEngineer.UI
         public VisualElement TitleBar { get; set; }
         public VisualElement TorqueContainer { get; set; }
         public Button CloseButton { get; set; }
-        public VisualElement Header { get; set; }        
+        public VisualElement Header { get; set; }
         public VisualElement Body { get; set; }
+        public StageInfo_OAB StageEntry { get; set; }
         public VisualElement Footer { get; set; }
         public VisualElement TotalAslDeltaVContainer { get; set; }
         public VisualElement TotalVacDeltaVContainer { get; set; }
@@ -81,9 +81,10 @@ namespace MicroEngineer.UI
         {
             _logger.LogDebug("Entering BuildBody.");
             Body = Root.Q<VisualElement>("body");
+            StageEntry = StageInfoOABWindow.Entries.Find(e => e is StageInfo_OAB) as StageInfo_OAB;
+            StageEntry.OnStageInfoOABChanged += HandleStageInfoChanged;
 
-            var stageEntry = StageInfoOABWindow.Entries.Find(e => e is StageInfo_OAB) as StageInfo_OAB;
-            stageEntry.OnStageInfoOABChanged += HandleStageInfoChanged;
+            // TODO maybe purge celestial bodies in stage entry here
         }
 
         private void BuildStages(List<DeltaVStageInfo_OAB> stages)
@@ -99,10 +100,13 @@ namespace MicroEngineer.UI
                     MicroCelestialBodies.Instance.Bodies.Select(b => b.DisplayName).ToList(),
                     stage.CelestialBody.Name
                     );
+                var celestialBodyDropdown = control.Q<DropdownField>("body-dropdown");
+                // Update entry's CelestialBody at the same index as the stage
+                celestialBodyDropdown.RegisterValueChangedCallback(evt => StageEntry.UpdateCelestialBodyAtIndex(stage.Index, celestialBodyDropdown.value));
                 Body.Add(control);
             }
 
-            // TODO maybe remove clamping...?
+            // TODO insert empty stage if there are no stages
         }
 
         private void HandleStageInfoChanged(List<DeltaVStageInfo_OAB> stages)

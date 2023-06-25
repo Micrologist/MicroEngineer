@@ -25,14 +25,14 @@ namespace MicroMod
         public MicroCelestialBodies()
         {
             _logger.LogDebug("Instantiating singleton.");
-            GetBodies();
+            InitializeBodies();
         }
 
         /// <summary>
         /// Refreshes the list of all CelestialBodies. Does nothing if list is already populated.
         /// </summary>
         /// <returns>True = refresh completed successfully or list is already populated</returns>
-        public void GetBodies()
+        public void InitializeBodies()
         {
             if (this.Bodies.Count > 0)
             {
@@ -174,6 +174,11 @@ namespace MicroMod
                 return null;
 
             return Bodies.Find(b => b.IsHomeWorld);
+        }
+
+        public CelestialBody GetBodyByName(string requestedBodyName)
+        {
+            return Bodies.Find(b => b.DisplayName.ToLowerInvariant() == requestedBodyName.ToLowerInvariant());
         }
     }
 
