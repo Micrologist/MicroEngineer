@@ -23,7 +23,7 @@
         <ui:VisualElement name="footer" class="footer-oab">
             <ui:VisualElement name="stage-info-footer" class="stage-oab__footer">
                 <ui:Label text="Total" display-tooltip-when-elided="true" name="stage-number-footer" class="stage-oab__footer__number" />
-                <ui:VisualElement name="asl-dv-container" style="width: 248px; padding-right: 0; height: 100%; flex-direction: row; justify-content: flex-end; align-items: flex-end;" />
+                <ui:VisualElement name="asl-dv-container" style="width: 233px; padding-right: 0; height: 100%; flex-direction: row; justify-content: flex-end; align-items: flex-end;" />
                 <ui:VisualElement name="vac-dv-container" style="height: 100%; width: 90px; padding-right: 0; flex-direction: row; justify-content: flex-end; align-items: flex-end;" />
                 <ui:VisualElement name="burn-time-container" style="height: 100%; width: 110px; padding-right: 0; flex-direction: row; align-items: flex-end; justify-content: flex-end; margin-left: 3px;" />
             </ui:VisualElement>

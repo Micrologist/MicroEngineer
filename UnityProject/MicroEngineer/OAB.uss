@@ -199,7 +199,7 @@
 
 .stage-oab__header__twr {
     -unity-text-align: middle-right;
-    width: 69px;
+    width: 54px;
 }
 
 .stage-oab__header__slt {
@@ -274,7 +274,7 @@
     padding-bottom: 0;
     flex-grow: 0;
     flex-shrink: 0;
-    width: 96px;
+    width: 81px;
 }
 
 .stage-oab__slt {
@@ -406,7 +406,7 @@
 }
 
 .stage-oab__body {
-    width: 80px;
+    width: 95px;
     margin-left: 10px;
 }
 
@@ -479,20 +479,6 @@
 .stage-oab__footer__burn-time {
     -unity-text-align: middle-right;
     width: 118px;
-}
-
-.unity-popup-field__label {
-    width: 100%;
-    padding-left: 0;
-    padding-right: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 0;
-    margin-bottom: 0;
-    height: 30px;
-    -unity-text-align: middle-center;
 }
 
 .unity-popup-field__input {
@@ -593,7 +579,25 @@
 }
 
 .unity-base-popup-field__text {
-    font-size: 14px;
+    font-size: var(--font-size-normal-2);
     -unity-text-align: middle-center;
     color: rgb(192, 199, 213);
+}
+
+.unity-base-dropdown__item:hover {
+    background-color: var(--yellowish-translucent);
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+}
+
+.unity-base-dropdown__item > .unity-base-dropdown__label {
+    right: 28px;
+    font-size: var(--font-size-small-3);
+}
+
+.unity-popup-field:hover .unity-text-element {
+    background-color: var(--yellowish);
+    color: var(--black-full);
 }
