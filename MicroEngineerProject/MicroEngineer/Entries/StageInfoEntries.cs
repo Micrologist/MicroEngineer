@@ -1,5 +1,4 @@
-﻿
-using KSP.Sim.DeltaV;
+﻿using KSP.Sim.DeltaV;
 using UnityEngine;
 
 namespace MicroMod

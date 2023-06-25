@@ -63,6 +63,7 @@ namespace MicroEngineer.UI
                 return;
 
             EntryWindow.FlightRect.position = WindowRoot[0].transform.position;
+            Utility.SaveLayout(Manager.Instance.Windows);
         }
 
         private void BuildTitle()

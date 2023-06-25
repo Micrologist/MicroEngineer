@@ -72,8 +72,7 @@ namespace MicroMod
                         default:
                             break;
                     }
-                    
-                }                
+                }
             }
         }
 

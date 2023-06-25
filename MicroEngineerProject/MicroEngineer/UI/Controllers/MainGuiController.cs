@@ -43,6 +43,7 @@ namespace MicroEngineer.UI
                 return;
 
             MainGuiWindow.FlightRect.position = Root[0].transform.position;
+            Utility.SaveLayout(Manager.Instance.Windows);
         }
 
         public void Update()

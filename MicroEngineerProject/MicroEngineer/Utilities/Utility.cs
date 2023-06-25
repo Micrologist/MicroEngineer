@@ -209,7 +209,7 @@ namespace MicroMod
             try
             {
                 File.WriteAllText(LayoutPath, JsonConvert.SerializeObject(windows));
-                Logger.LogInfo("SaveLayout successful");
+                Logger.LogDebug("SaveLayout successful");
             }
             catch (Exception ex)
             {
@@ -239,8 +239,8 @@ namespace MicroMod
 
                 //FlightSceneController.Instance.RebuildUI();
 
-                Logger.LogInfo("LoadLayout successful");
-                Logger.LogDebug($"MainGui.IsFlightActive: {MainGui.IsFlightActive}");
+                Logger.LogInfo("LoadLayout successful.");
+                Logger.LogDebug($"MainGui.IsFlightActive: {MainGui.IsFlightActive}.");
             }
             catch (FileNotFoundException ex)
             {
@@ -251,8 +251,6 @@ namespace MicroMod
             {
                 Logger.LogError("Error trying to LoadLayout. Full error description:\n" + ex);
             }
-
-            //FlightSceneController.Instance.InitializeUI(); // TODO temporary
         }
 
         /// <summary>

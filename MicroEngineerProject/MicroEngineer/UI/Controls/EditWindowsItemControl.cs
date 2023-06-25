@@ -39,7 +39,7 @@ namespace MicroEngineer.UI
             EntryName = entry.Name;
             
             // If we're instantiating an 'available entry', then we're displaying only the entry's name
-            // If we're instatiating an 'installed entry', then we're showing additional controls for renaming and decimal digit manipulation
+            // If we're instantiating an 'installed entry', then we're showing additional controls for renaming and decimal digit manipulation
             if (isAvailableEntry)
             {
                 EntryTextField.focusable = false;
