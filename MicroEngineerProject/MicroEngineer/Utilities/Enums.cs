@@ -48,6 +48,7 @@
         Time,
         LatitudeLongitude,
         StageInfo,
+        StageInfoOAB,
         Separator
     }
 }

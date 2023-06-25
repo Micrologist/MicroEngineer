@@ -1,6 +1,4 @@
-﻿using System;
-using UnityEngine;
-using UnityEngine.UIElements;
+﻿using UnityEngine.UIElements;
 
 namespace MicroEngineer.UI
 {
@@ -16,11 +14,11 @@ namespace MicroEngineer.UI
         public static string UssAslDeltaVUnitClassName = UssClassName + "__asl-deltav-unit";
         public static string UssVacDeltaVValueClassName = UssClassName + "__vac-deltav-value";
         public static string UssVacDeltaVUnitClassName = UssClassName + "__vac-deltav-unit";
-        
+
         public static string UssBurnContainerClassName = UssClassName + "__burn-container";
         public static string UssBurnValueClassName = UssClassName + "__burn-value";
         public static string UssBurnUnitClassName = UssClassName + "__burn-unit";
-        
+
         public static string UssBodyClassName = UssClassName + "__body";
 
         public const string DELTA_V_UNIT = "m/s";
@@ -68,7 +66,7 @@ namespace MicroEngineer.UI
         {
             get => VacDeltaVValueLabel.text;
             set => VacDeltaVValueLabel.text = value;
-        }        
+        }
 
         public Label BurnDaysValueLabel;
         public Label BurnDaysUnitLabel;
@@ -103,13 +101,13 @@ namespace MicroEngineer.UI
         }
 
         public DropdownField BodyDropdown;
-        public string Body
+        public List<string> Body
         {
-            get => BodyDropdown.text;
-            set => BodyDropdown.SetValueWithoutNotify(value);
+            get => new List<string>() { BodyDropdown.value };
+            set => BodyDropdown.choices = value;
         }
 
-        public void SetValue(int stageNumber, float twr, float slt, double aslDeltaV, double vacDeltaV, int burnDays, int burnHours, int burnMinutes, int burnSeconds, string body)
+        public void SetValue(int stageNumber, float twr, float slt, double aslDeltaV, double vacDeltaV, int burnDays, int burnHours, int burnMinutes, int burnSeconds, List<string> bodies, string selectedBody)
         {
             StageNumber = stageNumber.ToString("00");
             Twr = twr.ToString("0.00");
@@ -134,12 +132,13 @@ namespace MicroEngineer.UI
 
             BurnSeconds = burnMinutes == 0 && burnHours == 0 && burnDays == 0 ? burnSeconds.ToString("0") : burnSeconds.ToString("00");
 
-            Body = body;
+            Body = bodies;
+            BodyDropdown.SetValueWithoutNotify(selectedBody);
         }
 
-        public StageInfoOABEntryControl(int stageNumber, float twr, float slt, double aslDeltaV, double vacDeltaV, int burnDays, int burnHours, int burnMinutes, int burnSeconds, string body) : this()
+        public StageInfoOABEntryControl(int stageNumber, float twr, float slt, double aslDeltaV, double vacDeltaV, int burnDays, int burnHours, int burnMinutes, int burnSeconds, List<string> bodies, string selectedBody) : this()
         {
-            SetValue(stageNumber, twr, slt, aslDeltaV, vacDeltaV, burnDays, burnHours, burnMinutes, burnSeconds, body);
+            SetValue(stageNumber, twr, slt, aslDeltaV, vacDeltaV, burnDays, burnHours, burnMinutes, burnSeconds, bodies, selectedBody);
         }
 
         public StageInfoOABEntryControl()
@@ -295,7 +294,7 @@ namespace MicroEngineer.UI
             UxmlIntAttributeDescription _burnHours = new UxmlIntAttributeDescription() { name = "burnhours", defaultValue = 23 };
             UxmlIntAttributeDescription _burnMinutes = new UxmlIntAttributeDescription() { name = "burnminutes", defaultValue = 59 };
             UxmlIntAttributeDescription _burnSeconds = new UxmlIntAttributeDescription() { name = "burnseconds", defaultValue = 59 };
-            UxmlStringAttributeDescription _body = new UxmlStringAttributeDescription() { name = "body", defaultValue = "Kerbin" };
+            UxmlStringAttributeDescription _body = new UxmlStringAttributeDescription() { name = "bodies", defaultValue = "Kerbol,Moho,Eve,Gilly,Kerbin,Mun" };
 
             public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
             {
@@ -313,7 +312,8 @@ namespace MicroEngineer.UI
                         _burnHours.GetValueFromBag(bag, cc),
                         _burnMinutes.GetValueFromBag(bag, cc),
                         _burnSeconds.GetValueFromBag(bag, cc),
-                        _body.GetValueFromBag(bag,cc)
+                        _body.GetValueFromBag(bag, cc).Split(',').ToList(),
+                        "Kerbin"
                         );
                 }
             }

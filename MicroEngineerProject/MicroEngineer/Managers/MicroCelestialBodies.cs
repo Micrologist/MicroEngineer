@@ -1,25 +1,52 @@
-﻿using KSP.Game;
+﻿using BepInEx.Logging;
+using KSP.Game;
 using KSP.Sim.impl;
 
 namespace MicroMod
 {
-    internal class MicroCelestialBodies
+    public class MicroCelestialBodies
     {
+        private static MicroCelestialBodies _instance;
+        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.MicroCelestialBodies");
+
         public List<CelestialBody> Bodies = new();
+
+        public static MicroCelestialBodies Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new MicroCelestialBodies();
+
+                return _instance;
+            }
+        }
+
+        public MicroCelestialBodies()
+        {
+            _logger.LogDebug("Instantiating singleton.");
+            GetBodies();
+        }
 
         /// <summary>
         /// Refreshes the list of all CelestialBodies. Does nothing if list is already populated.
         /// </summary>
         /// <returns>True = refresh completed successfully or list is already populated</returns>
-        internal bool GetBodies()
+        public void GetBodies()
         {
             if (this.Bodies.Count > 0)
-                return true;
+            {
+                _logger.LogInfo("Skipping CelestialBodies build as they're already populated.");
+                return;
+            }
 
             List<CelestialBodyComponent> bodies = GameManager.Instance?.Game?.UniverseModel?.GetAllCelestialBodies();
 
             if (bodies == null || bodies.Count == 0)
-                return false;
+            {
+                _logger.LogError("Error retrieving CelestialBodies from GameManager.Instance.Game.UniverseModel.");
+                return;
+            }
 
             foreach (var body in bodies)
             {
@@ -37,7 +64,18 @@ namespace MicroMod
             // Reorder and format all celestial bodies so they form a tree-like structure
             TryReorderBodies();
 
-            return true;
+            _logger.LogDebug("Starting TWR recalculation.");
+
+            // Get TWR for each body
+            foreach (var body in Bodies)
+            {
+                _logger.LogDebug($"Grabbed body: {body.Name}.");
+                body.TwrFactor = GetTwrFactor(body.Name);
+                _logger.LogDebug($"Recalculated TwrFactor: {body.TwrFactor}.");
+            }
+
+            _logger.LogInfo("CelestialBodies successfully built.");
+            return;
         }
 
         private void TryReorderBodies()
@@ -81,7 +119,6 @@ namespace MicroMod
             return instantiatedBodies;
         }
 
-
         /// <summary>
         /// Instantiates a single CelestialBody and formats it according to level of indentation
         /// </summary>
@@ -119,24 +156,35 @@ namespace MicroMod
         /// </summary>
         /// <param name="bodyName">Name of the CelestialBody for which the TWR factor is calculated</param>
         /// <returns>TWR factor that needs to be multiplied with HomeWorld's TWR to get TWR at the selected body</returns>
-        internal double GetTwrFactor(string bodyName)
+        public double GetTwrFactor(string bodyName)
         {
             if (Bodies.Count == 0) return 0;
             CelestialBody homeWorld = Bodies.Find(b => b.IsHomeWorld);
             CelestialBody targetBody = Bodies.Find(t => t.Name.ToLowerInvariant() == bodyName.ToLowerInvariant()) ?? null;
             if (targetBody == null) return 0;
 
+            _logger.LogDebug($"HomeWorld: {homeWorld.Name}, GravityAsl: {homeWorld.GravityASL}. Target: {targetBody.Name}, GravityAsl: {targetBody.GravityASL}.");
+
             return homeWorld.GravityASL / targetBody.GravityASL;
+        }
+
+        public CelestialBody GetHomeBody()
+        {
+            if (Bodies == null || Bodies.Count == 0)
+                return null;
+
+            return Bodies.Find(b => b.IsHomeWorld);
         }
     }
 
-    internal class CelestialBody
+    public class CelestialBody
     {
-        internal string Name;
-        internal string DisplayName;
-        internal double GravityASL;
-        internal bool HasAtmosphere;
-        internal bool IsHomeWorld;
-        internal CelestialBodyComponent CelestialBodyComponent;
+        public string Name;
+        public string DisplayName;
+        public double GravityASL;
+        public bool HasAtmosphere;
+        public bool IsHomeWorld;
+        public double TwrFactor;
+        public CelestialBodyComponent CelestialBodyComponent;
     }
 }

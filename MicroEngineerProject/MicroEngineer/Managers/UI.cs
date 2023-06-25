@@ -708,25 +708,27 @@ namespace MicroMod
                 GUILayout.FlexibleSpace();
 
                 // We calculate what factor needs to be applied to TWR in order to compensate for different gravity of the selected celestial body                
-                double twrFactor = CelestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex]);
-                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor), Styles.ValueLabelStyle, GUILayout.Width(65));
+                //double twrFactor = CelestialBodies.GetTwrFactor(stageInfoOab.CelestialBodyForStage[celestialIndex]);
+                //GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].TWRVac * twrFactor), Styles.ValueLabelStyle, GUILayout.Width(65));
 
                 // Calculate Sea Level TWR and DeltaV
-                CelestialBodyComponent cel = CelestialBodies.Bodies.Find(b => b.Name == stageInfoOab.CelestialBodyForStage[celestialIndex]).CelestialBodyComponent;
-                GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].GetTWRAtSeaLevel(cel) * twrFactor), Styles.ValueLabelStyle, GUILayout.Width(75));
-                GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].GetDeltaVelAtSeaLevel(cel)), Styles.ValueLabelStyle, GUILayout.Width(75));
+                //CelestialBodyComponent cel = CelestialBodies.Bodies.Find(b => b.Name == stageInfoOab.CelestialBodyForStage[celestialIndex]).CelestialBodyComponent;
+                //GUILayout.Label(String.Format("{0:N2}", stages[stageIndex].GetTWRAtSeaLevel(cel) * twrFactor), Styles.ValueLabelStyle, GUILayout.Width(75));
+                //GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].GetDeltaVelAtSeaLevel(cel)), Styles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label("m/s", Styles.UnitLabelStyleStageOAB, GUILayout.Width(30));
 
                 GUILayout.Label(String.Format("{0:N0}", stages[stageIndex].DeltaVVac), Styles.ValueLabelStyle, GUILayout.Width(75));
                 GUILayout.Label("m/s", Styles.UnitLabelStyleStageOAB, GUILayout.Width(30));
-                GUILayout.Label(Utility.SecondsToTimeString(stages[stageIndex].StageBurnTime, true, true), Styles.ValueLabelStyle, GUILayout.Width(110));
+                //GUILayout.Label(Utility.SecondsToTimeString(stages[stageIndex].StageBurnTime, true, true), Styles.ValueLabelStyle, GUILayout.Width(110));
                 GUILayout.Space(20);
                 GUILayout.BeginVertical();
                 GUILayout.FlexibleSpace();
+                /*
                 if (GUILayout.Button(stageInfoOab.CelestialBodyForStage[celestialIndex], Styles.CelestialBodyBtnStyle))
                 {
                     CelestialBodySelectionStageIndex = celestialIndex;
                 }
+                */
                 GUILayout.EndVertical();
                 GUILayout.EndHorizontal();
                 GUILayout.Space(Styles.NegativeSpacingAfterEntry);
@@ -749,7 +751,7 @@ namespace MicroMod
                 if (GUILayout.Button(body.DisplayName, Styles.CelestialSelectionBtnStyle))
                 {
                     StageInfo_OAB stageInfoOab = (StageInfo_OAB)Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Stage Info (OAB)");
-                    stageInfoOab.CelestialBodyForStage[CelestialBodySelectionStageIndex] = body.Name;
+                    //stageInfoOab.CelestialBodyForStage[CelestialBodySelectionStageIndex] = body.Name;
 
                     // Hide the selection window
                     CelestialBodySelectionStageIndex = -1;

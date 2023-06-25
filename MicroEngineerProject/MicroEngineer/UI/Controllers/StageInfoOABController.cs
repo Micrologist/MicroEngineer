@@ -32,14 +32,14 @@ namespace MicroEngineer.UI
             StageInfoOABWindow = (StageInfoOabWindow)Manager.Instance.Windows.Find(w => w is StageInfoOabWindow);
 
             StageInfoOAB = GetComponent<UIDocument>();
-            Root = StageInfoOAB.rootVisualElement;            
-            
+            Root = StageInfoOAB.rootVisualElement;
+
             BuildTitleBar();
             BuildHeader();
             BuildBody();
             BuildFooter();
 
-            Root[0].RegisterCallback<PointerUpEvent>(UpdateWindowPosition);            
+            Root[0].RegisterCallback<PointerUpEvent>(UpdateWindowPosition);
             Root[0].transform.position = StageInfoOABWindow.EditorRect.position;
         }
 
@@ -49,6 +49,7 @@ namespace MicroEngineer.UI
                 return;
 
             StageInfoOABWindow.EditorRect.position = Root[0].transform.position;
+            Utility.SaveLayout(Manager.Instance.Windows);
         }
 
         public void Update()
@@ -58,6 +59,7 @@ namespace MicroEngineer.UI
 
         private void BuildTitleBar()
         {
+            _logger.LogDebug("Entering BuildTitleBar.");
             TitleBar = Root.Q<VisualElement>("titlebar");
 
             TorqueContainer = TitleBar.Q<VisualElement>("torque-container");
@@ -71,18 +73,48 @@ namespace MicroEngineer.UI
 
         private void BuildHeader()
         {
+            _logger.LogDebug("Entering BuildHeader.");
             Header = Root.Q<VisualElement>("header");
-            // Nothing in Header at the moment
         }
 
         private void BuildBody()
         {
+            _logger.LogDebug("Entering BuildBody.");
             Body = Root.Q<VisualElement>("body");
-            // TODO
+
+            var stageEntry = StageInfoOABWindow.Entries.Find(e => e is StageInfo_OAB) as StageInfo_OAB;
+            stageEntry.OnStageInfoOABChanged += HandleStageInfoChanged;
+        }
+
+        private void BuildStages(List<DeltaVStageInfo_OAB> stages)
+        {
+            _logger.LogDebug("Entering BuildStages.");
+            for (int i = stages.Count - 1; i >= 0; i--)
+            {
+                var stage = stages[i];
+                var control = new StageInfoOABEntryControl(
+                    stage.Stage, stage.TWRVac, stage.TWRASL, stage.DeltaVASL,
+                    stage.DeltaVVac, stage.StageBurnTime.Days, stage.StageBurnTime.Hours,
+                    stage.StageBurnTime.Minutes, stage.StageBurnTime.Seconds,
+                    MicroCelestialBodies.Instance.Bodies.Select(b => b.DisplayName).ToList(),
+                    stage.CelestialBody.Name
+                    );
+                Body.Add(control);
+            }
+
+            // TODO maybe remove clamping...?
+        }
+
+        private void HandleStageInfoChanged(List<DeltaVStageInfo_OAB> stages)
+        {
+            _logger.LogDebug("Entering HandleStageInfoChanged.");
+            Body.Clear();
+            BuildStages(stages);
         }
 
         private void BuildFooter()
         {
+            _logger.LogDebug("Entering BuildFooter");
             BaseEntry entry;
             VisualElement control;
 
@@ -106,6 +138,7 @@ namespace MicroEngineer.UI
 
         private void OnCloseButton(ClickEvent evt)
         {
+            _logger.LogDebug("Entering OnCloseButton");
             StageInfoOABWindow.IsEditorActive = false;
             Utility.SaveLayout(Manager.Instance.Windows);
             OABSceneController.Instance.ShowGui = false;
