@@ -145,7 +145,7 @@ namespace MicroMod
                 body.DisplayName = $"└ {body.DisplayName}";
 
                 for (int i = 0; i < level; i++)
-                    body.DisplayName = $"  {body.DisplayName}";
+                    body.DisplayName = $" {body.DisplayName}";
             }
 
             return body;
