@@ -1,5 +1,5 @@
 ManifestFileVersion: 0
-CRC: 4294040374
+CRC: 2326425073
 Hashes:
   AssetFileHash:
     serializedVersion: 2
@@ -38,8 +38,6 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.UIElements.StyleValueHandle
 - AssemblyName: UnityEngine.UIElementsModule
   ClassName: UnityEngine.UIElements.VisualElementAsset
-- AssemblyName: UnityEngine.UIElementsModule
-  ClassName: UnityEngine.UIElements.VisualTreeAsset/UsingEntry
 Assets:
 - Assets/UI/micro_engineer/k2d2_cross.png
 - Assets/MicroEngineer/BaseWindow.uxml

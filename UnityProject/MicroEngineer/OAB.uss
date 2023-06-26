@@ -224,7 +224,7 @@
 
 .stage-oab__header__body {
     -unity-text-align: middle-right;
-    width: 63px;
+    width: 70px;
 }
 
 .stage-info-oab {
