@@ -29,6 +29,10 @@ namespace MicroEngineer.UI
                 GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(value);
 
                 RebuildUI();
+                
+                // If UI is closing, close EditWindows as well
+                if (!value && EditWindows != null)
+                    ToggleEditWindows();
             }
         }
 
