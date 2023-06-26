@@ -183,6 +183,7 @@ namespace MicroEngineer.UI
                 CheckIfDecimalButtonsShouldBeEnabled(e, incDecimal, decDecimal);
                 textField.RegisterCallback<MouseDownEvent>(evt => OnInstalledEntryClicked(evt, control));
                 textField.RegisterValueChangedCallback(evt => RenameEntry(evt, control));
+                Utility.DisableGameInputOnFocus(control);
                 _installedControls.Add(control);
                 InstalledScrollView.Add(control);
             }
