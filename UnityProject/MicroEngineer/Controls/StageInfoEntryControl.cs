@@ -2,13 +2,13 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace MicroMod
+namespace MicroEngineer.UI
 {
     public class StageInfoEntryControl : VisualElement
     {
         public static string UssBaseClassName = "entry";
         public static string UssClassName = "stage";
-        
+
         public static string UssStageNumberClassName = UssClassName + "__number";
         public static string UssDeltaVValueClassName = UssClassName + "__deltav-value";
         public static string UssDeltaVUnitClassName = UssClassName + "__deltav-unit";
@@ -84,7 +84,7 @@ namespace MicroMod
         public void SetValue(int stageNumber, double deltaV, float twr, int burnDays, int burnHours, int burnMinutes, int burnSeconds)
         {
             StageNumber = stageNumber.ToString("00");
-            DeltaV = String.Format("{0:N0}", deltaV);
+            DeltaV = string.Format("{0:N0}", deltaV);
             Twr = twr.ToString("0.00");
 
             BurnDays = burnDays.ToString("0");
@@ -93,16 +93,16 @@ namespace MicroMod
             BurnDaysUnitLabel.style.display = showBurnDays;
 
             BurnHours = burnDays == 0 ? burnHours.ToString("0") : burnHours.ToString("00");
-            DisplayStyle showBurnHours = (burnDays != 0 || burnHours != 0) ? DisplayStyle.Flex : DisplayStyle.None;
+            DisplayStyle showBurnHours = burnDays != 0 || burnHours != 0 ? DisplayStyle.Flex : DisplayStyle.None;
             BurnHoursValueLabel.style.display = showBurnHours;
             BurnHoursUnitLabel.style.display = showBurnHours;
 
-            BurnMinutes = (burnHours == 0 && burnDays == 0) ? burnMinutes.ToString("0") : burnMinutes.ToString("00");
-            DisplayStyle showBurnMinutes = (burnDays != 0 || burnHours != 0 || burnMinutes != 0) ? DisplayStyle.Flex : DisplayStyle.None;
+            BurnMinutes = burnHours == 0 && burnDays == 0 ? burnMinutes.ToString("0") : burnMinutes.ToString("00");
+            DisplayStyle showBurnMinutes = burnDays != 0 || burnHours != 0 || burnMinutes != 0 ? DisplayStyle.Flex : DisplayStyle.None;
             BurnMinutesValueLabel.style.display = showBurnMinutes;
             BurnMinutesUnitLabel.style.display = showBurnMinutes;
 
-            BurnSeconds = (burnMinutes == 0 && burnHours == 0 && burnDays == 0) ? burnSeconds.ToString("0") : burnSeconds.ToString("00");
+            BurnSeconds = burnMinutes == 0 && burnHours == 0 && burnDays == 0 ? burnSeconds.ToString("0") : burnSeconds.ToString("00");
         }
 
         public StageInfoEntryControl(int stageNumber, double deltaV, float twr, int burnDays, int burnHours, int burnMinutes, int burnSeconds) : this()
@@ -122,8 +122,8 @@ namespace MicroMod
                 text = "00"
             };
             StageNumberLabel.AddToClassList(UssStageNumberClassName);
-            hierarchy.Add(StageNumberLabel);            
-            
+            hierarchy.Add(StageNumberLabel);
+
             // DeltaV
             DeltaVValueLabel = new Label()
             {
@@ -225,7 +225,7 @@ namespace MicroMod
         {
             UxmlIntAttributeDescription _stageNumber = new UxmlIntAttributeDescription() { name = "stageNumber", defaultValue = 0 };
             UxmlIntAttributeDescription _deltaV = new UxmlIntAttributeDescription() { name = "deltav", defaultValue = 99999 };
-            UxmlIntAttributeDescription _twr = new UxmlIntAttributeDescription() { name = "twr", defaultValue = 123  };
+            UxmlIntAttributeDescription _twr = new UxmlIntAttributeDescription() { name = "twr", defaultValue = 123 };
             UxmlIntAttributeDescription _burnDays = new UxmlIntAttributeDescription() { name = "burndays", defaultValue = 123 };
             UxmlIntAttributeDescription _burnHours = new UxmlIntAttributeDescription() { name = "burnhours", defaultValue = 23 };
             UxmlIntAttributeDescription _burnMinutes = new UxmlIntAttributeDescription() { name = "burnminutes", defaultValue = 59 };

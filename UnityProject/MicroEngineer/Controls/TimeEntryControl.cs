@@ -1,8 +1,8 @@
-using System;
+//using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace MicroMod
+namespace MicroEngineer.UI
 {
     public class TimeEntryControl : VisualElement
     {
@@ -78,29 +78,34 @@ namespace MicroMod
             DaysUnitLabel.style.display = showDays;
 
             Hours = days == 0 ? hours.ToString("0") : hours.ToString("00");
-            DisplayStyle showHours = (days != 0 || hours != 0) ? DisplayStyle.Flex : DisplayStyle.None;
+            DisplayStyle showHours = days != 0 || hours != 0 ? DisplayStyle.Flex : DisplayStyle.None;
             HoursValueLabel.style.display = showHours;
             HoursUnitLabel.style.display = showHours;
 
-            Minutes = (hours == 0 && days == 0) ? minutes.ToString("0") : minutes.ToString("00");
-            DisplayStyle showMinutes = (days != 0 || hours != 0 || minutes != 0) ? DisplayStyle.Flex : DisplayStyle.None;
+            Minutes = hours == 0 && days == 0 ? minutes.ToString("0") : minutes.ToString("00");
+            DisplayStyle showMinutes = days != 0 || hours != 0 || minutes != 0 ? DisplayStyle.Flex : DisplayStyle.None;
             MinutesValueLabel.style.display = showMinutes;
             MinutesUnitLabel.style.display = showMinutes;
 
-            Seconds = (minutes == 0 && hours == 0 && days == 0) ? seconds.ToString("0") : seconds.ToString("00");
+            Seconds = minutes == 0 && hours == 0 && days == 0 ? seconds.ToString("0") : seconds.ToString("00");
         }
+
+        /*
+        public TimeEntryControl(BaseEntry entry) : this()
+        {
+            EntryName = entry.Name;
+
+            var time = Utility.ParseSecondsToTimeFormat((double?)entry.EntryValue ?? 0);
+            SetValue(time.Days, time.Hours, time.Minutes, time.Seconds);
+
+            entry.OnEntryTimeValueChanged += HandleEntryTimeValueChanged;
+        }
+        */
 
         public TimeEntryControl(string entry, int days, int hours, int minutes, int seconds) : this()
         {
+            EntryName = entry;
             SetValue(days, hours, minutes, seconds);
-
-            /*
-            this.EntryName = entry; // TODO I think we need to do this as well
-            this.Days = days.ToString();
-            this.Hours = hours.ToString();
-            this.Minutes = minutes.ToString();
-            this.Seconds = seconds.ToString();
-            */
         }
 
         public TimeEntryControl()
@@ -118,7 +123,7 @@ namespace MicroMod
 
             ValueContainer = new VisualElement()
             {
-                name ="value-container"
+                name = "value-container"
             };
             ValueContainer.style.flexGrow = 1;
             ValueContainer.style.flexDirection = FlexDirection.Row;
@@ -222,5 +227,7 @@ namespace MicroMod
                 }
             }
         }
+
+        public void HandleEntryTimeValueChanged(int days, int hours, int minutes, int seconds) => SetValue(days, hours, minutes, seconds);
     }
 }

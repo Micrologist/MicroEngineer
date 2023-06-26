@@ -1,7 +1,7 @@
 using System;
 using UnityEngine.UIElements;
 
-namespace MicroMod
+namespace MicroEngineer.UI
 {
     public class SeparatorEntryControl : VisualElement
     {
