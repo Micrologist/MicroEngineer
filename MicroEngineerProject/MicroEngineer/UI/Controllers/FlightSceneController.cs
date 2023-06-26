@@ -15,10 +15,11 @@ namespace MicroEngineer.UI
         private EditWindowsController _editWindowsController;
         private bool _maneuverWindowOpened = true;
         private bool _targetWindowOpened = true;
+        private float _snapDistance = ((SettingsWIndow)Manager.Instance.Windows.Find(w => w is SettingsWIndow)).SnapDistance;
 
         public UIDocument MainGui { get; set; }
         public List<UIDocument> Windows = new ();
-        public UIDocument EditWindows { get; set; }        
+        public UIDocument EditWindows { get; set; }
 
         public bool ShowGui
         {
@@ -107,7 +108,10 @@ namespace MicroEngineer.UI
                 }
 
                 //Keep window inside screen bounds
-                window.rootVisualElement[0].RegisterCallback<PointerMoveEvent>(evt => Utility.ClampToScreenUitk(window.rootVisualElement[0]));
+                window.rootVisualElement[0].RegisterCallback<MouseMoveEvent>(_ => Utility.ClampToScreenUitk(window.rootVisualElement[0]));
+
+                //Handle window snapping
+                window.rootVisualElement[0].RegisterCallback<MouseMoveEvent>(_ => HandleSnapping(window));
 
                 Windows.Add(window);
             }
@@ -168,6 +172,61 @@ namespace MicroEngineer.UI
         public List<EntryWindow> GetEditableWindows()
         {
             return Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().FindAll(w => w.IsEditable);
+        }
+
+        public void HandleSnapping(UIDocument draggedWindow)
+        {
+            var draggedRect = draggedWindow.rootVisualElement[0].worldBound;
+
+            foreach (var otherWindow in Windows)
+            {
+                var otherRect = otherWindow.rootVisualElement[0].worldBound;
+
+                // Check if the current window is close to any edge of the other window
+                if (otherWindow != draggedWindow && Utility.AreRectsNear(draggedRect, otherRect))
+                {
+
+                    // Snap to the left edge
+                    if (Mathf.Abs(draggedWindow.rootVisualElement[0].worldBound.xMin - otherRect.xMin) < _snapDistance)
+                        draggedWindow.rootVisualElement[0].transform.position
+                            = new Vector3(otherRect.xMin, draggedWindow.rootVisualElement[0].worldBound.y);
+
+                    // Snap to the right edge
+                    if (Mathf.Abs(draggedWindow.rootVisualElement[0].worldBound.xMax - otherRect.xMin) < _snapDistance)
+                        draggedWindow.rootVisualElement[0].transform.position
+                            = new Vector3(otherRect.xMin - draggedWindow.rootVisualElement[0].worldBound.width, draggedWindow.rootVisualElement[0].worldBound.y);
+
+                    // Snap to the left edge
+                    if (Mathf.Abs(draggedWindow.rootVisualElement[0].worldBound.xMin - otherRect.xMax) < _snapDistance)
+                        draggedWindow.rootVisualElement[0].transform.position
+                            = new Vector3(otherRect.xMax, draggedWindow.rootVisualElement[0].worldBound.y);
+
+                    // Snap to the right edge
+                    if (Mathf.Abs(draggedWindow.rootVisualElement[0].worldBound.xMax - otherRect.xMax) < _snapDistance)
+                        draggedWindow.rootVisualElement[0].transform.position
+                            = new Vector3(otherRect.xMax - draggedWindow.rootVisualElement[0].worldBound.width, draggedWindow.rootVisualElement[0].worldBound.y);
+
+                    // Snap to the top edge
+                    if (Mathf.Abs(draggedWindow.rootVisualElement[0].worldBound.yMin - otherRect.yMin) < _snapDistance)
+                        draggedWindow.rootVisualElement[0].transform.position
+                            = new Vector3(draggedWindow.rootVisualElement[0].worldBound.x, otherRect.yMin);
+
+                    // Snap to the bottom edge
+                    if (Mathf.Abs(draggedWindow.rootVisualElement[0].worldBound.yMax - otherRect.yMin) < _snapDistance)
+                        draggedWindow.rootVisualElement[0].transform.position
+                            = new Vector3(draggedWindow.rootVisualElement[0].worldBound.x, otherRect.yMin - draggedWindow.rootVisualElement[0].worldBound.height);
+
+                    // Snap to the top edge
+                    if (Mathf.Abs(draggedWindow.rootVisualElement[0].worldBound.yMin - otherRect.yMax) < _snapDistance)
+                        draggedWindow.rootVisualElement[0].transform.position
+                            = new Vector3(draggedWindow.rootVisualElement[0].worldBound.x, otherRect.yMax);
+
+                    // Snap to the bottom edge
+                    if (Mathf.Abs(draggedWindow.rootVisualElement[0].worldBound.yMax - otherRect.yMax) < _snapDistance)
+                        draggedWindow.rootVisualElement[0].transform.position
+                            = new Vector3(draggedWindow.rootVisualElement[0].worldBound.x, otherRect.yMax - draggedWindow.rootVisualElement[0].worldBound.height);
+                }
+            }
         }
     }
 }
