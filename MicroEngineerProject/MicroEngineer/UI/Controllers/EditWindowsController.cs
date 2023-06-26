@@ -13,6 +13,7 @@ namespace MicroEngineer.UI
         private EditWindowsItemControl _selectedInstalledEntry;
         private List<EntryWindow> _editableWindows;
         private List<EditWindowsItemControl> _installedControls = new();
+        private float _timeOfLastClick;
         
         public int SelectedWindowId;
 
@@ -119,9 +120,13 @@ namespace MicroEngineer.UI
             {
                 if (control != _selectedAvailableEntry)
                     SelectAvailable(control);
-                else
+                else if (Time.time - _timeOfLastClick < 0.5f)
                     AddEntryToSelectedWindow(); // double click on control
+                else
+                    UnselectAvailable(control); // longer than 500 ms since the last click, so we'll unselect the control
             }
+
+            _timeOfLastClick = Time.time;
         }
 
         /// <summary>
@@ -195,9 +200,13 @@ namespace MicroEngineer.UI
             {
                 if (control != _selectedInstalledEntry)
                     SelectInstalled(control);
-                else
+                else if (Time.time - _timeOfLastClick < 0.5f)
                     RemoveEntryFromInstalledWindow(); // double click on control
+                else
+                    UnselectInstalled(control); // longer than 500 ms since the last click, so we'll unselect the control
             }
+
+            _timeOfLastClick = Time.time;
         }
 
         public void SelectInstalled(EditWindowsItemControl control)
