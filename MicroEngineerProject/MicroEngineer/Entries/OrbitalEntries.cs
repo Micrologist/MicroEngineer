@@ -451,6 +451,7 @@ namespace MicroMod
         {
             Name = "Orbit time";
             Description = "Shows orbit time in seconds from the Periapsis.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             BaseUnit = "s";

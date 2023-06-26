@@ -647,6 +647,7 @@ namespace MicroMod
         {
             Name = "Orbit time";
             Description = "Shows orbit time in seconds from the Periapsis when vessel reaches the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
             BaseUnit = "s";

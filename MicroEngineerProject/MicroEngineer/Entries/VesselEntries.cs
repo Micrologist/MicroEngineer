@@ -131,6 +131,7 @@ namespace MicroMod
         {
             Name = "Total burn time";
             Description = "Burn Time vessel can sustain with 100% thrust.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             BaseUnit = "s";
