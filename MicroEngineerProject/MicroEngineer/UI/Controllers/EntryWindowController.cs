@@ -182,6 +182,11 @@ namespace MicroEngineer.UI
         private void OnPopOutOrCloseButton(ClickEvent evt)
         {            
             EntryWindow.IsFlightPoppedOut = !EntryWindow.IsFlightPoppedOut;
+            
+            // Activate/expand windows that get popped out.
+            if (EntryWindow.IsFlightPoppedOut)
+                EntryWindow.IsFlightActive = true;
+
             Utility.SaveLayout(Manager.Instance.Windows);
             FlightSceneController.Instance.RebuildUI();
         }

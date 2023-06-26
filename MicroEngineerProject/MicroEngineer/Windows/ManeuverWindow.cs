@@ -2,6 +2,7 @@
 using KSP.Messages;
 using KSP.Sim.impl;
 using KSP.Sim.Maneuver;
+using MicroEngineer.UI;
 using UnityEngine;
 
 namespace MicroMod
@@ -68,10 +69,13 @@ namespace MicroMod
             _selectedNodeIndex = 0;
         }
 
-        internal override void RefreshData()
+        public override void RefreshData()
         {
             base.RefreshData();
             RefreshManeuverNodes();
+
+            // Toggle showing/hiding UI window depending on whether a maneuver exists
+            FlightSceneController.Instance.ManeuverWindowOpened = Utility.ManeuverExists();
 
             // Add _selectedNodeIndex to entries as well. They will show the correct node's info.
             List<ManeuverEntry> entries = Entries.OfType<ManeuverEntry>().ToList();

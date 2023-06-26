@@ -106,7 +106,7 @@ namespace MicroMod
                 entry.RefreshData();
         }
 
-        internal virtual void RefreshData()
+        public virtual void RefreshData()
         {
             if (Entries == null || Entries.Count == 0)
                 return;

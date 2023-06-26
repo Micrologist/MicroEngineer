@@ -13,10 +13,12 @@ namespace MicroEngineer.UI
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.FlightSceneController");
         private bool _showGui = false;
         private EditWindowsController _editWindowsController;
+        private bool _maneuverWindowOpened = true;
+        private bool _targetWindowOpened = true;
 
         public UIDocument MainGui { get; set; }
         public List<UIDocument> Windows = new ();
-        public UIDocument EditWindows { get; set; }
+        public UIDocument EditWindows { get; set; }        
 
         public bool ShowGui
         {
@@ -33,6 +35,32 @@ namespace MicroEngineer.UI
                 // If UI is closing, close EditWindows as well
                 if (!value && EditWindows != null)
                     ToggleEditWindows();
+            }
+        }
+
+        public bool ManeuverWindowOpened
+        {
+            get => _maneuverWindowOpened;
+            set
+            {
+                if (_maneuverWindowOpened != value)
+                {
+                    _maneuverWindowOpened = value;
+                    RebuildUI();
+                }
+            }
+        }
+
+        public bool TargetWindowOpened
+        {
+            get => _targetWindowOpened;
+            set
+            {
+                if (_targetWindowOpened != value)
+                {
+                    _targetWindowOpened = value;
+                    RebuildUI();
+                }
             }
         }
 
@@ -58,6 +86,10 @@ namespace MicroEngineer.UI
             //Build poppedout windows
             foreach (EntryWindow poppedOutWindow in Manager.Instance.Windows.Where(w => w is EntryWindow && ((EntryWindow)w).IsFlightPoppedOut))
             {
+                // Skip creating Maneuver and/or Target windows if maneuver/target do not exist
+                if ((poppedOutWindow is ManeuverWindow && !ManeuverWindowOpened) || (poppedOutWindow is TargetWindow && !TargetWindowOpened))
+                    continue;
+
                 var window = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, poppedOutWindow.Name, null, !poppedOutWindow.IsLocked);
                 var header = window.rootVisualElement.Q<VisualElement>("header");
                 var body = window.rootVisualElement.Q<VisualElement>("body");

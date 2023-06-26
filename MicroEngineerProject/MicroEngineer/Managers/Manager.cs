@@ -183,7 +183,7 @@ namespace MicroMod
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Flight && entry.IsDefault).ToList()
                 });
 
-                Windows.Add(new EntryWindow
+                Windows.Add(new TargetWindow
                 {
                     Name = "Target",
                     Abbreviation = "TGT",
