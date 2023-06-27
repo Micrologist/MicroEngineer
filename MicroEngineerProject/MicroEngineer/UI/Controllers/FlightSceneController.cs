@@ -15,7 +15,7 @@ namespace MicroEngineer.UI
         private EditWindowsController _editWindowsController;
         private bool _maneuverWindowShown = true;
         private bool _targetWindowShown = true;
-        private float _snapDistance = ((SettingsWIndow)Manager.Instance.Windows.Find(w => w is SettingsWIndow)).SnapDistance;
+        private float _snapDistance = ((SettingsWindow)Manager.Instance.Windows.Find(w => w is SettingsWindow)).SnapDistance;
 
         public UIDocument MainGui { get; set; }
         public List<UIDocument> Windows = new ();

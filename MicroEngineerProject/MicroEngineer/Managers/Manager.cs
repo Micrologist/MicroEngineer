@@ -100,9 +100,8 @@ namespace MicroMod
                     FlightRect = new Rect(1350, 160, 0, 0) // About 3/4 of the screen
                 });
 
-                Windows.Add(new SettingsWIndow
+                Windows.Add(new SettingsWindow
                 {
-                    ActiveTheme = Styles.ActiveTheme,
                     IsEditorActive = false,
                     IsFlightActive = false,
                     IsMapActive = false,
@@ -241,7 +240,7 @@ namespace MicroMod
                     IsEditorActive = true,
                     IsFlightActive = false, // Not used
                     IsMapActive = false, // Not used
-                    EditorRect = new Rect(645, 41, 0, 0),
+                    EditorRect = new Rect(645, 41, 0, 0), // Top-center of the screen
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.OAB && entry.IsDefault).ToList()
                 });
 
@@ -292,6 +291,9 @@ namespace MicroMod
             return editableWindows.Count - 1;
         }
 
+        /// <summary>
+        /// TODO implement layout reset
+        /// </summary>
         public void ResetLayout()
         {
             Windows.Clear();
@@ -299,27 +301,5 @@ namespace MicroMod
             Entries = InitializeEntries();
             Windows = InitializeWindows();
         }
-
-        public void LoadLayout()
-        {
-            Utility.LoadLayout(Windows);
-        }
-
-        public void SaveLayout() => Utility.SaveLayout(Windows);
-
-        public void PupulateTextFieldNames(List<BaseEntry> entries)
-        {
-            TextFieldNames.Clear();
-            TextFieldNames.Add(Utility.InputDisableWindowAbbreviation);
-            TextFieldNames.Add(Utility.InputDisableWindowName);
-
-            foreach (var entry in entries)
-            {
-                entry.Id = Guid.NewGuid();
-                TextFieldNames.Add(entry.Id.ToString());
-            }
-        }
-
-        public void AddTextFieldName(string name) => TextFieldNames.Add(name);
     }
 }

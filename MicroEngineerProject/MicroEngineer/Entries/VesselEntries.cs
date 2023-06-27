@@ -143,17 +143,6 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.VesselDeltaV?.TotalBurnTime;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class StageThrustActual : VesselEntry

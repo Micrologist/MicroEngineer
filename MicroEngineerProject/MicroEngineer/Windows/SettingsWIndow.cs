@@ -3,7 +3,7 @@
 namespace MicroMod
 {
     [JsonObject(MemberSerialization.OptIn)]
-    public class SettingsWIndow : BaseWindow
+    public class SettingsWindow : BaseWindow
     {
         [JsonProperty]
         public Theme ActiveTheme { get; set; }
@@ -16,7 +16,7 @@ namespace MicroMod
 
         public void LoadSettings()
         {
-            Styles.SetActiveTheme(ActiveTheme);
+            // Load any settings that will be stored in the SettingsWindow (none so far)
         }
     }
 }

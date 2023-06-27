@@ -209,17 +209,6 @@ namespace MicroMod
             EntryValue = Utility.ActiveVessel.Latitude;
             BaseUnit = Utility.ActiveVessel.Latitude < 0 ? "S" : "N";
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return Utility.DegreesToDMS((double)EntryValue);
-            }
-        }
     }
 
     public class Longitude : SurfaceEntry
@@ -238,17 +227,6 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.Longitude;
             BaseUnit = Utility.ActiveVessel.Longitude < 0 ? "W" : "E";
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return Utility.DegreesToDMS((double)EntryValue);
-            }
         }
     }
 

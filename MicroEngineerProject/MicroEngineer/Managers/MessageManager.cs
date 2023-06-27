@@ -81,23 +81,12 @@ namespace MicroMod
                 {
                     _logger.LogDebug($"Inside GameStateEntered. GameState: {Utility.GameState.GameState}. MainGuiWindow.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}");
                     FlightSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
-                    //UI.Instance.ShowGuiFlight = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
-                    //GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(FlightSceneController.Instance.ShowGui); //UI.Instance.ShowGuiFlight);
                 }    
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {
                     _logger.LogDebug($"Inside GameStateEntered. GameState: {Utility.GameState.GameState}.");
-                    
-                    // TEMP override till app.bar is fixed
-                    //OABSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault().IsEditorActive;
-                    OABSceneController.Instance.ShowGui = true;
-
-                    //UI.Instance.ShowGuiOAB = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
-                    //GameObject.Find("BTN-MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(UI.Instance.ShowGuiOAB);
-                    //UI.Instance.CelestialBodies.GetBodies();
-                    //UI.Instance.CelestialBodySelectionStageIndex = -1;
-                    //Styles.SetActiveTheme(Theme.Gray); // TODO implement other themes in OAB
+                    OABSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault().IsEditorActive;
                 }
             }
         }
@@ -111,11 +100,9 @@ namespace MicroMod
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                     FlightSceneController.Instance.ShowGui = false;
-                //UI.Instance.ShowGuiFlight = false;
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                     OABSceneController.Instance.ShowGui = false;
-                //UI.Instance.ShowGuiOAB = false;
             }
         }
 

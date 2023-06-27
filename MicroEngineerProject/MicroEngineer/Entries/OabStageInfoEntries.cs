@@ -29,20 +29,6 @@ namespace MicroMod
         {
             EntryValue = Utility.VesselDeltaVComponentOAB?.TotalBurnTime;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                if (UseDHMSFormatting)
-                    return Utility.SecondsToTimeString((double)EntryValue);
-                else
-                    return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
-        }
     }
 
     public class TotalDeltaVASL_OAB : OabStageInfoEntry

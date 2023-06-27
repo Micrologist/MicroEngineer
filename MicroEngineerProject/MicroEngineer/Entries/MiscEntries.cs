@@ -14,9 +14,9 @@ namespace MicroMod
             EntryType = EntryType.Separator;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            BaseUnit = "---";
+            BaseUnit = null;
             Formatting = null;
-            EntryValue = "-------------";
+            EntryValue = null;
         }
     }
 
@@ -59,17 +59,6 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.Orbit.EndUT;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class StartUT : MiscEntry
@@ -89,17 +78,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Orbit.StartUT;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -121,17 +99,6 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.launchTime;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class TimeSinceLaunch : MiscEntry
@@ -151,17 +118,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.TimeSinceLaunch;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -263,17 +219,6 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtClosestApproach;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class UniversalTimeAtSoiEncounter : MiscEntry
@@ -293,17 +238,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 }

@@ -267,17 +267,6 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.period;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class Target_Obtvelocity : TargetEntry
@@ -530,17 +519,6 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.ObT;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class Target_ReferenceBodyConstants_Radius : TargetEntry
@@ -704,17 +682,6 @@ namespace MicroMod
 
             EntryValue = isValid != null && isValid == true ? EntryValue = Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.UniversalTime - Utility.UniversalTime : null;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class RelativeSpeedAtCloseApproach1 : TargetEntry
@@ -792,17 +759,6 @@ namespace MicroMod
             bool? isValid = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
 
             EntryValue = isValid != null && isValid == true ? EntryValue = Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.UniversalTime - Utility.UniversalTime : null;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 

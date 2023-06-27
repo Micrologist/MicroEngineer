@@ -86,7 +86,7 @@ namespace MicroMod
         public event StageInfoChanged OnStageInfoChanged;
 
         /// <summary>
-        /// Controls how the value should be displayed. Should be overriden in a inheritet class for a concrete implementation.
+        /// Controls how the value should be displayed. Can be overriden in a inheritet class for a more specialized implementation.
         /// </summary>
         public virtual string ValueDisplay
         {
