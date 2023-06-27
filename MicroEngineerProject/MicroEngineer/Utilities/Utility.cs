@@ -204,7 +204,7 @@ namespace MicroMod
             return abbreviation.Substring(0, Math.Min(abbreviation.Length, 3)).ToUpperInvariant();
         }
 
-        internal static void SaveLayout(List<BaseWindow> windows)
+        public static void SaveLayout(List<BaseWindow> windows)
         {
             try
             {
@@ -217,7 +217,7 @@ namespace MicroMod
             }
         }
 
-        internal static void LoadLayout(List<BaseWindow> windows)
+        public static void LoadLayout(List<BaseWindow> windows)
         {
             try
             {
@@ -296,7 +296,7 @@ namespace MicroMod
         /// <param name="gameInputState">If input is currently enabled or disabled</param>
         /// <param name="showGuiFlight">If MainGui window is opened</param>
         /// <returns>True = input is enabled. False = input is disabled</returns>
-        internal static bool ToggleGameInputOnControlInFocus(bool gameInputState, bool showGuiFlight)
+        public static bool ToggleGameInputOnControlInFocus(bool gameInputState, bool showGuiFlight)
         {
             if (gameInputState)
             {
@@ -320,7 +320,7 @@ namespace MicroMod
             }
         }
 
-        internal static (int major, int minor, int patch)? GetModVersion(string modId)
+        public static (int major, int minor, int patch)? GetModVersion(string modId)
         {
             var plugin = Chainloader.Plugins?.OfType<BaseSpaceWarpPlugin>().ToList().FirstOrDefault(p => p.SpaceWarpMetadata.ModID.ToLowerInvariant() == modId.ToLowerInvariant());
             string versionString = plugin?.SpaceWarpMetadata?.Version;
@@ -355,7 +355,7 @@ namespace MicroMod
         /// <param name="minor">Specified minor version (0.X.0)</param>
         /// <param name="patch">Specified patch version (0.0.X)</param>
         /// <returns>True = installed mod is older. False = installed mod has the same version or it's newer or version isn't declared or version declared is gibberish that cannot be parsed</returns>
-        internal static bool IsModOlderThan(string modId, int major, int minor, int patch)
+        public static bool IsModOlderThan(string modId, int major, int minor, int patch)
         {
             var modVersion = GetModVersion(modId);
 

@@ -1,18 +1,17 @@
 ﻿using BepInEx.Logging;
 using KSP.Game;
-using KSP.Sim.impl;
 using KSP.UI.Binding;
 using UnityEngine;
 
 namespace MicroMod
 {
-    internal class UI
+    public class UI
     {
         private static UI _instance;
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.UI");
 
-        internal bool ShowGuiFlight;
-        internal bool ShowGuiOAB;
+        public bool ShowGuiFlight;
+        public bool ShowGuiOAB;
         private bool _showGuiSettingsFlight;
 
         // If game input is enabled or disabled (used for locking controls when user is editing a text field
@@ -26,7 +25,7 @@ namespace MicroMod
         #endregion
 
         // Index of the stage for which user wants to select a different CelestialBody for different TWR calculations. -1 -> no stage is selected
-        internal int CelestialBodySelectionStageIndex = -1;
+        public int CelestialBodySelectionStageIndex = -1;
         private bool _showGuiSettingsOAB;
 
         Rect settingsFlightRect;
@@ -34,9 +33,9 @@ namespace MicroMod
         /// <summary>
         /// Holds data on all bodies for calculating TWR (currently)
         /// </summary>
-        internal MicroCelestialBodies CelestialBodies = new();
+        public MicroCelestialBodies CelestialBodies = new();
 
-        internal UI()
+        public UI()
         {
         }
 
@@ -51,7 +50,7 @@ namespace MicroMod
             }
         }
 
-        internal void OnGUI()
+        public void OnGUI()
         {
             GUI.skin = Styles.SpaceWarpUISkin;
 
@@ -794,13 +793,13 @@ namespace MicroMod
         /// </summary>
         /// <param name="rect">Where to position the close button</param>
         /// <returns></returns>
-        internal bool CloseButton(GUIStyle style)//Rect rect)
+        public bool CloseButton(GUIStyle style)//Rect rect)
         {
             //return GUI.Button(rect, Styles.CloseButtonTexture, Styles.CloseBtnStyle);
             return GUILayout.Button(Styles.CloseButtonTexture, style);
         }
 
-        internal void HandleSnapping(EntryWindow draggedWindow)
+        public void HandleSnapping(EntryWindow draggedWindow)
         {
             List<EntryWindow> poppedOutWindows = Manager.Instance.Windows
                 .FindAll(w => typeof(EntryWindow).IsAssignableFrom(w.GetType()))

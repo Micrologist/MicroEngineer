@@ -489,7 +489,7 @@ namespace MicroMod
         /// </summary>
         public static void DrawHorizontalLine() { Styles.DrawHorizontalLine(1); }
 
-        internal static void SetStylesForOldSpaceWarpSkin()
+        public static void SetStylesForOldSpaceWarpSkin()
         {
             SectionToggleStyle = new GUIStyle(SpaceWarpUISkin.toggle)
             {

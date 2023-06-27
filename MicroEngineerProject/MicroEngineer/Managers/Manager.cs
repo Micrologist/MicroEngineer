@@ -1,24 +1,23 @@
 ﻿using BepInEx.Logging;
 using KSP.Game;
-using MicroEngineer.UI;
 using System.Reflection;
 using UitkForKsp2.API;
 using UnityEngine;
 
 namespace MicroMod
 {
-    internal class Manager
+    public class Manager
     {
         private static Manager _instance;
 
-        internal List<BaseWindow> Windows;
-        internal List<BaseEntry> Entries;
+        public List<BaseWindow> Windows;
+        public List<BaseEntry> Entries;
 
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Manager");
 
         public List<string> TextFieldNames = new List<string>();
 
-        internal Manager()
+        public Manager()
         {
             Entries = InitializeEntries();
             Windows = InitializeWindows();
@@ -58,7 +57,7 @@ namespace MicroMod
         /// <summary>
         /// Builds the list of all Entries
         /// </summary>
-        internal List<BaseEntry> InitializeEntries()
+        public List<BaseEntry> InitializeEntries()
         {
             Entries = new List<BaseEntry>();
 
@@ -85,7 +84,7 @@ namespace MicroMod
         /// <summary>
         /// Builds the default Windows and fills them with default Entries
         /// </summary>
-        internal List<BaseWindow> InitializeWindows()
+        public List<BaseWindow> InitializeWindows()
         {
             Windows = new List<BaseWindow>();
 
@@ -259,7 +258,7 @@ namespace MicroMod
         /// Creates a new custom window user can fill with any entry
         /// </summary>
         /// <param name="editableWindows"></param>
-        internal int CreateCustomWindow(List<EntryWindow> editableWindows)
+        public int CreateCustomWindow(List<EntryWindow> editableWindows)
         {
             // Default window's name will be CustomX where X represents the first not used integer
             int nameID = 1;
@@ -293,7 +292,7 @@ namespace MicroMod
             return editableWindows.Count - 1;
         }
 
-        internal void ResetLayout()
+        public void ResetLayout()
         {
             Windows.Clear();
             Entries.Clear();
@@ -301,12 +300,12 @@ namespace MicroMod
             Windows = InitializeWindows();
         }
 
-        internal void LoadLayout()
+        public void LoadLayout()
         {
             Utility.LoadLayout(Windows);
         }
 
-        internal void SaveLayout() => Utility.SaveLayout(Windows);
+        public void SaveLayout() => Utility.SaveLayout(Windows);
 
         public void PupulateTextFieldNames(List<BaseEntry> entries)
         {

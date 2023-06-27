@@ -5,11 +5,11 @@ namespace MicroMod
     public class StageInfoOabWindow : BaseWindow
     {
         [JsonProperty]
-        internal bool IsEditorPoppedOut;
+        public bool IsEditorPoppedOut;
         [JsonProperty]
-        internal List<BaseEntry> Entries;
+        public List<BaseEntry> Entries;
 
-        internal virtual void RefreshData()
+        public virtual void RefreshData()
         {
             if (Entries == null || Entries.Count == 0)
                 return;

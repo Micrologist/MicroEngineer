@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace MicroMod
 {
-    internal class StageWindow : EntryWindow
+    public class StageWindow : EntryWindow
     {
         private UI _ui;
 
-        internal void DrawWindow(UI ui)
+        public void DrawWindow(UI ui)
         {
             _ui = ui;
 
