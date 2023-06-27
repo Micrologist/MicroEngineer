@@ -14,7 +14,6 @@
 		<Reference Include="external_dlls\UnityEngine.CoreModule.dll" />
 		<Reference Include="external_dlls\Assembly-CSharp.dll" />
 		<Reference Include="external_dlls\NewtonSoft.Json.dll" />
-		<Reference Include="external_dlls\NewtonSoft.Json.dll" />
 		<Reference Include="UitkForKsp2">
 		  <HintPath>external_dlls\UitkForKsp2.dll</HintPath>
 		</Reference>
