@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="maneuver-header" class="maneuver__header">
+        <ui:Button text="◀" display-tooltip-when-elided="true" name="previous-node" class="previous-next-node__buttons" />
+        <ui:Label text="Node: #x" display-tooltip-when-elided="true" name="node-number" class="node__number" />
+        <ui:Button text="▶" display-tooltip-when-elided="true" name="next-node" class="previous-next-node__buttons" />
+    </ui:VisualElement>
+</ui:UXML>

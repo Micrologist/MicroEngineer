@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:VisualElement name="maneuver-footer" class="maneuver__footer">
+        <ui:Button text="DELETE" display-tooltip-when-elided="true" name="delete-node" class="delete-node__button" />
+    </ui:VisualElement>
+</ui:UXML>
