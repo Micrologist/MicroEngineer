@@ -48,7 +48,6 @@ namespace MicroMod
                 AssetManager.GetAsset<Texture2D>($"{GUID}/images/icon.png"),
                 isOpen =>
                 {
-                    UI.Instance.ShowGuiOAB = isOpen;
                     Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
                     GameObject.Find("BTN-MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
                 });
@@ -78,12 +77,6 @@ namespace MicroMod
                 else if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                     OABSceneController.Instance.ShowGui = !OABSceneController.Instance.ShowGui;
             }
-        }
-
-        private void OnGUI()
-        {
-            return;
-            //UI.Instance.OnGUI();
         }
     }
 }
