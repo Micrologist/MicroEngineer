@@ -25,7 +25,8 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.AltitudeFromTerrain;
+            // AltitudeFromScenery seems to be the correct value to use for altitude above ground underneath the vessel
+            EntryValue = Utility.ActiveVessel.AltitudeFromScenery;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -75,7 +76,9 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.AltitudeFromScenery;
+            // We'll use AltitudeFromTerrain for this entry for now. It indicates some height above the ground level
+            // This may be a bug where they've switched AltitudeFromTerrain and AltitudeFromScenery values
+            EntryValue = Utility.ActiveVessel.AltitudeFromTerrain;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
