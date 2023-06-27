@@ -6,6 +6,7 @@ using SpaceWarp.API.Mods;
 using SpaceWarp.API.UI.Appbar;
 using KSP.UI.Binding;
 using MicroEngineer.UI;
+using KSP.Game;
 
 namespace MicroMod
 {
@@ -68,6 +69,15 @@ namespace MicroMod
         public void Update()
         {
             Manager.Instance.Update();
+
+            // Keyboard shortcut for opening UI
+            if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.E))
+            {
+                if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
+                    FlightSceneController.Instance.ShowGui = !FlightSceneController.Instance.ShowGui;
+                else if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
+                    OABSceneController.Instance.ShowGui = !OABSceneController.Instance.ShowGui;
+            }
         }
 
         private void OnGUI()

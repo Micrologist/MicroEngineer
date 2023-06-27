@@ -46,7 +46,10 @@ namespace MicroEngineer.UI
             
             StageInfoWindow = Window.CreateFromUxml(Uxmls.Instance.StageInfoOAB, "StageInfoOAB", null, true);
             StageInfoOABController controller = StageInfoWindow.gameObject.AddComponent<StageInfoOABController>();
-            StageInfoWindow.rootVisualElement[0].RegisterCallback<PointerMoveEvent>(evt => Utility.ClampToScreenUitk(StageInfoWindow.rootVisualElement[0]));            
+            StageInfoWindow.rootVisualElement[0].RegisterCallback<PointerMoveEvent>(evt => Utility.ClampToScreenUitk(StageInfoWindow.rootVisualElement[0]));
+
+            // Manually trigger StageInfo refreshing (regular refreshing is triggered by VesselDeltaVCalculationMessage event)
+            MessageManager.Instance.RefreshStagingDataOAB();
         }
 
         public void RebuildUI()

@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace MicroMod
 {
-    internal class MessageManager
+    public class MessageManager
     {
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.MessageManager");
         private static MessageManager _instance;
 
-        internal MessageManager()
+        public MessageManager()
         { }
 
         public static MessageManager Instance
@@ -34,7 +34,7 @@ namespace MicroMod
             Utility.RefreshGameManager();
 
             // While in OAB we use the VesselDeltaVCalculationMessage event to refresh data as it's triggered a lot less frequently than Update()
-            Utility.MessageCenter.Subscribe<VesselDeltaVCalculationMessage>(new Action<MessageCenterMessage>(this.RefreshStagingDataOAB));
+            Utility.MessageCenter.Subscribe<VesselDeltaVCalculationMessage>(new Action<MessageCenterMessage>(obj => this.RefreshStagingDataOAB((VesselDeltaVCalculationMessage)obj)));
 
             // We are loading layout state when entering Flight or OAB game state
             Utility.MessageCenter.Subscribe<GameStateEnteredMessage>(new Action<MessageCenterMessage>(this.GameStateEntered));
@@ -122,11 +122,10 @@ namespace MicroMod
         /// <summary>
         /// Refresh all staging data while in OAB
         /// </summary>
-        private void RefreshStagingDataOAB(MessageCenterMessage obj)
+        public void RefreshStagingDataOAB(VesselDeltaVCalculationMessage msg = null)
         {
             // Check if message originated from ships in flight. If yes, return.
-            VesselDeltaVCalculationMessage msg = (VesselDeltaVCalculationMessage)obj;
-            if (msg.DeltaVComponent.Ship == null || !msg.DeltaVComponent.Ship.IsLaunchAssembly()) return;
+            if (msg != null && (msg.DeltaVComponent.Ship == null || !msg.DeltaVComponent.Ship.IsLaunchAssembly())) return;
 
             Utility.RefreshGameManager();
             if (Utility.GameState.GameState != GameState.VehicleAssemblyBuilder) return;
