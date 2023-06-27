@@ -10,19 +10,19 @@ namespace MicroMod
     public class BaseWindow
     {
         [JsonProperty]
-        internal bool IsEditorActive;
+        public bool IsEditorActive;
         [JsonProperty]
-        internal bool IsFlightActive;
+        public bool IsFlightActive;
         [JsonProperty]
-        internal bool IsMapActive; // TODO: implement
+        public bool IsMapActive; // TODO: implement
         
         [JsonProperty]
-        internal Rect EditorRect;
+        public Rect EditorRect;
         [JsonProperty]
-        internal Rect FlightRect;
+        public Rect FlightRect;
 
-        internal virtual void DrawWindowHeader() { }
+        public virtual void DrawWindowHeader() { }
 
-        internal virtual void DrawWindowFooter() { }
+        public virtual void DrawWindowFooter() { }
     }    
 }

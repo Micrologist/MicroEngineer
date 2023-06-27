@@ -6,7 +6,7 @@ namespace MicroMod
 {
     public class ManeuverEntry : BaseEntry
     {
-        internal int SelectedNodeIndex = 0;
+        public int SelectedNodeIndex = 0;
     }
 
     public class DeltaVRequired : ManeuverEntry

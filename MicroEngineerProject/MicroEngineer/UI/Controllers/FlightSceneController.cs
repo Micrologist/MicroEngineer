@@ -13,8 +13,8 @@ namespace MicroEngineer.UI
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.FlightSceneController");
         private bool _showGui = false;
         private EditWindowsController _editWindowsController;
-        private bool _maneuverWindowOpened = true;
-        private bool _targetWindowOpened = true;
+        private bool _maneuverWindowShown = true;
+        private bool _targetWindowShown = true;
         private float _snapDistance = ((SettingsWIndow)Manager.Instance.Windows.Find(w => w is SettingsWIndow)).SnapDistance;
 
         public UIDocument MainGui { get; set; }
@@ -39,27 +39,27 @@ namespace MicroEngineer.UI
             }
         }
 
-        public bool ManeuverWindowOpened
+        public bool ManeuverWindowShown
         {
-            get => _maneuverWindowOpened;
+            get => _maneuverWindowShown;
             set
             {
-                if (_maneuverWindowOpened != value)
+                if (_maneuverWindowShown != value)
                 {
-                    _maneuverWindowOpened = value;
+                    _maneuverWindowShown = value;
                     RebuildUI();
                 }
             }
         }
 
-        public bool TargetWindowOpened
+        public bool TargetWindowShown
         {
-            get => _targetWindowOpened;
+            get => _targetWindowShown;
             set
             {
-                if (_targetWindowOpened != value)
+                if (_targetWindowShown != value)
                 {
-                    _targetWindowOpened = value;
+                    _targetWindowShown = value;
                     RebuildUI();
                 }
             }
@@ -88,7 +88,7 @@ namespace MicroEngineer.UI
             foreach (EntryWindow poppedOutWindow in Manager.Instance.Windows.Where(w => w is EntryWindow && ((EntryWindow)w).IsFlightPoppedOut))
             {
                 // Skip creating Maneuver and/or Target windows if maneuver/target do not exist
-                if ((poppedOutWindow is ManeuverWindow && !ManeuverWindowOpened) || (poppedOutWindow is TargetWindow && !TargetWindowOpened))
+                if ((poppedOutWindow is ManeuverWindow && !ManeuverWindowShown) || (poppedOutWindow is TargetWindow && !TargetWindowShown))
                     continue;
 
                 var window = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, poppedOutWindow.Name, null, !poppedOutWindow.IsLocked);

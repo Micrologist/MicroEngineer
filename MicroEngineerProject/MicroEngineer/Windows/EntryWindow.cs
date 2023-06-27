@@ -6,50 +6,50 @@ namespace MicroMod
     public class EntryWindow: BaseWindow
     {
         [JsonProperty]
-        internal string Name;
+        public string Name;
         [JsonProperty]
-        internal string Abbreviation;
+        public string Abbreviation;
         [JsonProperty]
-        internal string Description; // not used
+        public string Description; // not used
 
         [JsonProperty]
-        internal bool IsEditorPoppedOut;
+        public bool IsEditorPoppedOut;
         [JsonProperty]
-        internal bool IsFlightPoppedOut;
+        public bool IsFlightPoppedOut;
         [JsonProperty]
-        internal bool IsMapPoppedOut;
+        public bool IsMapPoppedOut;
 
         /// <summary>
         /// Can the window be dragged or closed
         /// </summary>
         [JsonProperty]
-        internal bool IsLocked;
+        public bool IsLocked;
 
         /// <summary>
         /// Window can be deleted if it's not one of main windows
         /// </summary>
         [JsonProperty]
-        internal bool IsDeletable { get => MainWindow == MainWindow.None; }
+        public bool IsDeletable { get => MainWindow == MainWindow.None; }
 
         /// <summary>
         /// Can the window be edited (add, remove & arrange entries)
         /// </summary>
         [JsonProperty]
-        internal bool IsEditable { get => MainWindow != MainWindow.Stage && MainWindow != MainWindow.StageInfoOAB; }
+        public bool IsEditable { get => MainWindow != MainWindow.Stage && MainWindow != MainWindow.StageInfoOAB; }
 
-        internal bool IsBeingDragged { get => FlightRect.Contains(Event.current.mousePosition); }
-
-        [JsonProperty]
-        internal MainWindow MainWindow;
+        public bool IsBeingDragged { get => FlightRect.Contains(Event.current.mousePosition); }
 
         [JsonProperty]
-        internal List<BaseEntry> Entries;
+        public MainWindow MainWindow;
+
+        [JsonProperty]
+        public List<BaseEntry> Entries;
 
         /// <summary>
         /// Moves entry upwards in the window. Does nothing if it's already first.
         /// </summary>
         /// <param name="entryIndex">Entry's current index</param>
-        internal void MoveEntryUp(int entryIndex)
+        public void MoveEntryUp(int entryIndex)
         {
             // check if entry exists and it's not first
             if (entryIndex < Entries.Count && entryIndex > 0)
@@ -60,13 +60,13 @@ namespace MicroMod
             }
         }
 
-        internal void MoveEntryUp(BaseEntry entry) => MoveEntryUp(Entries.IndexOf(entry));
+        public void MoveEntryUp(BaseEntry entry) => MoveEntryUp(Entries.IndexOf(entry));
 
         /// <summary>
         /// Moves entry downwards in the window. Does nothing if it's already last.
         /// </summary>
         /// <param name="entryIndex">Entry's current index</param>
-        internal void MoveEntryDown(int entryIndex)
+        public void MoveEntryDown(int entryIndex)
         {
             // check if entry is not last
             if (entryIndex < Entries.Count - 1)
@@ -77,33 +77,24 @@ namespace MicroMod
             }
         }
 
-        internal void MoveEntryDown(BaseEntry entry) => MoveEntryDown(Entries.IndexOf(entry));
+        public void MoveEntryDown(BaseEntry entry) => MoveEntryDown(Entries.IndexOf(entry));
 
         /// <summary>
         /// Adds an entry to the window to the last position
         /// </summary>
         /// <param name="entry"></param>
-        internal void AddEntry(BaseEntry entry) => Entries.Add(entry);
+        public void AddEntry(BaseEntry entry) => Entries.Add(entry);
 
-        internal void RemoveEntry(BaseEntry entry) => Entries.Remove(entry);
+        public void RemoveEntry(BaseEntry entry) => Entries.Remove(entry);
 
         /// <summary>
         /// Removes entry from the window 
         /// </summary>
         /// <param name="entryIndex">Entry's index</param>
-        internal void RemoveEntry(int entryIndex)
+        public void RemoveEntry(int entryIndex)
         {
             if (entryIndex < Entries.Count)
                 Entries.RemoveAt(entryIndex);
-        }        
-
-        /// <summary>
-        /// Grabs new data for each entry in the window
-        /// </summary>
-        internal void RefreshEntryData()
-        {
-            foreach (BaseEntry entry in Entries)
-                entry.RefreshData();
         }
 
         public virtual void RefreshData()

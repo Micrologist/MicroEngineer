@@ -22,6 +22,9 @@ namespace MicroEngineer.UI
         public VisualElement Header { get; set; }
         public VisualElement Body { get; set; }
         public VisualElement Footer { get; set; }
+        public Label ManeuverNodeNumberLabel { get; set; }
+        public Button PreviousNodeButton { get; set; }
+        public Button NextNodeButton { get; set; }
 
         public EntryWindowController()
         { }
@@ -55,6 +58,12 @@ namespace MicroEngineer.UI
             // Hide the settings button if window is not editable (Stage window)
             if (!EntryWindow.IsEditable)
                 SettingsButton.style.display = DisplayStyle.None;
+
+            if (EntryWindow is ManeuverWindow)
+            {
+                CheckIfManeuverHeaderAndFooterShouldBeHidden();
+                UpdateManeuverNodeHeader();
+            }
         }
 
         public void UpdateWindowPosition(PointerUpEvent evt)
@@ -106,8 +115,11 @@ namespace MicroEngineer.UI
             {
                 Header.Add(Uxmls.Instance.StageInfoHeader.CloneTree());
                 return;
-            }                
-        }
+            }
+
+            if (EntryWindow is ManeuverWindow)
+                BuildManeuverHeader(EntryWindow as ManeuverWindow);
+        }        
 
         private void BuildBody()
         {
@@ -146,7 +158,10 @@ namespace MicroEngineer.UI
         private void BuildFooter()
         {
             Footer = Root.Q<VisualElement>("footer");
-        }
+
+            if (EntryWindow is ManeuverWindow)
+                BuildManeuverFooter(EntryWindow as ManeuverWindow);
+        }        
 
         public void Expand()
         {
@@ -157,6 +172,11 @@ namespace MicroEngineer.UI
             Body.style.display = DisplayStyle.Flex;
             Footer.style.display = DisplayStyle.Flex;
 
+            if (EntryWindow is ManeuverWindow)
+            {
+                CheckIfManeuverHeaderAndFooterShouldBeHidden();
+                UpdateManeuverNodeHeader();
+            }
         }
 
         public void Collapse()
@@ -191,12 +211,78 @@ namespace MicroEngineer.UI
             FlightSceneController.Instance.RebuildUI();
         }
 
+        /// <summary>
+        /// Not used
+        /// </summary>
         public void SetWindowVisibility(bool isVisible)
         {
             if (isVisible)
                 Root.style.display = DisplayStyle.Flex;
             else
                 Root.style.display = DisplayStyle.None;
+        }
+
+        ///// MANEUVER UI /////
+
+        private void BuildManeuverHeader(ManeuverWindow window)
+        {
+            var maneuverHeader = Uxmls.Instance.ManeuverHeader.CloneTree();
+            PreviousNodeButton = maneuverHeader.Q<Button>("previous-node");
+            ManeuverNodeNumberLabel = maneuverHeader.Q<Label>("node-number");
+
+            PreviousNodeButton.RegisterCallback<MouseUpEvent>(_ =>
+            {
+                int index = window.SelectPreviousNode();
+            });
+
+            NextNodeButton = maneuverHeader.Q<Button>("next-node");
+            NextNodeButton.RegisterCallback<MouseUpEvent>(_ =>
+            {
+                int index = window.SelectNextNode();
+            });
+
+            Header.Add(maneuverHeader);
+        }
+
+        private void BuildManeuverFooter(ManeuverWindow window)
+        {
+            var maneuverFooter = Uxmls.Instance.ManeuverFooter.CloneTree();
+            var deleteNodeButton = maneuverFooter.Q<Button>("delete-node");
+            deleteNodeButton.RegisterCallback<MouseUpEvent>(_ =>
+            {
+                int index = window.DeleteNodes();
+                ManeuverNodeNumberLabel.text = $"Node #{index + 1}";
+            });
+
+            Footer.Add(maneuverFooter);            
+            
+            window.OnNodeCountChanged += CheckIfManeuverHeaderAndFooterShouldBeHidden;
+            window.OnSelectedNodeIndexChanged += UpdateManeuverNodeHeader;
+        }
+
+        private void CheckIfManeuverHeaderAndFooterShouldBeHidden()
+        {
+            int nodeCount = ((ManeuverWindow)EntryWindow).NodeCount;
+
+            Header.style.display = nodeCount > 1 ? DisplayStyle.Flex : DisplayStyle.None;
+            Footer.style.display = nodeCount > 0 ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        private void UpdateManeuverNodeHeader()
+        {
+            int selectedNodeIndex = ((ManeuverWindow)EntryWindow).SelectedNodeIndex;
+            int nodeCount = ((ManeuverWindow)EntryWindow).NodeCount;
+
+            ManeuverNodeNumberLabel.text = $"Node #{(selectedNodeIndex + 1)}";
+            if (selectedNodeIndex == 0)
+                PreviousNodeButton.SetEnabled(false);
+            else
+                PreviousNodeButton.SetEnabled(true);
+
+            if (selectedNodeIndex >= nodeCount - 1)
+                NextNodeButton.SetEnabled(false);
+            else
+                NextNodeButton.SetEnabled(true);
         }
     }
 }

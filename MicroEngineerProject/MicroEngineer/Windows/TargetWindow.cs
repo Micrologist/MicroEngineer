@@ -9,7 +9,7 @@ namespace MicroMod
             base.RefreshData();
 
             // Toggle showing/hiding UI window depending on whether a target exists
-            FlightSceneController.Instance.TargetWindowOpened = Utility.TargetExists();
+            FlightSceneController.Instance.TargetWindowShown = Utility.TargetExists();
         }
     }
 }

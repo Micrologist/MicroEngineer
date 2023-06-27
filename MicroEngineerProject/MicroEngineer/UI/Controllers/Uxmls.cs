@@ -16,6 +16,8 @@ namespace MicroEngineer.UI
         public const string BASE_WINDOW_PATH = "/microengineer_flightui/microengineer/basewindow.uxml";
         public const string EDIT_WINDOWS_PATH = "/microengineer_flightui/microengineer/editwindows.uxml";
         public const string OAB_STAGE_INFO_PATH = "/microengineer_oabui/microengineer/stageinfooab.uxml";
+        public const string MANEUVER_HEADER_PATH = "/microengineer_flightui/microengineer/maneuverheader.uxml";
+        public const string MANEUVER_FOOTER_PATH = "/microengineer_flightui/microengineer/maneuverfooter.uxml";
 
         public VisualTreeAsset MainGuiHeader;
         public VisualTreeAsset EntryWindow;
@@ -23,6 +25,8 @@ namespace MicroEngineer.UI
         public VisualTreeAsset BaseWindow;
         public VisualTreeAsset EditWindows;
         public VisualTreeAsset StageInfoOAB;
+        public VisualTreeAsset ManeuverHeader;
+        public VisualTreeAsset ManeuverFooter;
 
         public static Uxmls Instance
         {
@@ -47,6 +51,8 @@ namespace MicroEngineer.UI
             BaseWindow = LoadAsset($"{BASE_WINDOW_PATH}");
             EditWindows = LoadAsset($"{EDIT_WINDOWS_PATH}");
             StageInfoOAB = LoadAsset($"{OAB_STAGE_INFO_PATH}");
+            ManeuverHeader = LoadAsset($"{MANEUVER_HEADER_PATH}");
+            ManeuverFooter = LoadAsset($"{MANEUVER_FOOTER_PATH}");
         }
 
         private VisualTreeAsset LoadAsset(string path)
