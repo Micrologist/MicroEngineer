@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using MicroMod;
+﻿using MicroMod;
 using UnityEngine.UIElements;
 
 namespace MicroEngineer.UI
@@ -44,6 +43,7 @@ namespace MicroEngineer.UI
             Value = entry.ValueDisplay;
             Unit = entry.UnitDisplay;
 
+            // When entry's value changes, update value and unit labels
             entry.OnEntryValueChanged += HandleEntryValueChanged;
         }
 
@@ -64,7 +64,6 @@ namespace MicroEngineer.UI
         {
             //You need to do this to every VisualElement that you want to have said class
             AddToClassList(UssClassName);
-            //style.flexDirection = FlexDirection.Row;
 
             NameLabel = new Label()
             {
@@ -72,18 +71,14 @@ namespace MicroEngineer.UI
                 name = "entry-name",
                 text = string.Empty
             };
-            //NameLabel.style.width = new StyleLength(new Length(50, LengthUnit.Percent));
-            //Setting it so it will ALWAYS occupy 50% of its parent's width
             NameLabel.AddToClassList(UssEntryClassName);
-            hierarchy.Add(NameLabel);//Adding this to the BaseEntry, if you dont do this the element will be lost            
+            hierarchy.Add(NameLabel);//Adding this to the BaseEntry, if you dont do this the element will be lost
 
             ValueLabel = new Label()
             {
                 name = "entry-value",
                 text = string.Empty
             };
-            //ValueLabel.style.flexGrow = 1;
-            //Name occupies 50%, _unit Occupies 20px, this will tell the _value to occupy whats remaining!
             ValueLabel.AddToClassList(UssValueClassName);
             hierarchy.Add(ValueLabel);
 
@@ -92,8 +87,6 @@ namespace MicroEngineer.UI
                 name = "entry-unit",
                 text = string.Empty
             };
-            //UnitLabel.style.width = new StyleLength(new Length(20, LengthUnit.Pixel));
-            //Setting it so it will ALWAYS occupy 20px of width
             UnitLabel.AddToClassList(UssUnitClassName);
             hierarchy.Add(UnitLabel); //Be sure to add the elements in the correct order
         }

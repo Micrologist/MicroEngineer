@@ -6,7 +6,7 @@ namespace MicroMod
     public class SettingsWindow : BaseWindow
     {
         [JsonProperty]
-        public Theme ActiveTheme { get; set; }
+        public Theme ActiveTheme { get; set; } // Not used anymore with UIKT. Might reuse later
         [JsonProperty]
         private bool snapWindows = true;
         public bool SnapWindows { get => snapWindows; set => snapWindows = value; }

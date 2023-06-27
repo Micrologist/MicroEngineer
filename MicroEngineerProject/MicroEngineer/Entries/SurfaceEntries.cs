@@ -133,7 +133,7 @@ namespace MicroMod
 
         public override string ValueDisplay => base.ValueDisplay;
     }
-    
+
     public class Situation : SurfaceEntry
     {
         public Situation()
@@ -320,5 +320,5 @@ namespace MicroMod
         }
 
         public override string ValueDisplay => base.ValueDisplay;
-    }    
+    }
 }

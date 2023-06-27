@@ -1,5 +1,4 @@
-﻿
-namespace MicroMod
+﻿namespace MicroMod
 {
     public class VesselEntry : BaseEntry
     { }

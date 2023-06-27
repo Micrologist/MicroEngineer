@@ -76,7 +76,7 @@ namespace MicroEngineer.UI
             };
             // child element that holds the background image
             var decreaseDecimalBackground = new VisualElement();
-            decreaseDecimalBackground.AddToClassList(UssDecreaseDecimalBackground);            
+            decreaseDecimalBackground.AddToClassList(UssDecreaseDecimalBackground);
             DecreaseDecimalDigitsButton.Add(decreaseDecimalBackground);
             DecreaseDecimalDigitsButton.AddToClassList(UssDecreaseDecimal);
             hierarchy.Add(DecreaseDecimalDigitsButton);

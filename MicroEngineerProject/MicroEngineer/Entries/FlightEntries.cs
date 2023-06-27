@@ -1,5 +1,4 @@
-﻿
-namespace MicroMod
+﻿namespace MicroMod
 {
     public class FlightEntry : BaseEntry
     { }
@@ -317,7 +316,7 @@ namespace MicroMod
                 return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(base.Formatting, EntryValue);
             }
         }
-    }    
+    }
 
     public class DragCoefficient : FlightEntry
     {

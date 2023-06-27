@@ -8,7 +8,7 @@ namespace MicroMod
 {
     public class ManeuverWindow : EntryWindow
     {
-        private List<ManeuverNodeData> _nodes = new();        
+        private List<ManeuverNodeData> _nodes = new();
 
         private int _nodeCount;
         public int NodeCount
@@ -20,7 +20,7 @@ namespace MicroMod
                 {
                     _nodeCount = value;
                     OnNodeCountChanged?.Invoke();
-                }                
+                }
             }
         }
 
@@ -37,7 +37,7 @@ namespace MicroMod
                 {
                     _selectedNodeIndex = value;
                     OnSelectedNodeIndexChanged?.Invoke();
-                }                
+                }
             }
         }
 

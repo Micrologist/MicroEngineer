@@ -1,5 +1,4 @@
-﻿
-namespace MicroMod
+﻿namespace MicroMod
 {
     public class BodyEntry : BaseEntry
     { }
@@ -68,5 +67,5 @@ namespace MicroMod
         }
 
         public override string ValueDisplay => base.ValueDisplay;
-    }    
+    }
 }

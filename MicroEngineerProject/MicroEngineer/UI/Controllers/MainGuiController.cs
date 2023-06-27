@@ -1,6 +1,5 @@
 ﻿using BepInEx.Logging;
 using MicroMod;
-using UitkForKsp2.API;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -28,7 +27,7 @@ namespace MicroEngineer.UI
             Root = MainGui.rootVisualElement;
             Header = Root.Q<VisualElement>("header");
             BuildMainGuiHeader();
-            Body = Root.Q<VisualElement>("body");            
+            Body = Root.Q<VisualElement>("body");
             BuildDockedWindows();
 
             Root[0].RegisterCallback<PointerUpEvent>(UpdateWindowPosition);
@@ -59,7 +58,7 @@ namespace MicroEngineer.UI
             EditWindowsButton = mainGuiHeader.Q<Button>("editwindows-button");
             EditWindowsButton.RegisterCallback<ClickEvent>(evt => FlightSceneController.Instance.ToggleEditWindows());
             Header.Add(mainGuiHeader);
-        }        
+        }
 
         public void BuildDockedWindows()
         {

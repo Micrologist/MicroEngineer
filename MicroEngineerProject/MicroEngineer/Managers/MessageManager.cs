@@ -1,9 +1,7 @@
 ﻿using BepInEx.Logging;
 using KSP.Game;
 using KSP.Messages;
-using KSP.UI.Binding;
 using MicroEngineer.UI;
-using UnityEngine;
 
 namespace MicroMod
 {
@@ -81,7 +79,7 @@ namespace MicroMod
                 {
                     _logger.LogDebug($"Inside GameStateEntered. GameState: {Utility.GameState.GameState}. MainGuiWindow.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}");
                     FlightSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
-                }    
+                }
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {

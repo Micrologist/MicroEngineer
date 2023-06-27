@@ -181,7 +181,7 @@ namespace MicroEngineer.UI
             {
                 var control = new EditWindowsItemControl(e, false);
                 var textField = control.Q<TextField>();
-                var incDecimal = control.Q<Button>("increase-decimal");                
+                var incDecimal = control.Q<Button>("increase-decimal");
                 var decDecimal = control.Q<Button>("decrease-decimal");
                 incDecimal.RegisterCallback<PointerUpEvent>(_ => IncreaseDecimalDigits(e, incDecimal, decDecimal));
                 decDecimal.RegisterCallback<PointerUpEvent>(_ => DecreaseDecimalDigits(e, incDecimal, decDecimal));

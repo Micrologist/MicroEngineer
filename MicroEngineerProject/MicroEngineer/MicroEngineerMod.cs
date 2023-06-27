@@ -4,7 +4,6 @@ using SpaceWarp;
 using SpaceWarp.API.Assets;
 using SpaceWarp.API.Mods;
 using SpaceWarp.API.UI.Appbar;
-using KSP.UI.Binding;
 using MicroEngineer.UI;
 using KSP.Game;
 
@@ -34,6 +33,7 @@ namespace MicroMod
                 {
                     FlightSceneController.Instance.ShowGui = isOpen;
                     Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
+                    Utility.SaveLayout(Manager.Instance.Windows);
                 });
 
             Appbar.RegisterOABAppButton(
@@ -42,8 +42,9 @@ namespace MicroMod
                 AssetManager.GetAsset<Texture2D>($"{GUID}/images/icon.png"),
                 isOpen =>
                 {
-                    Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive = isOpen;
-                    GameObject.Find("BTN-MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(isOpen);
+                    OABSceneController.Instance.ShowGui = isOpen;
+                    Manager.Instance.Windows.Find(w => w.GetType() == typeof(StageInfoOabWindow)).IsEditorActive = isOpen;
+                    Utility.SaveLayout(Manager.Instance.Windows);
                 });
         }
 

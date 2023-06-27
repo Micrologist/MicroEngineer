@@ -1,5 +1,4 @@
 ﻿using KSP.Sim.DeltaV;
-using UnityEngine;
 
 namespace MicroMod
 {
@@ -11,7 +10,7 @@ namespace MicroMod
         public StageInfo()
         {
             Name = "Stage Info";
-            Description = "Stage Info object, not implemented yet."; // TODO Stage Info display and description
+            Description = "";
             EntryType = EntryType.StageInfo;
             Category = MicroEntryCategory.Stage;
             IsDefault = true;
@@ -48,7 +47,7 @@ namespace MicroMod
                     BurnMinutes = time.Minutes,
                     BurnSeconds = time.Seconds
                 };
-                stages.Add(stage);                
+                stages.Add(stage);
             }
 
             return stages;
