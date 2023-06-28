@@ -72,8 +72,8 @@ namespace MicroMod
         {
             Utility.RefreshGameManager();
             _logger.LogDebug($"Entered GameStateEntered. GameState: {Utility.GameState.GameState}." +
-                "MainGui.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}." +
-                "StageOab.IsEditorActive: {Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault().IsEditorActive}.");
+                $"MainGui.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}." +
+                $"StageOab.IsEditorActive: {Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault().IsEditorActive}.");
 
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
