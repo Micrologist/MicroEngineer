@@ -35,7 +35,7 @@ namespace MicroMod
         /// Can the window be edited (add, remove & arrange entries)
         /// </summary>
         [JsonProperty]
-        public bool IsEditable { get => MainWindow != MainWindow.Stage && MainWindow != MainWindow.StageInfoOAB; }
+        public bool IsEditable { get => MainWindow != MainWindow.StageInfoOAB; }
 
         public bool IsBeingDragged { get => FlightRect.Contains(Event.current.mousePosition); }
 
