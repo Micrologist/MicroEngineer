@@ -18,7 +18,7 @@ namespace MicroMod
         public static VesselComponent ActiveVessel;
         public static ManeuverNodeData CurrentManeuver;
         public static string LayoutPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MicroLayout.json");
-        public static int CurrentLayoutVersion = 12;
+        public static int CurrentLayoutVersion = 13;
         private static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Utility");
         public static GameStateConfiguration GameState;
         public static MessageCenter MessageCenter;
