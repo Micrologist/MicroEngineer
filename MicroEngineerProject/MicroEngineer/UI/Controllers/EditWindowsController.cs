@@ -92,7 +92,7 @@ namespace MicroEngineer.UI
         //////////////////////   AVAILABLE (LEFT SCROLLVIEW) //////////////////////
         private void BuildCategoryDropdown()
         {
-            CategoryDropdown.choices = Enum.GetNames(typeof(MicroEntryCategory)).ToList();
+            CategoryDropdown.choices = Enum.GetNames(typeof(MicroEntryCategory)).Where(e => e != MicroEntryCategory.OAB.ToString()).ToList();
             CategoryDropdown.RegisterValueChangedCallback(BuildAvailableEntries);
         }       
 
