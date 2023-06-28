@@ -1,7 +1,7 @@
-﻿using KSP.Game;
+﻿using BepInEx.Logging;
+using KSP.Game;
 using KSP.Sim.DeltaV;
 using KSP.Sim.impl;
-using Newtonsoft.Json;
 
 namespace MicroMod
 {
@@ -16,6 +16,7 @@ namespace MicroMod
         {
             Name = "Total burn time (OAB)";
             Description = "Shows the total length of burn the vessel can mantain.";
+            EntryType = EntryType.Time;            
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
             BaseUnit = "s";
@@ -27,20 +28,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.VesselDeltaVComponentOAB?.TotalBurnTime;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                if (UseDHMSFormatting)
-                    return Utility.SecondsToTimeString((double)EntryValue);
-                else
-                    return String.IsNullOrEmpty(this.Formatting) ? EntryValue.ToString() : String.Format(Formatting, EntryValue);
-            }
         }
     }
 
@@ -121,9 +108,6 @@ namespace MicroMod
     /// </summary>    
     public class Torque : OabStageInfoEntry
     {
-        [JsonProperty]
-        internal bool IsActive = false;
-
         public Torque()
         {
             Name = "Torque";
@@ -136,9 +120,6 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            if (!this.IsActive)
-                return;
-
             Vector3d com = GameManager.Instance?.Game?.OAB?.Current?.Stats?.MainAssembly?.CenterOfProperties?.CoM ?? Vector3d.zero;
             Vector3d cot = GameManager.Instance?.Game?.OAB?.Current?.Stats?.MainAssembly?.CenterOfProperties?.CoT ?? Vector3d.zero;
 
@@ -168,7 +149,7 @@ namespace MicroMod
         {
             get
             {
-                if (EntryValue == null || !this.IsActive)
+                if (EntryValue == null)
                     return "-";
 
                 if ((double)EntryValue >= 1.0)
@@ -184,12 +165,15 @@ namespace MicroMod
     /// </summary>
     public class StageInfo_OAB : OabStageInfoEntry
     {
-        public List<string> CelestialBodyForStage = new();
+        public List<CelestialBody> CelestialBodyForStage = new();
+        public delegate void StageInfoOABChanged(List<DeltaVStageInfo_OAB> stages);
+        public event StageInfoOABChanged OnStageInfoOABChanged;
 
         public StageInfo_OAB()
         {
             Name = "Stage Info (OAB)";
             Description = "Holds a list of stage info parameters.";
+            EntryType = EntryType.StageInfoOAB;
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
             BaseUnit = null;
@@ -204,35 +188,62 @@ namespace MicroMod
 
             if (Utility.VesselDeltaVComponentOAB?.StageInfo == null) return;
 
-            foreach (var stage in Utility.VesselDeltaVComponentOAB.StageInfo)
+            for (int i = 0; i < Utility.VesselDeltaVComponentOAB.StageInfo.Count; i++)            
             {
-                ((List<DeltaVStageInfo_OAB>)EntryValue).Add(new DeltaVStageInfo_OAB
+                var retrieved = Utility.VesselDeltaVComponentOAB.StageInfo[i];
+                var stage = new DeltaVStageInfo_OAB()
                 {
-                    DeltaVActual = stage.DeltaVActual,
-                    DeltaVASL = stage.DeltaVatASL,
-                    DeltaVVac = stage.DeltaVinVac,
-                    DryMass = stage.DryMass,
-                    EndMass = stage.EndMass,
-                    FuelMass = stage.FuelMass,
-                    IspASL = stage.IspASL,
-                    IspActual = stage.IspActual,
-                    IspVac = stage.IspVac,
-                    SeparationIndex = stage.SeparationIndex,
-                    Stage = stage.Stage,
-                    StageBurnTime = stage.StageBurnTime,
-                    StageMass = stage.StageMass,
-                    StartMass = stage.StartMass,
-                    TWRASL = stage.TWRASL,
-                    TWRActual = stage.TWRActual,
-                    TWRVac = stage.TWRVac,
-                    ThrustASL = stage.ThrustASL,
-                    ThrustActual = stage.ThrustActual,
-                    ThrustVac = stage.ThrustVac,
-                    TotalExhaustVelocityASL = stage.TotalExhaustVelocityASL,
-                    TotalExhaustVelocityActual = stage.TotalExhaustVelocityActual,
-                    TotalExhaustVelocityVAC = stage.TotalExhaustVelocityVAC,
-                    DeltaVStageInfo = stage
-                });
+                    Index = i,
+                    DeltaVActual = retrieved.DeltaVActual,
+                    DeltaVASL = retrieved.DeltaVatASL,
+                    DeltaVVac = retrieved.DeltaVinVac,
+                    DryMass = retrieved.DryMass,
+                    EndMass = retrieved.EndMass,
+                    FuelMass = retrieved.FuelMass,
+                    IspASL = retrieved.IspASL,
+                    IspActual = retrieved.IspActual,
+                    IspVac = retrieved.IspVac,
+                    SeparationIndex = retrieved.SeparationIndex,
+                    Stage = retrieved.Stage,
+                    StageBurnTime = Utility.ParseSecondsToTimeFormat(retrieved.StageBurnTime),
+                    StageMass = retrieved.StageMass,
+                    StartMass = retrieved.StartMass,
+                    TWRASL = retrieved.TWRASL,
+                    TWRActual = retrieved.TWRActual,
+                    TWRVac = retrieved.TWRVac,
+                    ThrustASL = retrieved.ThrustASL,
+                    ThrustActual = retrieved.ThrustActual,
+                    ThrustVac = retrieved.ThrustVac,
+                    TotalExhaustVelocityASL = retrieved.TotalExhaustVelocityASL,
+                    TotalExhaustVelocityActual = retrieved.TotalExhaustVelocityActual,
+                    TotalExhaustVelocityVAC = retrieved.TotalExhaustVelocityVAC,
+                    DeltaVStageInfo = retrieved
+                };
+
+                if (i < CelestialBodyForStage.Count)
+                {
+                    // CelestialBody already created for this stage. Attaching it to the stage.
+                    stage.CelestialBody = CelestialBodyForStage[i];
+                }
+                else
+                {
+                    // This is a new stage. Need to create another CelestialBody.
+                    var cel = MicroCelestialBodies.Instance.GetHomeBody();
+                    stage.CelestialBody = cel;
+                    CelestialBodyForStage.Add(cel);
+                }
+
+                // Apply TWR factor to the value and recalculate sea level TWR and DeltaV
+                stage.Recalculate_TWR();
+                stage.Recalculate_SLT();
+                stage.Recalculate_DeltaVSeaLevel();
+                
+                // KSP2 has a strange way of displaying stage numbers, so we need a little hack
+                stage.Recalculate_StageNumber(Utility.VesselDeltaVComponentOAB.StageInfo.Count);
+
+                ((List<DeltaVStageInfo_OAB>)EntryValue).Add(stage);
+
+                OnStageInfoOABChanged?.Invoke(((List<DeltaVStageInfo_OAB>)EntryValue).Where(s => s.DeltaVVac > 0.0001 || s.DeltaVASL > 0.0001).ToList());
             }
         }
 
@@ -244,45 +255,49 @@ namespace MicroMod
             }
         }
 
-        /// <summary>
-        /// Adds a new string to the CelestialBodyForStage list that corresponds to the HomeWorld, i.e. Kerbin
-        /// </summary>
-        /// <param name="celestialBodies"></param>
-        internal void AddNewCelestialBody(MicroCelestialBodies celestialBodies)
+        public void UpdateCelestialBodyAtIndex(int index, string selectedBodyName)
         {
-            this.CelestialBodyForStage.Add(celestialBodies.Bodies.Find(b => b.IsHomeWorld).Name);
+            var body = MicroCelestialBodies.Instance.GetBodyByName(selectedBodyName);
+            CelestialBodyForStage[index] = body;
+            RefreshData();
         }
     }
 
     /// <summary>
     /// Parameters for one stage
     /// </summary>
-    internal class DeltaVStageInfo_OAB
+    public class DeltaVStageInfo_OAB
     {
-        internal double DeltaVActual;
-        internal double DeltaVASL;
-        internal double DeltaVVac;
-        internal double DryMass;
-        internal double EndMass;
-        internal double FuelMass;
-        internal double IspASL;
-        internal double IspActual;
-        internal double IspVac;
-        internal int SeparationIndex;
-        internal int Stage;
-        internal double StageBurnTime;
-        internal double StageMass;
-        internal double StartMass;
-        internal float TWRASL;
-        internal float TWRActual;
-        internal float TWRVac;
-        internal float ThrustASL;
-        internal float ThrustActual;
-        internal float ThrustVac;
-        internal float TotalExhaustVelocityASL;
-        internal float TotalExhaustVelocityActual;
-        internal float TotalExhaustVelocityVAC;
-        internal DeltaVStageInfo DeltaVStageInfo;
+        /// <summary>
+        /// Index in DeltaVStageInfo_OAB is linked to the CelestialBodyForStage Index.
+        /// When stages are refreshed, DeltaVStageInfo_OAB grabs the CelestialBodyForStage at the same Index.
+        /// </summary>
+        public int Index;
+        public double DeltaVActual;
+        public double DeltaVASL;
+        public double DeltaVVac;
+        public double DryMass;
+        public double EndMass;
+        public double FuelMass;
+        public double IspASL;
+        public double IspActual;
+        public double IspVac;
+        public int SeparationIndex;
+        public int Stage;
+        public TimeParsed StageBurnTime;
+        public double StageMass;
+        public double StartMass;
+        public float TWRASL;
+        public float TWRActual;
+        public float TWRVac;
+        public float ThrustASL;
+        public float ThrustActual;
+        public float ThrustVac;
+        public float TotalExhaustVelocityASL;
+        public float TotalExhaustVelocityActual;
+        public float TotalExhaustVelocityVAC;
+        public CelestialBody CelestialBody;
+        public DeltaVStageInfo DeltaVStageInfo;
 
         private float GetThrustAtAltitude(double altitude, CelestialBodyComponent cel) => this.DeltaVStageInfo.EnginesActiveInStage?.Select(e => e.Engine.MaxThrustOutputAtm(atmPressure: cel.GetPressure(altitude) / 101.325))?.Sum() ?? 0;
         private double GetISPAtAltitude(double altitude, CelestialBodyComponent cel)
@@ -295,7 +310,13 @@ namespace MicroMod
         }
         private double GetDeltaVelAlt(double altitude, CelestialBodyComponent cel) => GetISPAtAltitude(altitude, cel) * 9.80665 * Math.Log(this.DeltaVStageInfo.StartMass / this.DeltaVStageInfo.EndMass);
         private double GetTWRAtAltitude(double altitude, CelestialBodyComponent cel) => this.DeltaVStageInfo.TWRVac * (GetThrustAtAltitude(altitude, cel) / this.DeltaVStageInfo.ThrustVac);
-        internal double GetTWRAtSeaLevel(CelestialBodyComponent cel) => this.GetTWRAtAltitude(0, cel);
-        internal double GetDeltaVelAtSeaLevel(CelestialBodyComponent cel) => GetDeltaVelAlt(0, cel);
+        private double GetTWRAtSeaLevel(CelestialBodyComponent cel) => this.GetTWRAtAltitude(0, cel);
+        private double GetDeltaVelAtSeaLevel(CelestialBodyComponent cel) => GetDeltaVelAlt(0, cel);
+
+        // Public methods to be used to recalculate retrieved values
+        public void Recalculate_TWR() => this.TWRVac = this.TWRVac * (float)this.CelestialBody.TwrFactor;
+        public void Recalculate_SLT() => this.TWRASL = (float)(this.GetTWRAtSeaLevel(this.CelestialBody.CelestialBodyComponent) * this.CelestialBody.TwrFactor);
+        public void Recalculate_DeltaVSeaLevel() => this.DeltaVASL = this.GetDeltaVelAtSeaLevel(this.CelestialBody.CelestialBodyComponent);
+        public void Recalculate_StageNumber(int noOfStages) => this.Stage = noOfStages - this.Stage;
     }
 }

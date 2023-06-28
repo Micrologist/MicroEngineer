@@ -3,20 +3,20 @@
 namespace MicroMod
 {
     [JsonObject(MemberSerialization.OptIn)]
-    internal class SettingsWIndow : BaseWindow
+    public class SettingsWindow : BaseWindow
     {
         [JsonProperty]
-        internal Theme ActiveTheme { get; set; }
+        public Theme ActiveTheme { get; set; } // Not used anymore with UIKT. Might reuse later
         [JsonProperty]
         private bool snapWindows = true;
-        internal bool SnapWindows { get => snapWindows; set => snapWindows = value; }
+        public bool SnapWindows { get => snapWindows; set => snapWindows = value; }
         [JsonProperty]
         private float snapDistance = 20f;
-        internal float SnapDistance { get => snapDistance; set => snapDistance = value; }
+        public float SnapDistance { get => snapDistance; set => snapDistance = value; }
 
-        internal void LoadSettings()
+        public void LoadSettings()
         {
-            Styles.SetActiveTheme(ActiveTheme);
+            // Load any settings that will be stored in the SettingsWindow (none so far)
         }
     }
 }

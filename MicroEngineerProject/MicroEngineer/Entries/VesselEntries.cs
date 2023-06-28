@@ -1,5 +1,4 @@
-﻿
-namespace MicroMod
+﻿namespace MicroMod
 {
     public class VesselEntry : BaseEntry
     { }
@@ -21,7 +20,7 @@ namespace MicroMod
             EntryValue = Utility.ActiveVessel.DisplayName;
         }
 
-        public override string ValueDisplay => EntryValue?.ToString();
+        public override string ValueDisplay => base.ValueDisplay;
     }
 
     public class Mass : VesselEntry
@@ -131,6 +130,7 @@ namespace MicroMod
         {
             Name = "Total burn time";
             Description = "Burn Time vessel can sustain with 100% thrust.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
             BaseUnit = "s";
@@ -141,17 +141,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.VesselDeltaV?.TotalBurnTime;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? EntryValue.ToString() : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 

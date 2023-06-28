@@ -256,6 +256,7 @@ namespace MicroMod
         {
             Name = "Period";
             Description = "Shows the amount of time it will take the target to complete a full orbit.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Target;
             IsDefault = true;
             BaseUnit = "s";
@@ -265,17 +266,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.period;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -517,6 +507,7 @@ namespace MicroMod
         {
             Name = "Orbit time";
             Description = "Shows orbit time in seconds from the Periapsis.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Target;
             IsDefault = false;
             BaseUnit = "s";
@@ -527,17 +518,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.TargetObject?.Orbit?.ObT;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -688,6 +668,7 @@ namespace MicroMod
         {
             Name = "C.A.Time1";
             Description = "Close approach time to target (1).";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Target;
             IsDefault = true;
             HideWhenNoData = true;
@@ -700,17 +681,6 @@ namespace MicroMod
             bool? isValid = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect1Target?.IsValid;
 
             EntryValue = isValid != null && isValid == true ? EntryValue = Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect1Target.UniversalTime - Utility.UniversalTime : null;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -776,6 +746,7 @@ namespace MicroMod
         {
             Name = "C.A.Time2";
             Description = "Close approach time to target (2).";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Target;
             IsDefault = false;
             HideWhenNoData = true;
@@ -788,17 +759,6 @@ namespace MicroMod
             bool? isValid = Utility.ActiveVessel.Orbiter?.OrbitTargeter?.Intersect2Target?.IsValid;
 
             EntryValue = isValid != null && isValid == true ? EntryValue = Utility.ActiveVessel.Orbiter.OrbitTargeter.Intersect2Target.UniversalTime - Utility.UniversalTime : null;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 

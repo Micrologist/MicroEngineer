@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="Flight.uss" />
+    <ui:VisualElement name="maingui-header" class="main-gui__header__standalone">
+        <ui:Button text="&#10;" display-tooltip-when-elided="true" name="editwindows-button" class="maingui-settings-button" />
+        <ui:Label text="micro.engineer" display-tooltip-when-elided="true" name="micro-engineer" class="main-gui__header-title" />
+        <ui:Button name="close-button" class="close-button">
+            <ui:VisualElement name="close-button__background" class="close-button__background" />
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

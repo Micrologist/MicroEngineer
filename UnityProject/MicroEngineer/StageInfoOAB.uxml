@@ -1,0 +1,32 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="OAB.uss" />
+    <ui:VisualElement name="root">
+        <ui:VisualElement name="titlebar" class="titlebar">
+            <ui:Label text="Stage Info" display-tooltip-when-elided="true" name="title" class="title-label" />
+            <ui:VisualElement name="torque-container" class="torque__container" />
+            <ui:Button name="close-button" class="close-button">
+                <ui:VisualElement name="close-button__background" class="close-button__background" />
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="header" class="header-oab">
+            <ui:VisualElement name="stage-info-header" class="stage-oab__header">
+                <ui:Label text="#" display-tooltip-when-elided="true" name="stage-number-header" class="stage-oab__header__number" />
+                <ui:Label text="TWR" display-tooltip-when-elided="true" name="stage-twr-header" class="stage-oab__header__twr" />
+                <ui:Label text="SLT" display-tooltip-when-elided="true" name="stage-slt-header" class="stage-oab__header__slt" />
+                <ui:Label text="ASL ∆v" display-tooltip-when-elided="true" name="asl-dv-header" class="stage-oab__header__asl-dv" />
+                <ui:Label text="Vac ∆v" display-tooltip-when-elided="true" name="vac-dv-header" class="stage-oab__header__vac-dv" />
+                <ui:Label text="Burn time" display-tooltip-when-elided="true" name="burn-time-header" class="stage-oab__header__burn-time" />
+                <ui:Label text="Body" display-tooltip-when-elided="true" name="body-header" class="stage-oab__header__body" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="body" class="body-oab" />
+        <ui:VisualElement name="footer" class="footer-oab">
+            <ui:VisualElement name="stage-info-footer" class="stage-oab__footer">
+                <ui:Label text="Total" display-tooltip-when-elided="true" name="stage-number-footer" class="stage-oab__footer__number" />
+                <ui:VisualElement name="asl-dv-container" style="width: 233px; padding-right: 0; height: 100%; flex-direction: row; justify-content: flex-end; align-items: flex-end;" />
+                <ui:VisualElement name="vac-dv-container" style="height: 100%; width: 90px; padding-right: 0; flex-direction: row; justify-content: flex-end; align-items: flex-end;" />
+                <ui:VisualElement name="burn-time-container" style="height: 100%; width: 110px; padding-right: 0; flex-direction: row; align-items: flex-end; justify-content: flex-end; margin-left: 3px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

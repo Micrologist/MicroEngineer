@@ -1,22 +1,23 @@
 ﻿using BepInEx.Logging;
 using KSP.Game;
 using System.Reflection;
+using UitkForKsp2.API;
 using UnityEngine;
 
 namespace MicroMod
 {
-    internal class Manager
+    public class Manager
     {
         private static Manager _instance;
 
-        internal List<BaseWindow> Windows;
-        internal List<BaseEntry> Entries;
+        public List<BaseWindow> Windows;
+        public List<BaseEntry> Entries;
 
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Manager");
 
         public List<string> TextFieldNames = new List<string>();
 
-        internal Manager()
+        public Manager()
         {
             Entries = InitializeEntries();
             Windows = InitializeWindows();
@@ -56,7 +57,7 @@ namespace MicroMod
         /// <summary>
         /// Builds the list of all Entries
         /// </summary>
-        internal List<BaseEntry> InitializeEntries()
+        public List<BaseEntry> InitializeEntries()
         {
             Entries = new List<BaseEntry>();
 
@@ -83,7 +84,7 @@ namespace MicroMod
         /// <summary>
         /// Builds the default Windows and fills them with default Entries
         /// </summary>
-        internal List<BaseWindow> InitializeWindows()
+        public List<BaseWindow> InitializeWindows()
         {
             Windows = new List<BaseWindow>();
 
@@ -96,17 +97,16 @@ namespace MicroMod
                     IsFlightActive = false,
                     IsMapActive = false,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.MainGuiX, Styles.MainGuiY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(1350, 160, 0, 0) // About 3/4 of the screen
                 });
 
-                Windows.Add(new SettingsWIndow
+                Windows.Add(new SettingsWindow
                 {
-                    ActiveTheme = Styles.ActiveTheme,
                     IsEditorActive = false,
                     IsFlightActive = false,
                     IsMapActive = false,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight)                    
+                    FlightRect = new Rect(ReferenceResolution.Width/2, ReferenceResolution.Height/2, 0, 0)
                 });
 
                 Windows.Add(new EntryWindow
@@ -123,7 +123,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Vessel,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Vessel && entry.IsDefault).ToList()
                 });
 
@@ -141,7 +141,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Orbital,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Orbital && entry.IsDefault).ToList()
                 });
 
@@ -159,7 +159,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Surface,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Surface && entry.IsDefault).ToList()
                 });
 
@@ -177,17 +177,17 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Flight,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Flight && entry.IsDefault).ToList()
                 });
 
-                Windows.Add(new EntryWindow
+                Windows.Add(new TargetWindow
                 {
                     Name = "Target",
                     Abbreviation = "TGT",
                     Description = "Flight entries",
                     IsEditorActive = false,
-                    IsFlightActive = true,
+                    IsFlightActive = false,
                     IsMapActive = false,
                     IsEditorPoppedOut = false,
                     IsFlightPoppedOut = false,
@@ -195,7 +195,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Target,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Target && entry.IsDefault).ToList()
                 });
 
@@ -205,7 +205,7 @@ namespace MicroMod
                     Abbreviation = "MAN",
                     Description = "Maneuver entries",
                     IsEditorActive = false,
-                    IsFlightActive = true,
+                    IsFlightActive = false,
                     IsMapActive = false,
                     IsEditorPoppedOut = false,
                     IsFlightPoppedOut = false,
@@ -213,7 +213,7 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Maneuver,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Maneuver && entry.IsDefault).ToList()
                 });
 
@@ -223,7 +223,7 @@ namespace MicroMod
                     Abbreviation = "STG",
                     Description = "Stage entries",
                     IsEditorActive = false,
-                    IsFlightActive = true,
+                    IsFlightActive = false,
                     IsMapActive = false,
                     IsEditorPoppedOut = false,
                     IsFlightPoppedOut = false,
@@ -231,24 +231,16 @@ namespace MicroMod
                     IsLocked = false,
                     MainWindow = MainWindow.Stage,
                     //EditorRect = null,
-                    FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.Stage && entry.IsDefault).ToList()
                 });
 
-                Windows.Add(new EntryWindow
+                Windows.Add(new StageInfoOabWindow
                 {
-                    Name = "Stage (OAB)",
-                    Abbreviation = "SOAB",
-                    Description = "Stage Info window for OAB",
-                    IsEditorActive = false,
+                    IsEditorActive = true,
                     IsFlightActive = false, // Not used
                     IsMapActive = false, // Not used
-                    IsEditorPoppedOut = true, // Not used
-                    IsFlightPoppedOut = false, // Not used
-                    IsMapPoppedOut = false, // Not used
-                    IsLocked = false, // Not used
-                    MainWindow = MainWindow.StageInfoOAB,
-                    EditorRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, 0, 0),
+                    EditorRect = new Rect(645, 41, 0, 0), // Top-center of the screen
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.OAB && entry.IsDefault).ToList()
                 });
 
@@ -265,7 +257,7 @@ namespace MicroMod
         /// Creates a new custom window user can fill with any entry
         /// </summary>
         /// <param name="editableWindows"></param>
-        internal int CreateCustomWindow(List<EntryWindow> editableWindows)
+        public int CreateCustomWindow(List<EntryWindow> editableWindows)
         {
             // Default window's name will be CustomX where X represents the first not used integer
             int nameID = 1;
@@ -289,7 +281,7 @@ namespace MicroMod
                 IsLocked = false,
                 MainWindow = MainWindow.None,
                 //EditorRect = null,
-                FlightRect = new Rect(Styles.PoppedOutX, Styles.PoppedOutY, Styles.WindowWidth, Styles.WindowHeight),
+                FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
                 Entries = new List<BaseEntry>()
             };
 
@@ -299,34 +291,15 @@ namespace MicroMod
             return editableWindows.Count - 1;
         }
 
-        internal void ResetLayout()
+        /// <summary>
+        /// TODO implement layout reset
+        /// </summary>
+        public void ResetLayout()
         {
             Windows.Clear();
             Entries.Clear();
             Entries = InitializeEntries();
             Windows = InitializeWindows();
         }
-
-        internal void LoadLayout()
-        {
-            Utility.LoadLayout(Windows);
-        }
-
-        internal void SaveLayout() => Utility.SaveLayout(Windows);
-
-        public void PupulateTextFieldNames(List<BaseEntry> entries)
-        {
-            TextFieldNames.Clear();
-            TextFieldNames.Add(Utility.InputDisableWindowAbbreviation);
-            TextFieldNames.Add(Utility.InputDisableWindowName);
-
-            foreach (var entry in entries)
-            {
-                entry.Id = Guid.NewGuid();
-                TextFieldNames.Add(entry.Id.ToString());
-            }
-        }
-
-        public void AddTextFieldName(string name) => TextFieldNames.Add(name);
     }
 }

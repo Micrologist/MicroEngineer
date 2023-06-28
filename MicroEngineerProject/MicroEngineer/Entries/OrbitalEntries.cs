@@ -62,26 +62,16 @@ namespace MicroMod
         {
             Name = "Time to Ap.";
             Description = "Shows the time until the vessel reaches apoapsis, the highest point of the orbit.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            BaseUnit = "s";
+            BaseUnit = null;
             Formatting = null;
         }
 
         public override void RefreshData()
         {
             EntryValue = (Utility.ActiveVessel.Situation == VesselSituations.Landed || Utility.ActiveVessel.Situation == VesselSituations.PreLaunch) ? 0f : Utility.ActiveVessel.Orbit.TimeToAp;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -91,6 +81,7 @@ namespace MicroMod
         {
             Name = "Time to Pe.";
             Description = "Shows the time until the vessel reaches periapsis, the lowest point of the orbit.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
             BaseUnit = "s";
@@ -100,17 +91,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Orbit.TimeToPe;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -162,6 +142,7 @@ namespace MicroMod
         {
             Name = "Period";
             Description = "Shows the amount of time it will take to complete a full orbit.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
             BaseUnit = "s";
@@ -171,17 +152,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Orbit.period;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -448,6 +418,7 @@ namespace MicroMod
         {
             Name = "Orbit time";
             Description = "Shows orbit time in seconds from the Periapsis.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             BaseUnit = "s";
@@ -458,17 +429,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Orbit.ObT;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -533,17 +493,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return (double)EntryValue >= 0 ? Utility.SecondsToTimeString((double)EntryValue) : "-";
-            }
         }
     }  
 }

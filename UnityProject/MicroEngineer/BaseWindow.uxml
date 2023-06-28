@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="Flight.uss" />
+    <ui:VisualElement name="root" class="main-gui_root">
+        <ui:VisualElement name="header" class="basicwindow__header" />
+        <ui:VisualElement name="body" class="basicwindow__body" style="flex-shrink: 0;" />
+        <ui:VisualElement name="footer" class="basicwindow__footer" />
+    </ui:VisualElement>
+</ui:UXML>

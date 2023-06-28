@@ -25,7 +25,8 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.AltitudeFromTerrain;
+            // AltitudeFromScenery seems to be the correct value to use for altitude above ground underneath the vessel
+            EntryValue = Utility.ActiveVessel.AltitudeFromScenery;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -75,7 +76,9 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.AltitudeFromScenery;
+            // We'll use AltitudeFromTerrain for this entry for now. It indicates some height above the ground level
+            // This may be a bug where they've switched AltitudeFromTerrain and AltitudeFromScenery values
+            EntryValue = Utility.ActiveVessel.AltitudeFromTerrain;
         }
 
         public override string ValueDisplay => base.ValueDisplay;
@@ -130,7 +133,7 @@ namespace MicroMod
 
         public override string ValueDisplay => base.ValueDisplay;
     }
-    
+
     public class Situation : SurfaceEntry
     {
         public Situation()
@@ -195,6 +198,7 @@ namespace MicroMod
         {
             Name = "Latitude";
             Description = "Shows the vessel's latitude position around the celestial body. Latitude is the angle from the equator towards the poles.";
+            EntryType = EntryType.LatitudeLongitude;
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
             Formatting = null;
@@ -205,17 +209,6 @@ namespace MicroMod
             EntryValue = Utility.ActiveVessel.Latitude;
             BaseUnit = Utility.ActiveVessel.Latitude < 0 ? "S" : "N";
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return Utility.DegreesToDMS((double)EntryValue);
-            }
-        }
     }
 
     public class Longitude : SurfaceEntry
@@ -224,6 +217,7 @@ namespace MicroMod
         {
             Name = "Longitude";
             Description = "Shows the vessel's longitude position around the celestial body. Longitude is the angle from the body's prime meridian to the current meridian.";
+            EntryType = EntryType.LatitudeLongitude;
             Category = MicroEntryCategory.Surface;
             IsDefault = true;
             Formatting = null;
@@ -233,17 +227,6 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.Longitude;
             BaseUnit = Utility.ActiveVessel.Longitude < 0 ? "W" : "E";
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return Utility.DegreesToDMS((double)EntryValue);
-            }
         }
     }
 
@@ -337,5 +320,5 @@ namespace MicroMod
         }
 
         public override string ValueDisplay => base.ValueDisplay;
-    }    
+    }
 }

@@ -9,13 +9,14 @@ namespace MicroMod
     {
         public Separator()
         {
-            Name = "--------------";
+            Name = "Separator";
             Description = "It's a separator!";
+            EntryType = EntryType.Separator;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            BaseUnit = "---";
+            BaseUnit = null;
             Formatting = null;
-            EntryValue = "--------------";
+            EntryValue = null;
         }
     }
 
@@ -46,27 +47,17 @@ namespace MicroMod
         {
             Name = "UT";
             Description = "Universal Time.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
             NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Orbit.EndUT;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -76,27 +67,17 @@ namespace MicroMod
         {
             Name = "Start UT";
             Description = "Time passed since vessel was launched.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
             NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Orbit.StartUT;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -106,6 +87,7 @@ namespace MicroMod
         {
             Name = "Launch time";
             Description = "Universal Time when vessel was launched.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
@@ -117,17 +99,6 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.launchTime;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class TimeSinceLaunch : MiscEntry
@@ -136,6 +107,7 @@ namespace MicroMod
         {
             Name = "Time since launch";
             Description = "Time since the vessel launched.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
@@ -146,17 +118,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.TimeSinceLaunch;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -246,6 +207,7 @@ namespace MicroMod
         {
             Name = "UT close.app.";
             Description = "Universal Time at closest approach.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
@@ -257,17 +219,6 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtClosestApproach;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class UniversalTimeAtSoiEncounter : MiscEntry
@@ -276,6 +227,7 @@ namespace MicroMod
         {
             Name = "UT SOI enc.";
             Description = "Universal Time at the point of transfer to another sphere of influence.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
             BaseUnit = "s";
@@ -286,17 +238,6 @@ namespace MicroMod
         public override void RefreshData()
         {
             EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 }

@@ -8,8 +8,8 @@ using static KSP.Rendering.Planets.PQSData;
 using BepInEx.Logging;
 using KSP.Messages;
 using KSP.Sim.DeltaV;
-using BepInEx.Bootstrap;
-using SpaceWarp.API.Mods;
+using UitkForKsp2.API;
+using UnityEngine.UIElements;
 
 namespace MicroMod
 {
@@ -18,13 +18,11 @@ namespace MicroMod
         public static VesselComponent ActiveVessel;
         public static ManeuverNodeData CurrentManeuver;
         public static string LayoutPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MicroLayout.json");
-        public static int CurrentLayoutVersion = 10;
+        public static int CurrentLayoutVersion = 13;
         private static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Utility");
         public static GameStateConfiguration GameState;
         public static MessageCenter MessageCenter;
         public static VesselDeltaVComponent VesselDeltaVComponentOAB;
-        public static string InputDisableWindowAbbreviation = "WindowAbbreviation";
-        public static string InputDisableWindowName = "WindowName";
         public static double UniversalTime => GameManager.Instance.Game.UniverseModel.UniversalTime;
 
         /// <summary>
@@ -47,83 +45,42 @@ namespace MicroMod
             VesselDeltaVComponentOAB = GameManager.Instance?.Game?.OAB?.Current?.Stats?.MainAssembly?.VesselDeltaV;
         }
 
-        public static string DegreesToDMS(double degreeD)
+        public static LatLonParsed ParseDegreesToDMSFormat(double inputDegree)
         {
-            var ts = TimeSpan.FromHours(Math.Abs(degreeD));
+            var ts = TimeSpan.FromHours(Math.Abs(inputDegree));
             int degrees = (int)Math.Floor(ts.TotalHours);
             int minutes = ts.Minutes;
             int seconds = ts.Seconds;
 
-            string result = $"{degrees:N0}<color={Styles.UnitColorHex}>°</color> {minutes:00}<color={Styles.UnitColorHex}>'</color> {seconds:00}<color={Styles.UnitColorHex}>\"</color>";
-
-            return result;
+            return new LatLonParsed () { Degrees = degrees, Minutes = minutes, Seconds = seconds };
         }
 
-        public static string SecondsToTimeString(double seconds, bool addSpacing = true, bool returnLastUnit = false)
+        public static TimeParsed ParseSecondsToTimeFormat(double inputSeconds)
         {
-            if (seconds == double.PositiveInfinity)
-            {
-                return "∞";
-            }
-            else if (seconds == double.NegativeInfinity)
-            {
-                return "-∞";
-            }
+            if (inputSeconds == double.PositiveInfinity)
+                return TimeParsed.MaxValue();
+            else if (inputSeconds == double.NegativeInfinity)
+                return TimeParsed.MinValue();
 
-            seconds = Math.Ceiling(seconds);
+            inputSeconds = Math.Ceiling(inputSeconds);
+            var absoluteSeconds = Math.Abs(inputSeconds);
 
-            string result = "";
-            string spacing = "";
-            if (addSpacing)
+            int days = (int)(absoluteSeconds / 21600);
+            int hours = (int)((absoluteSeconds - days * 21600) / 3600);
+            int minutes = (int)((absoluteSeconds - hours * 3600 - days * 21600) / 60);
+            int seconds = (int)(absoluteSeconds - days * 21600 - hours * 3600 - minutes * 60);
+
+            // If inputSeconds is negative, reverse the sign of the higest calculated value
+            if (inputSeconds < 0)
             {
-                spacing = " ";
-            }
-
-            if (seconds < 0)
-            {
-                result += "-";
-                seconds = Math.Abs(seconds);
-            }
-
-            int days = (int)(seconds / 21600);
-            int hours = (int)((seconds - days * 21600) / 3600);
-            int minutes = (int)((seconds - hours * 3600 - days * 21600) / 60);
-            int secs = (int)(seconds - days * 21600 - hours * 3600 - minutes * 60);
-
-            if (days > 0)
-            {
-                result += $"{days}{spacing}<color=#{Styles.UnitColorHex}>d</color> ";
+                if (days != 0)
+                    days = -days;
+                else if (hours != 0) hours = -hours;
+                else if (minutes != 0) minutes = -minutes;
+                else if (seconds != 0) seconds = -seconds;
             }
 
-            if (hours > 0 || days > 0)
-            {
-                {
-                    result += $"{hours}{spacing}<color=#{Styles.UnitColorHex}>h</color> ";
-                }
-            }
-
-            if (minutes > 0 || hours > 0 || days > 0)
-            {
-                if (hours > 0 || days > 0)
-                {
-                    result += $"{minutes:00.}{spacing}<color=#{Styles.UnitColorHex}>m</color> ";
-                }
-                else
-                {
-                    result += $"{minutes}{spacing}<color=#{Styles.UnitColorHex}>m</color> ";
-                }
-            }
-
-            if (minutes > 0 || hours > 0 || days > 0)
-            {
-                result += returnLastUnit ? $"{secs:00.}{spacing}<color=#{Styles.UnitColorHex}>s</color>" : $"{secs:00.}";
-            }
-            else
-            {
-                result += returnLastUnit ? $"{secs}{spacing}<color=#{Styles.UnitColorHex}>s</color>" : $"{secs}";
-            }
-
-            return result;
+            return new TimeParsed() { Days = days, Hours = hours, Minutes = minutes, Seconds = seconds };
         }
 
         public static string SituationToString(VesselSituations situation)
@@ -152,25 +109,12 @@ namespace MicroMod
             return radians * PatchedConicsOrbit.Rad2Deg;
         }
 
-        /// <summary>
-		/// Validates if user entered a 3 character string
-		/// </summary>
-		/// <param name="abbreviation">String that will be shortened to 3 characters</param>
-		/// <returns>Uppercase string shortened to 3 characters. If abbreviation is empty returns "CUS"</returns>
-		public static string ValidateAbbreviation(string abbreviation)
-        {
-            if (string.IsNullOrEmpty(abbreviation))
-                return "CUS";
-
-            return abbreviation.Substring(0, Math.Min(abbreviation.Length, 3)).ToUpperInvariant();
-        }
-
-        internal static void SaveLayout(List<BaseWindow> windows)
+        public static void SaveLayout()
         {
             try
             {
-                File.WriteAllText(LayoutPath, JsonConvert.SerializeObject(windows));
-                Logger.LogInfo("SaveLayout successful");
+                File.WriteAllText(LayoutPath, JsonConvert.SerializeObject(Manager.Instance.Windows));
+                Logger.LogDebug("SaveLayout successful");
             }
             catch (Exception ex)
             {
@@ -178,7 +122,7 @@ namespace MicroMod
             }
         }
 
-        internal static void LoadLayout(List<BaseWindow> windows)
+        public static void LoadLayout(List<BaseWindow> windows)
         {
             try
             {
@@ -195,14 +139,17 @@ namespace MicroMod
                 windows.Clear();
                 windows.AddRange(deserializedWindows);
 
-                var settingsWindow = windows.Find(w => w.GetType() == typeof(SettingsWIndow)) as SettingsWIndow;
+                var settingsWindow = windows.Find(w => w.GetType() == typeof(SettingsWindow)) as SettingsWindow;
                 settingsWindow.LoadSettings();
 
-                Logger.LogInfo("LoadLayout successful");
+                //FlightSceneController.Instance.RebuildUI();
+
+                Logger.LogInfo("LoadLayout successful.");
+                Logger.LogDebug($"Finished loading. MainGui.IsFlightActive: {MainGui.IsFlightActive}.");
             }
             catch (FileNotFoundException ex)
             {
-                Logger.LogWarning($"Error loading layout. File was not found at the expected location. Full error description:\n" + ex);
+                Logger.LogWarning($"MicroLayout.json file was not found at the expected location during LoadLayout. This is normal if this mod was just installed. Window states and positions will keep their default values.");
 
             }
             catch (Exception ex)
@@ -231,99 +178,14 @@ namespace MicroMod
             catch { return false; }
         }
 
-        public static Vector2 ClampToScreen(Vector2 position, Vector2 size)
+        public static void ClampToScreenUitk(VisualElement root)
         {
-            float x = Mathf.Clamp(position.x, 0, Screen.width - size.x);
-            float y = Mathf.Clamp(position.y, 0, Screen.height - size.y);
-            return new Vector2(x, size.y > Screen.height ? position.y : y);
-        }
+            var position = root.transform.position;
+            var size = new Vector2(root.worldBound.width, root.worldBound.height);
 
-        /// <summary>
-        /// Check if focus is on an editable text field. If it is, disable input controls. If it's not, reenable controls.
-        /// </summary>
-        /// <param name="gameInputState">If input is currently enabled or disabled</param>
-        /// <param name="showGuiFlight">If MainGui window is opened</param>
-        /// <returns>True = input is enabled. False = input is disabled</returns>
-        internal static bool ToggleGameInputOnControlInFocus(bool gameInputState, bool showGuiFlight)
-        {
-            if (gameInputState)
-            {
-                if (Manager.Instance.TextFieldNames.Contains(GUI.GetNameOfFocusedControl()))
-                {
-                    GameManager.Instance.Game.Input.Disable();
-                    return false;
-                }
-
-                return true;
-            }
-            else
-            {
-                if (!Manager.Instance.TextFieldNames.Contains(GUI.GetNameOfFocusedControl()) || !showGuiFlight)
-                {
-                    GameManager.Instance.Game.Input.Enable();
-                    return true;
-                }
-
-                return false;
-            }
-        }
-
-        internal static (int major, int minor, int patch)? GetModVersion(string modId)
-        {
-            var plugin = Chainloader.Plugins?.OfType<BaseSpaceWarpPlugin>().ToList().FirstOrDefault(p => p.SpaceWarpMetadata.ModID.ToLowerInvariant() == modId.ToLowerInvariant());
-            string versionString = plugin?.SpaceWarpMetadata?.Version;
-
-            string[] versionNumbers = versionString?.Split(new char[] { '.' }, 3);
-
-            if (versionNumbers != null && versionNumbers.Length >= 1)
-            {
-                int majorVersion = 0;
-                int minorVersion = 0;
-                int patchVersion = 0;
-
-                if (versionNumbers.Length >= 1)
-                    int.TryParse(versionNumbers[0], out majorVersion);
-                if (versionNumbers.Length >= 2)
-                    int.TryParse(versionNumbers[1], out minorVersion);
-                if (versionNumbers.Length == 3)
-                    int.TryParse(versionNumbers[2], out patchVersion);
-
-                Logger.LogInfo($"{modId} version {majorVersion}.{minorVersion}.{patchVersion} detected.");
-
-                return (majorVersion, minorVersion, patchVersion);
-            }
-            else return null;
-        }
-
-        /// <summary>
-        /// Check if installed mod is older than the specified version
-        /// </summary>
-        /// <param name="modId">SpaceWarp mod ID</param>
-        /// <param name="major">Specified major version (X.0.0)</param>
-        /// <param name="minor">Specified minor version (0.X.0)</param>
-        /// <param name="patch">Specified patch version (0.0.X)</param>
-        /// <returns>True = installed mod is older. False = installed mod has the same version or it's newer or version isn't declared or version declared is gibberish that cannot be parsed</returns>
-        internal static bool IsModOlderThan(string modId, int major, int minor, int patch)
-        {
-            var modVersion = GetModVersion(modId);
-
-            if (!modVersion.HasValue || modVersion.Value == (0, 0, 0))
-                return false;
-
-            if (modVersion.Value.Item1 < major)
-                return true;
-            else if (modVersion.Value.Item1 > major)
-                return false;
-
-            if (modVersion.Value.Item2 < minor)
-                return true;
-            else if (modVersion.Value.Item2 > minor)
-                return false;
-
-            if (modVersion.Value.Item3 < patch)
-                return true;
-            else
-                return false;
+            float x = Mathf.Clamp(position.x, 0, ReferenceResolution.Width - size.x);
+            float y = Mathf.Clamp(position.y, 0, ReferenceResolution.Height - size.y);
+            root.transform.position = new Vector2(x, size.y > ReferenceResolution.Height ? position.y : y);
         }
 
         public static bool AreRectsNear(Rect rect1, Rect rect2)
@@ -331,6 +193,26 @@ namespace MicroMod
             float distanceX = Mathf.Abs(rect1.center.x - rect2.center.x);
             float distanceY = Mathf.Abs(rect1.center.y - rect2.center.y);            
             return (distanceX < rect1.width / 2 + rect2.width / 2 + 50f && distanceY < rect1.height / 2 + rect2.height / 2 + 50f);
+        }
+
+        /// <summary>
+        /// Centered UITK window on GeometryChangedEvent
+        /// </summary>
+        /// <param name="evt"></param>
+        /// <param name="element">Root element for which width and height will be taken</param>
+        public static void CenterWindow(GeometryChangedEvent evt, VisualElement element)
+        {
+            if (evt.newRect.width == 0 || evt.newRect.height == 0)
+                return;
+
+            element.transform.position = new Vector2((ReferenceResolution.Width - evt.newRect.width) / 2, (ReferenceResolution.Height - evt.newRect.height) / 2);
+            element.UnregisterCallback<GeometryChangedEvent>((evt) => CenterWindow(evt, element));
+        }
+
+        public static void DisableGameInputOnFocus(this VisualElement element)
+        {
+            element.RegisterCallback<FocusInEvent>(_ => GameManager.Instance?.Game?.Input.Disable());
+            element.RegisterCallback<FocusOutEvent>(_ => GameManager.Instance?.Game?.Input.Enable());
         }
     }    
 }

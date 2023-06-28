@@ -1,15 +1,16 @@
-﻿using KSP.Game;
+﻿using BepInEx.Logging;
+using KSP.Game;
 using KSP.Messages;
-using KSP.UI.Binding;
-using UnityEngine;
+using MicroEngineer.UI;
 
 namespace MicroMod
 {
-    internal class MessageManager
+    public class MessageManager
     {
+        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.MessageManager");
         private static MessageManager _instance;
 
-        internal MessageManager()
+        public MessageManager()
         { }
 
         public static MessageManager Instance
@@ -31,7 +32,7 @@ namespace MicroMod
             Utility.RefreshGameManager();
 
             // While in OAB we use the VesselDeltaVCalculationMessage event to refresh data as it's triggered a lot less frequently than Update()
-            Utility.MessageCenter.Subscribe<VesselDeltaVCalculationMessage>(new Action<MessageCenterMessage>(this.RefreshStagingDataOAB));
+            Utility.MessageCenter.Subscribe<VesselDeltaVCalculationMessage>(new Action<MessageCenterMessage>(obj => this.RefreshStagingDataOAB((VesselDeltaVCalculationMessage)obj)));
 
             // We are loading layout state when entering Flight or OAB game state
             Utility.MessageCenter.Subscribe<GameStateEnteredMessage>(new Action<MessageCenterMessage>(this.GameStateEntered));
@@ -63,66 +64,66 @@ namespace MicroMod
 
         private void OnPartManipulationCompletedMessage(MessageCenterMessage obj)
         {
-            EntryWindow stageInfoOabWindow = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
-
-            Torque torque = (Torque)Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).Entries.Find(e => e.Name == "Torque");
+            var torque = ((StageInfoOabWindow)Manager.Instance.Windows.Find(w => w is StageInfoOabWindow)).Entries.Find(e => e is Torque);
             torque.RefreshData();
         }
 
         private void GameStateEntered(MessageCenterMessage obj)
         {
             Utility.RefreshGameManager();
+            _logger.LogDebug($"Entered GameStateEntered. GameState: {Utility.GameState.GameState}." +
+                $"MainGui.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}." +
+                $"StageOab.IsEditorActive: {Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault().IsEditorActive}.");
+
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
                 Utility.LoadLayout(Manager.Instance.Windows);
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                 {
-                    UI.Instance.ShowGuiFlight = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
-                    GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(UI.Instance.ShowGuiFlight);
-                }    
+                    FlightSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
+                }
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {
-                    UI.Instance.ShowGuiOAB = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB).IsEditorActive;
-                    GameObject.Find("BTN - MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(UI.Instance.ShowGuiOAB);
-                    UI.Instance.CelestialBodies.GetBodies();
-                    UI.Instance.CelestialBodySelectionStageIndex = -1;
-                    Styles.SetActiveTheme(Theme.Gray); // TODO implement other themes in OAB
+                    OABSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault().IsEditorActive;
                 }
             }
         }
 
         private void GameStateLeft(MessageCenterMessage obj)
-        {
+        {            
             Utility.RefreshGameManager();
+            var maingui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault();
+            var stageOab = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault();
+
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
-                Utility.SaveLayout(Manager.Instance.Windows);
+                _logger.LogDebug($"Initiating Save from GameStateLeft.");
+                Utility.SaveLayout();
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
-                    UI.Instance.ShowGuiFlight = false;
+                    FlightSceneController.Instance.ShowGui = false;
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
-                    UI.Instance.ShowGuiOAB = false;
+                    OABSceneController.Instance.ShowGui = false;
             }
         }
 
         /// <summary>
         /// Refresh all staging data while in OAB
         /// </summary>
-        private void RefreshStagingDataOAB(MessageCenterMessage obj)
+        public void RefreshStagingDataOAB(VesselDeltaVCalculationMessage msg = null)
         {
             // Check if message originated from ships in flight. If yes, return.
-            VesselDeltaVCalculationMessage msg = (VesselDeltaVCalculationMessage)obj;
-            if (msg.DeltaVComponent.Ship == null || !msg.DeltaVComponent.Ship.IsLaunchAssembly()) return;
+            if (msg != null && (msg.DeltaVComponent.Ship == null || !msg.DeltaVComponent.Ship.IsLaunchAssembly())) return;
 
             Utility.RefreshGameManager();
             if (Utility.GameState.GameState != GameState.VehicleAssemblyBuilder) return;
 
             Utility.RefreshStagesOAB();
 
-            EntryWindow stageWindow = Manager.Instance.Windows.FindAll(w => w is EntryWindow).Cast<EntryWindow>().ToList().Find(w => w.MainWindow == MainWindow.StageInfoOAB);
+            StageInfoOabWindow stageWindow = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault();
 
             if (Utility.VesselDeltaVComponentOAB?.StageInfo == null)
             {
@@ -130,8 +131,7 @@ namespace MicroMod
                 return;
             }
 
-            foreach (var entry in stageWindow.Entries)
-                entry.RefreshData();
+            stageWindow.RefreshData();
         }
     }
 }

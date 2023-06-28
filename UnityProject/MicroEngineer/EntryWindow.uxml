@@ -1,0 +1,27 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="ManeuverHeader" src="ManeuverHeader.uxml" />
+    <Style src="Flight.uss" />
+    <ui:VisualElement name="window-root" class="window-root">
+        <ui:VisualElement name="title" class="window-title">
+            <ui:Label text="▼" display-tooltip-when-elided="true" name="title-arrow-down" class="arrow" style="display: flex;" />
+            <ui:Label text="▶" display-tooltip-when-elided="true" name="title-arrow-right" class="arrow" style="display: none;" />
+            <ui:Label text="EntryWindow" display-tooltip-when-elided="true" name="window-name" />
+            <ui:Button name="settings-button" class="settings-button">
+                <ui:VisualElement name="settings-button__background" class="settings-button__background" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" name="popout-button" class="popout-button">
+                <ui:VisualElement name="popout-button__background" class="popout-button__background" />
+            </ui:Button>
+            <ui:Button name="close-button" class="close-button">
+                <ui:VisualElement name="close-button__background" class="close-button__background" />
+            </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="header" class="window-header">
+            <ui:Instance template="ManeuverHeader" name="ManeuverHeader" />
+        </ui:VisualElement>
+        <ui:VisualElement name="body" class="body">
+            <MicroEngineer.UI.BaseEntryControl />
+        </ui:VisualElement>
+        <ui:VisualElement name="footer" class="window-footer" />
+    </ui:VisualElement>
+</ui:UXML>

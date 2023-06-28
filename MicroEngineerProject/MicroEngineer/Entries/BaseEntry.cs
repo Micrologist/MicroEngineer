@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using BepInEx.Logging;
+using Newtonsoft.Json;
 
 namespace MicroMod
 {
@@ -15,6 +16,7 @@ namespace MicroMod
         public string Description;
         [JsonProperty]
         public MicroEntryCategory Category;
+        public EntryType EntryType;
         public bool IsDefault;
         [JsonProperty]
         public bool HideWhenNoData;
@@ -38,10 +40,53 @@ namespace MicroMod
             set => _formatting = value;
         }        
 
-        public virtual object EntryValue { get; set; }
+        private object entryValue;
+        public virtual object EntryValue
+        {
+            get => entryValue;
+
+            set
+            {
+                if (value != entryValue)
+                {
+                    entryValue = value;
+
+                    switch (EntryType)
+                    {
+                        case EntryType.BasicText:
+                            OnEntryValueChanged?.Invoke(ValueDisplay, UnitDisplay);
+                            break;
+                        case EntryType.Time:
+                            var time = Utility.ParseSecondsToTimeFormat((double?)value ?? 0);
+                            OnEntryTimeValueChanged?.Invoke(time.Days, time.Hours, time.Minutes, time.Seconds);
+                            break;
+                        case EntryType.LatitudeLongitude:
+                            var latLon = Utility.ParseDegreesToDMSFormat((double?)value ?? 0);
+                            OnEntryLatLonChanged?.Invoke(latLon.Degrees, latLon.Minutes, latLon.Seconds, BaseUnit);
+                            break;
+                        case EntryType.StageInfo:
+                            OnStageInfoChanged?.Invoke((List<Stage>)entryValue);
+                            break;
+                        case EntryType.Separator:
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+
+        public delegate void EntryValueChanged(string value, string unit);
+        public delegate void EntryTimeValueChanged(int days, int hours, int minutes, int seconds);
+        public delegate void EntryLatLonChanged(int degrees, int minutes, int seconds, string direction);
+        public delegate void StageInfoChanged(List<Stage> stages);
+        public event EntryValueChanged OnEntryValueChanged;
+        public event EntryTimeValueChanged OnEntryTimeValueChanged;
+        public event EntryLatLonChanged OnEntryLatLonChanged;
+        public event StageInfoChanged OnStageInfoChanged;
 
         /// <summary>
-        /// Controls how the value should be displayed. Should be overriden in a inheritet class for a concrete implementation.
+        /// Controls how the value should be displayed. Can be overriden in a inheritet class for a more specialized implementation.
         /// </summary>
         public virtual string ValueDisplay
         {

@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="Flight.uss" />
+    <ui:VisualElement name="stageinfo-header" class="entry stage__header">
+        <ui:Label display-tooltip-when-elided="true" name="stagenumber-header" class="stage__header-stagenumber" />
+        <ui:Label display-tooltip-when-elided="true" name="deltav-header" text="∆v" class="stage__header-deltav" />
+        <ui:Label display-tooltip-when-elided="true" name="twr-header" text="TWR" class="stage__header-twr" />
+        <ui:Label display-tooltip-when-elided="true" name="burntime-header" text="Burn time" class="stage__header-burntime" />
+    </ui:VisualElement>
+</ui:UXML>

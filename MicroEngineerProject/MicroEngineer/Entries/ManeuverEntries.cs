@@ -6,7 +6,7 @@ namespace MicroMod
 {
     public class ManeuverEntry : BaseEntry
     {
-        internal int SelectedNodeIndex = 0;
+        public int SelectedNodeIndex = 0;
     }
 
     public class DeltaVRequired : ManeuverEntry
@@ -123,6 +123,7 @@ namespace MicroMod
         {
             Name = "Time to node";
             Description = "Time until vessel reaches the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
             BaseUnit = "s";
@@ -134,17 +135,6 @@ namespace MicroMod
             List<ManeuverNodeData> nodes = Utility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
             EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class BurnTime : ManeuverEntry
@@ -153,6 +143,7 @@ namespace MicroMod
         {
             Name = "Burn time";
             Description = "Length of time needed to complete the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
             BaseUnit = "s";
@@ -163,17 +154,6 @@ namespace MicroMod
         {
             List<ManeuverNodeData> nodes = Utility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
             EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.BurnDuration;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -239,6 +219,7 @@ namespace MicroMod
         {
             Name = "Time to Ap.";
             Description = "Shows the Time to Apoapsis vessel will have after reaching the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
             BaseUnit = "s";
@@ -252,17 +233,6 @@ namespace MicroMod
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .TimeToAp;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class Maneuver_TimeToPe : ManeuverEntry
@@ -271,6 +241,7 @@ namespace MicroMod
         {
             Name = "Time to Pe.";
             Description = "Shows the Time to Periapsis vessel will have after reaching the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
             BaseUnit = "s";
@@ -283,17 +254,6 @@ namespace MicroMod
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .TimeToPe;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -351,6 +311,7 @@ namespace MicroMod
         {
             Name = "Period";
             Description = "The period of the vessel's orbit after the burn.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
             BaseUnit = "s";
@@ -363,17 +324,6 @@ namespace MicroMod
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .period;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -642,11 +592,12 @@ namespace MicroMod
         {
             Name = "Orbit time";
             Description = "Shows orbit time in seconds from the Periapsis when vessel reaches the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
             BaseUnit = "s";
             NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -655,17 +606,6 @@ namespace MicroMod
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .ObT;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 
@@ -699,11 +639,12 @@ namespace MicroMod
         {
             Name = "UT";
             Description = "Universal Time when vessel reaches the maneuver node.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
             BaseUnit = "s";
             NumberOfDecimalDigits = 3;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -713,17 +654,6 @@ namespace MicroMod
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .EndUT;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class Maneuver_UniversalTimeAtClosestApproach : ManeuverEntry
@@ -732,6 +662,7 @@ namespace MicroMod
         {
             Name = "UT close.app.";
             Description = "Universal Time at the point of closest approach.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
             BaseUnit = null;
@@ -745,17 +676,6 @@ namespace MicroMod
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .UniversalTimeAtClosestApproach;
         }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
-        }
     }
 
     public class Maneuver_UniversalTimeAtSoiEncounter : ManeuverEntry
@@ -764,6 +684,7 @@ namespace MicroMod
         {
             Name = "UT SOI enc.";
             Description = "Universal Time at the point of transition to another Sphere Of Influence.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
             BaseUnit = null;
@@ -776,17 +697,6 @@ namespace MicroMod
                 .Where(p => p.ActivePatch == true)
                 .ElementAtOrDefault(base.SelectedNodeIndex)?
                 .UniversalTimeAtSoiEncounter;
-        }
-
-        public override string ValueDisplay
-        {
-            get
-            {
-                if (EntryValue == null)
-                    return "-";
-
-                return String.IsNullOrEmpty(base.Formatting) ? Utility.SecondsToTimeString((double)EntryValue, true, false) : String.Format(Formatting, Utility.SecondsToTimeString((double)EntryValue, true, false));
-            }
         }
     }
 }

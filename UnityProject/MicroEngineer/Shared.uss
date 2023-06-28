@@ -1,0 +1,13 @@
+:root {
+    --background-gray-1: rgba(33, 39, 46, 0.99);
+    --background-gray-2: rgb(28, 34, 42);
+    --light-blue: rgb(192, 199, 213);
+    --yellowish-translucent: rgba(237, 208, 147, 0.1);
+    --yellowish: rgb(237, 208, 147);
+    --black-transparent: rgba(0, 0, 0, 0.25);
+    --black-full: rgb(0, 0, 0);
+    --font-size-title-1: 16px;
+    --font-size-normal-2: 14px;
+    --font-size-small-3: 10px;
+    --font-size-tiny-4: 8px;
+}
