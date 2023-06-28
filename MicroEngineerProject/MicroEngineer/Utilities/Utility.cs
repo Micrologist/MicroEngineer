@@ -108,11 +108,11 @@ namespace MicroMod
             return radians * PatchedConicsOrbit.Rad2Deg;
         }
 
-        public static void SaveLayout(List<BaseWindow> windows)
+        public static void SaveLayout()
         {
             try
             {
-                File.WriteAllText(LayoutPath, JsonConvert.SerializeObject(windows));
+                File.WriteAllText(LayoutPath, JsonConvert.SerializeObject(Manager.Instance.Windows));
                 Logger.LogDebug("SaveLayout successful");
             }
             catch (Exception ex)

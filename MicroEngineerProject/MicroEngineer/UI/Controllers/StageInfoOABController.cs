@@ -50,7 +50,7 @@ namespace MicroEngineer.UI
 
             StageInfoOABWindow.EditorRect.position = Root[0].transform.position;
             _logger.LogDebug($"Initiating Save from UpdateWindowPosition.");
-            Utility.SaveLayout(Manager.Instance.Windows);
+            Utility.SaveLayout();
         }
 
         public void Update()
@@ -151,7 +151,7 @@ namespace MicroEngineer.UI
             _logger.LogDebug("Entering OnCloseButton.");
             StageInfoOABWindow.IsEditorActive = false;
             _logger.LogDebug($"Initiating Save from OnCloseButton.");
-            Utility.SaveLayout(Manager.Instance.Windows);
+            Utility.SaveLayout();
             OABSceneController.Instance.ShowGui = false;
         }
     }

@@ -43,7 +43,7 @@ namespace MicroEngineer.UI
 
             MainGuiWindow.FlightRect.position = Root[0].transform.position;
             _logger.LogDebug($"Initiating Save from UpdateWindowPosition.");
-            Utility.SaveLayout(Manager.Instance.Windows);
+            Utility.SaveLayout();
         }
 
         public void Update()
@@ -77,7 +77,7 @@ namespace MicroEngineer.UI
             MainGuiWindow.IsFlightActive = false;
 
             _logger.LogDebug($"Initiating Save from OnCloseButton.");
-            Utility.SaveLayout(Manager.Instance.Windows);
+            Utility.SaveLayout();
             FlightSceneController.Instance.ShowGui = false;
         }
     }

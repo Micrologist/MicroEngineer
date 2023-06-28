@@ -375,7 +375,7 @@ namespace MicroEngineer.UI
         private void RebuildFlightUI()
         {
             _logger.LogDebug($"Initiating Save from RebuildFlightUI.");
-            Utility.SaveLayout(Manager.Instance.Windows);
+            Utility.SaveLayout();
             FlightSceneController.Instance.RebuildUI();
         }
 

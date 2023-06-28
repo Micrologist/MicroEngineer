@@ -37,7 +37,7 @@ namespace MicroMod
                         Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
                     FlightSceneController.Instance.ShowGui = isOpen;
                     _logger.LogDebug($"Initiating Save from Appbar.RegisterAppButton.");
-                    Utility.SaveLayout(Manager.Instance.Windows);
+                    Utility.SaveLayout();
                 });
 
             Appbar.RegisterOABAppButton(
@@ -50,7 +50,7 @@ namespace MicroMod
                         Manager.Instance.Windows.Find(w => w.GetType() == typeof(StageInfoOabWindow)).IsEditorActive = isOpen;
                     OABSceneController.Instance.ShowGui = isOpen;
                     _logger.LogDebug($"Initiating Save from Appbar.RegisterOABAppButton.");
-                    Utility.SaveLayout(Manager.Instance.Windows);
+                    Utility.SaveLayout();
                 });
         }
 

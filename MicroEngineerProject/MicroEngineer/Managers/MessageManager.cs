@@ -100,7 +100,7 @@ namespace MicroMod
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
                 _logger.LogDebug($"Initiating Save from GameStateLeft.");
-                Utility.SaveLayout(Manager.Instance.Windows);
+                Utility.SaveLayout();
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                     FlightSceneController.Instance.ShowGui = false;
