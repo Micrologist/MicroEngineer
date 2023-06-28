@@ -22,7 +22,7 @@ namespace MicroEngineer.UI
 
         public void OnEnable()
         {
-            _logger.LogDebug("Entering OnEnable().");
+            _logger.LogDebug("Entering OnEnable.");
             MainGui = GetComponent<UIDocument>();
             Root = MainGui.rootVisualElement;
             Header = Root.Q<VisualElement>("header");
@@ -42,6 +42,7 @@ namespace MicroEngineer.UI
                 return;
 
             MainGuiWindow.FlightRect.position = Root[0].transform.position;
+            _logger.LogDebug($"Initiating Save from UpdateWindowPosition.");
             Utility.SaveLayout(Manager.Instance.Windows);
         }
 
@@ -72,8 +73,10 @@ namespace MicroEngineer.UI
         }
 
         private void OnCloseButton(ClickEvent evt)
-        {
+        {            
             MainGuiWindow.IsFlightActive = false;
+
+            _logger.LogDebug($"Initiating Save from OnCloseButton.");
             Utility.SaveLayout(Manager.Instance.Windows);
             FlightSceneController.Instance.ShowGui = false;
         }

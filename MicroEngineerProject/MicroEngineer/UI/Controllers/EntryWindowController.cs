@@ -72,6 +72,7 @@ namespace MicroEngineer.UI
                 return;
 
             EntryWindow.FlightRect.position = WindowRoot[0].transform.position;
+            _logger.LogDebug($"Initiating Save from UpdateWindowPosition.");
             Utility.SaveLayout(Manager.Instance.Windows);
         }
 
@@ -207,6 +208,7 @@ namespace MicroEngineer.UI
             if (EntryWindow.IsFlightPoppedOut)
                 EntryWindow.IsFlightActive = true;
 
+            _logger.LogDebug($"Initiating Save from OnPopOutOrCloseButton.");
             Utility.SaveLayout(Manager.Instance.Windows);
             FlightSceneController.Instance.RebuildUI();
         }

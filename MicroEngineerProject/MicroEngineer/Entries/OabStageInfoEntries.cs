@@ -165,7 +165,6 @@ namespace MicroMod
     /// </summary>
     public class StageInfo_OAB : OabStageInfoEntry
     {
-        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.StageInfo_OAB");
         public List<CelestialBody> CelestialBodyForStage = new();
         public delegate void StageInfoOABChanged(List<DeltaVStageInfo_OAB> stages);
         public event StageInfoOABChanged OnStageInfoOABChanged;
@@ -183,7 +182,6 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            _logger.LogDebug("Entering RefreshData.");
             EntryValue ??= new List<DeltaVStageInfo_OAB>();
 
             ((List<DeltaVStageInfo_OAB>)EntryValue).Clear();

@@ -144,11 +144,11 @@ namespace MicroMod
                 //FlightSceneController.Instance.RebuildUI();
 
                 Logger.LogInfo("LoadLayout successful.");
-                Logger.LogDebug($"MainGui.IsFlightActive: {MainGui.IsFlightActive}.");
+                Logger.LogDebug($"Finished loading. MainGui.IsFlightActive: {MainGui.IsFlightActive}.");
             }
             catch (FileNotFoundException ex)
             {
-                Logger.LogWarning($"Error loading layout. File was not found at the expected location.\n" + ex.Message);
+                Logger.LogWarning($"MicroLayout.json file was not found at the expected location during LoadLayout. This is normal if this mod was just installed. Window states and positions will keep their default values.");
 
             }
             catch (Exception ex)

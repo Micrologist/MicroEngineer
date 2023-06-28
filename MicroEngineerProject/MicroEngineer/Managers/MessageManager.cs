@@ -71,29 +71,35 @@ namespace MicroMod
         private void GameStateEntered(MessageCenterMessage obj)
         {
             Utility.RefreshGameManager();
+            _logger.LogDebug($"Entered GameStateEntered. GameState: {Utility.GameState.GameState}." +
+                "MainGui.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}." +
+                "StageOab.IsEditorActive: {Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault().IsEditorActive}.");
+
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
                 Utility.LoadLayout(Manager.Instance.Windows);
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                 {
-                    _logger.LogDebug($"Inside GameStateEntered. GameState: {Utility.GameState.GameState}. MainGuiWindow.IsFlightActive: {Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive}");
                     FlightSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault().IsFlightActive;
                 }
 
                 if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {
-                    _logger.LogDebug($"Inside GameStateEntered. GameState: {Utility.GameState.GameState}.");
                     OABSceneController.Instance.ShowGui = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault().IsEditorActive;
                 }
             }
         }
 
         private void GameStateLeft(MessageCenterMessage obj)
-        {
+        {            
             Utility.RefreshGameManager();
+            var maingui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault();
+            var stageOab = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault();
+
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
+                _logger.LogDebug($"Initiating Save from GameStateLeft.");
                 Utility.SaveLayout(Manager.Instance.Windows);
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)

@@ -6,6 +6,7 @@ using SpaceWarp.API.Mods;
 using SpaceWarp.API.UI.Appbar;
 using MicroEngineer.UI;
 using KSP.Game;
+using BepInEx.Logging;
 
 namespace MicroMod
 {
@@ -13,6 +14,7 @@ namespace MicroMod
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
+        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineerMod");
         public static MicroEngineerMod Instance { get; set; }
         public string GUID;
 
@@ -31,8 +33,10 @@ namespace MicroMod
                 AssetManager.GetAsset<Texture2D>($"{GUID}/images/icon.png"),
                 isOpen =>
                 {
+                    if (isOpen)
+                        Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
                     FlightSceneController.Instance.ShowGui = isOpen;
-                    Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
+                    _logger.LogDebug($"Initiating Save from Appbar.RegisterAppButton.");
                     Utility.SaveLayout(Manager.Instance.Windows);
                 });
 
@@ -42,23 +46,33 @@ namespace MicroMod
                 AssetManager.GetAsset<Texture2D>($"{GUID}/images/icon.png"),
                 isOpen =>
                 {
+                    if (isOpen)
+                        Manager.Instance.Windows.Find(w => w.GetType() == typeof(StageInfoOabWindow)).IsEditorActive = isOpen;
                     OABSceneController.Instance.ShowGui = isOpen;
-                    Manager.Instance.Windows.Find(w => w.GetType() == typeof(StageInfoOabWindow)).IsEditorActive = isOpen;
+                    _logger.LogDebug($"Initiating Save from Appbar.RegisterOABAppButton.");
                     Utility.SaveLayout(Manager.Instance.Windows);
                 });
         }
 
         public void Update()
         {
-            Manager.Instance.Update();
+             Manager.Instance.Update();
 
             // Keyboard shortcut for opening UI
             if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.E))
             {
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
-                    FlightSceneController.Instance.ShowGui = !FlightSceneController.Instance.ShowGui;
+                {
+                    bool guiState = FlightSceneController.Instance.ShowGui;
+                    FlightSceneController.Instance.ShowGui = !guiState;
+                    Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = !guiState;
+                }                    
                 else if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
-                    OABSceneController.Instance.ShowGui = !OABSceneController.Instance.ShowGui;
+                {
+                    bool guiState = OABSceneController.Instance.ShowGui;
+                    OABSceneController.Instance.ShowGui = !guiState;
+                    Manager.Instance.Windows.Find(w => w.GetType() == typeof(StageInfoOabWindow)).IsEditorActive = !guiState;
+                }
             }
         }
     }

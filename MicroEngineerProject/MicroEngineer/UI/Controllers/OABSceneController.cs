@@ -20,7 +20,7 @@ namespace MicroEngineer.UI
             get => _showGui;
             set
             {
-                _logger.LogDebug($"Inside ShowGui SET. Old value: {_showGui}. New value: {value}");
+                _logger.LogDebug($"Entering ShowGui SET. Old value: {_showGui}. New value: {value}");
                 _showGui = value;
 
                 GameObject.Find("BTN-MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(value);

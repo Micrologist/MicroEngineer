@@ -47,7 +47,7 @@ namespace MicroEngineer.UI
             // wait for 1 frame until SelectedWindowId is set in FlightSceneController
             yield return null;
 
-            _logger.LogDebug("Entering OnEnable() of EditWindowsController");
+            _logger.LogDebug("Entering OnEnable.");
             EditWindows = GetComponent<UIDocument>();
             Root = EditWindows.rootVisualElement;
 
@@ -374,6 +374,7 @@ namespace MicroEngineer.UI
 
         private void RebuildFlightUI()
         {
+            _logger.LogDebug($"Initiating Save from RebuildFlightUI.");
             Utility.SaveLayout(Manager.Instance.Windows);
             FlightSceneController.Instance.RebuildUI();
         }

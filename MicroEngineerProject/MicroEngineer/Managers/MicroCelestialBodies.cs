@@ -64,14 +64,10 @@ namespace MicroMod
             // Reorder and format all celestial bodies so they form a tree-like structure
             TryReorderBodies();
 
-            _logger.LogDebug("Starting TWR recalculation.");
-
             // Get TWR for each body
             foreach (var body in Bodies)
             {
-                _logger.LogDebug($"Grabbed body: {body.Name}.");
                 body.TwrFactor = GetTwrFactor(body.Name);
-                _logger.LogDebug($"Recalculated TwrFactor: {body.TwrFactor}.");
             }
 
             _logger.LogInfo("CelestialBodies successfully built.");
@@ -162,8 +158,6 @@ namespace MicroMod
             CelestialBody homeWorld = Bodies.Find(b => b.IsHomeWorld);
             CelestialBody targetBody = Bodies.Find(t => t.Name.ToLowerInvariant() == bodyName.ToLowerInvariant()) ?? null;
             if (targetBody == null) return 0;
-
-            _logger.LogDebug($"HomeWorld: {homeWorld.Name}, GravityAsl: {homeWorld.GravityASL}. Target: {targetBody.Name}, GravityAsl: {targetBody.GravityASL}.");
 
             return homeWorld.GravityASL / targetBody.GravityASL;
         }

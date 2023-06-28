@@ -28,7 +28,7 @@ namespace MicroEngineer.UI
 
         public void OnEnable()
         {
-            _logger.LogDebug("Entering OnEnable().");
+            _logger.LogDebug("Entering OnEnable.");
             StageInfoOABWindow = (StageInfoOabWindow)Manager.Instance.Windows.Find(w => w is StageInfoOabWindow);
 
             StageInfoOAB = GetComponent<UIDocument>();
@@ -49,6 +49,7 @@ namespace MicroEngineer.UI
                 return;
 
             StageInfoOABWindow.EditorRect.position = Root[0].transform.position;
+            _logger.LogDebug($"Initiating Save from UpdateWindowPosition.");
             Utility.SaveLayout(Manager.Instance.Windows);
         }
 
@@ -123,7 +124,7 @@ namespace MicroEngineer.UI
 
         private void BuildFooter()
         {
-            _logger.LogDebug("Entering BuildFooter");
+            _logger.LogDebug("Entering BuildFooter.");
             BaseEntry entry;
             VisualElement control;
 
@@ -147,8 +148,9 @@ namespace MicroEngineer.UI
 
         private void OnCloseButton(ClickEvent evt)
         {
-            _logger.LogDebug("Entering OnCloseButton");
+            _logger.LogDebug("Entering OnCloseButton.");
             StageInfoOABWindow.IsEditorActive = false;
+            _logger.LogDebug($"Initiating Save from OnCloseButton.");
             Utility.SaveLayout(Manager.Instance.Windows);
             OABSceneController.Instance.ShowGui = false;
         }
