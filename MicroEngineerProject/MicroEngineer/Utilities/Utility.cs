@@ -63,11 +63,12 @@ namespace MicroMod
                 return TimeParsed.MinValue();
 
             inputSeconds = Math.Ceiling(inputSeconds);
+            var absoluteSeconds = Math.Abs(inputSeconds);
 
-            int days = (int)(inputSeconds / 21600);
-            int hours = (int)((inputSeconds - days * 21600) / 3600);
-            int minutes = (int)((inputSeconds - hours * 3600 - days * 21600) / 60);
-            int seconds = (int)(inputSeconds - days * 21600 - hours * 3600 - minutes * 60);
+            int days = (int)(absoluteSeconds / 21600);
+            int hours = (int)((absoluteSeconds - days * 21600) / 3600);
+            int minutes = (int)((absoluteSeconds - hours * 3600 - days * 21600) / 60);
+            int seconds = (int)(absoluteSeconds - days * 21600 - hours * 3600 - minutes * 60);
 
             // If inputSeconds is negative, reverse the sign of the higest calculated value
             if (inputSeconds < 0)
