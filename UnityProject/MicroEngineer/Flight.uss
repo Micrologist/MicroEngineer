@@ -265,6 +265,7 @@
     align-items: stretch;
     -unity-text-align: middle-left;
     display: flex;
+    background-color: var(--background-gray-1);
 }
 
 .body {

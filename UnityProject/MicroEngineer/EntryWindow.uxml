@@ -1,5 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="ManeuverHeader" src="ManeuverHeader.uxml" />
     <Style src="Flight.uss" />
     <ui:VisualElement name="window-root" class="window-root">
         <ui:VisualElement name="title" class="window-title">
@@ -16,12 +15,8 @@
                 <ui:VisualElement name="close-button__background" class="close-button__background" />
             </ui:Button>
         </ui:VisualElement>
-        <ui:VisualElement name="header" class="window-header">
-            <ui:Instance template="ManeuverHeader" name="ManeuverHeader" />
-        </ui:VisualElement>
-        <ui:VisualElement name="body" class="body">
-            <MicroEngineer.UI.BaseEntryControl />
-        </ui:VisualElement>
+        <ui:VisualElement name="header" class="window-header" />
+        <ui:VisualElement name="body" class="body" />
         <ui:VisualElement name="footer" class="window-footer" />
     </ui:VisualElement>
 </ui:UXML>
