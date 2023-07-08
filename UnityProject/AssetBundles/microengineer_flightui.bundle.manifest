@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2285508560
+CRC: 1970053407
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 3b70b3b4c6fa7c45e487d74e41eb4f88
+    Hash: 7f47c0e0c831b174319c551b67cdf666
   TypeTreeHash:
     serializedVersion: 2
     Hash: d1d45f0ae4b48ad0a84d19bfd18ad535
@@ -32,8 +32,6 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.UIElements.StyleSelector
 - AssemblyName: UnityEngine.UIElementsModule
   ClassName: UnityEngine.UIElements.StyleSelectorPart
-- AssemblyName: UnityEngine.UIElementsModule
-  ClassName: UnityEngine.UIElements.StyleSheet/ImportStruct
 - AssemblyName: UnityEngine.UIElementsModule
   ClassName: UnityEngine.UIElements.StyleSheets.Dimension
 - AssemblyName: UnityEngine.UIElementsModule
