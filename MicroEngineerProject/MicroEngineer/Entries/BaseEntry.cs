@@ -189,7 +189,7 @@ namespace MicroMod
         [JsonProperty]
         public bool IsActive;
         [JsonProperty]
-        public string Unit;        
+        public string Unit;
         [JsonProperty]
         public float Factor;
     }

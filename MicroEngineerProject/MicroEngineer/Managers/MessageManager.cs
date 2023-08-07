@@ -92,14 +92,13 @@ namespace MicroMod
         }
 
         private void GameStateLeft(MessageCenterMessage obj)
-        {            
+        {
             Utility.RefreshGameManager();
             var maingui = Manager.Instance.Windows.OfType<MainGuiWindow>().FirstOrDefault();
             var stageOab = Manager.Instance.Windows.OfType<StageInfoOabWindow>().FirstOrDefault();
 
             if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.VehicleAssemblyBuilder || Utility.GameState.GameState == GameState.Map3DView)
             {
-                _logger.LogDebug($"Initiating Save from GameStateLeft.");
                 Utility.SaveLayout();
 
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)

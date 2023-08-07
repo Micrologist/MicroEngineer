@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using KSP.UI.Binding;
+﻿using KSP.UI.Binding;
 using MicroMod;
 using UitkForKsp2.API;
 using UnityEngine;
@@ -10,7 +9,6 @@ namespace MicroEngineer.UI
     public class FlightSceneController
     {
         private static FlightSceneController _instance;
-        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.FlightSceneController");
         private bool _showGui = false;
         private EditWindowsController _editWindowsController;
         private bool _maneuverWindowShown = true;
@@ -26,7 +24,6 @@ namespace MicroEngineer.UI
             get => _showGui;
             set
             {
-                _logger.LogDebug($"Inside ShowGui SET. Old value: {_showGui}. New value: {value}");
                 _showGui = value;
                 
                 GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(value);
@@ -78,7 +75,6 @@ namespace MicroEngineer.UI
 
         public void InitializeUI()
         {
-            _logger.LogDebug("InitializeUI triggered.");
             //Build MainGui
             MainGui = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, "MainGui", null, true);
             MainGuiController mainGuiController = MainGui.gameObject.AddComponent<MainGuiController>();
@@ -119,7 +115,6 @@ namespace MicroEngineer.UI
 
         public void RebuildUI()
         {
-            _logger.LogDebug("RebuildUI triggered.");
             DestroyUI();
             if (ShowGui)
                 InitializeUI();
@@ -127,7 +122,6 @@ namespace MicroEngineer.UI
 
         public void DestroyUI()
         {
-            _logger.LogDebug("DestroyUI triggered.");
             if (MainGui != null && MainGui.gameObject != null)
                 MainGui.gameObject.DestroyGameObject();
             GameObject.Destroy(MainGui);

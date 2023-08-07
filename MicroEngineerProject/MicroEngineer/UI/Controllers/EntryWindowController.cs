@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using MicroMod;
+﻿using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,8 +6,6 @@ namespace MicroEngineer.UI
 {
     public class EntryWindowController : MonoBehaviour
     {
-        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.EntryWindowController");
-
         public EntryWindow EntryWindow { get; set; }
         public VisualElement WindowRoot { get; set; }
         public VisualElement Root { get; set; }
@@ -38,8 +35,6 @@ namespace MicroEngineer.UI
 
         public void Initialize()
         {
-            _logger.LogDebug($"Creating window: {EntryWindow.Name}.");
-
             Root = Uxmls.Instance.EntryWindow.CloneTree();
 
             BuildTitle();
@@ -72,7 +67,6 @@ namespace MicroEngineer.UI
                 return;
 
             EntryWindow.FlightRect.position = WindowRoot[0].transform.position;
-            _logger.LogDebug($"Initiating Save from UpdateWindowPosition.");
             Utility.SaveLayout();
         }
 
@@ -85,7 +79,7 @@ namespace MicroEngineer.UI
             NameLabel = Root.Q<Label>("window-name");
             NameLabel.text = EntryWindow.Name;
             SettingsButton = Root.Q<Button>("settings-button");
-            SettingsButton.RegisterCallback<ClickEvent>(OpenSettingsWindow);            
+            SettingsButton.RegisterCallback<ClickEvent>(OpenSettingsWindow);
             PopOutButton = Root.Q<Button>("popout-button");
             PopOutButton.RegisterCallback<ClickEvent>(OnPopOutOrCloseButton);
             CloseButton = Root.Q<Button>("close-button");
@@ -105,7 +99,7 @@ namespace MicroEngineer.UI
         private void OpenSettingsWindow(ClickEvent evt)
         {
             var editableWindowId = FlightSceneController.Instance.GetEditableWindows().FindIndex(w => w.Name == EntryWindow.Name);
-            FlightSceneController.Instance.ToggleEditWindows(true, editableWindowId);            
+            FlightSceneController.Instance.ToggleEditWindows(true, editableWindowId);
         }
 
         private void BuildHeader()
@@ -201,14 +195,13 @@ namespace MicroEngineer.UI
         }
 
         private void OnPopOutOrCloseButton(ClickEvent evt)
-        {            
+        {
             EntryWindow.IsFlightPoppedOut = !EntryWindow.IsFlightPoppedOut;
             
             // Activate/expand windows that get popped out.
             if (EntryWindow.IsFlightPoppedOut)
                 EntryWindow.IsFlightActive = true;
 
-            _logger.LogDebug($"Initiating Save from OnPopOutOrCloseButton.");
             Utility.SaveLayout();
             FlightSceneController.Instance.RebuildUI();
         }
@@ -256,7 +249,7 @@ namespace MicroEngineer.UI
                 ManeuverNodeNumberLabel.text = $"Node #{index + 1}";
             });
 
-            Footer.Add(maneuverFooter);            
+            Footer.Add(maneuverFooter);
             
             window.OnNodeCountChanged += CheckIfManeuverHeaderAndFooterShouldBeHidden;
             window.OnSelectedNodeIndexChanged += UpdateManeuverNodeHeader;

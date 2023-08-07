@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using KSP.UI.Binding;
+﻿using KSP.UI.Binding;
 using MicroMod;
 using UitkForKsp2.API;
 using UnityEngine;
@@ -10,7 +9,6 @@ namespace MicroEngineer.UI
     public class OABSceneController
     {
         private static OABSceneController _instance;
-        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.OABSceneController");
         private bool _showGui = false;
 
         public UIDocument StageInfoWindow { get; set; }
@@ -20,7 +18,6 @@ namespace MicroEngineer.UI
             get => _showGui;
             set
             {
-                _logger.LogDebug($"Entering ShowGui SET. Old value: {_showGui}. New value: {value}");
                 _showGui = value;
 
                 GameObject.Find("BTN-MicroEngineerOAB")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(value);
@@ -42,8 +39,6 @@ namespace MicroEngineer.UI
 
         public void InitializeUI()
         {
-            _logger.LogDebug("InitializeUI triggered.");
-            
             StageInfoWindow = Window.CreateFromUxml(Uxmls.Instance.StageInfoOAB, "StageInfoOAB", null, true);
             StageInfoOABController controller = StageInfoWindow.gameObject.AddComponent<StageInfoOABController>();
             StageInfoWindow.rootVisualElement[0].RegisterCallback<PointerMoveEvent>(evt => Utility.ClampToScreenUitk(StageInfoWindow.rootVisualElement[0]));
@@ -54,7 +49,6 @@ namespace MicroEngineer.UI
 
         public void RebuildUI()
         {
-            _logger.LogDebug("RebuildUI triggered.");
             DestroyUI();
             if (ShowGui)
                 InitializeUI();
@@ -62,7 +56,6 @@ namespace MicroEngineer.UI
 
         public void DestroyUI()
         {
-            _logger.LogDebug("DestroyUI triggered.");
             if (StageInfoWindow != null && StageInfoWindow.gameObject != null)
                 StageInfoWindow.gameObject.DestroyGameObject();
             GameObject.Destroy(StageInfoWindow);

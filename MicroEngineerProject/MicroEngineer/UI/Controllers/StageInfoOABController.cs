@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using MicroMod;
+﻿using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,8 +6,6 @@ namespace MicroEngineer.UI
 {
     public class StageInfoOABController : MonoBehaviour
     {
-        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.StageInfoOABController");
-
         public StageInfoOabWindow StageInfoOABWindow { get; set; }
         public UIDocument StageInfoOAB { get; set; }
         public VisualElement Root { get; set; }
@@ -28,7 +25,6 @@ namespace MicroEngineer.UI
 
         public void OnEnable()
         {
-            _logger.LogDebug("Entering OnEnable.");
             StageInfoOABWindow = (StageInfoOabWindow)Manager.Instance.Windows.Find(w => w is StageInfoOabWindow);
 
             StageInfoOAB = GetComponent<UIDocument>();
@@ -49,7 +45,6 @@ namespace MicroEngineer.UI
                 return;
 
             StageInfoOABWindow.EditorRect.position = Root[0].transform.position;
-            _logger.LogDebug($"Initiating Save from UpdateWindowPosition.");
             Utility.SaveLayout();
         }
 
@@ -60,7 +55,6 @@ namespace MicroEngineer.UI
 
         private void BuildTitleBar()
         {
-            _logger.LogDebug("Entering BuildTitleBar.");
             TitleBar = Root.Q<VisualElement>("titlebar");
 
             TorqueContainer = TitleBar.Q<VisualElement>("torque-container");
@@ -74,13 +68,11 @@ namespace MicroEngineer.UI
 
         private void BuildHeader()
         {
-            _logger.LogDebug("Entering BuildHeader.");
             Header = Root.Q<VisualElement>("header");
         }
 
         private void BuildBody()
         {
-            _logger.LogDebug("Entering BuildBody.");
             Body = Root.Q<VisualElement>("body");
             StageEntry = StageInfoOABWindow.Entries.Find(e => e is StageInfo_OAB) as StageInfo_OAB;
             StageEntry.OnStageInfoOABChanged += HandleStageInfoChanged;
@@ -90,7 +82,6 @@ namespace MicroEngineer.UI
 
         private void BuildStages(List<DeltaVStageInfo_OAB> stages)
         {
-            _logger.LogDebug("Entering BuildStages.");
             for (int i = stages.Count - 1; i >= 0; i--)
             {
                 var stage = stages[i];
@@ -117,14 +108,12 @@ namespace MicroEngineer.UI
 
         private void HandleStageInfoChanged(List<DeltaVStageInfo_OAB> stages)
         {
-            _logger.LogDebug("Entering HandleStageInfoChanged.");
             Body.Clear();
             BuildStages(stages);
         }
 
         private void BuildFooter()
         {
-            _logger.LogDebug("Entering BuildFooter.");
             BaseEntry entry;
             VisualElement control;
 
@@ -148,9 +137,7 @@ namespace MicroEngineer.UI
 
         private void OnCloseButton(ClickEvent evt)
         {
-            _logger.LogDebug("Entering OnCloseButton.");
             StageInfoOABWindow.IsEditorActive = false;
-            _logger.LogDebug($"Initiating Save from OnCloseButton.");
             Utility.SaveLayout();
             OABSceneController.Instance.ShowGui = false;
         }

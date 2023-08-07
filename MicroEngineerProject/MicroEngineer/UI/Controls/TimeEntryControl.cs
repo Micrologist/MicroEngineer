@@ -91,7 +91,7 @@ namespace MicroEngineer.UI
         }
 
         public TimeEntryControl(BaseEntry entry) : this()
-        {            
+        {
             EntryName = entry.Name;
 
             var time = Utility.ParseSecondsToTimeFormat((double?)entry.EntryValue ?? 0);
