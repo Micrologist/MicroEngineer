@@ -1,4 +1,5 @@
 ﻿using MicroMod;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace MicroEngineer.UI
@@ -10,6 +11,8 @@ namespace MicroEngineer.UI
         public static string UssEntryClassName = UssClassName + "__name";
         public static string UssValueClassName = UssClassName + "__value";
         public static string UssUnitClassName = UssClassName + "__unit";
+
+        private float _timeOfLastClick;
 
         public Label NameLabel;
         public Label ValueLabel;
@@ -45,6 +48,10 @@ namespace MicroEngineer.UI
 
             // When entry's value changes, update value and unit labels
             entry.OnEntryValueChanged += HandleEntryValueChanged;
+
+            // Handle alternate units
+            if (entry.AltUnit != null)
+                this.RegisterCallback<MouseDownEvent>(_ => ToggleAltUnit(entry), TrickleDown.TrickleDown);
         }
 
         public BaseEntryControl(string name, string value) : this()
@@ -116,6 +123,14 @@ namespace MicroEngineer.UI
             Value = value;
             if (Unit != unit)
                 Unit = unit;
+        }
+
+        public void ToggleAltUnit(BaseEntry entry)
+        {
+            if (Time.time - _timeOfLastClick < 0.5f)
+                entry.AltUnit.IsActive = !entry.AltUnit.IsActive;
+
+            _timeOfLastClick = Time.time;
         }
     }
 }

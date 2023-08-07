@@ -10,7 +10,7 @@ using BepInEx.Logging;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.2.0")]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.3.0")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{

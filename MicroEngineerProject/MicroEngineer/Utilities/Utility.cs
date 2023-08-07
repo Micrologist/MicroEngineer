@@ -18,7 +18,7 @@ namespace MicroMod
         public static VesselComponent ActiveVessel;
         public static ManeuverNodeData CurrentManeuver;
         public static string LayoutPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MicroLayout.json");
-        public static int CurrentLayoutVersion = 13;
+        public static int CurrentLayoutVersion = 14;
         private static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Utility");
         public static GameStateConfiguration GameState;
         public static MessageCenter MessageCenter;
@@ -147,7 +147,7 @@ namespace MicroMod
                 Logger.LogInfo("LoadLayout successful.");
                 Logger.LogDebug($"Finished loading. MainGui.IsFlightActive: {MainGui.IsFlightActive}.");
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
                 Logger.LogWarning($"MicroLayout.json file was not found at the expected location during LoadLayout. This is normal if this mod was just installed. Window states and positions will keep their default values.");
 
