@@ -24,7 +24,6 @@ namespace MicroMod
 
         public MicroCelestialBodies()
         {
-            _logger.LogDebug("Instantiating singleton.");
             InitializeBodies();
         }
 
@@ -104,7 +103,7 @@ namespace MicroMod
         /// <returns></returns>
         private List<CelestialBody> InstantiateCelestialBodies (CelestialBodyComponent cel, int level)
         {
-            List<CelestialBody> instantiatedBodies = new();            
+            List<CelestialBody> instantiatedBodies = new();
             instantiatedBodies.Add(InstantiateCelestialBody(cel, level));
 
             foreach (CelestialBodyComponent body in cel.orbitingBodies)

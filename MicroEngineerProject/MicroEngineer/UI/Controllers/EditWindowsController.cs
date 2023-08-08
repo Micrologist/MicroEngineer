@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using MicroMod;
+﻿using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,8 +6,6 @@ namespace MicroEngineer.UI
 {
     public class EditWindowsController : MonoBehaviour
     {
-        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.EditWindowsController");
-        
         private EditWindowsItemControl _selectedAvailableEntry;
         private EditWindowsItemControl _selectedInstalledEntry;
         private List<EntryWindow> _editableWindows;
@@ -22,7 +19,7 @@ namespace MicroEngineer.UI
         public Button CloseButton { get; set; }
         public ScrollView AvailableScrollView { get; set; }
         public ScrollView InstalledScrollView { get; set; }
-        public DropdownField CategoryDropdown { get; set; }        
+        public DropdownField CategoryDropdown { get; set; }
         public TextField SelectedWindow { get; set; }
         public Button PreviousWindow { get; set; }
         public Button NextWindow { get; set; }
@@ -47,7 +44,6 @@ namespace MicroEngineer.UI
             // wait for 1 frame until SelectedWindowId is set in FlightSceneController
             yield return null;
 
-            _logger.LogDebug("Entering OnEnable.");
             EditWindows = GetComponent<UIDocument>();
             Root = EditWindows.rootVisualElement;
 
@@ -94,7 +90,7 @@ namespace MicroEngineer.UI
         {
             CategoryDropdown.choices = Enum.GetNames(typeof(MicroEntryCategory)).Where(e => e != MicroEntryCategory.OAB.ToString()).ToList();
             CategoryDropdown.RegisterValueChangedCallback(BuildAvailableEntries);
-        }       
+        }
 
         private void BuildAvailableEntries(ChangeEvent<string> _)
         {
@@ -159,7 +155,7 @@ namespace MicroEngineer.UI
             AddEntry.SetEnabled(false);
         }
 
-        //////////////////////   INSTALLED (RIGHT SCROLLVIEW) //////////////////////        
+        //////////////////////   INSTALLED (RIGHT SCROLLVIEW) //////////////////////
 
         public void ResetSelectedWindow()
         {
@@ -374,7 +370,6 @@ namespace MicroEngineer.UI
 
         private void RebuildFlightUI()
         {
-            _logger.LogDebug($"Initiating Save from RebuildFlightUI.");
             Utility.SaveLayout();
             FlightSceneController.Instance.RebuildUI();
         }

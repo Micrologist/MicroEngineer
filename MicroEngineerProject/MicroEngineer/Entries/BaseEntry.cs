@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace MicroMod
 {
@@ -30,6 +29,8 @@ namespace MicroMod
         public string MegaUnit;
         [JsonProperty]
         public string GigaUnit;
+        [JsonProperty]
+        public AltUnit AltUnit;
         [JsonProperty]
         public byte NumberOfDecimalDigits;
         [JsonProperty("Formatting")]
@@ -101,6 +102,12 @@ namespace MicroMod
                 if (!double.TryParse(EntryValue.ToString(), out double d))
                     return EntryValue.ToString(); // This case shouldn't exist, but just to be sure
 
+                if (AltUnit != null && AltUnit.IsActive)
+                {
+                    return !string.IsNullOrEmpty(Formatting) ? String.Format(Formatting, d * AltUnit.Factor) :
+                        (d * AltUnit.Factor).ToString();
+                }
+
                 if (Math.Abs(d) < 1) // mili
                 {
                     return !String.IsNullOrEmpty(this.MiliUnit) ? String.Format(Formatting, d * 1000) :
@@ -146,6 +153,9 @@ namespace MicroMod
                 if (!double.TryParse(EntryValue.ToString(), out double d))
                     return this.BaseUnit ?? ""; // This case shouldn't exist, but just to be sure
 
+                if (AltUnit != null && AltUnit.IsActive)
+                    return AltUnit.Unit;
+
                 if (d > 0.001 && d < 1) // mili
                 {
                     return this.MiliUnit ?? this.BaseUnit ?? "";
@@ -172,5 +182,15 @@ namespace MicroMod
         }
 
         public virtual void RefreshData() { }
-    }    
+    }
+
+    public class AltUnit
+    {
+        [JsonProperty]
+        public bool IsActive;
+        [JsonProperty]
+        public string Unit;
+        [JsonProperty]
+        public float Factor;
+    }
 }

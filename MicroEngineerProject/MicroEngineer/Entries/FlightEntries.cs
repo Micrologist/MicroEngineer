@@ -18,6 +18,12 @@
             GigaUnit = "Gm/s";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
+            AltUnit = new AltUnit()
+            {
+                IsActive = false,
+                Unit = "km/h",
+                Factor = (60f * 60f) / 1000f
+            };
         }
 
         public override void RefreshData()
@@ -400,6 +406,12 @@
             GigaUnit = "Gm/s";
             NumberOfDecimalDigits = 2;
             Formatting = "N";
+            AltUnit = new AltUnit()
+            {
+                IsActive = false,
+                Unit = "km/h",
+                Factor = (60f * 60f) / 1000f
+            };
         }
 
         public override void RefreshData()

@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using KSP.Game;
+﻿using KSP.Game;
 using KSP.Sim.DeltaV;
 using KSP.Sim.impl;
 
@@ -16,7 +15,7 @@ namespace MicroMod
         {
             Name = "Total burn time (OAB)";
             Description = "Shows the total length of burn the vessel can mantain.";
-            EntryType = EntryType.Time;            
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
             BaseUnit = "s";
@@ -105,7 +104,7 @@ namespace MicroMod
 
     /// <summary>
     /// Calculates torque from the Center of Thrust and Center of Mass
-    /// </summary>    
+    /// </summary>
     public class Torque : OabStageInfoEntry
     {
         public Torque()
@@ -188,7 +187,7 @@ namespace MicroMod
 
             if (Utility.VesselDeltaVComponentOAB?.StageInfo == null) return;
 
-            for (int i = 0; i < Utility.VesselDeltaVComponentOAB.StageInfo.Count; i++)            
+            for (int i = 0; i < Utility.VesselDeltaVComponentOAB.StageInfo.Count; i++)
             {
                 var retrieved = Utility.VesselDeltaVComponentOAB.StageInfo[i];
                 var stage = new DeltaVStageInfo_OAB()

@@ -1,5 +1,4 @@
-﻿using BepInEx.Logging;
-using MicroMod;
+﻿using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -7,8 +6,6 @@ namespace MicroEngineer.UI
 {
     public class MainGuiController : MonoBehaviour
     {
-        private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.MainGuiController");
-
         public MainGuiWindow MainGuiWindow { get; set; }
         public UIDocument MainGui { get; set; }
         public VisualElement Root { get; set; }
@@ -22,7 +19,6 @@ namespace MicroEngineer.UI
 
         public void OnEnable()
         {
-            _logger.LogDebug("Entering OnEnable.");
             MainGui = GetComponent<UIDocument>();
             Root = MainGui.rootVisualElement;
             Header = Root.Q<VisualElement>("header");
@@ -42,7 +38,6 @@ namespace MicroEngineer.UI
                 return;
 
             MainGuiWindow.FlightRect.position = Root[0].transform.position;
-            _logger.LogDebug($"Initiating Save from UpdateWindowPosition.");
             Utility.SaveLayout();
         }
 
@@ -68,7 +63,6 @@ namespace MicroEngineer.UI
                 EntryWindowController ewc = new EntryWindowController(entryWindow, Root);
 
                 Body.Add(ewc.Root);
-                _logger.LogDebug($"Window {entryWindow.Name} added to root.");
             }
         }
 
@@ -76,7 +70,6 @@ namespace MicroEngineer.UI
         {            
             MainGuiWindow.IsFlightActive = false;
 
-            _logger.LogDebug($"Initiating Save from OnCloseButton.");
             Utility.SaveLayout();
             FlightSceneController.Instance.ShowGui = false;
         }

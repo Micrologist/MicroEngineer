@@ -18,7 +18,7 @@ namespace MicroMod
         public static VesselComponent ActiveVessel;
         public static ManeuverNodeData CurrentManeuver;
         public static string LayoutPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "MicroLayout.json");
-        public static int CurrentLayoutVersion = 13;
+        public static int CurrentLayoutVersion = 14;
         private static ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Utility");
         public static GameStateConfiguration GameState;
         public static MessageCenter MessageCenter;
@@ -142,12 +142,9 @@ namespace MicroMod
                 var settingsWindow = windows.Find(w => w.GetType() == typeof(SettingsWindow)) as SettingsWindow;
                 settingsWindow.LoadSettings();
 
-                //FlightSceneController.Instance.RebuildUI();
-
-                Logger.LogInfo("LoadLayout successful.");
-                Logger.LogDebug($"Finished loading. MainGui.IsFlightActive: {MainGui.IsFlightActive}.");
+                Logger.LogDebug("LoadLayout successful.");
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException)
             {
                 Logger.LogWarning($"MicroLayout.json file was not found at the expected location during LoadLayout. This is normal if this mod was just installed. Window states and positions will keep their default values.");
 
@@ -191,7 +188,7 @@ namespace MicroMod
         public static bool AreRectsNear(Rect rect1, Rect rect2)
         {
             float distanceX = Mathf.Abs(rect1.center.x - rect2.center.x);
-            float distanceY = Mathf.Abs(rect1.center.y - rect2.center.y);            
+            float distanceY = Mathf.Abs(rect1.center.y - rect2.center.y);
             return (distanceX < rect1.width / 2 + rect2.width / 2 + 50f && distanceY < rect1.height / 2 + rect2.height / 2 + 50f);
         }
 
