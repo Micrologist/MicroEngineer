@@ -9,7 +9,7 @@ using KSP.Game;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.3.0")]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.3.1")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{

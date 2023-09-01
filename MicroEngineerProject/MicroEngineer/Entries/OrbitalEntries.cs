@@ -490,6 +490,7 @@ namespace MicroMod
         {
             Name = "SOI trans.";
             Description = "Shows the amount of time it will take to transition to another Sphere Of Influence.";
+            EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
             BaseUnit = "s";
@@ -498,7 +499,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter - GameManager.Instance.Game.UniverseModel.UniversalTime;
+            EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter - Utility.UniversalTime;
         }
     }  
 }

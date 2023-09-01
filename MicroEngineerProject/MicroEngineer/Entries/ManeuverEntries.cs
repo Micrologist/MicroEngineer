@@ -133,7 +133,7 @@ namespace MicroMod
         public override void RefreshData()
         {
             List<ManeuverNodeData> nodes = Utility.ActiveVessel?.SimulationObject?.FindComponent<ManeuverPlanComponent>()?.GetNodes();
-            EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.Time - GameManager.Instance.Game.UniverseModel.UniversalTime;
+            EntryValue = nodes?.ElementAtOrDefault(base.SelectedNodeIndex)?.Time - Utility.UniversalTime;
         }
     }
 

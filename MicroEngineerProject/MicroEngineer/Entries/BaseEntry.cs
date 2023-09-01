@@ -182,15 +182,5 @@ namespace MicroMod
         }
 
         public virtual void RefreshData() { }
-    }
-
-    public class AltUnit
-    {
-        [JsonProperty]
-        public bool IsActive;
-        [JsonProperty]
-        public string Unit;
-        [JsonProperty]
-        public float Factor;
-    }
+    }    
 }
