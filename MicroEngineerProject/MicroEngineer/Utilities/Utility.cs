@@ -23,7 +23,7 @@ namespace MicroMod
         public static GameStateConfiguration GameState;
         public static MessageCenter MessageCenter;
         public static VesselDeltaVComponent VesselDeltaVComponentOAB;
-        public static double UniversalTime => GameManager.Instance.Game.UniverseModel.UniversalTime;
+        public static double UniversalTime => GameManager.Instance.Game.UniverseModel.UniverseTime;
 
         /// <summary>
         /// Refreshes the ActiveVessel and CurrentManeuver
