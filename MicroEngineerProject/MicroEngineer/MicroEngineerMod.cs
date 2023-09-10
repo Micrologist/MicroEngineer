@@ -9,7 +9,7 @@ using KSP.Game;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.3.1")]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.3.2")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
@@ -55,7 +55,7 @@ namespace MicroMod
              Manager.Instance.Update();
 
             // Keyboard shortcut for opening UI
-            if (Input.GetKey(KeyCode.LeftAlt) && Input.GetKeyDown(KeyCode.E))
+            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.E))
             {
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                 {

@@ -1,4 +1,5 @@
-﻿using MicroMod;
+﻿using BepInEx.Logging;
+using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -19,6 +20,9 @@ namespace MicroEngineer.UI
         public VisualElement TotalAslDeltaVContainer { get; set; }
         public VisualElement TotalVacDeltaVContainer { get; set; }
         public VisualElement TotalBurnTimeContainer { get; set; }
+
+        private static ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.StageInfoOABController");
+        private bool _lockUiRefresh;
 
         public StageInfoOABController()
         { }
@@ -92,9 +96,26 @@ namespace MicroEngineer.UI
                     MicroCelestialBodies.Instance.Bodies.Select(b => b.DisplayName).ToList(),
                     stage.CelestialBody.Name
                     );
+
                 var celestialBodyDropdown = control.Q<DropdownField>("body-dropdown");
+                celestialBodyDropdown.RegisterCallback<MouseDownEvent>(evt =>
+                {
+                    // When user clicks on the celestialBodyDropdown control we lock stage info refresh from happening
+                    // and unlock it again when user selects something from the dropdown.
+                    // We do this because if VesselDeltaVCalculationMessage is triggered between the user first clicking
+                    // on the control and selection something from it, the event will cause the UI to refresh (destroy
+                    // and rebuild the controls) and thus the original dropdown control will no longer exist and
+                    // celestialBody will not be selectable.
+                    _lockUiRefresh = true;
+                });
                 // Update entry's CelestialBody at the same index as the stage
-                celestialBodyDropdown.RegisterValueChangedCallback(evt => StageEntry.UpdateCelestialBodyAtIndex(stage.Index, celestialBodyDropdown.value));
+                celestialBodyDropdown.RegisterValueChangedCallback(evt =>
+                {
+                    StageEntry.UpdateCelestialBodyAtIndex(stage.Index, celestialBodyDropdown.value);
+                    _lockUiRefresh = false;
+                    StageEntry.RefreshData();
+                });                
+
                 Body.Add(control);
             }
 
@@ -108,6 +129,8 @@ namespace MicroEngineer.UI
 
         private void HandleStageInfoChanged(List<DeltaVStageInfo_OAB> stages)
         {
+            if (_lockUiRefresh) return;
+
             Body.Clear();
             BuildStages(stages);
         }
