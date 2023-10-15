@@ -4,7 +4,7 @@
         <ui:VisualElement name="title" class="window-title">
             <ui:Label text="▼" display-tooltip-when-elided="true" name="title-arrow-down" class="arrow" style="display: flex;" />
             <ui:Label text="▶" display-tooltip-when-elided="true" name="title-arrow-right" class="arrow" style="display: none;" />
-            <ui:Label text="EntryWindow" display-tooltip-when-elided="true" name="window-name" />
+            <ui:Label text="EntryWindow" display-tooltip-when-elided="true" name="window-name" style="margin-left: 3px;" />
             <ui:Button name="settings-button" class="settings-button">
                 <ui:VisualElement name="settings-button__background" class="settings-button__background" />
             </ui:Button>

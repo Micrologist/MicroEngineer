@@ -1,14 +1,16 @@
 ManifestFileVersion: 0
-CRC: 701663706
+CRC: 3136566240
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: bac239acd2ae67266b82cb90c3b6d7cb
+    Hash: 76720d4d6aebf8b093c38f09ebca6cef
   TypeTreeHash:
     serializedVersion: 2
-    Hash: fef1669f70b5ac2355be935f129d74ef
+    Hash: d1d45f0ae4b48ad0a84d19bfd18ad535
 HashAppended: 0
 ClassTypes:
+- Class: 28
+  Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11995, guid: 0000000000000000e000000000000000, type: 0}
 - Class: 114
@@ -41,4 +43,3 @@ Assets:
 - Assets/MicroEngineer/StageInfoOAB.uxml
 Dependencies:
 - E:/GitHub/KSP2/MyUnityProject/Assets/AssetBundles/kerbalui
-- E:/GitHub/KSP2/MyUnityProject/Assets/AssetBundles/microengineer_flightui.bundle
