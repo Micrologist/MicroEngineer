@@ -25,11 +25,12 @@ Mod folder will be placed in ..\Kerbal Space Program 2\BepInEx\plugins\
 
 # Usage
 * While in flight or VAB, open the mod window by clicking its entry on the APP BAR
-* Or press ALT + E to toggle windows
+* Or press CTRL + E to toggle windows
 
 ### Flight:
 * Pop out windows and drag the where you want
-* Popped out windows will snap to each other when being near 
+* Minimize the main window to hide irrelevant data
+* Popped out windows will snap to each other when being near
 * Open Edit windows by clicking on the gear icon
 * Edit windows:
   * add or remove any entry from any window any way you like

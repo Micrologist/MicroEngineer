@@ -1,4 +1,5 @@
-﻿using MicroMod;
+﻿using KSP.UI.Binding;
+using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,6 +13,7 @@ namespace MicroEngineer.UI
         public VisualElement Header { get; set; }
         public Button EditWindowsButton { get; set; }
         public Button CloseButton { get; set; }
+        public Button MinimizeButton { get; set; }
         public VisualElement Body { get; set; }
 
         public MainGuiController()
@@ -51,6 +53,8 @@ namespace MicroEngineer.UI
             var mainGuiHeader = Uxmls.Instance.MainGuiHeader.CloneTree();
             CloseButton = mainGuiHeader.Q<Button>("close-button");
             CloseButton.RegisterCallback<ClickEvent>(OnCloseButton);
+            MinimizeButton = mainGuiHeader.Q<Button>("minimize-button");
+            MinimizeButton.RegisterCallback<ClickEvent>(OnMinimizeButton);
             EditWindowsButton = mainGuiHeader.Q<Button>("editwindows-button");
             EditWindowsButton.RegisterCallback<ClickEvent>(evt => FlightSceneController.Instance.ToggleEditWindows());
             Header.Add(mainGuiHeader);
@@ -72,6 +76,15 @@ namespace MicroEngineer.UI
 
             Utility.SaveLayout();
             FlightSceneController.Instance.ShowGui = false;
+            GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(false);
+        }
+
+        private void OnMinimizeButton(ClickEvent evt)
+        {
+            MainGuiWindow.IsFlightMinimized = true;
+
+            Utility.SaveLayout();
+            FlightSceneController.Instance.RebuildUI();
         }
     }
 }

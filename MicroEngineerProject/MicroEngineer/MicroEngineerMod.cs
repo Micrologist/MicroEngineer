@@ -9,7 +9,7 @@ using KSP.Game;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.3.2")]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.4.0")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
@@ -32,7 +32,11 @@ namespace MicroMod
                 isOpen =>
                 {
                     if (isOpen)
-                        Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = isOpen;
+                    {
+                        var mainWindow = Manager.Instance.Windows.Find(w => w is MainGuiWindow) as MainGuiWindow;
+                        mainWindow.IsFlightActive = true;
+                        mainWindow.IsFlightMinimized = false;
+                    }
                     FlightSceneController.Instance.ShowGui = isOpen;
                     Utility.SaveLayout();
                 });
@@ -59,15 +63,29 @@ namespace MicroMod
             {
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                 {
-                    bool guiState = FlightSceneController.Instance.ShowGui;
-                    FlightSceneController.Instance.ShowGui = !guiState;
-                    Manager.Instance.Windows.Find(w => w.GetType() == typeof(MainGuiWindow)).IsFlightActive = !guiState;
+                    var mainWindow = Manager.Instance.Windows.Find(w => w is MainGuiWindow) as MainGuiWindow;
+
+                    // if MainGUI is minimized then treat it like it isn't open at all
+                    if (mainWindow.IsFlightMinimized)
+                    {
+                        mainWindow.IsFlightMinimized = false;
+                        mainWindow.IsFlightActive = true;
+                        FlightSceneController.Instance.ShowGui = true;                        
+                    }
+                    else
+                    {
+                        bool guiState = FlightSceneController.Instance.ShowGui;
+                        FlightSceneController.Instance.ShowGui = !guiState;
+                        mainWindow.IsFlightActive = !guiState;
+                    }
+                    Utility.SaveLayout();
                 }
                 else if (Utility.GameState.GameState == GameState.VehicleAssemblyBuilder)
                 {
                     bool guiState = OABSceneController.Instance.ShowGui;
                     OABSceneController.Instance.ShowGui = !guiState;
                     Manager.Instance.Windows.Find(w => w.GetType() == typeof(StageInfoOabWindow)).IsEditorActive = !guiState;
+                    Utility.SaveLayout();
                 }
             }
         }
