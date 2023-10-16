@@ -5,7 +5,6 @@ Displays useful information about your vessel in flight and in VAB. See your orb
 
 # Links
 * Spacedock: https://spacedock.info/mod/3282/Micro%20Engineer
-* Release: https://github.com/Micrologist/MicroEngineer/releases (grab the .zip file)
 * Forum: https://forum.kerbalspaceprogram.com/index.php?/topic/215989-micro-engineer/
 * Contact: [KSP 2 Modding Society](https://discord.com/channels/1078696971088433153/1080340366995239004)
 
@@ -25,11 +24,12 @@ Mod folder will be placed in ..\Kerbal Space Program 2\BepInEx\plugins\
 
 # Usage
 * While in flight or VAB, open the mod window by clicking its entry on the APP BAR
-* Or press ALT + E to toggle windows
+* Or press CTRL + E to toggle windows
 
 ### Flight:
 * Pop out windows and drag the where you want
-* Popped out windows will snap to each other when being near 
+* Minimize the main window to hide irrelevant data
+* Popped out windows will snap to each other when being near
 * Open Edit windows by clicking on the gear icon
 * Edit windows:
   * add or remove any entry from any window any way you like

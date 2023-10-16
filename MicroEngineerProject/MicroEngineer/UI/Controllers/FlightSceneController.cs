@@ -25,8 +25,6 @@ namespace MicroEngineer.UI
             set
             {
                 _showGui = value;
-                
-                GameObject.Find("BTN-MicroEngineerBtn")?.GetComponent<UIValue_WriteBool_Toggle>()?.SetValue(value);
 
                 RebuildUI();
                 
@@ -76,9 +74,12 @@ namespace MicroEngineer.UI
         public void InitializeUI()
         {
             //Build MainGui
-            MainGui = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, "MainGui", null, true);
-            MainGuiController mainGuiController = MainGui.gameObject.AddComponent<MainGuiController>();
-            MainGui.rootVisualElement[0].RegisterCallback<PointerMoveEvent>(evt => Utility.ClampToScreenUitk(MainGui.rootVisualElement[0]));
+            if ((Manager.Instance.Windows.Find(w => w is MainGuiWindow) as MainGuiWindow).IsFlightMinimized == false)
+            {
+                MainGui = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, "MainGui", null, true);
+                MainGuiController mainGuiController = MainGui.gameObject.AddComponent<MainGuiController>();
+                MainGui.rootVisualElement[0].RegisterCallback<PointerMoveEvent>(evt => Utility.ClampToScreenUitk(MainGui.rootVisualElement[0]));
+            }
 
             //Build poppedout windows
             foreach (EntryWindow poppedOutWindow in Manager.Instance.Windows.Where(w => w is EntryWindow && ((EntryWindow)w).IsFlightPoppedOut))

@@ -6,5 +6,7 @@ namespace MicroMod
     {
         [JsonProperty]
         public int LayoutVersion;
+        [JsonProperty]
+        public bool IsFlightMinimized;
     }
 }

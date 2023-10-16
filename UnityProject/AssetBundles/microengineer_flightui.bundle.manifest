@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1970053407
+CRC: 1886816605
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 7f47c0e0c831b174319c551b67cdf666
+    Hash: 16518aa2268b46f034c93f3e0a96a62a
   TypeTreeHash:
     serializedVersion: 2
     Hash: d1d45f0ae4b48ad0a84d19bfd18ad535
@@ -38,20 +38,14 @@ SerializeReferenceClassIdentifiers:
   ClassName: UnityEngine.UIElements.StyleValueHandle
 - AssemblyName: UnityEngine.UIElementsModule
   ClassName: UnityEngine.UIElements.VisualElementAsset
-- AssemblyName: UnityEngine.UIElementsModule
-  ClassName: UnityEngine.UIElements.VisualTreeAsset/UsingEntry
 Assets:
 - Assets/MicroEngineer/ManeuverFooter.uxml
 - Assets/MicroEngineer/Shared.uss
-- Assets/UI/micro_engineer/k2d2_cross.png
 - Assets/MicroEngineer/BaseWindow.uxml
 - Assets/MicroEngineer/MainGuiHeader.uxml
 - Assets/MicroEngineer/EditWindows.uxml
 - Assets/MicroEngineer/Flight.uss
-- Assets/UI/micro_engineer/falki_popout.png
-- Assets/UI/micro_engineer/k2dt_gear.png
 - Assets/MicroEngineer/StageInfoHeader.uxml
-- Assets/UI/micro_engineer/icon.png
 - Assets/MicroEngineer/EntryWindow.uxml
 - Assets/MicroEngineer/ManeuverHeader.uxml
 Dependencies:
