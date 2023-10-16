@@ -5,7 +5,6 @@ Displays useful information about your vessel in flight and in VAB. See your orb
 
 # Links
 * Spacedock: https://spacedock.info/mod/3282/Micro%20Engineer
-* Release: https://github.com/Micrologist/MicroEngineer/releases (grab the .zip file)
 * Forum: https://forum.kerbalspaceprogram.com/index.php?/topic/215989-micro-engineer/
 * Contact: [KSP 2 Modding Society](https://discord.com/channels/1078696971088433153/1080340366995239004)
 
