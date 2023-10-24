@@ -65,22 +65,23 @@ namespace MicroMod
             inputSeconds = Math.Ceiling(inputSeconds);
             var absoluteSeconds = Math.Abs(inputSeconds);
 
-            int days = (int)(absoluteSeconds / 21600);
-            int hours = (int)((absoluteSeconds - days * 21600) / 3600);
-            int minutes = (int)((absoluteSeconds - hours * 3600 - days * 21600) / 60);
-            int seconds = (int)(absoluteSeconds - days * 21600 - hours * 3600 - minutes * 60);
+            int years = (int)(absoluteSeconds / 9201600); // 426 days in a year
+            int days = (int)((absoluteSeconds - years * 9201600) / 21600); // 6 hours in a day
+            int hours = (int)((absoluteSeconds - years * 9201600 - days * 21600) / 3600);
+            int minutes = (int)((absoluteSeconds - years * 9201600 - days * 21600 - hours * 3600 ) / 60);
+            int seconds = (int)(absoluteSeconds - years * 9201600 - days * 21600 - hours * 3600 - minutes * 60);
 
             // If inputSeconds is negative, reverse the sign of the higest calculated value
             if (inputSeconds < 0)
             {
-                if (days != 0)
-                    days = -days;
+                if (years != 0) years = -years;
+                else if (days != 0) days = -days;
                 else if (hours != 0) hours = -hours;
                 else if (minutes != 0) minutes = -minutes;
                 else if (seconds != 0) seconds = -seconds;
             }
 
-            return new TimeParsed() { Days = days, Hours = hours, Minutes = minutes, Seconds = seconds };
+            return new TimeParsed() { Years = years, Days = days, Hours = hours, Minutes = minutes, Seconds = seconds };
         }
 
         public static string SituationToString(VesselSituations situation)
