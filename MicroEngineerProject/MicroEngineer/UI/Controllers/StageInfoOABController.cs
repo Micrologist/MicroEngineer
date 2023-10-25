@@ -24,6 +24,9 @@ namespace MicroEngineer.UI
         private static ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.StageInfoOABController");
         private bool _lockUiRefresh;
 
+        private double _totalDeltaVASL;
+        private double _totalDeltaVVac;
+
         public StageInfoOABController()
         { }
 
@@ -97,6 +100,9 @@ namespace MicroEngineer.UI
                     stage.CelestialBody.Name
                     );
 
+                _totalDeltaVASL += stage.DeltaVASL;
+                _totalDeltaVVac += stage.DeltaVVac;
+
                 var celestialBodyDropdown = control.Q<DropdownField>("body-dropdown");
                 celestialBodyDropdown.RegisterCallback<MouseDownEvent>(evt =>
                 {
@@ -132,27 +138,44 @@ namespace MicroEngineer.UI
             if (_lockUiRefresh) return;
 
             Body.Clear();
+            TotalAslDeltaVContainer.Clear();
+            _totalDeltaVASL = 0;
+            TotalVacDeltaVContainer.Clear();
+            _totalDeltaVVac = 0;
+            TotalBurnTimeContainer.Clear();
             BuildStages(stages);
+            SetTotalValues();
         }
 
         private void BuildFooter()
         {
+            Footer = Root.Q<VisualElement>("footer");
+            TotalAslDeltaVContainer = Root.Q<VisualElement>("asl-dv-container");
+            TotalVacDeltaVContainer = Root.Q<VisualElement>("vac-dv-container");
+            TotalBurnTimeContainer = Root.Q<VisualElement>("burn-time-container");
+
+            SetTotalValues();
+        }
+
+        private void SetTotalValues()
+        {
             BaseEntry entry;
             VisualElement control;
 
-            Footer = Root.Q<VisualElement>("footer");
-
-            TotalAslDeltaVContainer = Root.Q<VisualElement>("asl-dv-container");
             entry = StageInfoOABWindow.Entries.Find(e => e is TotalDeltaVASL_OAB);
-            control = new BaseEntryControl(entry);
+            // total deltav from stock stage info is wrong because it doesn't take into account different bodies.
+            // so here we'll sum up values for all calculated stages and won't subscribe to automatic value changes
+            entry.EntryValue = _totalDeltaVASL;
+            control = new BaseEntryControl(entry, false);
             TotalAslDeltaVContainer.Add(control);
-            
-            TotalVacDeltaVContainer = Root.Q<VisualElement>("vac-dv-container");
+
             entry = StageInfoOABWindow.Entries.Find(e => e is TotalDeltaVVac_OAB);
-            control = new BaseEntryControl(entry);
+            // total deltav from stock stage info is wrong because it doesn't take into account different bodies.
+            // so here we'll sum up values for all calculated stages and won't subscribe to automatic value changes
+            entry.EntryValue = _totalDeltaVVac;
+            control = new BaseEntryControl(entry, false);
             TotalVacDeltaVContainer.Add(control);
 
-            TotalBurnTimeContainer = Root.Q<VisualElement>("burn-time-container");
             entry = StageInfoOABWindow.Entries.Find(e => e is TotalBurnTime_OAB);
             control = new TimeEntryControl(entry);
             TotalBurnTimeContainer.Add(control);
