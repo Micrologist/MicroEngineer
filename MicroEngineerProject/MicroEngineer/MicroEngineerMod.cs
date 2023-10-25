@@ -6,15 +6,20 @@ using SpaceWarp.API.Mods;
 using SpaceWarp.API.UI.Appbar;
 using MicroEngineer.UI;
 using KSP.Game;
+using BepInEx.Configuration;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.4.0")]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.5.0")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
         public static MicroEngineerMod Instance { get; set; }
         public string GUID;
+        
+        private ConfigEntry<bool> _enableKeybinding;
+        private ConfigEntry<KeyCode> _keybind1;
+        private ConfigEntry<KeyCode> _keybind2;
 
         public override void OnInitialized()
 		{
@@ -52,14 +57,20 @@ namespace MicroMod
                     OABSceneController.Instance.ShowGui = isOpen;
                     Utility.SaveLayout();
                 });
+
+            _enableKeybinding = Config.Bind("Micro Engineer", "Enable keybinding", true, "Enables or disables keyboard shortcuts to show or hide windows in Flight and OAB scenes.");
+            _keybind1 = Config.Bind("Micro Engineer", "Keycode 1", KeyCode.LeftControl, "First keycode.");
+            _keybind2 = Config.Bind("Micro Engineer", "Keycode 2", KeyCode.E, "Second keycode.");
         }
 
         public void Update()
         {
              Manager.Instance.Update();
 
-            // Keyboard shortcut for opening UI
-            if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.E))
+            // Keyboard shortcut for opening the UI
+            if (_enableKeybinding.Value &&
+                (_keybind1.Value != KeyCode.None ? Input.GetKey(_keybind1.Value) : true) &&
+                (_keybind2.Value != KeyCode.None ? Input.GetKeyDown(_keybind2.Value) : true))
             {
                 if (Utility.GameState.GameState == GameState.FlightView || Utility.GameState.GameState == GameState.Map3DView)
                 {
