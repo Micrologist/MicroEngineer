@@ -68,7 +68,7 @@ namespace MicroMod
              Manager.Instance.Update();
 
             // Keyboard shortcut for opening the UI
-            if (_enableKeybinding.Value &&
+            if ((_enableKeybinding?.Value ?? false) &&
                 (_keybind1.Value != KeyCode.None ? Input.GetKey(_keybind1.Value) : true) &&
                 (_keybind2.Value != KeyCode.None ? Input.GetKeyDown(_keybind2.Value) : true))
             {
