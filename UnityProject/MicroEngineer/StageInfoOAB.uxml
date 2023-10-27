@@ -12,7 +12,7 @@
             <ui:VisualElement name="stage-info-header" class="stage-oab__header">
                 <ui:Label text="#" display-tooltip-when-elided="true" name="stage-number-header" class="stage-oab__header__number" />
                 <ui:Label text="TWR" display-tooltip-when-elided="true" name="stage-twr-header" class="stage-oab__header__twr" />
-                <ui:Label text="SLT" display-tooltip-when-elided="true" name="stage-slt-header" class="stage-oab__header__slt" />
+                <ui:Label text="ASL TWR" display-tooltip-when-elided="true" name="stage-slt-header" class="stage-oab__header__slt" />
                 <ui:Label text="ASL ∆v" display-tooltip-when-elided="true" name="asl-dv-header" class="stage-oab__header__asl-dv" />
                 <ui:Label text="Vac ∆v" display-tooltip-when-elided="true" name="vac-dv-header" class="stage-oab__header__vac-dv" />
                 <ui:Label text="Burn time" display-tooltip-when-elided="true" name="burn-time-header" class="stage-oab__header__burn-time" />
