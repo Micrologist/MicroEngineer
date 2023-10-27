@@ -1,10 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="Flight.uss" />
+    <Style src="project://database/Assets/MicroEngineer/Flight.uss?fileID=7433441132597879392&amp;guid=7ff56adfaa9f5dd41b0bff8ab8aafc04&amp;type=3#Flight" />
     <ui:VisualElement name="window-root" class="window-root">
         <ui:VisualElement name="title" class="window-title">
             <ui:Label text="▼" display-tooltip-when-elided="true" name="title-arrow-down" class="arrow" style="display: flex;" />
             <ui:Label text="▶" display-tooltip-when-elided="true" name="title-arrow-right" class="arrow" style="display: none;" />
-            <ui:Label text="EntryWindow" display-tooltip-when-elided="true" name="window-name" style="margin-left: 3px;" />
+            <ui:Label text="Vessel" display-tooltip-when-elided="true" name="window-name" style="margin-left: 3px;" />
             <ui:Button name="settings-button" class="settings-button">
                 <ui:VisualElement name="settings-button__background" class="settings-button__background" />
             </ui:Button>

@@ -40,14 +40,15 @@ namespace MicroEngineer.UI
             set => UnitLabel.text = value;
         }
 
-        public BaseEntryControl(BaseEntry entry) : this()
+        public BaseEntryControl(BaseEntry entry, bool subscribeToValueChanges = true) : this()
         {
             EntryName = entry.Name;
             Value = entry.ValueDisplay;
             Unit = entry.UnitDisplay;
 
             // When entry's value changes, update value and unit labels
-            entry.OnEntryValueChanged += HandleEntryValueChanged;
+            if (subscribeToValueChanges)
+                entry.OnEntryValueChanged += HandleEntryValueChanged;
 
             // Handle alternate units
             if (entry.AltUnit != null)

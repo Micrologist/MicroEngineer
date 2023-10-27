@@ -3,6 +3,7 @@
     --background-gray-2: rgb(28, 34, 42);
     --yellowish-translucent: rgba(237, 208, 147, 0.1);
     --yellowish: rgb(237, 208, 147);
+    --unity-colors-toggle_checkmark-background: rgba(255, 0, 0, 0.99);
 }
 
 .main-gui_root {
@@ -55,13 +56,13 @@
     -unity-text-align: middle-left;
     flex-grow: 1;
     padding-left: 10px;
-    -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/LEDCounter7/led_counter-7 SDF.asset');
+    -unity-font-definition: url('project://database/Packages/uitkforksp2.controls/Assets/Theme/Fonts/LEDCounter7/led_counter-7%20SDF.asset?fileID=11400000&guid=33e1e97b69ec355479ba49006381fc06&type=2#led_counter-7 SDF');
     font-size: 16px;
     padding-bottom: 0;
 }
 
 .maingui-settings-button {
-    background-image: url('/Assets/UI/micro_engineer/icon.png');
+    background-image: url('project://database/Assets/UI/micro_engineer/icon.png?fileID=21300000&guid=5806ecf31f3b0fa43ac287bb4c04f42c&type=3#icon');
     -unity-background-scale-mode: scale-to-fit;
     width: 20px;
     height: 20px;
@@ -135,6 +136,7 @@
     -unity-font-style: normal;
     -unity-text-outline-width: 0.5px;
     -unity-text-align: middle-left;
+    width: 14px;
 }
 
 .window-title #window-name {
@@ -168,10 +170,10 @@
 .settings-button {
     width: 20px;
     height: 20px;
-    padding-left: 3px;
-    padding-right: 3px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     -unity-background-scale-mode: scale-to-fit;
     background-color: rgba(0, 0, 0, 0);
     border-left-width: 0;
@@ -192,17 +194,17 @@
 .settings-button__background {
     width: 100%;
     height: 100%;
-    background-image: url('/Assets/UI/micro_engineer/k2dt_gear.png');
+    background-image: url('project://database/Assets/UI/micro_engineer/k2dt_gear.png?fileID=21300000&guid=6454bfe5f58cdaa4f9897b09c2bdccf6&type=3#k2dt_gear');
     -unity-background-image-tint-color: rgb(192, 199, 213);
 }
 
 .popout-button {
     width: 20px;
     height: 20px;
-    padding-left: 3px;
-    padding-right: 3px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     -unity-background-scale-mode: scale-to-fit;
     background-color: rgba(0, 0, 0, 0);
     border-left-width: 0;
@@ -222,7 +224,7 @@
 .popout-button__background {
     width: 100%;
     height: 100%;
-    background-image: url('/Assets/UI/micro_engineer/falki_popout.png');
+    background-image: url('project://database/Assets/UI/micro_engineer/falki_popout.png?fileID=21300000&guid=73a472312cc8b7f48aecff51bf39de59&type=3#falki_popout');
     -unity-background-image-tint-color: rgb(192, 199, 213);
 }
 
@@ -234,10 +236,10 @@
     background-color: rgba(15, 19, 24, 0);
     width: 20px;
     height: 20px;
-    padding-left: 3px;
-    padding-right: 3px;
-    padding-top: 3px;
-    padding-bottom: 3px;
+    padding-left: 4px;
+    padding-right: 4px;
+    padding-top: 4px;
+    padding-bottom: 4px;
     -unity-background-scale-mode: scale-to-fit;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
@@ -252,7 +254,7 @@
 .close-button__background {
     width: 100%;
     height: 100%;
-    background-image: url('/Assets/UI/micro_engineer/k2d2_cross.png');
+    background-image: url('project://database/Assets/UI/micro_engineer/k2d2_cross.png?fileID=2800000&guid=f495cb715406a4f4cac351a10a68524d&type=3#k2d2_cross');
     -unity-background-image-tint-color: rgb(192, 199, 213);
     -unity-background-scale-mode: scale-to-fit;
 }
@@ -284,7 +286,7 @@
 .minimize-button__background {
     width: 100%;
     height: 100%;
-    background-image: url('/Assets/UI/micro_engineer/minus.png');
+    background-image: url('project://database/Assets/UI/micro_engineer/minus.png?fileID=21300000&guid=93b098f39c9d9f246ba8dd4f5e6b2660&type=3#minus');
     -unity-background-image-tint-color: rgb(192, 199, 213);
     -unity-background-scale-mode: scale-to-fit;
 }
@@ -335,23 +337,25 @@
 }
 
 .entry__name {
-    width: 50%;
     -unity-text-align: middle-left;
-    flex-shrink: 10;
+    flex-grow: 0;
+    max-width: 50%;
+    flex-shrink: 1;
 }
 
 .entry__value {
-    -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
     color: var(--yellowish);
     -unity-text-align: middle-right;
     padding-right: 2px;
     flex-grow: 1;
     align-items: flex-end;
     height: 100%;
+    flex-shrink: 0;
+    flex-direction: row;
+    justify-content: flex-end;
 }
 
 .entry__unit {
-    flex-shrink: 8;
     width: 25px;
     padding-left: 0;
     padding-right: 0;
@@ -359,7 +363,26 @@
     padding-bottom: 0;
     -unity-text-align: middle-left;
     height: 100%;
+    flex-grow: 0;
+    flex-shrink: 0;
     font-size: 8px;
+}
+
+.entry__days-inner-value {
+    flex-shrink: 1;
+    min-width: 12px;
+    max-width: 20px;
+    flex-grow: 0;
+    padding-left: 1px;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    -unity-text-align: middle-right;
+    color: var(--yellowish);
 }
 
 .entry__inner-value {
@@ -372,15 +395,25 @@
     padding-top: 0;
     padding-bottom: 0;
     flex-grow: 0;
-    flex-shrink: 0;
+    flex-shrink: 1;
+    -unity-text-align: middle-right;
+    max-width: 15px;
+    min-width: 12px;
+    color: var(--yellowish);
 }
 
 .entry__inner-unit {
-    width: 6px;
     margin-left: 0;
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
+    flex-shrink: 1;
+    flex-grow: 0;
+    -unity-text-align: middle-left;
+    min-width: 8px;
+    max-width: 8px;
+    font-size: 8px;
+    top: 1px;
 }
 
 .entry__outer-value {
@@ -394,10 +427,6 @@
     margin-right: 0;
     margin-top: 0;
     margin-bottom: 0;
-}
-
-TimeEntryControl .entry__value {
-    flex-grow: 0;
 }
 
 .window-footer {
@@ -439,7 +468,6 @@ TimeEntryControl .entry__value {
 }
 
 .stage__deltav-value {
-    -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
     color: var(--yellowish);
     -unity-text-align: middle-right;
     padding-right: 2px;
@@ -470,7 +498,6 @@ TimeEntryControl .entry__value {
 }
 
 .stage__twr {
-    -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
     color: var(--yellowish);
     -unity-text-align: middle-right;
     padding-right: 2px;
@@ -495,7 +522,6 @@ TimeEntryControl .entry__value {
 }
 
 .stage__burn-value {
-    -unity-font-definition: url('/Packages/uitkforksp2.controls/Assets/Theme/Fonts/JetBrainsMono/JetBrainsMono-Bold SDF.asset');
     color: var(--yellowish);
     -unity-text-align: middle-right;
     padding-right: 2px;
@@ -511,6 +537,7 @@ TimeEntryControl .entry__value {
     padding-bottom: 0;
     flex-grow: 0;
     flex-shrink: 0;
+    max-width: 12px;
 }
 
 .stage__burn-unit {
@@ -735,6 +762,7 @@ TimeEntryControl .entry__value {
     font-size: 14px;
     -unity-text-align: middle-center;
     color: rgb(192, 199, 213);
+    min-height: 18px;
 }
 
 .edit-window__middle-column {
@@ -771,6 +799,7 @@ TimeEntryControl .entry__value {
     border-top-right-radius: 3px;
     border-bottom-right-radius: 3px;
     color: rgb(192, 199, 213);
+    font-size: var(--unity-metrics-default-font_tiny_size);
 }
 
 .edit-window__body Button {
@@ -943,7 +972,7 @@ TimeEntryControl .entry__value {
 }
 
 .edit-windows__entry__increase-decimal-background {
-    background-image: url('/Assets/UI/micro_engineer/increase-decimal-19.png');
+    background-image: url('project://database/Assets/UI/micro_engineer/increase-decimal-19.png?fileID=21300000&guid=9d212dc85f20a98409c1e1226b013534&type=3#increase-decimal-19');
     width: 100%;
     height: 100%;
 }
@@ -978,7 +1007,7 @@ TimeEntryControl .entry__value {
 .edit-windows__entry__decrease-decimal-background {
     width: 100%;
     height: 100%;
-    background-image: url('/Assets/UI/micro_engineer/decrease-decimal-19.png');
+    background-image: url('project://database/Assets/UI/micro_engineer/decrease-decimal-19.png?fileID=21300000&guid=cc622487d470f8e45a6e3b5489ab3fa5&type=3#decrease-decimal-19');
 }
 
 .edit-windows__entry__decrease-decimal-background:disabled {

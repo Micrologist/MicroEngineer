@@ -59,7 +59,7 @@ namespace MicroMod
                             break;
                         case EntryType.Time:
                             var time = Utility.ParseSecondsToTimeFormat((double?)value ?? 0);
-                            OnEntryTimeValueChanged?.Invoke(time.Days, time.Hours, time.Minutes, time.Seconds);
+                            OnEntryTimeValueChanged?.Invoke(time.Years, time.Days, time.Hours, time.Minutes, time.Seconds);
                             break;
                         case EntryType.LatitudeLongitude:
                             var latLon = Utility.ParseDegreesToDMSFormat((double?)value ?? 0);
@@ -78,7 +78,7 @@ namespace MicroMod
         }
 
         public delegate void EntryValueChanged(string value, string unit);
-        public delegate void EntryTimeValueChanged(int days, int hours, int minutes, int seconds);
+        public delegate void EntryTimeValueChanged(int years, int days, int hours, int minutes, int seconds);
         public delegate void EntryLatLonChanged(int degrees, int minutes, int seconds, string direction);
         public delegate void StageInfoChanged(List<Stage> stages);
         public event EntryValueChanged OnEntryValueChanged;

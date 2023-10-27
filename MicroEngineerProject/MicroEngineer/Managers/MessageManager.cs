@@ -32,22 +32,22 @@ namespace MicroMod
             Utility.RefreshGameManager();
 
             // While in OAB we use the VesselDeltaVCalculationMessage event to refresh data as it's triggered a lot less frequently than Update()
-            Utility.MessageCenter.Subscribe<VesselDeltaVCalculationMessage>(new Action<MessageCenterMessage>(obj => this.RefreshStagingDataOAB((VesselDeltaVCalculationMessage)obj)));
+            Utility.MessageCenter.PersistentSubscribe<VesselDeltaVCalculationMessage>(new Action<MessageCenterMessage>(obj => this.RefreshStagingDataOAB((VesselDeltaVCalculationMessage)obj)));
 
             // We are loading layout state when entering Flight or OAB game state
-            Utility.MessageCenter.Subscribe<GameStateEnteredMessage>(new Action<MessageCenterMessage>(this.GameStateEntered));
+            Utility.MessageCenter.PersistentSubscribe<GameStateEnteredMessage>(new Action<MessageCenterMessage>(this.GameStateEntered));
 
             // We are saving layout state when exiting from Flight or OAB game state
-            Utility.MessageCenter.Subscribe<GameStateLeftMessage>(new Action<MessageCenterMessage>(this.GameStateLeft));
+            Utility.MessageCenter.PersistentSubscribe<GameStateLeftMessage>(new Action<MessageCenterMessage>(this.GameStateLeft));
 
             // Sets the selected node index to the newly created node
-            Utility.MessageCenter.Subscribe<ManeuverCreatedMessage>(new Action<MessageCenterMessage>(this.OnManeuverCreatedMessage));
+            Utility.MessageCenter.PersistentSubscribe<ManeuverCreatedMessage>(new Action<MessageCenterMessage>(this.OnManeuverCreatedMessage));
 
             // Resets node index
-            Utility.MessageCenter.Subscribe<ManeuverRemovedMessage>(new Action<MessageCenterMessage>(this.OnManeuverRemovedMessage));
+            Utility.MessageCenter.PersistentSubscribe<ManeuverRemovedMessage>(new Action<MessageCenterMessage>(this.OnManeuverRemovedMessage));
 
             // Torque update for StageInfoOAB
-            Utility.MessageCenter.Subscribe<PartManipulationCompletedMessage>(new Action<MessageCenterMessage>(this.OnPartManipulationCompletedMessage));
+            Utility.MessageCenter.PersistentSubscribe<PartManipulationCompletedMessage>(new Action<MessageCenterMessage>(this.OnPartManipulationCompletedMessage));
         }
 
         private void OnManeuverCreatedMessage(MessageCenterMessage message)

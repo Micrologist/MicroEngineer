@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a2bdbb2390cbc23458491495ac303224
+guid: fa86a357418e3d14ea92339649ed3437
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -7,5 +7,5 @@ ScriptedImporter:
   userData: 
   assetBundleName: microengineer_oabui.bundle
   assetBundleVariant: 
-  script: {fileID: 11500000, guid: b77d446ad57f7f3469486cac9efc9952, type: 3}
+  script: {fileID: 12385, guid: 0000000000000000e000000000000000, type: 0}
   disableValidation: 0
