@@ -44,8 +44,8 @@ Mod folder will be placed in ..\Kerbal Space Program 2\BepInEx\plugins\
 * Set a different celestial body for each stage to see what TWR and deltav you'll get on that body
 
 # Dependency
-* [Space Warp + BepInEx](https://spacedock.info/mod/3277/Space%20Warp%20+%20BepInEx) - 1.3.0.3 or later
-* [UITK for KSP 2](https://spacedock.info/mod/3363/UITK%20for%20KSP%202) - 1.4.0 or later
+* [Space Warp + BepInEx](https://spacedock.info/mod/3277/Space%20Warp%20+%20BepInEx)
+* [UITK for KSP 2](https://spacedock.info/mod/3363/UITK%20for%20KSP%202)
 
 # Author & Licensing
 * Author: [Falki](https://github.com/Falki-git)
