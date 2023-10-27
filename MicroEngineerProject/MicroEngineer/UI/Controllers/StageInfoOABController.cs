@@ -120,7 +120,7 @@ namespace MicroEngineer.UI
                     StageEntry.UpdateCelestialBodyAtIndex(stage.Index, celestialBodyDropdown.value);
                     _lockUiRefresh = false;
                     StageEntry.RefreshData();
-                });                
+                });
 
                 Body.Add(control);
             }
