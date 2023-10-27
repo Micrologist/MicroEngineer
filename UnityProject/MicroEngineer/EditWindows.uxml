@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="Flight.uss" />
+    <Style src="project://database/Assets/MicroEngineer/Flight.uss?fileID=7433441132597879392&amp;guid=7ff56adfaa9f5dd41b0bff8ab8aafc04&amp;type=3#Flight" />
     <ui:VisualElement name="root" class="edit-window__root">
         <ui:VisualElement name="header" class="edit-window__header" style="padding-left: 25px;">
             <ui:Label text="AVAILABLE" display-tooltip-when-elided="true" style="flex-grow: 1; -unity-text-align: upper-center; color: rgb(237, 208, 147);" />
@@ -14,7 +14,7 @@
         <ui:VisualElement name="body" class="edit-window__body" style="flex-shrink: 0; flex-direction: column; padding-right: 5px; padding-left: 25px;">
             <ui:VisualElement name="body-header" style="width: 100%; flex-direction: row; justify-content: space-between; align-items: center;">
                 <ui:VisualElement name="category-container" style="flex-grow: 1; background-color: rgb(28, 34, 42); flex-shrink: 1; width: 100%; border-top-left-radius: 5px; border-top-right-radius: 5px; align-items: center; height: 100%; padding-bottom: 5px;">
-                    <UitkForKsp2.Controls.Dropdown index="-1" label="Category:" name="category__dropdown" choices="Orbital, Misc, Body" style="margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; display: flex; flex-direction: column; align-items: center; width: 60%;" />
+                    <ui:DropdownField label="Category:" index="-1" name="category__dropdown" choices="Orbital,Misc,Body" style="display: flex; flex-direction: column; align-items: center; width: 60%; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
                 </ui:VisualElement>
                 <ui:VisualElement name="middle-column" class="edit-window__middle-column" style="flex-shrink: 0; flex-grow: 0; width: 80px; height: 100%;" />
                 <ui:VisualElement name="window-container" style="flex-grow: 1; background-color: rgb(28, 34, 42); flex-shrink: 1; width: 100%; align-items: center; height: 100%; padding-bottom: 5px; flex-direction: column;">
@@ -22,14 +22,14 @@
                         <ui:Label text="Window:" display-tooltip-when-elided="true" name="window-label" style="height: 30px; -unity-text-align: middle-center;" />
                         <ui:VisualElement style="flex-direction: row; width: 100%; height: 20px; justify-content: space-between;">
                             <ui:Button text="&lt;" display-tooltip-when-elided="true" name="prev-window" class="edit-window__small-button prev-next-buttons" />
-                            <ui:TextField picking-mode="Ignore" value="filler text" text="Orbital" name="selected-window" class="selected-window" />
+                            <ui:TextField picking-mode="Ignore" value="Orbital" text="Orbital" name="selected-window" class="selected-window" />
                             <ui:Button text="&gt;" display-tooltip-when-elided="true" name="next-window" class="edit-window__small-button prev-next-buttons" />
                         </ui:VisualElement>
                     </ui:VisualElement>
                     <ui:VisualElement name="options-container" style="flex-direction: row; width: 100%; justify-content: space-between; padding-left: 5px; padding-right: 5px; align-items: center;">
                         <ui:Button text="NEW" display-tooltip-when-elided="true" name="new-window" class="edit-window__small-button" style="height: 20px;" />
                         <ui:Toggle name="lock-window" text="Locked" style="font-size: 10px; -unity-text-align: middle-left; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; height: 20px;" />
-                        <ui:Button text="DEL" display-tooltip-when-elided="true" name="delete-window" class="edit-window__small-button edit-window__small-button-disabled" style="height: 20px;" />
+                        <ui:Button text="DEL" display-tooltip-when-elided="true" name="delete-window" class="edit-window__small-button edit-window__small-button-disabled" style="height: 20px; text-overflow: ellipsis;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
                 <ui:VisualElement name="right-column" class="edit-window__right-column" style="height: 100%;" />

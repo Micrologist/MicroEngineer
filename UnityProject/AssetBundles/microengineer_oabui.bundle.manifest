@@ -1,27 +1,51 @@
 ManifestFileVersion: 0
-CRC: 3136566240
+CRC: 2933062379
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 76720d4d6aebf8b093c38f09ebca6cef
+    Hash: 89e1eddf4a744367ddcefcf764290b5c
   TypeTreeHash:
     serializedVersion: 2
-    Hash: d1d45f0ae4b48ad0a84d19bfd18ad535
+    Hash: c8f72d8edfb36ebb9af360c2b5b8b40b
 HashAppended: 0
 ClassTypes:
+- Class: 21
+  Script: {instanceID: 0}
 - Class: 28
+  Script: {instanceID: 0}
+- Class: 48
   Script: {instanceID: 0}
 - Class: 114
   Script: {fileID: 11995, guid: 0000000000000000e000000000000000, type: 0}
 - Class: 114
   Script: {fileID: 11998, guid: 0000000000000000e000000000000000, type: 0}
 - Class: 114
-  Script: {fileID: 11500000, guid: 9a8fdda5b4c5f6544bbac8a17c59089c, type: 3}
+  Script: {fileID: 19001, guid: 0000000000000000e000000000000000, type: 0}
 - Class: 115
   Script: {instanceID: 0}
-- Class: 213
+- Class: 128
   Script: {instanceID: 0}
 SerializeReferenceClassIdentifiers:
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.FaceInfo
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.Glyph
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphMetrics
+- AssemblyName: UnityEngine.TextCoreFontEngineModule
+  ClassName: UnityEngine.TextCore.GlyphRect
+- AssemblyName: UnityEngine.TextCoreTextEngineModule
+  ClassName: UnityEngine.TextCore.Text.Character
+- AssemblyName: UnityEngine.TextCoreTextEngineModule
+  ClassName: UnityEngine.TextCore.Text.FontAssetCreationEditorSettings
+- AssemblyName: UnityEngine.TextCoreTextEngineModule
+  ClassName: UnityEngine.TextCore.Text.FontFeatureTable
+- AssemblyName: UnityEngine.TextCoreTextEngineModule
+  ClassName: UnityEngine.TextCore.Text.FontWeightPair
+- AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.Button/UxmlFactory
+- AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.Label/UxmlFactory
 - AssemblyName: UnityEngine.UIElementsModule
   ClassName: UnityEngine.UIElements.StyleComplexSelector
 - AssemblyName: UnityEngine.UIElementsModule
@@ -33,13 +57,18 @@ SerializeReferenceClassIdentifiers:
 - AssemblyName: UnityEngine.UIElementsModule
   ClassName: UnityEngine.UIElements.StyleSelectorPart
 - AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.StyleSheet/ImportStruct
+- AssemblyName: UnityEngine.UIElementsModule
   ClassName: UnityEngine.UIElements.StyleSheets.Dimension
 - AssemblyName: UnityEngine.UIElementsModule
   ClassName: UnityEngine.UIElements.StyleValueHandle
 - AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.UxmlRootElementFactory
+- AssemblyName: UnityEngine.UIElementsModule
+  ClassName: UnityEngine.UIElements.VisualElement/UxmlFactory
+- AssemblyName: UnityEngine.UIElementsModule
   ClassName: UnityEngine.UIElements.VisualElementAsset
 Assets:
-- Assets/MicroEngineer/OAB.uss
 - Assets/MicroEngineer/StageInfoOAB.uxml
-Dependencies:
-- E:/GitHub/KSP2/MyUnityProject/Assets/AssetBundles/kerbalui
+- Assets/MicroEngineer/OAB.uss
+Dependencies: []
