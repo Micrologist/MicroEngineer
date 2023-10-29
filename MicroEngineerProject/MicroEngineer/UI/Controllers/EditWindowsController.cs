@@ -1,6 +1,7 @@
 ﻿using MicroMod;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UitkForKsp2.API;
 
 namespace MicroEngineer.UI
 {
@@ -184,7 +185,7 @@ namespace MicroEngineer.UI
                 CheckIfDecimalButtonsShouldBeEnabled(e, incDecimal, decDecimal);
                 textField.RegisterCallback<MouseDownEvent>(evt => OnInstalledEntryClicked(evt, control));
                 textField.RegisterValueChangedCallback(evt => RenameEntry(evt, control));
-                Utility.DisableGameInputOnFocus(control);
+                textField.DisableGameInputOnFocus();
                 _installedControls.Add(control);
                 InstalledScrollView.Add(control);
             }
@@ -197,7 +198,7 @@ namespace MicroEngineer.UI
                 if (control != _selectedInstalledEntry)
                     SelectInstalled(control);
                 else if (Time.time - _timeOfLastClick < 0.5f)
-                    RemoveEntryFromInstalledWindow(); // double click on control
+                    RemoveEntryFromInstalledWindow(); // double click on control - doesn't work with UitkForKsp2 v2.1.1
                 else
                     UnselectInstalled(control); // longer than 500 ms since the last click, so we'll unselect the control
             }
