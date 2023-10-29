@@ -265,7 +265,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Target;
             IsDefault = true;
-            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -522,9 +521,7 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Target;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 3;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -684,7 +681,6 @@ namespace MicroMod
             Category = MicroEntryCategory.Target;
             IsDefault = true;
             HideWhenNoData = true;
-            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -768,7 +764,6 @@ namespace MicroMod
             Category = MicroEntryCategory.Target;
             IsDefault = false;
             HideWhenNoData = true;
-            BaseUnit = "s";
             Formatting = null;
         }
 

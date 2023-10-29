@@ -126,7 +126,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
-            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -146,7 +145,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
-            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -222,7 +220,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
-            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -244,7 +241,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
-            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -314,7 +310,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = true;
-            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -595,8 +590,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 0;
             Formatting = null;
         }
 
@@ -642,8 +635,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 3;
             Formatting = null;
         }
 
@@ -665,7 +656,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
-            BaseUnit = null;
             Formatting = null;
         }
 
@@ -687,7 +677,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Maneuver;
             IsDefault = false;
-            BaseUnit = null;
             Formatting = null;
         }
 

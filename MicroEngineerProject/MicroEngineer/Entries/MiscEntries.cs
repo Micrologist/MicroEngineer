@@ -50,8 +50,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 0;
             Formatting = null;
         }
 
@@ -70,8 +68,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 0;
             Formatting = null;
         }
 
@@ -90,9 +86,7 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -110,9 +104,7 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -210,9 +202,7 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -230,9 +220,7 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Misc;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
