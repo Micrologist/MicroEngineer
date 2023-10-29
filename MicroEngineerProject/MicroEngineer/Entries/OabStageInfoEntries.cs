@@ -18,9 +18,7 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.OAB;
             IsDefault = true;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 1;
-            Formatting = "N";
+            Formatting = null;
             UseDHMSFormatting = true;
         }
 

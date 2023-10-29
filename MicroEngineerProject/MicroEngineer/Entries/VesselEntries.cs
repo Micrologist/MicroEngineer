@@ -133,9 +133,7 @@
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Vessel;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 0;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()

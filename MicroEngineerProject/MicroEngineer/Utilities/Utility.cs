@@ -207,10 +207,12 @@ namespace MicroMod
             element.UnregisterCallback<GeometryChangedEvent>((evt) => CenterWindow(evt, element));
         }
 
+        /*
         public static void DisableGameInputOnFocus(this VisualElement element)
         {
             element.RegisterCallback<FocusInEvent>(_ => GameManager.Instance?.Game?.Input.Disable());
             element.RegisterCallback<FocusOutEvent>(_ => GameManager.Instance?.Game?.Input.Enable());
         }
+        */
     }    
 }

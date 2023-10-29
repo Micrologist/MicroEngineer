@@ -65,7 +65,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            BaseUnit = null;
             Formatting = null;
         }
 
@@ -84,7 +83,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -145,7 +143,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = true;
-            BaseUnit = "s";
             Formatting = null;
         }
 
@@ -427,9 +424,7 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            BaseUnit = "s";
-            NumberOfDecimalDigits = 2;
-            Formatting = "N";
+            Formatting = null;
         }
 
         public override void RefreshData()
@@ -493,7 +488,6 @@ namespace MicroMod
             EntryType = EntryType.Time;
             Category = MicroEntryCategory.Orbital;
             IsDefault = false;
-            BaseUnit = "s";
             Formatting = null;
         }
 

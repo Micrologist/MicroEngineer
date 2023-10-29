@@ -11,6 +11,7 @@
 		<PackageReference Include="BepInEx.BaseLib" Version="5.4.21" Publicize="true" />
 		<PackageReference Include="SpaceWarp" Version="1.4.0" />
 		<PackageReference Include="KerbalSpaceProgram2.GameLibs" Version="0.1.4" PrivateAssets="all" />
+		<PackageReference Include="UitkForKsp2" Version="2.1.0" />
 	</ItemGroup>
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<Exec Command="echo Killing task KSP2_x64.exe&#xD;&#xA;taskkill /f /fi &quot;pid gt 0&quot; /im KSP2_x64.exe&#xD;&#xA;&#xD;&#xA;echo Copying output .dll&#xD;&#xA;xcopy /y &quot;$(TargetDir)$(ProjectName).dll&quot; &quot;$(KSP2DIR)\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;&#xD;&#xA;echo Copying output .pdb&#xD;&#xA;xcopy /y &quot;$(TargetDir)$(ProjectName).pdb&quot; &quot;$(KSP2DIR)\BepInEx\plugins\micro_engineer\&quot;&#xD;&#xA;&#xD;&#xA;echo Starting KSP2_x64.exe&#xD;&#xA;powershell &quot;start-process &quot;&quot;$(KSP2DIR)\KSP2_x64.exe&quot;&quot;&quot;" />
