@@ -1,4 +1,5 @@
-﻿using KSP.Sim.impl;
+﻿using KSP.Game.Science;
+using KSP.Sim.impl;
 using static KSP.Rendering.Planets.PQSData;
 
 namespace MicroMod
@@ -150,10 +151,10 @@ namespace MicroMod
     {
         public Situation()
         {
-            Name = "Situation";
-            Description = "Shows the vessel's current situation: Landed, Flying, Orbiting, etc.";
+            Name = "State";
+            Description = "Shows the vessel's current state: Landed, Flying, Orbiting, etc.";
             Category = MicroEntryCategory.Surface;
-            IsDefault = true;
+            IsDefault = false;
             BaseUnit = null;
             Formatting = null;
         }
@@ -182,7 +183,7 @@ namespace MicroMod
             Name = "Biome";
             Description = "Shows the biome currently below the vessel.";
             Category = MicroEntryCategory.Surface;
-            IsDefault = true;
+            IsDefault = false;
             BaseUnit = null;
             Formatting = null;
         }
@@ -200,6 +201,64 @@ namespace MicroMod
                     return "-";
 
                 return Utility.BiomeToString((BiomeSurfaceData)EntryValue);
+            }
+        }
+    }
+
+    public class ScienceSituationEntry : SurfaceEntry
+    {
+        public ScienceSituationEntry()
+        {
+            Name = "Situation";
+            Description = "Shows the current science situation - high/low orbit, atmosphere, etc.";
+            Category = MicroEntryCategory.Surface;
+            IsDefault = true;
+            BaseUnit = null;
+            Formatting = null;
+        }
+        
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.VesselScienceRegionSituation.ResearchLocation?.ScienceSituation;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return Utility.ScienceSituationToString((ScienceSitutation)EntryValue);
+            }
+        }
+    }
+
+    public class ScienceRegion : SurfaceEntry
+    {
+        public ScienceRegion()
+        {
+            Name = "Region";
+            Description = "Shows the current science region.";
+            Category = MicroEntryCategory.Surface;
+            IsDefault = true;
+            BaseUnit = null;
+            Formatting = null;
+        }
+        
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.VesselScienceRegionSituation.ResearchLocation?.ScienceRegion;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return Utility.ScienceRegionToString(EntryValue.ToString(), Utility.Body);
             }
         }
     }

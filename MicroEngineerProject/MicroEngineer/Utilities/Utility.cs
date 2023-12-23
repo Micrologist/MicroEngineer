@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using UnityEngine;
 using static KSP.Rendering.Planets.PQSData;
 using BepInEx.Logging;
+using JetBrains.Annotations;
+using KSP.Game.Science;
 using KSP.Messages;
 using KSP.Sim.DeltaV;
 using UitkForKsp2.API;
@@ -23,7 +25,23 @@ namespace MicroMod
         public static GameStateConfiguration GameState;
         public static MessageCenter MessageCenter;
         public static VesselDeltaVComponent VesselDeltaVComponentOAB;
+        
         public static double UniversalTime => GameManager.Instance.Game.UniverseModel.UniverseTime;
+        public static string Body => ActiveVessel.mainBody.bodyName;
+        public static byte PlayerId => GameManager.Instance.Game.LocalPlayer.PlayerId;
+
+        private static Dictionary<string, CelestialBodyScienceRegionsData> _scienceRegions;
+        public static Dictionary<string, CelestialBodyScienceRegionsData> ScienceRegions
+        {
+            get
+            {
+                if (_scienceRegions != null)
+                    return _scienceRegions;
+                
+                _scienceRegions = GetScienceRegions();
+                return _scienceRegions;
+            }
+        }
 
         /// <summary>
         /// Refreshes the ActiveVessel and CurrentManeuver
@@ -103,6 +121,42 @@ namespace MicroMod
         {
             string result = biome.type.ToString().ToLower().Replace('_', ' ');
             return result.Substring(0, 1).ToUpper() + result.Substring(1);
+        }
+        
+        public static string ScienceSituationToString(ScienceSitutation situation)
+        {
+            return situation switch
+            {
+                ScienceSitutation.None => "None",
+                ScienceSitutation.HighOrbit => "High Orbit",
+                ScienceSitutation.LowOrbit => "Low Orbit",
+                ScienceSitutation.Atmosphere => "Atmosphere",
+                ScienceSitutation.Splashed => "Splashed",
+                ScienceSitutation.Landed => "Landed",
+                _ => "UNKNOWN",
+            };
+        }
+
+        public static string ScienceRegionToString(string region, string body)
+        {
+            // remove "body" instance from "region"
+            if (region.Contains(body, StringComparison.OrdinalIgnoreCase))
+                region = region.Replace(body, string.Empty, StringComparison.OrdinalIgnoreCase);
+
+            return region;
+        }
+        
+        public static string ExperimentStateToString(ScienceActionGroupState experimentState)
+        {
+            return experimentState switch
+            {
+                ScienceActionGroupState.None => "Nothing new", // 0
+                ScienceActionGroupState.UnScoredAvailable => "Available!", // 1
+                ScienceActionGroupState.UnScoredEvaAvailable => "EVA Available!", // 2
+                (ScienceActionGroupState)3 => "Available!", // 1 & 2
+                ScienceActionGroupState.ExperimentsInProgress => "In progress", // 4
+                _ => "UNKNOWN",
+            };
         }
 
         public static double RadiansToDegrees(double radians)
@@ -207,6 +261,35 @@ namespace MicroMod
             element.UnregisterCallback<GeometryChangedEvent>((evt) => CenterWindow(evt, element));
         }
 
+        [CanBeNull]
+        public static Dictionary<string, CelestialBodyScienceRegionsData> GetScienceRegions()
+        {
+            var scienceRegionsProvider = GameManager.Instance.Game.ScienceManager?.ScienceRegionsDataProvider; //._cbToScienceRegions
+
+            if (scienceRegionsProvider == null)
+                return null;
+
+            Type providerType = scienceRegionsProvider.GetType();
+
+            FieldInfo cbToScienceRegionsField =
+                providerType.GetField("_cbToScienceRegions", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (cbToScienceRegionsField == null)
+                return null;
+
+            var scienceRegions =
+                cbToScienceRegionsField.GetValue(scienceRegionsProvider) as
+                    Dictionary<string, CelestialBodyScienceRegionsData>;
+
+            return scienceRegions;
+            // _cbToScienceRegions	Count = 17	System.Collections.Generic.Dictionary<string, KSP.Game.Science.CelestialBodyScienceRegionsData>
+        }
+
+        public static CelestialBodyScienceRegionsData GetBodyScienceRegion(string body)
+        {
+            return !ScienceRegions.ContainsKey(body) ? null : ScienceRegions[body];
+        }
+
         /*
         public static void DisableGameInputOnFocus(this VisualElement element)
         {
@@ -214,5 +297,5 @@ namespace MicroMod
             element.RegisterCallback<FocusOutEvent>(_ => GameManager.Instance?.Game?.Input.Enable());
         }
         */
-    }    
+    }
 }

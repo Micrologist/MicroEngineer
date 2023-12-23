@@ -808,4 +808,103 @@ namespace MicroMod
 
         public override string ValueDisplay => base.ValueDisplay;
     }
+    
+    public class Target_BodyAtmosphereMaxAltitude : TargetEntry
+    {
+        public Target_BodyAtmosphereMaxAltitude()
+        {
+            Name = "Atmosphere Altitude";
+            Description = "Altitude at which the atmosphere ends and Low Orbit begins.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = true;
+            HideWhenNoData = true;
+            MiliUnit = "m";
+            BaseUnit = "km";
+            KiloUnit = "Mm";
+            MegaUnit = "Gm";
+            GigaUnit = "Tm";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
+        }
+
+        public override void RefreshData()
+        {
+            if (!Utility.ActiveVessel.TargetObject?.IsCelestialBody ?? true)
+            {
+                EntryValue = null;
+                return;
+            }
+            
+            EntryValue = Utility.GetBodyScienceRegion(Utility.ActiveVessel.TargetObject.DisplayName).SituationData
+                ?.AtmosphereMaxAltutude / 1000;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+    
+    public class Target_BodyLowOrbitMaxAltitude : BodyEntry
+    {
+        public Target_BodyLowOrbitMaxAltitude()
+        {
+            Name = "Low Orbit Altitude";
+            Description = "Altitude at which the Low Orbit ends and High Orbit begins.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = true;
+            HideWhenNoData = true;
+            MiliUnit = "m";
+            BaseUnit = "km";
+            KiloUnit = "Mm";
+            MegaUnit = "Gm";
+            GigaUnit = "Tm";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
+        }
+
+        public override void RefreshData()
+        {
+            if (!Utility.ActiveVessel.TargetObject?.IsCelestialBody ?? true)
+            {
+                EntryValue = null;
+                return;
+            }
+            
+            EntryValue = Utility.GetBodyScienceRegion(Utility.ActiveVessel.TargetObject.DisplayName).SituationData
+                ?.LowOrbitMaxAltutude / 1000;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+    
+    public class Target_BodyHighOrbitMaxAltitude : BodyEntry
+    {
+        public Target_BodyHighOrbitMaxAltitude()
+        {
+            Name = "High Orbit Altitude";
+            Description = "Altitude at which the High Orbit ends.";
+            Category = MicroEntryCategory.Target;
+            IsDefault = true;
+            HideWhenNoData = true;
+            MiliUnit = "m";
+            BaseUnit = "km";
+            KiloUnit = "Mm";
+            MegaUnit = "Gm";
+            GigaUnit = "Tm";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
+        }
+
+        public override void RefreshData()
+        {
+            if (!Utility.ActiveVessel.TargetObject?.IsCelestialBody ?? true)
+            {
+                EntryValue = null;
+                return;
+            }
+            
+            EntryValue = Utility.GetBodyScienceRegion(Utility.ActiveVessel.TargetObject.DisplayName).SituationData
+                ?.HighOrbitMaxAltitude / 1000;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
 }
