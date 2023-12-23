@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using static KSP.Rendering.Planets.PQSData;
 using BepInEx.Logging;
+using KSP.Game.Science;
 using KSP.Messages;
 using KSP.Sim.DeltaV;
 using UitkForKsp2.API;
@@ -24,6 +25,8 @@ namespace MicroMod
         public static MessageCenter MessageCenter;
         public static VesselDeltaVComponent VesselDeltaVComponentOAB;
         public static double UniversalTime => GameManager.Instance.Game.UniverseModel.UniverseTime;
+        public static string Body => ActiveVessel.mainBody.bodyName;
+        public static byte PlayerId => GameManager.Instance.Game.LocalPlayer.PlayerId;
 
         /// <summary>
         /// Refreshes the ActiveVessel and CurrentManeuver
@@ -103,6 +106,42 @@ namespace MicroMod
         {
             string result = biome.type.ToString().ToLower().Replace('_', ' ');
             return result.Substring(0, 1).ToUpper() + result.Substring(1);
+        }
+        
+        public static string ScienceSituationToString(ScienceSitutation situation)
+        {
+            return situation switch
+            {
+                ScienceSitutation.None => "None",
+                ScienceSitutation.HighOrbit => "High Orbit",
+                ScienceSitutation.LowOrbit => "Low Orbit",
+                ScienceSitutation.Atmosphere => "Atmosphere",
+                ScienceSitutation.Splashed => "Splashed",
+                ScienceSitutation.Landed => "Landed",
+                _ => "UNKNOWN",
+            };
+        }
+
+        public static string ScienceRegionToString(string region, string body)
+        {
+            // remove "body" instance from "region"
+            if (region.Contains(body, StringComparison.OrdinalIgnoreCase))
+                region = region.Replace(body, string.Empty, StringComparison.OrdinalIgnoreCase);
+
+            return region;
+        }
+        
+        public static string ExperimentStateToString(ScienceActionGroupState experimentState)
+        {
+            return experimentState switch
+            {
+                ScienceActionGroupState.None => "Nothing new", // 0
+                ScienceActionGroupState.UnScoredAvailable => "Available!", // 1
+                ScienceActionGroupState.UnScoredEvaAvailable => "EVA Available!", // 2
+                (ScienceActionGroupState)3 => "Available!", // 1 & 2
+                ScienceActionGroupState.ExperimentsInProgress => "In progress", // 4
+                _ => "UNKNOWN",
+            };
         }
 
         public static double RadiansToDegrees(double radians)
@@ -214,5 +253,5 @@ namespace MicroMod
             element.RegisterCallback<FocusOutEvent>(_ => GameManager.Instance?.Game?.Input.Enable());
         }
         */
-    }    
+    }
 }

@@ -1,4 +1,6 @@
-﻿using KSP.Sim;
+﻿using KSP.Game;
+using KSP.Game.Science;
+using KSP.Sim;
 
 namespace MicroMod
 {
@@ -227,5 +229,55 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.Orbit.UniversalTimeAtSoiEncounter;
         }
+    }
+    
+    public class ScienceExperimentState : MiscEntry
+    {
+        public ScienceExperimentState()
+        {
+            Name = "Experiment";
+            Description = "Shows if there are available experiments at the current location.";
+            Category = MicroEntryCategory.Misc;
+            IsDefault = false;
+            BaseUnit = null;
+            Formatting = null;
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.ScienceExperimentState;
+        }
+
+        public override string ValueDisplay
+        {
+            get
+            {
+                if (EntryValue == null)
+                    return "-";
+
+                return Utility.ExperimentStateToString((ScienceActionGroupState)EntryValue);
+            }
+        }
+    }
+    
+    public class AvailableSciencePoints : MiscEntry
+    {
+        public AvailableSciencePoints()
+        {
+            Name = "Science Points";
+            Description = "Shows unspent science points.";
+            Category = MicroEntryCategory.Misc;
+            IsDefault = false;
+            BaseUnit = null;
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = CampaignPlayerEntry.GetAvailableSciencePoints(Utility.PlayerId);
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
     }
 }
