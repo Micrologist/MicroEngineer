@@ -243,6 +243,34 @@ namespace MicroMod
                     EditorRect = new Rect(645, 41, 0, 0), // Top-center of the screen
                     Entries = Entries.Where(entry => entry.Category == MicroEntryCategory.OAB && entry.IsDefault).ToList()
                 });
+                
+                Windows.Add(new EntryWindow
+                {
+                    Name = "For Science!",
+                    Abbreviation = "SCI",
+                    Description = "For Science entries",
+                    IsEditorActive = false,
+                    IsFlightActive = false,
+                    IsMapActive = false,
+                    IsEditorPoppedOut = false,
+                    IsFlightPoppedOut = false,
+                    IsMapPoppedOut = false,
+                    IsLocked = false,
+                    MainWindow = MainWindow.None,
+                    //EditorRect = null,
+                    FlightRect = new Rect(ReferenceResolution.Width / 2, ReferenceResolution.Height / 2, 0, 0),
+                    Entries = new()
+                    {
+                        Entries.Find(e => e is Body),
+                        Entries.Find(e => e is ScienceSituationEntry),
+                        Entries.Find(e => e is ScienceRegion),
+                        Entries.Find(e => e is ScienceExperimentState),
+                        Entries.Find(e => e is AvailableSciencePoints),
+                        Entries.Find(e => e is BodyAtmosphereMaxAltitude),
+                        Entries.Find(e => e is BodyLowOrbitMaxAltitude),
+                        Entries.Find(e => e is BodyHighOrbitMaxAltitude)
+                    }
+                });
 
                 return Windows;
             }
