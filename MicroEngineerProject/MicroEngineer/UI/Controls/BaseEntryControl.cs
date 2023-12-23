@@ -53,6 +53,8 @@ namespace MicroEngineer.UI
             // Handle alternate units
             if (entry.AltUnit != null)
                 this.RegisterCallback<MouseDownEvent>(_ => ToggleAltUnit(entry), TrickleDown.TrickleDown);
+            
+            HandleEntryValueChanged(Value, Unit, entry.HideWhenNoData);
         }
 
         public BaseEntryControl(string name, string value) : this()
@@ -119,8 +121,16 @@ namespace MicroEngineer.UI
             }
         }
 
-        public void HandleEntryValueChanged(string value, string unit)
+        public void HandleEntryValueChanged(string value, string unit, bool hideWhenNoData)
         {
+            if (hideWhenNoData)
+            {
+                if (value == "-" || string.IsNullOrEmpty(value))
+                    style.display = DisplayStyle.None;
+                else
+                    style.display = DisplayStyle.Flex;
+            }
+            
             Value = value;
             if (Unit != unit)
                 Unit = unit;

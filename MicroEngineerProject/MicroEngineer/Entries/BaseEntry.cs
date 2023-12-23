@@ -55,7 +55,7 @@ namespace MicroMod
                     switch (EntryType)
                     {
                         case EntryType.BasicText:
-                            OnEntryValueChanged?.Invoke(ValueDisplay, UnitDisplay);
+                            OnEntryValueChanged?.Invoke(ValueDisplay, UnitDisplay, HideWhenNoData);
                             break;
                         case EntryType.Time:
                             var time = Utility.ParseSecondsToTimeFormat((double?)value ?? 0);
@@ -77,7 +77,7 @@ namespace MicroMod
             }
         }
 
-        public delegate void EntryValueChanged(string value, string unit);
+        public delegate void EntryValueChanged(string value, string unit, bool hideWhenNoData);
         public delegate void EntryTimeValueChanged(int years, int days, int hours, int minutes, int seconds);
         public delegate void EntryLatLonChanged(int degrees, int minutes, int seconds, string direction);
         public delegate void StageInfoChanged(List<Stage> stages);
@@ -87,7 +87,7 @@ namespace MicroMod
         public event StageInfoChanged OnStageInfoChanged;
 
         /// <summary>
-        /// Controls how the value should be displayed. Can be overriden in a inheritet class for a more specialized implementation.
+        /// Controls how the value should be displayed. Can be overriden in a inherited class for a more specialized implementation.
         /// </summary>
         public virtual string ValueDisplay
         {
