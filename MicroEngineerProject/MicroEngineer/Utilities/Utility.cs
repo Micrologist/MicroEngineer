@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using UnityEngine;
 using static KSP.Rendering.Planets.PQSData;
 using BepInEx.Logging;
+using JetBrains.Annotations;
 using KSP.Game.Science;
 using KSP.Messages;
 using KSP.Sim.DeltaV;
@@ -24,9 +25,23 @@ namespace MicroMod
         public static GameStateConfiguration GameState;
         public static MessageCenter MessageCenter;
         public static VesselDeltaVComponent VesselDeltaVComponentOAB;
+        
         public static double UniversalTime => GameManager.Instance.Game.UniverseModel.UniverseTime;
         public static string Body => ActiveVessel.mainBody.bodyName;
         public static byte PlayerId => GameManager.Instance.Game.LocalPlayer.PlayerId;
+
+        private static Dictionary<string, CelestialBodyScienceRegionsData> _scienceRegions;
+        public static Dictionary<string, CelestialBodyScienceRegionsData> ScienceRegions
+        {
+            get
+            {
+                if (_scienceRegions != null)
+                    return _scienceRegions;
+                
+                _scienceRegions = GetScienceRegions();
+                return _scienceRegions;
+            }
+        }
 
         /// <summary>
         /// Refreshes the ActiveVessel and CurrentManeuver
@@ -244,6 +259,35 @@ namespace MicroMod
 
             element.transform.position = new Vector2((ReferenceResolution.Width - evt.newRect.width) / 2, (ReferenceResolution.Height - evt.newRect.height) / 2);
             element.UnregisterCallback<GeometryChangedEvent>((evt) => CenterWindow(evt, element));
+        }
+
+        [CanBeNull]
+        public static Dictionary<string, CelestialBodyScienceRegionsData> GetScienceRegions()
+        {
+            var scienceRegionsProvider = GameManager.Instance.Game.ScienceManager?.ScienceRegionsDataProvider; //._cbToScienceRegions
+
+            if (scienceRegionsProvider == null)
+                return null;
+
+            Type providerType = scienceRegionsProvider.GetType();
+
+            FieldInfo cbToScienceRegionsField =
+                providerType.GetField("_cbToScienceRegions", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            if (cbToScienceRegionsField == null)
+                return null;
+
+            var scienceRegions =
+                cbToScienceRegionsField.GetValue(scienceRegionsProvider) as
+                    Dictionary<string, CelestialBodyScienceRegionsData>;
+
+            return scienceRegions;
+            // _cbToScienceRegions	Count = 17	System.Collections.Generic.Dictionary<string, KSP.Game.Science.CelestialBodyScienceRegionsData>
+        }
+
+        public static CelestialBodyScienceRegionsData GetBodyScienceRegion(string body)
+        {
+            return !ScienceRegions.ContainsKey(body) ? null : ScienceRegions[body];
         }
 
         /*
