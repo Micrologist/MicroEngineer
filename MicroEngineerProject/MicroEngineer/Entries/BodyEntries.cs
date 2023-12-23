@@ -68,4 +68,82 @@
 
         public override string ValueDisplay => base.ValueDisplay;
     }
+    
+    public class BodyAtmosphereMaxAltitude : BodyEntry
+    {
+        public BodyAtmosphereMaxAltitude()
+        {
+            Name = "Atmosphere Altitude";
+            Description = "Altitude at which the atmosphere ends and Low Orbit begins.";
+            Category = MicroEntryCategory.Body;
+            IsDefault = false;
+            MiliUnit = "m";
+            BaseUnit = "km";
+            KiloUnit = "Mm";
+            MegaUnit = "Gm";
+            GigaUnit = "Tm";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.GetBodyScienceRegion(Utility.ActiveVessel.mainBody.bodyName).SituationData
+                ?.AtmosphereMaxAltutude / 1000;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+    
+    public class BodyLowOrbitMaxAltitude : BodyEntry
+    {
+        public BodyLowOrbitMaxAltitude()
+        {
+            Name = "Low Orbit Altitude";
+            Description = "Altitude at which the Low Orbit ends and High Orbit begins.";
+            Category = MicroEntryCategory.Body;
+            IsDefault = false;
+            MiliUnit = "m";
+            BaseUnit = "km";
+            KiloUnit = "Mm";
+            MegaUnit = "Gm";
+            GigaUnit = "Tm";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.GetBodyScienceRegion(Utility.ActiveVessel.mainBody.bodyName).SituationData
+                ?.LowOrbitMaxAltutude / 1000;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
+    
+    public class BodyHighOrbitMaxAltitude : BodyEntry
+    {
+        public BodyHighOrbitMaxAltitude()
+        {
+            Name = "High Orbit Altitude";
+            Description = "Altitude at which the High Orbit ends.";
+            Category = MicroEntryCategory.Body;
+            IsDefault = false;
+            MiliUnit = "m";
+            BaseUnit = "km";
+            KiloUnit = "Mm";
+            MegaUnit = "Gm";
+            GigaUnit = "Tm";
+            NumberOfDecimalDigits = 0;
+            Formatting = "N";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.GetBodyScienceRegion(Utility.ActiveVessel.mainBody.bodyName).SituationData
+                ?.HighOrbitMaxAltitude / 1000;
+        }
+
+        public override string ValueDisplay => base.ValueDisplay;
+    }
 }
