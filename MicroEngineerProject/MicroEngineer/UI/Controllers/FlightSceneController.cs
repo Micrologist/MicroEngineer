@@ -18,6 +18,16 @@ namespace MicroEngineer.UI
         public UIDocument MainGui { get; set; }
         public List<UIDocument> Windows = new ();
         public UIDocument EditWindows { get; set; }
+        
+        private readonly WindowOptions _windowOptions = new()
+        {
+            IsHidingEnabled = true,
+            MoveOptions = new MoveOptions
+            {
+                IsMovingEnabled = true,
+                CheckScreenBounds = true
+            }
+        };
 
         public bool ShowGui
         {
@@ -76,9 +86,8 @@ namespace MicroEngineer.UI
             //Build MainGui
             if ((Manager.Instance.Windows.Find(w => w is MainGuiWindow) as MainGuiWindow).IsFlightMinimized == false)
             {
-                MainGui = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, "MainGui", null, true);
+                MainGui = Window.Create(Uxmls.Instance.InstantiateWindowOptions("MainGui"), Uxmls.Instance.BaseWindow);
                 MainGuiController mainGuiController = MainGui.gameObject.AddComponent<MainGuiController>();
-                MainGui.rootVisualElement[0].RegisterCallback<PointerMoveEvent>(evt => Utility.ClampToScreenUitk(MainGui.rootVisualElement[0]));
             }
 
             //Build poppedout windows
@@ -87,8 +96,11 @@ namespace MicroEngineer.UI
                 // Skip creating Maneuver and/or Target windows if maneuver/target do not exist
                 if ((poppedOutWindow is ManeuverWindow && !ManeuverWindowShown) || (poppedOutWindow is TargetWindow && !TargetWindowShown))
                     continue;
-
-                var window = Window.CreateFromUxml(Uxmls.Instance.BaseWindow, poppedOutWindow.Name, null, !poppedOutWindow.IsLocked);
+                
+                var window =
+                    Window.Create(
+                        Uxmls.Instance.InstantiateWindowOptions(poppedOutWindow.Name, !poppedOutWindow.IsLocked),
+                        Uxmls.Instance.BaseWindow);
                 var header = window.rootVisualElement.Q<VisualElement>("header");
                 var body = window.rootVisualElement.Q<VisualElement>("body");
                 var footer = window.rootVisualElement.Q<VisualElement>("footer");
@@ -103,9 +115,6 @@ namespace MicroEngineer.UI
                     var entryRoot = body.Q<VisualElement>("window-root");
                     entryRoot.AddToClassList("no-border");
                 }
-
-                //Keep window inside screen bounds
-                window.rootVisualElement[0].RegisterCallback<MouseMoveEvent>(_ => Utility.ClampToScreenUitk(window.rootVisualElement[0]));
 
                 //Handle window snapping
                 window.rootVisualElement[0].RegisterCallback<MouseMoveEvent>(_ => HandleSnapping(window));
@@ -144,7 +153,7 @@ namespace MicroEngineer.UI
         {
             if (EditWindows == null)
             {
-                EditWindows = Window.CreateFromUxml(Uxmls.Instance.EditWindows, "EditWindows", null, true);
+                EditWindows = Window.Create(Uxmls.Instance.InstantiateWindowOptions("EditWindows"), Uxmls.Instance.EditWindows);
 
                 EditWindows.rootVisualElement[0].RegisterCallback<GeometryChangedEvent>((evt) => Utility.CenterWindow(evt, EditWindows.rootVisualElement[0]));
 

@@ -1,6 +1,7 @@
 ﻿using BepInEx.Logging;
 using MicroMod;
 using SpaceWarp.API.Assets;
+using UitkForKsp2.API;
 using UnityEngine.UIElements;
 
 namespace MicroEngineer.UI
@@ -66,6 +67,20 @@ namespace MicroEngineer.UI
                 _logger.LogError($"Failed to load VisualTreeAsset at path \"{path}\"\n" + ex.Message);
                 return null;
             }
+        }
+
+        public WindowOptions InstantiateWindowOptions(string windowId, bool makeDraggable = true)
+        {
+            return new WindowOptions()
+            {
+                WindowId = windowId,
+                IsHidingEnabled = true,
+                MoveOptions = new MoveOptions
+                {
+                    IsMovingEnabled = makeDraggable,
+                    CheckScreenBounds = true
+                }
+            };
         }
     }
 }
