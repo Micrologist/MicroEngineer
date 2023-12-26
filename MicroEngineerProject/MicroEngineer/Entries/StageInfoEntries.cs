@@ -32,8 +32,15 @@ namespace MicroMod
             if (deltaVStages == null)
                 return stages;
 
-            var nonEmptyStages = deltaVStages.FindAll(s => s.DeltaVinVac > 0.0001 || s.DeltaVatASL > 0.0001);
-
+            var nonEmptyStages = new List<DeltaVStageInfo>();
+            foreach (var stage in deltaVStages)
+            {
+                if (stage.DeltaVinVac > 0.0001 || stage.DeltaVatASL > 0.0001)
+                {
+                    nonEmptyStages.Add(stage);
+                }
+            }
+            
             for (int i = nonEmptyStages.Count - 1; i >= 0; i--)
             {
                 var time = Utility.ParseSecondsToTimeFormat(nonEmptyStages[i].StageBurnTime);

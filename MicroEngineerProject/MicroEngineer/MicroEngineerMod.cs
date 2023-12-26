@@ -1,3 +1,4 @@
+using System.Collections;
 using BepInEx;
 using UnityEngine;
 using SpaceWarp;
@@ -10,7 +11,7 @@ using BepInEx.Configuration;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.6.0")]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.6.1")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
@@ -20,6 +21,10 @@ namespace MicroMod
         private ConfigEntry<bool> _enableKeybinding;
         private ConfigEntry<KeyCode> _keybind1;
         private ConfigEntry<KeyCode> _keybind2;
+        public ConfigEntry<int> MainUpdateLoopUpdateFrequency;
+        public ConfigEntry<int> StageInfoUpdateFrequency;
+
+        public Coroutine MainUpdateLoop;
 
         public override void OnInitialized()
 		{
@@ -58,15 +63,13 @@ namespace MicroMod
                     Utility.SaveLayout();
                 });
 
-            _enableKeybinding = Config.Bind("Micro Engineer", "Enable keybinding", true, "Enables or disables keyboard shortcuts to show or hide windows in Flight and OAB scenes.");
-            _keybind1 = Config.Bind("Micro Engineer", "Keycode 1", KeyCode.LeftControl, "First keycode.");
-            _keybind2 = Config.Bind("Micro Engineer", "Keycode 2", KeyCode.E, "Second keycode.");
+            InitializeConfigs();
+
+            MainUpdateLoop = StartCoroutine(DoFlightUpdate());
         }
 
         public void Update()
         {
-             Manager.Instance.Update();
-
             // Keyboard shortcut for opening the UI
             if ((_enableKeybinding?.Value ?? false) &&
                 (_keybind1.Value != KeyCode.None ? Input.GetKey(_keybind1.Value) : true) &&
@@ -99,6 +102,56 @@ namespace MicroMod
                     Utility.SaveLayout();
                 }
             }
+        }
+
+        private System.Collections.IEnumerator DoFlightUpdate()
+        {
+            while (true)
+            {
+                Manager.Instance.DoFlightUpdate(); 
+                yield return new WaitForSeconds((float)MainUpdateLoopUpdateFrequency.Value / 1000);
+            }
+        }
+        
+        private void InitializeConfigs()
+        {
+            _enableKeybinding = Config.Bind(
+                "Keybinding",
+                "Enable keybinding",
+                true,
+                "Enables or disables keyboard shortcuts to show or hide windows in Flight and OAB scenes."
+                );
+            
+            _keybind1 = Config.Bind(
+                "Keybinding",
+                "Keycode 1",
+                KeyCode.LeftControl,
+                "First keycode."
+                );
+            
+            _keybind2 = Config.Bind(
+                "Keybinding",
+                "Keycode 2",
+                KeyCode.E,
+                "Second keycode.");
+            
+            MainUpdateLoopUpdateFrequency = Config.Bind(
+                "Update Frequency (ms)",
+                "Main Update",
+                100,
+                new ConfigDescription(
+                    "Time in milliseconds between every entry refresh.\n\nIncrease the value for better performance at the cost of longer time between updates.", 
+                    new AcceptableValueRange<int>(0, 1000))
+                );
+            
+            StageInfoUpdateFrequency = Config.Bind(
+                "Update Frequency (ms)",
+                "Stage Info",
+                500,
+                new ConfigDescription(
+                    "Time in milliseconds between every Stage Info refresh.\n\nIncrease the value for better performance at the cost of longer time between updates.",
+                    new AcceptableValueRange<int>(MainUpdateLoopUpdateFrequency.Value, 1000))
+                );
         }
     }
 }

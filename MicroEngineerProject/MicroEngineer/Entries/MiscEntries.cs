@@ -275,7 +275,7 @@ namespace MicroMod
 
         public override void RefreshData()
         {
-            EntryValue = CampaignPlayerEntry.GetAvailableSciencePoints(Utility.PlayerId);
+            EntryValue = GameManager.Instance.Game.UI.PropertyPlayerScience.GetValue();
         }
 
         public override string ValueDisplay => base.ValueDisplay;
