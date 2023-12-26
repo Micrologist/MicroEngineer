@@ -14,8 +14,8 @@ namespace MicroMod
         public List<BaseEntry> Entries;
 
         private static readonly ManualLogSource _logger = BepInEx.Logging.Logger.CreateLogSource("MicroEngineer.Manager");
-
-        public List<string> TextFieldNames = new List<string>();
+        
+        private DateTime _timeOfLastStageInfoUpdate = DateTime.Now;
 
         public Manager()
         {
@@ -34,7 +34,7 @@ namespace MicroMod
             }
         }
 
-        public void Update()
+        public void DoFlightUpdate()
         {
             Utility.RefreshGameManager();
 
@@ -50,7 +50,24 @@ namespace MicroMod
 
                 // Refresh all active windows' entries
                 foreach (EntryWindow window in Windows.Where(w => w.IsFlightActive && w is EntryWindow))
+                {
+                    // StageWindow will have a slower refresh rate as it impacts performance greatly
+                    if (window is StageWindow )
+                    {
+                        var now = DateTime.Now;
+                        TimeSpan elapsedTime = DateTime.Now - _timeOfLastStageInfoUpdate;
+                        if (elapsedTime.TotalSeconds > (float)MicroEngineerMod.Instance.StageInfoUpdateFrequency.Value / 1000)
+                        {
+                            _timeOfLastStageInfoUpdate = DateTime.Now;
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                    }
+                    
                     window.RefreshData();
+                }
             }
         }
 
