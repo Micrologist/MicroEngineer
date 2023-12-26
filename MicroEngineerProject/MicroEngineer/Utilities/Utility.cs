@@ -89,7 +89,7 @@ namespace MicroMod
             int minutes = (int)((absoluteSeconds - years * 9201600 - days * 21600 - hours * 3600 ) / 60);
             int seconds = (int)(absoluteSeconds - years * 9201600 - days * 21600 - hours * 3600 - minutes * 60);
 
-            // If inputSeconds is negative, reverse the sign of the higest calculated value
+            // If inputSeconds is negative, reverse the sign of the highest calculated value
             if (inputSeconds < 0)
             {
                 if (years != 0) years = -years;

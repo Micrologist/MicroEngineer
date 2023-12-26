@@ -35,7 +35,7 @@ namespace MicroMod
             var nonEmptyStages = new List<DeltaVStageInfo>();
             foreach (var stage in deltaVStages)
             {
-                if (stage.DeltaVinVac > 0.0001 || stage.DeltaVatASL >= 0.0001)
+                if (stage.DeltaVinVac > 0.0001 || stage.DeltaVatASL > 0.0001)
                 {
                     nonEmptyStages.Add(stage);
                 }
