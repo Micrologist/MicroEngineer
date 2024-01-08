@@ -11,7 +11,7 @@ using BepInEx.Configuration;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.6.1")]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.7.0")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
