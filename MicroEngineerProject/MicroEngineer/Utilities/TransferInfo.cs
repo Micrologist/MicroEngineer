@@ -1,4 +1,5 @@
-﻿using KSP.Sim.impl;
+﻿using BepInEx.Logging;
+using KSP.Sim.impl;
 using KSP.Sim;
 using UnityEngine;
 
@@ -28,8 +29,19 @@ namespace MicroMod
                 return false;
             }
 
-            (CelestialBodyComponent referenceBody, Vector3 localPosition, IKeplerOrbit currentOrbit) from = (Utility.ActiveVessel.Orbit.referenceBody, Utility.ActiveVessel.Orbit.Position.localPosition, Utility.ActiveVessel.Orbit);
-            (CelestialBodyComponent referenceBody, Vector3 localPosition, IKeplerOrbit currentOrbit) to = (Utility.ActiveVessel.TargetObject.Orbit.referenceBody, Utility.ActiveVessel.TargetObject.Orbit.Position.localPosition, Utility.ActiveVessel.TargetObject.Orbit);
+            (CelestialBodyComponent referenceBody, Vector3 localPosition, IKeplerOrbit currentOrbit) from;
+            (CelestialBodyComponent referenceBody, Vector3 localPosition, IKeplerOrbit currentOrbit) to;
+            
+            try
+            {
+                from = (Utility.ActiveVessel.Orbit.referenceBody, Utility.ActiveVessel.Orbit.Position.localPosition, Utility.ActiveVessel.Orbit);
+                to = (Utility.ActiveVessel.TargetObject.Orbit.referenceBody, Utility.ActiveVessel.TargetObject.Orbit.Position.localPosition, Utility.ActiveVessel.TargetObject.Orbit);
+            }
+            catch (Exception _)
+            {
+                // due to a game bug, sometimes TargetObject doesn't have an orbit
+                return false;
+            }
 
             // We search for the common celestial body that both ActiveVessel and TargetObject are orbiting and then calculate the phase angle
             bool commonReferenceBodyFound = false;
