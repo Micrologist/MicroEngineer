@@ -108,7 +108,17 @@ namespace MicroMod
         {
             while (true)
             {
-                Manager.Instance.DoFlightUpdate(); 
+                try
+                {
+                    Manager.Instance.DoFlightUpdate();
+                }
+                catch (Exception ex)
+                {
+                    Logger.LogError("Unhandled exception in the DoFlightUpdate loop.\n" +
+                                    $"Exception: {ex.Message}\n" +
+                                    $"Stack Trace: {ex.StackTrace}");
+                }
+                 
                 yield return new WaitForSeconds((float)MainUpdateLoopUpdateFrequency.Value / 1000);
             }
         }
