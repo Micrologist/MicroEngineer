@@ -281,6 +281,25 @@ namespace MicroMod
             BaseUnit = Utility.ActiveVessel.Latitude < 0 ? "S" : "N";
         }
     }
+    
+    public class LatitudeDecimal : SurfaceEntry
+    {
+        public LatitudeDecimal()
+        {
+            Name = "Latitude (dec)";
+            Description = "Shows the vessel's latitude position around the celestial body. Latitude is the angle from the equator towards the poles. Decimal format.";
+            Category = MicroEntryCategory.Surface;
+            IsDefault = false;
+            BaseUnit = null;
+            NumberOfDecimalDigits = 3;
+            Formatting = "N";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Latitude;
+        }
+    }
 
     public class Longitude : SurfaceEntry
     {
@@ -298,6 +317,25 @@ namespace MicroMod
         {
             EntryValue = Utility.ActiveVessel.Longitude;
             BaseUnit = Utility.ActiveVessel.Longitude < 0 ? "W" : "E";
+        }
+    }
+    
+    public class LongitudeDecimal : SurfaceEntry
+    {
+        public LongitudeDecimal()
+        {
+            Name = "Longitude (dec)";
+            Description = "Shows the vessel's longitude position around the celestial body. Longitude is the angle from the body's prime meridian to the current meridian. Decimal format.";
+            Category = MicroEntryCategory.Surface;
+            IsDefault = false;
+            BaseUnit = null;
+            NumberOfDecimalDigits = 3;
+            Formatting = "N";
+        }
+
+        public override void RefreshData()
+        {
+            EntryValue = Utility.ActiveVessel.Longitude;
         }
     }
 
