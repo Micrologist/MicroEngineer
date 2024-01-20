@@ -96,32 +96,46 @@ namespace MicroEngineer.UI
                     stage.Stage, stage.TWRVac, stage.TWRASL, stage.DeltaVASL,
                     stage.DeltaVVac, stage.StageBurnTime.Days, stage.StageBurnTime.Hours,
                     stage.StageBurnTime.Minutes, stage.StageBurnTime.Seconds,
-                    MicroCelestialBodies.Instance.Bodies.Select(b => b.DisplayName).ToList(),
-                    stage.CelestialBody.Name
+                    // if stock body selector is set to a body different than the home body (Kerbin)
+                    // then pass only this body to the control
+                    bodies: string.IsNullOrEmpty(stage.SituationCelestialBody)
+                        ? MicroCelestialBodies.Instance.Bodies.Select(b => b.DisplayName).ToList()
+                        : new List<string> { stage.SituationCelestialBody},
+                    selectedBody: string.IsNullOrEmpty(stage.SituationCelestialBody) 
+                        ? stage.CelestialBody.Name
+                        : stage.SituationCelestialBody
                     );
 
                 _totalDeltaVASL += stage.DeltaVASL;
                 _totalDeltaVVac += stage.DeltaVVac;
 
-                var celestialBodyDropdown = control.Q<DropdownField>("body-dropdown");
-                celestialBodyDropdown.RegisterCallback<MouseDownEvent>(evt =>
+                // check if SituationCelestialBody contains data
+                // if it does, it means that stock body selector is set to a body different than the home body (Kerbin)
+                // in that case we will not allow body changing here since the game already does recalculations for TWR and DeltaV 
+                if (string.IsNullOrEmpty(stage.SituationCelestialBody))
                 {
-                    // When user clicks on the celestialBodyDropdown control we lock stage info refresh from happening
-                    // and unlock it again when user selects something from the dropdown.
-                    // We do this because if VesselDeltaVCalculationMessage is triggered between the user first clicking
-                    // on the control and selection something from it, the event will cause the UI to refresh (destroy
-                    // and rebuild the controls) and thus the original dropdown control will no longer exist and
-                    // celestialBody will not be selectable.
-                    _lockUiRefresh = true;
-                });
-                // Update entry's CelestialBody at the same index as the stage
-                celestialBodyDropdown.RegisterValueChangedCallback(evt =>
-                {
-                    StageEntry.UpdateCelestialBodyAtIndex(stage.Index, celestialBodyDropdown.value);
-                    _lockUiRefresh = false;
-                    StageEntry.RefreshData();
-                });
-
+                    // SituationCelestialBody does not contain data, perform body dropdown logic normally
+                    
+                    var celestialBodyDropdown = control.Q<DropdownField>("body-dropdown");
+                    celestialBodyDropdown.RegisterCallback<MouseDownEvent>(evt =>
+                    {
+                        // When user clicks on the celestialBodyDropdown control we lock stage info refresh from happening
+                        // and unlock it again when user selects something from the dropdown.
+                        // We do this because if VesselDeltaVCalculationMessage is triggered between the user first clicking
+                        // on the control and selection something from it, the event will cause the UI to refresh (destroy
+                        // and rebuild the controls) and thus the original dropdown control will no longer exist and
+                        // celestialBody will not be selectable.
+                        _lockUiRefresh = true;
+                    });
+                    // Update entry's CelestialBody at the same index as the stage
+                    celestialBodyDropdown.RegisterValueChangedCallback(evt =>
+                    {
+                        StageEntry.UpdateCelestialBodyAtIndex(stage.Index, celestialBodyDropdown.value);
+                        _lockUiRefresh = false;
+                        StageEntry.RefreshData();
+                    });
+                }
+                
                 Body.Add(control);
             }
 

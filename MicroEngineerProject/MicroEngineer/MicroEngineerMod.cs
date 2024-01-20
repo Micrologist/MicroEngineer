@@ -1,4 +1,3 @@
-using System.Collections;
 using BepInEx;
 using UnityEngine;
 using SpaceWarp;
@@ -11,7 +10,7 @@ using BepInEx.Configuration;
 
 namespace MicroMod
 {
-    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.7.0")]
+    [BepInPlugin("com.micrologist.microengineer", "MicroEngineer", "1.7.1")]
     [BepInDependency(SpaceWarpPlugin.ModGuid, SpaceWarpPlugin.ModVer)]
     public class MicroEngineerMod : BaseSpaceWarpPlugin
 	{
