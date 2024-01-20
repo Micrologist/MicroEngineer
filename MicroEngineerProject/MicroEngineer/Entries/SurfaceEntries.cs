@@ -258,7 +258,7 @@ namespace MicroMod
                 if (EntryValue == null)
                     return "-";
 
-                return Utility.ScienceRegionToString(EntryValue.ToString(), Utility.Body);
+                return ScienceRegionsHelper.GetRegionDisplayName(EntryValue.ToString());
             }
         }
     }
