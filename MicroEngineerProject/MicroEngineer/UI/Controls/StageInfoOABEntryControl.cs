@@ -134,7 +134,9 @@ namespace MicroEngineer.UI
 
             Body = bodies;
             BodyDropdown.SetValueWithoutNotify(selectedBody);
-            BodyDropdown.SetEnabled(true);
+
+            // enabled the dropdown control only if there is more than one option
+            BodyDropdown.SetEnabled(bodies.Count > 1);
         }
 
         public StageInfoOABEntryControl(int stageNumber, float twr, float slt, double aslDeltaV, double vacDeltaV, int burnDays, int burnHours, int burnMinutes, int burnSeconds, List<string> bodies, string selectedBody) : this()

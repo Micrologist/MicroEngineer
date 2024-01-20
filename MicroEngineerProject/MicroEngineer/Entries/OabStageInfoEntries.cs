@@ -191,6 +191,10 @@ namespace MicroMod
                 var stage = new DeltaVStageInfo_OAB()
                 {
                     Index = i,
+                    // if stock stage info celestial body is set to any other body than the home body (Kerbin), set it here.
+                    // TWR and DeltaV recalculations won't be done for other bodies since the game already does this
+                    SituationCelestialBody = retrieved.DeltaVSituation.CelestialBody == MicroCelestialBodies.HomeWorld
+                        ? string.Empty : retrieved.DeltaVSituation.CelestialBody,
                     DeltaVActual = retrieved.DeltaVActual,
                     DeltaVASL = retrieved.DeltaVatASL,
                     DeltaVVac = retrieved.DeltaVinVac,
@@ -220,7 +224,8 @@ namespace MicroMod
                 if (i < CelestialBodyForStage.Count)
                 {
                     // CelestialBody already created for this stage. Attaching it to the stage.
-                    stage.CelestialBody = CelestialBodyForStage[i];
+                    stage.CelestialBody = CelestialBodyForStage[CelestialBodyForStage.Count - 1 - i];
+                    
                 }
                 else
                 {
@@ -231,9 +236,13 @@ namespace MicroMod
                 }
 
                 // Apply TWR factor to the value and recalculate sea level TWR and DeltaV
-                stage.Recalculate_TWR();
-                stage.Recalculate_SLT();
-                stage.Recalculate_DeltaVSeaLevel();
+                // Do this only if stock body readout is set to home body (Kerbin) since the game already does this for other bodies 
+                if (string.IsNullOrEmpty(stage.SituationCelestialBody))
+                {
+                    stage.Recalculate_TWR();
+                    stage.Recalculate_SLT();
+                    stage.Recalculate_DeltaVSeaLevel();    
+                }
                 
                 // KSP2 has a strange way of displaying stage numbers, so we need a little hack
                 stage.Recalculate_StageNumber(Utility.VesselDeltaVComponentOAB.StageInfo.Count);
@@ -255,7 +264,7 @@ namespace MicroMod
         public void UpdateCelestialBodyAtIndex(int index, string selectedBodyName)
         {
             var body = MicroCelestialBodies.Instance.GetBodyByName(selectedBodyName);
-            CelestialBodyForStage[index] = body;
+            CelestialBodyForStage[CelestialBodyForStage.Count - 1 - index] = body;
             RefreshData();
         }
     }
@@ -270,6 +279,7 @@ namespace MicroMod
         /// When stages are refreshed, DeltaVStageInfo_OAB grabs the CelestialBodyForStage at the same Index.
         /// </summary>
         public int Index;
+        public string SituationCelestialBody;
         public double DeltaVActual;
         public double DeltaVASL;
         public double DeltaVVac;

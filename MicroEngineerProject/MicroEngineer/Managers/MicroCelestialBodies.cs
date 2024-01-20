@@ -11,6 +11,8 @@ namespace MicroMod
 
         public List<CelestialBody> Bodies = new();
 
+        public static string HomeWorld { get; set; }
+
         public static MicroCelestialBodies Instance
         {
             get
@@ -58,6 +60,12 @@ namespace MicroMod
                     IsHomeWorld = body.isHomeWorld,
                     CelestialBodyComponent = body,
                 });
+
+                // set the HomeWorld body that will be read by the StageInfoOAB update patch
+                if (body.isHomeWorld)
+                {
+                    HomeWorld = body.Name;
+                }
             }
 
             // Reorder and format all celestial bodies so they form a tree-like structure
