@@ -224,7 +224,8 @@ namespace MicroMod
                 if (i < CelestialBodyForStage.Count)
                 {
                     // CelestialBody already created for this stage. Attaching it to the stage.
-                    stage.CelestialBody = CelestialBodyForStage[i];
+                    stage.CelestialBody = CelestialBodyForStage[CelestialBodyForStage.Count - 1 - i];
+                    
                 }
                 else
                 {
@@ -242,7 +243,6 @@ namespace MicroMod
                     stage.Recalculate_SLT();
                     stage.Recalculate_DeltaVSeaLevel();    
                 }
-                
                 
                 // KSP2 has a strange way of displaying stage numbers, so we need a little hack
                 stage.Recalculate_StageNumber(Utility.VesselDeltaVComponentOAB.StageInfo.Count);
@@ -264,7 +264,7 @@ namespace MicroMod
         public void UpdateCelestialBodyAtIndex(int index, string selectedBodyName)
         {
             var body = MicroCelestialBodies.Instance.GetBodyByName(selectedBodyName);
-            CelestialBodyForStage[index] = body;
+            CelestialBodyForStage[CelestialBodyForStage.Count - 1 - index] = body;
             RefreshData();
         }
     }
