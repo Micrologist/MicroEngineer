@@ -1,4 +1,6 @@
 # Micro Engineer - a KSP2 plugin
+# *** THIS REPOSITORY IS ARCHIVED - FIND THE NEW REPOSITORY HERE: https://github.com/Falki-git/MicroEngineer ***
+
 Displays useful information about your vessel in flight and in VAB. See your orbital and surface parameters, deltaV, TWR and many other things.
 
 ![Micro Engineer](https://i.imgur.com/iWVKKOI.png)
